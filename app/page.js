@@ -1,7 +1,7 @@
 export default function Home() {
     return (
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
-            <h1>Homa-Trading App</h1>
-        </main>
+        <div className="mx-auto p-5">
+            <main></main>
+        </div>
     );
 }
