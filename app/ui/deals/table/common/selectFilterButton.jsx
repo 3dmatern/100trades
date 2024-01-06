@@ -56,10 +56,12 @@ export default function SelectFilterButton({
         >
             <button
                 onClick={handleClick}
-                className="flex items-center justify-between gap-1 min-w-16 text-start text-xs"
+                className="flex items-center justify-between gap-1 text-start text-xs"
                 style={styleBtn}
             >
-                {name}{" "}
+                <span className="overflow-hidden whitespace-nowrap text-ellipsis">
+                    {name}
+                </span>{" "}
                 <Image
                     src="./arrow-down.svg"
                     alt="arrow"
