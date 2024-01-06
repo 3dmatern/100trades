@@ -1,7 +1,3 @@
-"use client";
-
-import React, { useState } from "react";
-
 import CheckboxOrNumber from "./common/checkboxOrNumber";
 import SelectFilterButton from "./common/selectFilterButton";
 
@@ -28,29 +24,43 @@ const initHeaders = [
     { name: "Status", up: false },
 ];
 
-export default function TableHead() {
-    const [checkAll, setCheckAll] = useState(false);
-
-    const handleChange = ({ target }) => {
-        if (target.name === "checkAll") {
-            setCheckAll((prev) => !prev);
-        }
-    };
-
+export default function TableHead({ checkAll, onChange }) {
     return (
         <div className="flex items-center justify-between border-t border-b border-slate-300 bg-gray-50">
-            <CheckboxOrNumber
-                name="checkAll"
-                checked={checkAll}
-                onChange={handleChange}
-            />
-            {initHeaders.map((item) => (
-                <SelectFilterButton
-                    key={item.name}
-                    name={item.name}
-                    style={item.up ? { "text-transform": "uppercase" } : null}
-                />
-            ))}
+            {initHeaders.map((item, index) => {
+                if (index === 0) {
+                    return (
+                        <div
+                            key={item.name}
+                            className="flex items-center justify-between w-28"
+                        >
+                            <CheckboxOrNumber
+                                name="checkAll"
+                                checked={checkAll}
+                                onChange={onChange}
+                            />
+                            <SelectFilterButton
+                                key={item.name}
+                                name={item.name}
+                                className="w-4/5"
+                                styleBtn={{ width: "100%" }}
+                            />
+                        </div>
+                    );
+                } else {
+                    return (
+                        <SelectFilterButton
+                            key={item.name}
+                            name={item.name}
+                            styleBtn={
+                                item.up
+                                    ? { "text-transform": "uppercase" }
+                                    : null
+                            }
+                        />
+                    );
+                }
+            })}
         </div>
     );
 }

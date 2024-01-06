@@ -3,7 +3,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
-export default function SelectFilterButton({ name, style }) {
+export default function SelectFilterButton({
+    name,
+    className,
+    style,
+    styleBtn,
+}) {
     const filterRef = useRef(null);
     const listRef = useRef(null);
     const [open, setOpen] = useState(false);
@@ -46,12 +51,13 @@ export default function SelectFilterButton({ name, style }) {
     return (
         <div
             ref={filterRef}
-            className="flex items-center relative h-8 border-r border-slate-300 px-2"
+            className={`flex items-center relative h-8 border-r border-slate-300 px-2 ${className}`}
+            style={style}
         >
             <button
                 onClick={handleClick}
                 className="flex items-center justify-between gap-1 min-w-16 text-start text-xs"
-                style={style}
+                style={styleBtn}
             >
                 {name}{" "}
                 <Image
