@@ -18,9 +18,15 @@ export default function BodyCardTags({
     const [tag, setTag] = useState("");
 
     const handleChange = (value) => {
-        console.log(value);
         setTag(value);
         setFilterTags((prev) => prev.filter((p) => p.label.includes(value)));
+    };
+
+    const handleSelectTag = (tag) => {
+        console.log(tag);
+        setOpen(false);
+        setActive(false);
+        setTag("");
     };
 
     useEffect(() => {
@@ -58,7 +64,12 @@ export default function BodyCardTags({
     return (
         <div
             ref={listRef}
-            className="flex flex-nowrap items-center justify-start gap-1 relative border-r w-72 min-w-4 h-8 px-2 text-xs"
+            onClick={() => setActive(true)}
+            className={`flex items-center justify-start gap-1 relative ${
+                active
+                    ? "flex-wrap border border-blue-800"
+                    : "flex-nowrap border-r "
+            } w-72 min-w-4 h-8 px-2 text-xs`}
         >
             {dealTags?.map((tag) => (
                 <span
@@ -70,23 +81,32 @@ export default function BodyCardTags({
                     className="flex items-center gap-1 rounded-xl px-2 py-px"
                 >
                     <span>{tag.label}</span>
-                    <button className="p-0.5 cursor-pointer">
-                        <Image
-                            src="./remove.svg"
-                            alt="remove"
-                            width={10}
-                            height={10}
-                        />
-                    </button>
+                    {active && (
+                        <button className="p-0.5 cursor-pointer">
+                            <Image
+                                src="./remove.svg"
+                                alt="remove"
+                                width={10}
+                                height={10}
+                            />
+                        </button>
+                    )}
                 </span>
             ))}
 
-            <button
-                onClick={() => setOpen(!open)}
-                className="p-1 rounded-sm bg-slate-100 hover:bg-slate-200"
-            >
-                <Image src="./plus-lg.svg" alt="plus" width={16} height={16} />
-            </button>
+            {active && (
+                <button
+                    onClick={() => setOpen(!open)}
+                    className="p-1 rounded-sm bg-slate-100 hover:bg-slate-200"
+                >
+                    <Image
+                        src="./plus-lg.svg"
+                        alt="plus"
+                        width={16}
+                        height={16}
+                    />
+                </button>
+            )}
 
             {open && (
                 <div className="absolute left-0 top-8 z-10 w-full rounded-md py-2 bg-white border border-gray-300">
@@ -111,6 +131,7 @@ export default function BodyCardTags({
                                 .map((tag) => (
                                     <li
                                         key={tag.label}
+                                        onClick={() => handleSelectTag(tag)}
                                         className="flex items-center justify-start h-8 px-2 hover:bg-slate-200 cursor-pointer"
                                     >
                                         <span
@@ -136,6 +157,12 @@ export default function BodyCardTags({
                                     color: determineTextColor(tagBgColor),
                                     backgroundColor: tagBgColor,
                                 }}
+                                onClick={() =>
+                                    handleSelectTag({
+                                        label: tag,
+                                        value: tagBgColor,
+                                    })
+                                }
                                 className="rounded-xl px-2 py-px cursor-pointer"
                             >
                                 {tag}
