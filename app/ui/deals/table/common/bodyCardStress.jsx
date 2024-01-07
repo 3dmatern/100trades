@@ -1,7 +1,50 @@
-export default function BodyCardStress({ dealStress }) {
+"use client";
+
+import React, { useState } from "react";
+
+export default function BodyCardStress({ dealStress, dealHover }) {
+    const [hoveredRating, setHoveredRating] = useState(0);
+
+    const handleMouseOver = (hoveredValue) => {
+        setHoveredRating(hoveredValue);
+    };
+
+    const handleMouseLeave = () => {
+        setHoveredRating(0);
+    };
+
+    const handleClick = (selectedValue) => {
+        setRating(selectedValue);
+    };
+
     return (
-        <div className="flex items-center justify-center border-r w-28 min-w-4 h-8 px-2 text-xs">
-            {dealStress}
+        <div className="flex items-center justify-start gap-1 border-r w-24 min-w-4 h-8 px-2 text-xs">
+            {dealStress
+                ? [1, 2, 3, 4, 5]
+                      .slice(0, dealStress)
+                      .map((value) => (
+                          <span
+                              key={value}
+                              className={`block size-2.5 rounded-full bg-red-600`}
+                          />
+                      ))
+                : [1, 2, 3, 4, 5].map((value) => (
+                      <span
+                          key={value}
+                          onMouseOver={() => handleMouseOver(value)}
+                          onMouseLeave={handleMouseLeave}
+                          onClick={() => handleClick(value)}
+                          className={`block size-2.5 rounded-full ${
+                              dealHover ? "bg-slate-300" : "bg-transparent"
+                          }  cursor-pointer ${
+                              value <= hoveredRating
+                                  ? "bg-red-400"
+                                  : value <= dealStress
+                                  ? "bg-red-600"
+                                  : ""
+                          }`}
+                      />
+                  ))}
         </div>
     );
 }

@@ -14,7 +14,7 @@ const initHeaders = [
     { name: "Выход", up: true, w: "128px" },
     { name: "Скрин2", up: true, w: "96px" },
     { name: "Пора?", up: false, w: "112px" },
-    { name: "Стресс", up: true, w: "112px" },
+    { name: "Стресс", up: true, w: "96px" },
     { name: "Tags", up: false, w: "288px" },
     { name: "Заметки", up: false, w: "176px" },
     { name: "Время в сделке", up: true, w: "128px" },

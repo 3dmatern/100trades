@@ -6,12 +6,15 @@ export default function BodyCardName({
     dealName,
     selectedDeals,
     checkAll,
+    dealHover,
     onChangeCheckbox,
 }) {
     return (
         <div
             className={`flex items-center w-28 fixed  ${
-                selectedDeals?.includes(dealId) ? "bg-slate-50" : "bg-white"
+                selectedDeals?.includes(dealId) || dealHover
+                    ? "bg-slate-50"
+                    : "bg-white"
             }`}
         >
             <CheckboxOrNumber

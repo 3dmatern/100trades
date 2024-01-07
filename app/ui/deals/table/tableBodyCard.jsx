@@ -1,4 +1,6 @@
-import Image from "next/image";
+"use client";
+
+import React, { useState } from "react";
 
 import { determineTextColor } from "@/app/utils/determinateTextColor";
 
@@ -25,10 +27,15 @@ export default function TableBodyCard({
     checkAll,
     onChangeCheckbox,
 }) {
+    const [hover, setHover] = useState(false);
     return (
         <div
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
             className={`flex items-center ${
-                selectedDeals?.includes(deal.id) ? "bg-slate-50" : "bg-white"
+                selectedDeals?.includes(deal.id) || hover
+                    ? "bg-slate-50"
+                    : "bg-white"
             } border-b`}
         >
             <BodyCardName
@@ -37,6 +44,7 @@ export default function TableBodyCard({
                 dealName={deal.name}
                 selectedDeals={selectedDeals}
                 checkAll={checkAll}
+                dealHover={hover}
                 onChangeCheckbox={onChangeCheckbox}
             />
 
@@ -69,7 +77,7 @@ export default function TableBodyCard({
                     dealExitDate={deal.exitDate}
                     dealTimeScreenshot={deal.timeScreenshot}
                 />
-                <BodyCardStress dealStress={deal.stress} />
+                <BodyCardStress dealStress={deal.stress} dealHover={hover} />
                 <BodyCardTags
                     dealTags={deal.tags}
                     determineTextColor={determineTextColor}
