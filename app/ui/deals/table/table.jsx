@@ -113,13 +113,16 @@ export default function Table() {
 
     const handleChange = ({ target }) => {
         if (target.name === "checkAll") {
-            setCheckAll((prev) => !prev);
+            setCheckAll((prev) => {
+                !prev
+                    ? setSelectedDeals(initDeals.map((deal) => deal.id))
+                    : setSelectedDeals([]);
+                return !prev;
+            });
         }
-        console.log(target);
     };
 
     const handleSelectDeal = ({ target }) => {
-        console.log(target);
         setSelectedDeals((prev) =>
             !prev.includes(target.value)
                 ? [...prev, target.value]
