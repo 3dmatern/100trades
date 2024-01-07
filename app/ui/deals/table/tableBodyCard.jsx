@@ -54,7 +54,7 @@ export default function TableBodyCard({
             <div className="flex items-center pl-28">
                 <BodyCardEffect dealEffect={deal.effect} />
                 <BodyCardPose dealPose={deal.pose} dealHover={hover} />
-                <BodyCardRisk dealRisk={deal.risk} />
+                <BodyCardRisk dealRisk={deal.risk} dealHover={hover} />
                 <BodyCardLP
                     dealLP={deal.lp}
                     determineTextColor={determineTextColor}
