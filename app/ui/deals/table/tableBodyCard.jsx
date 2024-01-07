@@ -53,7 +53,7 @@ export default function TableBodyCard({
 
             <div className="flex items-center pl-28">
                 <BodyCardEffect dealEffect={deal.effect} />
-                <BodyCardPose dealPose={deal.pose} />
+                <BodyCardPose dealPose={deal.pose} dealHover={hover} />
                 <BodyCardRisk dealRisk={deal.risk} />
                 <BodyCardLP
                     dealLP={deal.lp}

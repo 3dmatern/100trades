@@ -4,7 +4,7 @@ import SelectFilterButton from "./common/selectFilterButton";
 const initHeaders = [
     { name: "Тикер", up: false, w: "112px" },
     { name: "Win-Loss", up: true, w: "96px" },
-    { name: "Поза", up: false, w: "80px" },
+    { name: "Поза", up: false, w: "96px" },
     { name: "Риск", up: false, w: "64px" },
     { name: "L:P", up: true, w: "64px" },
     { name: "Вход", up: true, w: "144px" },

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import CheckboxOrNumber from "./checkboxOrNumber";
 
@@ -13,7 +13,6 @@ export default function BodyCardName({
     dealHover,
     onChangeCheckbox,
 }) {
-    const cellRef = useRef(null);
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
 
@@ -26,24 +25,6 @@ export default function BodyCardName({
             setName(dealName);
         }
     }, [dealName]);
-
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if (cellRef.current && !cellRef.current.contains(e.target)) {
-                setOpen(false);
-            }
-        };
-        const handleScroll = () => {
-            setOpen(false);
-        };
-
-        document.addEventListener("click", handleClickOutside);
-        window.addEventListener("scroll", handleScroll);
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-            window.removeEventListener("scroll", handleScroll);
-        };
-    }, []);
 
     return (
         <div
