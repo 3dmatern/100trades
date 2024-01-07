@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
+import { determineTextColor } from "@/app/utils/determinateTextColor";
+
 import CheckboxOrNumber from "./common/checkboxOrNumber";
 
 export default function TableBody({
@@ -78,7 +80,10 @@ export default function TableBody({
 
                         <div className="flex items-center justify-center border-r w-16 min-w-4 h-8 px-2 text-xs">
                             <span
-                                style={{ backgroundColor: deal.lp.value }}
+                                style={{
+                                    color: determineTextColor(deal.lp.value),
+                                    backgroundColor: deal.lp.value,
+                                }}
                                 className="rounded-xl px-2"
                             >
                                 {deal.lp.label}
@@ -154,7 +159,10 @@ export default function TableBody({
                             {deal.tags?.map((tag) => (
                                 <span
                                     key={tag.label}
-                                    style={{ backgroundColor: tag.value }}
+                                    style={{
+                                        color: determineTextColor(tag.value),
+                                        backgroundColor: tag.value,
+                                    }}
                                     className="rounded-xl px-2 py-0.5"
                                 >
                                     {tag.label}

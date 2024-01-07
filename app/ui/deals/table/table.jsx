@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 
+import { getRandomHexColor } from "@/app/utils/getRandomHexColor";
+
 import TableBody from "./tableBody";
 import TableHead from "./tableHead";
 
@@ -12,7 +14,7 @@ const initDeals = [
         effect: "win",
         pose: "25,000.00",
         risk: "0.50",
-        lp: { label: "1:2", value: "blue" },
+        lp: { label: "1:2", value: getRandomHexColor() },
         entry: new Date().setDate(3),
         screenStart: "nmtp.png",
         deposit: "",
@@ -31,7 +33,7 @@ const initDeals = [
         effect: "active",
         pose: "50,000.00",
         risk: "0.90",
-        lp: { label: "1:2", value: "blue" },
+        lp: { label: "1:2", value: getRandomHexColor() },
         entry: new Date().setDate(4),
         screenStart: "aflt.png",
         deposit: "",
@@ -39,7 +41,7 @@ const initDeals = [
         exit: "",
         screenEnd: "",
         stress: "",
-        tags: [{ label: "фиксировал часть", value: "blue" }],
+        tags: [{ label: "фиксировал часть", value: getRandomHexColor() }],
         notes: "",
         timeInTrade: "",
         timeForScreenEnd: "",
@@ -50,7 +52,7 @@ const initDeals = [
         effect: "loss",
         pose: "50,000.00",
         risk: "1.10",
-        lp: { label: "1:7", value: "green" },
+        lp: { label: "1:7", value: getRandomHexColor() },
         entry: new Date().setDate(3),
         screenStart: "afks.png",
         deposit: "",
@@ -58,7 +60,7 @@ const initDeals = [
         exit: new Date().setDate(4),
         screenEnd: "",
         stress: "2",
-        tags: [{ label: "человеческий фактор", value: "pink" }],
+        tags: [{ label: "человеческий фактор", value: getRandomHexColor() }],
         notes: "",
         timeInTrade: "",
         timeForScreenEnd: "",
@@ -69,7 +71,7 @@ const initDeals = [
         effect: "noLoss",
         pose: "5,000.00",
         risk: "",
-        lp: { label: "1:10", value: "lime" },
+        lp: { label: "1:10", value: getRandomHexColor() },
         entry: new Date().setDate(3),
         screenStart: "moex.png",
         deposit: "",
@@ -78,8 +80,8 @@ const initDeals = [
         screenEnd: "",
         stress: "3",
         tags: [
-            { label: "двигал стоп", value: "gray" },
-            { label: "усреднял", value: "green" },
+            { label: "двигал стоп", value: getRandomHexColor() },
+            { label: "усреднял", value: getRandomHexColor() },
         ],
         notes: "",
         timeInTrade: "",
