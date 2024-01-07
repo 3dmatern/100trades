@@ -41,7 +41,13 @@ const initDeals = [
         exitDate: "",
         imageEnd: "",
         stress: "",
-        tags: [{ label: "фиксировал часть", value: getRandomHexColor() }],
+        tags: [
+            {
+                id: "tag1",
+                label: "фиксировал часть",
+                value: getRandomHexColor(),
+            },
+        ],
         notes: "",
         timeInTrade: "",
         timeScreenshot: "",
@@ -60,7 +66,13 @@ const initDeals = [
         exitDate: new Date().setDate(4),
         imageEnd: "",
         stress: "2",
-        tags: [{ label: "человеческий фактор", value: getRandomHexColor() }],
+        tags: [
+            {
+                id: "tag2",
+                label: "человеческий фактор",
+                value: getRandomHexColor(),
+            },
+        ],
         notes: "",
         timeInTrade: "",
         timeScreenshot: "",
@@ -80,8 +92,8 @@ const initDeals = [
         imageEnd: "",
         stress: "3",
         tags: [
-            { label: "двигал стоп", value: getRandomHexColor() },
-            { label: "усреднял", value: getRandomHexColor() },
+            { id: "tag3", label: "двигал стоп", value: getRandomHexColor() },
+            { id: "tag4", label: "усреднял", value: getRandomHexColor() },
         ],
         notes: "",
         timeInTrade: "",
@@ -110,6 +122,7 @@ const initData = {
 
 export default function Table() {
     const [data, setData] = useState(initData);
+    const [deals, setDeals] = useState(initDeals);
     const [checkAll, setCheckAll] = useState(false);
     const [selectedDeals, setSelectedDeals] = useState([]);
 
@@ -117,7 +130,7 @@ export default function Table() {
         if (target.name === "checkAll") {
             setCheckAll((prev) => {
                 !prev
-                    ? setSelectedDeals(initDeals.map((deal) => deal.id))
+                    ? setSelectedDeals(deals.map((deal) => deal.id))
                     : setSelectedDeals([]);
                 return !prev;
             });
@@ -136,7 +149,7 @@ export default function Table() {
         <div className="w-max">
             <TableHead checkAll={checkAll} onChange={handleChange} />
             <TableBody
-                deals={initDeals}
+                deals={deals}
                 selectedDeals={selectedDeals}
                 checkAll={checkAll}
                 onChangeCheckbox={handleSelectDeal}

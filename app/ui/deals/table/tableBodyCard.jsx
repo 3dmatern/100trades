@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 
 import { determineTextColor } from "@/app/utils/determinateTextColor";
+import { getRandomHexColor } from "@/app/utils/getRandomHexColor";
 
 import BodyCardName from "./common/bodyCardName";
 import BodyCardEffect from "./common/bodyCardEffect";
@@ -24,10 +25,12 @@ export default function TableBodyCard({
     index,
     deal,
     selectedDeals,
+    tags,
     checkAll,
     onChangeCheckbox,
 }) {
     const [hover, setHover] = useState(false);
+
     return (
         <div
             onMouseEnter={() => setHover(true)}
@@ -79,8 +82,11 @@ export default function TableBodyCard({
                 />
                 <BodyCardStress dealStress={deal.stress} dealHover={hover} />
                 <BodyCardTags
+                    dealId={deal.id}
+                    tags={tags}
                     dealTags={deal.tags}
                     determineTextColor={determineTextColor}
+                    getRandomHexColor={getRandomHexColor}
                 />
                 <BodyCardNotes dealNotes={deal.notes} />
                 <BodyCardTimeInTrade dealTimeInTrade={deal.timeInTrafe} />
