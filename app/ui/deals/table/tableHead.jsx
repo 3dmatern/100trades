@@ -24,44 +24,43 @@ const initHeaders = [
 export default function TableHead({ checkAll, onChange }) {
     return (
         <div className="flex items-center border-t border-b border-slate-300 bg-gray-50">
-            {initHeaders.map((item, index) => {
-                if (index === 0) {
-                    return (
-                        <div
-                            key={item.name}
-                            className="flex items-center justify-between w-28"
-                        >
-                            <CheckboxOrNumber
-                                name="checkAll"
-                                checked={checkAll}
-                                onChange={onChange}
-                            />
-                            <SelectFilterButton
-                                key={item.name}
-                                name={item.name}
-                                className="w-4/5"
-                                styleBtn={{ width: "100%" }}
-                            />
-                        </div>
-                    );
-                } else {
-                    return (
-                        <SelectFilterButton
-                            key={item.name}
-                            name={item.name}
-                            style={{ width: item.w }}
-                            styleBtn={
-                                item.up
-                                    ? {
-                                          "text-transform": "uppercase",
-                                          width: "100%",
-                                      }
-                                    : { width: "100%" }
-                            }
-                        />
-                    );
-                }
-            })}
+            {initHeaders.slice(0, 1).map((item) => (
+                <div
+                    key={item.name}
+                    className="flex items-center justify-between w-28 fixed z-10"
+                >
+                    <CheckboxOrNumber
+                        className={"bg-gray-50"}
+                        name="checkAll"
+                        checked={checkAll}
+                        onChange={onChange}
+                    />
+                    <SelectFilterButton
+                        key={item.name}
+                        name={item.name}
+                        className="w-4/5 bg-gray-50"
+                        styleBtn={{ width: "100%" }}
+                    />
+                </div>
+            ))}
+
+            <div className="flex items-center ml-28">
+                {initHeaders.slice(1).map((item) => (
+                    <SelectFilterButton
+                        key={item.name}
+                        name={item.name}
+                        style={{ width: item.w }}
+                        styleBtn={
+                            item.up
+                                ? {
+                                      "text-transform": "uppercase",
+                                      width: "100%",
+                                  }
+                                : { width: "100%" }
+                        }
+                    />
+                ))}
+            </div>
         </div>
     );
 }

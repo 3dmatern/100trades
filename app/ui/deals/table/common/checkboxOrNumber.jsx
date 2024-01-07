@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 
 export default function CheckboxOrNumber({
+    className,
     number,
     name,
     value,
@@ -16,7 +17,7 @@ export default function CheckboxOrNumber({
         <div
             onMouseEnter={() => setMove(true)}
             onMouseLeave={() => setMove(false)}
-            className="flex items-center justify-center size-8 hover:bg-slate-100"
+            className={`flex items-center justify-center size-8 hover:bg-slate-100 ${className}`}
         >
             {number && !move && !checkAll && !checked ? (
                 <p className="text-xs">{number}</p>

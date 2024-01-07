@@ -128,7 +128,7 @@ export default function Table() {
     };
 
     return (
-        <div style={{ minWidth: "2000px" }}>
+        <div className="w-max">
             <TableHead checkAll={checkAll} onChange={handleChange} />
             <TableBody
                 deals={initDeals}
