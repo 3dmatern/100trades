@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from "react";
 
 export default function BodyCardDate({ dealDate, name }) {
     const cellRef = useRef(null);
-    const [active, setActive] = useState(false);
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState("");
 
@@ -23,12 +22,10 @@ export default function BodyCardDate({ dealDate, name }) {
         const handleClickOutside = (e) => {
             if (cellRef.current && !cellRef.current.contains(e.target)) {
                 setOpen(false);
-                setActive(false);
             }
         };
         const handleScroll = () => {
             setOpen(false);
-            setActive(false);
         };
 
         document.addEventListener("click", handleClickOutside);
@@ -42,12 +39,9 @@ export default function BodyCardDate({ dealDate, name }) {
     return (
         <div
             ref={cellRef}
-            onClick={() => {
-                setActive(true);
-                setOpen(true);
-            }}
+            onClick={() => setOpen(true)}
             className={`flex items-center justify-center ${
-                active ? "border border-blue-800" : "border-r"
+                open ? "border border-blue-800" : "border-r"
             } w-36 min-w-4 h-8 px-2 text-xs`}
         >
             {open ? (
@@ -56,10 +50,7 @@ export default function BodyCardDate({ dealDate, name }) {
                     name={name}
                     defaultValue={date}
                     onChange={handleChange}
-                    onBlur={() => {
-                        setActive(false);
-                        setOpen(false);
-                    }}
+                    onBlur={() => setOpen(false)}
                     className="outline-none"
                 />
             ) : (
