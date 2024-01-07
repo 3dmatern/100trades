@@ -19,32 +19,27 @@ export default function BodyCardStress({ dealStress, dealHover }) {
 
     return (
         <div className="flex items-center justify-start gap-1 border-r w-24 min-w-4 h-8 px-2 text-xs">
-            {dealStress
-                ? [1, 2, 3, 4, 5]
-                      .slice(0, dealStress)
-                      .map((value) => (
-                          <span
-                              key={value}
-                              className={`block size-2.5 rounded-full bg-red-600`}
-                          />
-                      ))
-                : [1, 2, 3, 4, 5].map((value) => (
-                      <span
-                          key={value}
-                          onMouseOver={() => handleMouseOver(value)}
-                          onMouseLeave={handleMouseLeave}
-                          onClick={() => handleClick(value)}
-                          className={`block size-2.5 rounded-full ${
-                              dealHover ? "bg-slate-300" : "bg-transparent"
-                          }  cursor-pointer ${
-                              value <= hoveredRating
-                                  ? "bg-red-400"
-                                  : value <= dealStress
-                                  ? "bg-red-600"
-                                  : ""
-                          }`}
-                      />
-                  ))}
+            {[1, 2, 3, 4, 5].map((value) => (
+                <span
+                    key={value}
+                    onMouseOver={() => handleMouseOver(value)}
+                    onMouseLeave={handleMouseLeave}
+                    onClick={() => handleClick(value)}
+                    className={`block size-2.5 rounded-full cursor-pointer ${
+                        dealHover
+                            ? "bg-slate-300"
+                            : value <= dealStress
+                            ? "bg-red-600"
+                            : "bg-transparent"
+                    } ${
+                        value <= hoveredRating
+                            ? "bg-red-400"
+                            : value <= dealStress
+                            ? "bg-red-600"
+                            : ""
+                    }`}
+                />
+            ))}
         </div>
     );
 }
