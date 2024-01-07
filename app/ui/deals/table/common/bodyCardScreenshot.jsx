@@ -49,6 +49,7 @@ export default function BodyCardScreenshot({
                     } transition-transform duration-300`}
                 >
                     <button
+                        type="button"
                         onClick={handleClick}
                         className="absolute top-4 right-4 z-50 p-0.5 cursor-pointer text-cyan-500"
                     >

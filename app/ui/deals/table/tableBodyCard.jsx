@@ -26,6 +26,7 @@ export default function TableBodyCard({
     deal,
     selectedDeals,
     tags,
+    lps,
     checkAll,
     onChangeCheckbox,
 }) {
@@ -56,8 +57,10 @@ export default function TableBodyCard({
                 <BodyCardPose dealPose={deal.pose} dealHover={hover} />
                 <BodyCardRisk dealRisk={deal.risk} dealHover={hover} />
                 <BodyCardLP
+                    lps={lps}
                     dealLP={deal.lp}
                     determineTextColor={determineTextColor}
+                    getRandomHexColor={getRandomHexColor}
                 />
                 <BodyCardDate dealDate={deal.entryDate} />
                 <BodyCardScreenshot

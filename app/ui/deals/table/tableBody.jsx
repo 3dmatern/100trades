@@ -9,6 +9,12 @@ const initTags = [
     { id: "tag4", label: "усреднял", value: getRandomHexColor() },
 ];
 
+const initLPs = [
+    { id: "lp1", label: "1:2", value: getRandomHexColor() },
+    { id: "lp2", label: "1:7", value: getRandomHexColor() },
+    { id: "lp3", label: "1:10", value: getRandomHexColor() },
+];
+
 export default function TableBody({
     deals,
     selectedDeals,
@@ -25,6 +31,7 @@ export default function TableBody({
                     deal={deal}
                     selectedDeals={selectedDeals}
                     tags={initTags}
+                    lps={initLPs}
                     checkAll={checkAll}
                     onChangeCheckbox={onChangeCheckbox}
                 />

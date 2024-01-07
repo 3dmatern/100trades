@@ -59,7 +59,7 @@ export default function BodyCardTags({
             document.removeEventListener("click", handleClickOutside);
             window.removeEventListener("scroll", handleScroll);
         };
-    }, []);
+    }, [tags]);
 
     return (
         <div
@@ -82,7 +82,7 @@ export default function BodyCardTags({
                 >
                     <span>{tag.label}</span>
                     {active && (
-                        <button className="p-0.5 cursor-pointer">
+                        <button type="button" className="p-0.5 cursor-pointer">
                             <Image
                                 src="./remove.svg"
                                 alt="remove"
@@ -96,6 +96,7 @@ export default function BodyCardTags({
 
             {active && (
                 <button
+                    type="button"
                     onClick={() => setOpen(!open)}
                     className="p-1 rounded-sm bg-slate-100 hover:bg-slate-200"
                 >

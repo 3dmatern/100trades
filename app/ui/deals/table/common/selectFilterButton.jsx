@@ -55,6 +55,7 @@ export default function SelectFilterButton({
             style={style}
         >
             <button
+                type="button"
                 onClick={handleClick}
                 className="flex items-center justify-between gap-1 text-start text-xs"
                 style={styleBtn}
@@ -81,7 +82,10 @@ export default function SelectFilterButton({
                 } absolute left-0 top-8 z-50 w-max max-h-64 p-3 bg-white border border-slate-300 rounded-md`}
             >
                 <li>
-                    <button className="flex items-center gap-3 w-full hover:bg-slate-100 hover:rounded-md px-2">
+                    <button
+                        type="button"
+                        className="flex items-center gap-3 w-full hover:bg-slate-100 hover:rounded-md px-2"
+                    >
                         <Image
                             src="./sort-down.svg"
                             alt="sort-down"
@@ -93,7 +97,10 @@ export default function SelectFilterButton({
                 </li>
                 <li className="my-1 border-b" />
                 <li>
-                    <button className="flex items-center gap-3 w-full hover:bg-slate-100 hover:rounded-md px-2">
+                    <button
+                        type="button"
+                        className="flex items-center gap-3 w-full hover:bg-slate-100 hover:rounded-md px-2"
+                    >
                         <Image
                             src="./sort-up.svg"
                             alt="sort-up"
