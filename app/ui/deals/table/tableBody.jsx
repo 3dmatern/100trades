@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 import CheckboxOrNumber from "./common/checkboxOrNumber";
@@ -13,7 +13,7 @@ export default function TableBody({
     onChange,
 }) {
     return (
-        <div className="bg-white">
+        <div className="bg-white" style={{ height: "calc(100vh - 155px)" }}>
             {deals?.map((deal, index) => (
                 <div
                     key={deal.id}

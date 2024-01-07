@@ -8,9 +8,9 @@ export const metadata = {
 
 export default function Page() {
     return (
-        <div className="relative mx-auto p-5 h-screen overflow-y-hidden">
+        <div className="mx-auto p-5">
             <Navbar />
-            <main className="absolute inset-y-20">
+            <main className="mt-8 overflow-x-auto">
                 <Table />
             </main>
         </div>

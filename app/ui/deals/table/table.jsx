@@ -128,7 +128,7 @@ export default function Table() {
     };
 
     return (
-        <>
+        <div style={{ minWidth: "2000px" }}>
             <TableHead checkAll={checkAll} onChange={handleChange} />
             <TableBody
                 deals={initDeals}
@@ -137,6 +137,6 @@ export default function Table() {
                 onChangeCheckbox={handleSelectDeal}
                 onChange={handleChange}
             />
-        </>
+        </div>
     );
 }
