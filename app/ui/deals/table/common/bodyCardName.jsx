@@ -28,7 +28,7 @@ export default function BodyCardName({
 
     return (
         <div
-            className={`flex items-center w-28 fixed ${
+            className={`flex items-center w-28 fixed z-10 ${
                 open ? "border border-blue-800" : "border-r"
             } ${
                 selectedDeals?.includes(dealId) || dealHover
