@@ -114,7 +114,7 @@ export default function BodyCardLP({
                     {filterLPs.length > 0 ? (
                         <ul>
                             {filterLPs
-                                .filter((t) => !dealLP.id !== t.id)
+                                .filter((t) => !dealLP?.id !== t.id)
                                 .map((l) => (
                                     <li
                                         key={l.label}

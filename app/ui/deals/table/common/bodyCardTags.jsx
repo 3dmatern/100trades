@@ -3,6 +3,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
+import ButtonPlus from "@/app/ui/common/buttonPlus";
+
 export default function BodyCardTags({
     dealId,
     tags,
@@ -94,20 +96,7 @@ export default function BodyCardTags({
                 </span>
             ))}
 
-            {active && (
-                <button
-                    type="button"
-                    onClick={() => setOpen(!open)}
-                    className="p-1 rounded-sm bg-slate-100 hover:bg-slate-200"
-                >
-                    <Image
-                        src="./plus-lg.svg"
-                        alt="plus"
-                        width={16}
-                        height={16}
-                    />
-                </button>
-            )}
+            {active && <ButtonPlus onClick={() => setOpen(!open)} />}
 
             {open && (
                 <div className="absolute left-0 top-8 z-10 w-full rounded-md py-2 bg-white border border-gray-300">

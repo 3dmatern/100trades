@@ -10,9 +10,10 @@ export default function BodyCardTimeInTrade({
     const [time, setTime] = useState("");
 
     useEffect(() => {
-        let result = getTimeInTrade(dealEntryDate, dealExitDate);
-
-        setTime(result);
+        if (dealEntryDate || dealExitDate) {
+            let result = getTimeInTrade(dealEntryDate, dealExitDate);
+            setTime(result);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dealEntryDate, dealExitDate]);
 

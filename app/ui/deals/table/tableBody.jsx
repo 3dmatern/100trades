@@ -1,6 +1,7 @@
 import { getRandomHexColor } from "@/app/utils/getRandomHexColor";
 
 import TableBodyCard from "./tableBodyCard";
+import ButtonPlus from "../../common/buttonPlus";
 
 const initTags = [
     { id: "tag1", label: "фиксировал часть", value: getRandomHexColor() },
@@ -21,6 +22,7 @@ export default function TableBody({
     checkAll,
     onChangeCheckbox,
     onChange,
+    onAddDeal,
 }) {
     return (
         <div className="bg-white" style={{ height: "calc(100vh - 155px)" }}>
@@ -36,6 +38,16 @@ export default function TableBody({
                     onChangeCheckbox={onChangeCheckbox}
                 />
             ))}
+            <div
+                className={`flex items-center bg-white hover:bg-slate-50 border-b`}
+            >
+                <ButtonPlus
+                    className={
+                        "bg-white size-8 flex items-center justify-center"
+                    }
+                    onClick={onAddDeal}
+                />
+            </div>
         </div>
     );
 }

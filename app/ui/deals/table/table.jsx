@@ -102,7 +102,7 @@ const initData = {
     effect: "",
     pose: "",
     risk: "",
-    lp: { label: "", value: "" },
+    lp: null,
     entryDate: "",
     imageStart: "",
     deposit: "",
@@ -132,6 +132,10 @@ export default function Table() {
         }
     };
 
+    const handleAddDeal = () => {
+        setDeals((prev) => [...prev, { ...data, id: Date.now() }]);
+    };
+
     const handleSelectDeal = ({ target }) => {
         setSelectedDeals((prev) =>
             !prev.includes(target.value)
@@ -149,6 +153,7 @@ export default function Table() {
                 checkAll={checkAll}
                 onChangeCheckbox={handleSelectDeal}
                 onChange={handleChange}
+                onAddDeal={handleAddDeal}
             />
         </div>
     );
