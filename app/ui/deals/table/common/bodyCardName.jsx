@@ -54,7 +54,7 @@ export default function BodyCardName({
                 onChange={handleChange}
                 onFocus={() => setOpen(true)}
                 onBlur={() => setOpen(false)}
-                className={`border-r h-8 px-2 text-xs w-4/5 outline-none overflow-hidden whitespace-nowrap text-ellipsis ${
+                className={`h-8 px-2 text-xs w-4/5 outline-none overflow-hidden whitespace-nowrap text-ellipsis ${
                     selectedDeals?.includes(dealId) || dealHover
                         ? "bg-slate-50"
                         : "bg-white"

@@ -32,7 +32,10 @@ export default function TableHead({
                 </SelectFilterButton>
             ))}
 
-            <div className="flex items-center ml-28">
+            <div
+                style={{ marginLeft: columnWidth.column1 }}
+                className="flex items-center"
+            >
                 {initHeaders.slice(1).map((item, index) => (
                     <SelectFilterButton
                         key={item.name}

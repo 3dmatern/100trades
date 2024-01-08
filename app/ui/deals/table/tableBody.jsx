@@ -41,14 +41,19 @@ export default function TableBody({
                 />
             ))}
             <div
-                className={`flex items-center bg-white hover:bg-slate-50 border-b`}
+                className={`flex items-center h-8 bg-white hover:bg-slate-50 border-b`}
             >
-                <ButtonPlus
-                    className={
-                        "bg-white size-8 flex items-center justify-center"
-                    }
-                    onClick={onAddDeal}
-                />
+                <div
+                    style={{ width: columnWidth.column1 }}
+                    className="flex items-center fixed border-r"
+                >
+                    <ButtonPlus
+                        className={
+                            "bg-white size-7 flex items-center justify-center"
+                        }
+                        onClick={onAddDeal}
+                    />
+                </div>
             </div>
         </div>
     );

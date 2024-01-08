@@ -55,7 +55,10 @@ export default function TableBodyCard({
                 onChangeCheckbox={onChangeCheckbox}
             />
 
-            <div className="flex items-center pl-28">
+            <div
+                style={{ paddingLeft: columnWidth.column1 }}
+                className="flex items-center"
+            >
                 <BodyCardEffect
                     dealEffect={deal.effect}
                     columnWidth={columnWidth.column2}
