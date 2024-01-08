@@ -67,7 +67,7 @@ export default function BodyCardLP({
     return (
         <div
             ref={listRef}
-            onClick={() => setOpen(true)}
+            onClick={() => setOpen(!open)}
             className={`flex items-center justify-start relative ${
                 open ? "border border-blue-800" : "border-r"
             } w-20 min-w-4 h-8 px-2 text-xs`}
