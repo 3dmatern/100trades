@@ -9,6 +9,7 @@ export default function BodyCardTags({
     dealId,
     tags,
     dealTags,
+    columnWidth,
     determineTextColor,
     getRandomHexColor,
 }) {
@@ -67,11 +68,12 @@ export default function BodyCardTags({
         <div
             ref={listRef}
             onClick={() => setActive(true)}
+            style={{ width: columnWidth, minWidth: "64px" }}
             className={`flex items-center justify-start gap-1 relative ${
                 active
                     ? "flex-wrap border border-blue-800"
                     : "flex-nowrap border-r "
-            } w-72 min-w-4 h-8 px-2 text-xs`}
+            } h-8 px-2 text-xs overflow-hidden `}
         >
             {dealTags?.map((tag) => (
                 <span
@@ -82,7 +84,9 @@ export default function BodyCardTags({
                     }}
                     className="flex items-center gap-1 rounded-xl px-2 py-px"
                 >
-                    <span>{tag.label}</span>
+                    <span className="whitespace-nowrap text-ellipsis">
+                        {tag.label}
+                    </span>
                     {active && (
                         <button type="button" className="p-0.5 cursor-pointer">
                             <Image

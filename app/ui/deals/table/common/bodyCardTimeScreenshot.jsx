@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 export default function BodyCardTimeScreenshot({
     dealTimeScreenshot,
     dealHover,
+    columnWidth,
 }) {
     const [open, setOpen] = useState(false);
     const [time, setTime] = useState("");
@@ -21,9 +22,10 @@ export default function BodyCardTimeScreenshot({
 
     return (
         <div
+            style={{ width: columnWidth, minWidth: "64px" }}
             className={`flex items-center justify-center ${
                 open ? "border border-blue-800" : "border-r"
-            } w-32 min-w-4 h-8 px-2 text-xs`}
+            } h-8 px-2 text-xs`}
         >
             <input
                 type="number"

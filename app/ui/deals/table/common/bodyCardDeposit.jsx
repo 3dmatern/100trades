@@ -2,7 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 
-export default function BodyCardDeposit({ dealDeposit, dealHover }) {
+export default function BodyCardDeposit({
+    dealDeposit,
+    dealHover,
+    columnWidth,
+}) {
     const [open, setOpen] = useState(false);
     const [deposit, setDeposit] = useState("");
 
@@ -25,9 +29,10 @@ export default function BodyCardDeposit({ dealDeposit, dealHover }) {
 
     return (
         <div
+            style={{ width: columnWidth, minWidth: "64px" }}
             className={`flex items-center justify-center relative ${
                 open ? "border border-blue-800" : "border-r"
-            } w-28 min-w-4 h-8 px-2 text-xs`}
+            } h-8 px-2 text-xs`}
         >
             <span className="absolute top-auto left-1">₽</span>
             <input
@@ -37,7 +42,7 @@ export default function BodyCardDeposit({ dealDeposit, dealHover }) {
                 onChange={handleChange}
                 onFocus={() => setOpen(true)}
                 onBlur={() => setOpen(false)}
-                className={`pl-2 text-xs w-full outline-none ${
+                className={`pl-2 text-xs w-full outline-none overflow-hidden whitespace-nowrap text-ellipsis ${
                     dealHover ? "bg-slate-50" : "bg-white"
                 }`}
             />

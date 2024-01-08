@@ -10,6 +10,7 @@ export default function BodyCardScreenshot({
     imageAlt,
     width,
     height,
+    columnWidth,
 }) {
     const [open, setOpen] = useState(false);
 
@@ -35,7 +36,10 @@ export default function BodyCardScreenshot({
     }, [open]);
 
     return (
-        <div className="flex items-center justify-center border-r w-24 min-w-4 h-8 px-2 text-xs">
+        <div
+            style={{ width: columnWidth, minWidth: "64px" }}
+            className="flex items-center justify-center border-r h-8 px-2 text-xs"
+        >
             {dealImageSrc && !open ? (
                 <Image
                     src={`/${dealImageSrc}`}

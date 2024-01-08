@@ -4,14 +4,20 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 export default function SelectFilterButton({
+    children,
     name,
+    nameColumn,
+    initWidth,
+    onResize,
     className,
     style,
     styleBtn,
 }) {
     const filterRef = useRef(null);
     const listRef = useRef(null);
+    const resizeRef = useRef(null);
     const [open, setOpen] = useState(false);
+    const [resizeHover, setResizeHover] = useState(false);
 
     const handleClick = () => {
         setOpen((prev) => !prev);
@@ -51,9 +57,12 @@ export default function SelectFilterButton({
     return (
         <div
             ref={filterRef}
-            className={`flex items-center relative h-8 border-r border-slate-300 px-2 ${className}`}
-            style={style}
+            style={{ ...style, width: initWidth, minWidth: "64px" }}
+            className={`flex items-center h-8 border-r border-slate-300 px-2 ${
+                className || "relative"
+            }`}
         >
+            {children}
             <button
                 type="button"
                 onClick={handleClick}
@@ -111,6 +120,44 @@ export default function SelectFilterButton({
                     </button>
                 </li>
             </ul>
+
+            <div
+                ref={resizeRef}
+                onMouseEnter={() => setResizeHover(true)}
+                onMouseLeave={() => setResizeHover(false)}
+                onMouseDown={(e) => {
+                    e.preventDefault();
+                    const iWidth = initWidth;
+                    const startX = e.clientX;
+
+                    const handleMouseMove = (e) => {
+                        const newWidth = `${
+                            parseInt(iWidth) + (e.clientX - startX)
+                        }px`;
+                        setResizeHover(true);
+                        onResize(nameColumn, newWidth);
+                    };
+
+                    const handleMouseUp = () => {
+                        document.removeEventListener(
+                            "mousemove",
+                            handleMouseMove
+                        );
+                        document.removeEventListener("mouseup", handleMouseUp);
+                        setResizeHover(false);
+                    };
+
+                    document.addEventListener("mousemove", handleMouseMove);
+                    document.addEventListener("mouseup", handleMouseUp);
+                }}
+                className="resize-x flex items-center justify-center w-3 h-full bg-transparent absolute top-0 right-0 translate-x-1/2 cursor-ew-resize"
+            >
+                <div
+                    className={`w-0.5 h-7 ${
+                        resizeHover ? "bg-sky-500" : "bg-transparent"
+                    } pointer-events-none`}
+                />
+            </div>
         </div>
     );
 }

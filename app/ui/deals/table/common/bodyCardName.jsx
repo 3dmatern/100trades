@@ -11,6 +11,7 @@ export default function BodyCardName({
     selectedDeals,
     checkAll,
     dealHover,
+    columnWidth,
     onChangeCheckbox,
 }) {
     const [open, setOpen] = useState(false);
@@ -28,7 +29,8 @@ export default function BodyCardName({
 
     return (
         <div
-            className={`flex items-center w-28 fixed z-10 ${
+            style={{ width: columnWidth, minWidth: "64px" }}
+            className={`flex items-center fixed z-10 ${
                 open ? "border border-blue-800" : "border-r"
             } ${
                 selectedDeals?.includes(dealId) || dealHover
@@ -52,7 +54,7 @@ export default function BodyCardName({
                 onChange={handleChange}
                 onFocus={() => setOpen(true)}
                 onBlur={() => setOpen(false)}
-                className={`border-r h-8 px-2 text-xs w-4/5 outline-none ${
+                className={`border-r h-8 px-2 text-xs w-4/5 outline-none overflow-hidden whitespace-nowrap text-ellipsis ${
                     selectedDeals?.includes(dealId) || dealHover
                         ? "bg-slate-50"
                         : "bg-white"

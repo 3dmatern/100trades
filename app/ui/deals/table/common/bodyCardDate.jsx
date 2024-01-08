@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
-export default function BodyCardDate({ dealDate, name }) {
+export default function BodyCardDate({ dealDate, name, columnWidth }) {
     const cellRef = useRef(null);
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState("");
@@ -40,9 +40,10 @@ export default function BodyCardDate({ dealDate, name }) {
         <div
             ref={cellRef}
             onClick={() => setOpen(true)}
-            className={`flex items-center justify-center ${
+            style={{ width: columnWidth, minWidth: "64px" }}
+            className={`flex items-center ${
                 open ? "border border-blue-800" : "border-r"
-            } w-36 min-w-4 h-8 px-2 text-xs`}
+            } h-8 px-2 text-xs`}
         >
             {open ? (
                 <input
@@ -54,7 +55,9 @@ export default function BodyCardDate({ dealDate, name }) {
                     className="outline-none"
                 />
             ) : (
-                date && date.split("T")[0] + " " + date.split("T")[1]
+                <span className="overflow-hidden whitespace-nowrap text-ellipsis">
+                    {date && date.split("T")[0] + " " + date.split("T")[1]}
+                </span>
             )}
         </div>
     );

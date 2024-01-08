@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 export default function BodyCardTimeInTrade({
     dealEntryDate,
     dealExitDate,
+    columnWidth,
     getTimeInTrade,
 }) {
     const [time, setTime] = useState("");
@@ -18,8 +19,11 @@ export default function BodyCardTimeInTrade({
     }, [dealEntryDate, dealExitDate]);
 
     return (
-        <div className="flex items-center justify-center flex-nowrap border-r w-32 min-w-4 h-8 px-2 text-xs">
-            {time}
+        <div
+            style={{ width: columnWidth, minWidth: "64px" }}
+            className="flex items-center justify-center flex-nowrap border-r h-8 px-2 text-xs overflow-hidden"
+        >
+            <span className="whitespace-nowrap text-ellipsis">{time}</span>
         </div>
     );
 }

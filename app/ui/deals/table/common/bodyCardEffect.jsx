@@ -10,7 +10,7 @@ const initEffects = [
     { label: "loss", value: "bg-red-300", type: "loss" },
 ];
 
-export default function BodyCardEffect({ dealEffect }) {
+export default function BodyCardEffect({ dealEffect, columnWidth }) {
     const listRef = useRef(null);
     const [open, setOpen] = useState(false);
     const [effect, setEffect] = useState(undefined);
@@ -49,7 +49,8 @@ export default function BodyCardEffect({ dealEffect }) {
         <div
             ref={listRef}
             onClick={() => setOpen(!open)}
-            className="flex items-center justify-center relative border-r w-24 min-w-4 h-8 px-2"
+            style={{ width: columnWidth, minWidth: "64px" }}
+            className="flex items-center justify-center relative border-r h-8 px-2"
         >
             {effect && (
                 <button
@@ -57,7 +58,7 @@ export default function BodyCardEffect({ dealEffect }) {
                     className="flex items-center justify-between w-full"
                 >
                     <span
-                        className={`inline-block py-1 px-2 ${effect.value} rounded-xl text-xs uppercase`}
+                        className={`inline-block py-1 px-2 ${effect.value} rounded-xl text-xs uppercase overflow-hidden whitespace-nowrap text-ellipsis`}
                     >
                         {effect.label}
                     </span>

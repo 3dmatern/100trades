@@ -6,6 +6,7 @@ import Image from "next/image";
 export default function BodyCardLP({
     lps,
     dealLP,
+    columnWidth,
     determineTextColor,
     getRandomHexColor,
 }) {
@@ -68,9 +69,10 @@ export default function BodyCardLP({
         <div
             ref={listRef}
             onClick={() => setOpen(!open)}
+            style={{ width: columnWidth, minWidth: "64px" }}
             className={`flex items-center justify-start relative ${
                 open ? "border border-blue-800" : "border-r"
-            } w-20 min-w-4 h-8 px-2 text-xs`}
+            } h-8 px-2 text-xs`}
         >
             {currentLP && (
                 <button
@@ -82,7 +84,7 @@ export default function BodyCardLP({
                             color: determineTextColor(currentLP.value),
                             backgroundColor: currentLP.value,
                         }}
-                        className="rounded-xl px-2"
+                        className="rounded-xl px-2 overflow-hidden whitespace-nowrap text-ellipsis"
                     >
                         {currentLP.label}
                     </span>

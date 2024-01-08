@@ -20,6 +20,7 @@ export default function TableBody({
     deals,
     selectedDeals,
     checkAll,
+    columnWidth,
     onChangeCheckbox,
     onChange,
     onAddDeal,
@@ -35,6 +36,7 @@ export default function TableBody({
                     tags={initTags}
                     lps={initLPs}
                     checkAll={checkAll}
+                    columnWidth={columnWidth}
                     onChangeCheckbox={onChangeCheckbox}
                 />
             ))}

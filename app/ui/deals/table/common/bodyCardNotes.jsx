@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
-export default function BodyCardNotes({ dealNotes }) {
+export default function BodyCardNotes({ dealNotes, columnWidth }) {
     const textRef = useRef(null);
     const [open, setOpen] = useState(false);
     const [note, setNote] = useState("");
@@ -39,7 +39,8 @@ export default function BodyCardNotes({ dealNotes }) {
         <div
             ref={textRef}
             onClick={() => setOpen(true)}
-            className={`flex items-center relative border-r w-44 min-w-4 h-8 px-2`}
+            style={{ width: columnWidth, minWidth: "64px" }}
+            className={`flex items-center relative border-r h-8 px-2`}
         >
             {open ? (
                 <textarea

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { getRandomHexColor } from "@/app/utils/getRandomHexColor";
 
@@ -97,6 +97,46 @@ const initDeals = [
     },
 ];
 
+const initHeaders = [
+    { name: "Тикер", up: false, w: "112px" },
+    { name: "Win-Loss", up: true, w: "96px" },
+    { name: "Поза", up: false, w: "96px" },
+    { name: "Риск", up: false, w: "70px" },
+    { name: "L:P", up: true, w: "80px" },
+    { name: "Вход", up: true, w: "144px" },
+    { name: "Скрин", up: true, w: "96px" },
+    { name: "Депозит", up: true, w: "112px" },
+    { name: "Прогресс", up: true, w: "112px" },
+    { name: "Выход", up: true, w: "144px" },
+    { name: "Скрин2", up: true, w: "96px" },
+    { name: "Пора?", up: false, w: "112px" },
+    { name: "Стресс", up: true, w: "96px" },
+    { name: "Tags", up: false, w: "288px" },
+    { name: "Заметки", up: false, w: "176px" },
+    { name: "Время в сделке", up: true, w: "128px" },
+    { name: "Для скрина (мин)", up: false, w: "128px" },
+];
+
+const initColumnWidth = {
+    column1: "112px",
+    column2: "105px",
+    column3: "96px",
+    column4: "70px",
+    column5: "80px",
+    column6: "144px",
+    column7: "96px",
+    column8: "112px",
+    column9: "112px",
+    column10: "144px",
+    column11: "96px",
+    column12: "112px",
+    column13: "96px",
+    column14: "288px",
+    column15: "176px",
+    column16: "128px",
+    column17: "128px",
+};
+
 const initData = {
     name: "",
     effect: "",
@@ -119,6 +159,7 @@ export default function Table() {
     const [data, setData] = useState(initData);
     const [deals, setDeals] = useState(initDeals);
     const [checkAll, setCheckAll] = useState(false);
+    const [columnWidth, setColumnWidth] = useState(initColumnWidth);
     const [selectedDeals, setSelectedDeals] = useState([]);
 
     const handleChange = ({ target }) => {
@@ -132,10 +173,6 @@ export default function Table() {
         }
     };
 
-    const handleAddDeal = () => {
-        setDeals((prev) => [...prev, { ...data, id: Date.now() }]);
-    };
-
     const handleSelectDeal = ({ target }) => {
         setSelectedDeals((prev) =>
             !prev.includes(target.value)
@@ -144,13 +181,31 @@ export default function Table() {
         );
     };
 
+    const handleResize = (column, newWidth) => {
+        setColumnWidth((prevWidths) => ({
+            ...prevWidths,
+            [column]: newWidth,
+        }));
+    };
+
+    const handleAddDeal = () => {
+        setDeals((prev) => [...prev, { ...data, id: Date.now() }]);
+    };
+
     return (
         <div className="w-max">
-            <TableHead checkAll={checkAll} onChange={handleChange} />
+            <TableHead
+                initHeaders={initHeaders}
+                checkAll={checkAll}
+                columnWidth={columnWidth}
+                onResize={handleResize}
+                onChange={handleChange}
+            />
             <TableBody
                 deals={deals}
                 selectedDeals={selectedDeals}
                 checkAll={checkAll}
+                columnWidth={columnWidth}
                 onChangeCheckbox={handleSelectDeal}
                 onChange={handleChange}
                 onAddDeal={handleAddDeal}
