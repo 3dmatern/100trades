@@ -24,7 +24,6 @@ const initDeals = [
         stress: "",
         tags: [],
         notes: "по тех анализу про версии",
-        timeInTrade: "",
         timeScreenshot: "",
     },
     {
@@ -49,7 +48,6 @@ const initDeals = [
             },
         ],
         notes: "",
-        timeInTrade: "",
         timeScreenshot: "",
     },
     {
@@ -74,7 +72,6 @@ const initDeals = [
             },
         ],
         notes: "",
-        timeInTrade: "",
         timeScreenshot: "",
     },
     {
@@ -96,7 +93,6 @@ const initDeals = [
             { id: "tag4", label: "усреднял", value: getRandomHexColor() },
         ],
         notes: "",
-        timeInTrade: "",
         timeScreenshot: "",
     },
 ];
@@ -116,7 +112,6 @@ const initData = {
     stress: "",
     tags: [],
     notes: "",
-    timeInTrade: "",
     timeScreenshot: "",
 };
 

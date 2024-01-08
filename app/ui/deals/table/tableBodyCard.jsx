@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import { determineTextColor } from "@/app/utils/determinateTextColor";
 import { getRandomHexColor } from "@/app/utils/getRandomHexColor";
+import { getTimeInTrade } from "@/app/utils/formatedDate";
 
 import BodyCardName from "./common/bodyCardName";
 import BodyCardEffect from "./common/bodyCardEffect";
@@ -82,6 +83,7 @@ export default function TableBodyCard({
                     dealEntryDate={deal.entryDate}
                     dealExitDate={deal.exitDate}
                     dealTimeScreenshot={deal.timeScreenshot}
+                    dealImageEndSrc={deal.imageEnd}
                 />
                 <BodyCardStress dealStress={deal.stress} dealHover={hover} />
                 <BodyCardTags
@@ -92,9 +94,14 @@ export default function TableBodyCard({
                     getRandomHexColor={getRandomHexColor}
                 />
                 <BodyCardNotes dealNotes={deal.notes} />
-                <BodyCardTimeInTrade dealTimeInTrade={deal.timeInTrafe} />
+                <BodyCardTimeInTrade
+                    dealEntryDate={deal.entryDate}
+                    dealExitDate={deal.exitDate}
+                    getTimeInTrade={getTimeInTrade}
+                />
                 <BodyCardTimeScreenshot
                     dealTimeScreenshot={deal.timeScreenshot}
+                    dealHover={hover}
                 />
             </div>
         </div>
