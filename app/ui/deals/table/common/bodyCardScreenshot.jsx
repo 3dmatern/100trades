@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import InputUploadImg from "@/app/ui/common/InputUploadImg";
+import InputUploadImg from "@/app/ui/common/inputUploadImg";
 
 export default function BodyCardScreenshot({
     inputName,
