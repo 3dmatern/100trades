@@ -69,7 +69,7 @@ export default function TableBodyCard({
                     width={49}
                     height={25}
                 />
-                <BodyCardDeposit dealDeposit={deal.deposit} />
+                <BodyCardDeposit dealDeposit={deal.deposit} dealHover={hover} />
                 <BodyCardProgress dealProgress={deal.progress} />
                 <BodyCardDate dealDate={deal.exitDate} />
                 <BodyCardScreenshot

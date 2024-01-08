@@ -7,19 +7,14 @@ export default function BodyCardPose({ dealPose, dealHover }) {
     const [pose, setPose] = useState("");
 
     const handleChange = ({ target }) => {
-        const inputValue = target.value.replace(/[^\d]/g, "");
-        const formattedNumber = parseFloat(inputValue).toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-        });
-
-        setPose(formattedNumber);
+        const value = target.value.replace(/[^0-9.,]/g, "");
+        setPose(value);
     };
 
     useEffect(() => {
         if (dealPose) {
-            const inputValue = dealPose.replace(/[^\d]/g, "");
-            const formattedNumber = parseFloat(inputValue).toLocaleString(
-                "ru-RU",
+            const formattedNumber = parseFloat(dealPose).toLocaleString(
+                "en-EN",
                 {
                     minimumFractionDigits: 2,
                 }
