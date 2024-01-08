@@ -41,7 +41,7 @@ export default function TableBody({
                 />
             ))}
             <div
-                className={`flex items-center h-8 bg-white hover:bg-slate-50 border-b`}
+                className={`flex items-center h-8 bg-white hover:bg-slate-50 border-r border-b`}
             >
                 <div
                     style={{ width: columnWidth.column1 }}
