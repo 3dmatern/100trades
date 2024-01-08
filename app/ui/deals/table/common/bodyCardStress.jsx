@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-export default function BodyCardStress({ dealStress, dealHover }) {
+export default function BodyCardStress({ dealStress }) {
     const [hoveredRating, setHoveredRating] = useState(0);
 
     const handleMouseOver = (hoveredValue) => {
@@ -26,17 +26,11 @@ export default function BodyCardStress({ dealStress, dealHover }) {
                     onMouseLeave={handleMouseLeave}
                     onClick={() => handleClick(value)}
                     className={`block size-2.5 rounded-full cursor-pointer ${
-                        dealHover
-                            ? "bg-slate-300"
-                            : value <= dealStress
-                            ? "bg-red-600"
-                            : "bg-transparent"
-                    } ${
                         value <= hoveredRating
                             ? "bg-red-400"
                             : value <= dealStress
                             ? "bg-red-600"
-                            : ""
+                            : "bg-slate-200"
                     }`}
                 />
             ))}

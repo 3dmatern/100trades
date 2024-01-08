@@ -65,6 +65,7 @@ export default function TableBodyCard({
                 />
                 <BodyCardDate dealDate={deal.entryDate} />
                 <BodyCardScreenshot
+                    inputName="imageStart"
                     dealImageSrc={deal.imageStart}
                     imageAlt="screenshot start"
                     width={49}
@@ -74,6 +75,7 @@ export default function TableBodyCard({
                 <BodyCardProgress dealProgress={deal.progress} />
                 <BodyCardDate dealDate={deal.exitDate} />
                 <BodyCardScreenshot
+                    inputName="imageEnd"
                     dealImageSrc={deal.imageEnd}
                     imageAlt="screenshot end"
                     width={49}
@@ -85,7 +87,7 @@ export default function TableBodyCard({
                     dealTimeScreenshot={deal.timeScreenshot}
                     dealImageEndSrc={deal.imageEnd}
                 />
-                <BodyCardStress dealStress={deal.stress} dealHover={hover} />
+                <BodyCardStress dealStress={deal.stress} />
                 <BodyCardTags
                     dealId={deal.id}
                     tags={tags}

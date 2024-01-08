@@ -53,7 +53,7 @@ export default function TableHead({ checkAll, onChange }) {
                         styleBtn={
                             item.up
                                 ? {
-                                      "text-transform": "uppercase",
+                                      textTransform: "uppercase",
                                       width: "100%",
                                   }
                                 : { width: "100%" }

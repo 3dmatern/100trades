@@ -20,7 +20,7 @@ const initDeals = [
         deposit: "",
         progress: "0.00",
         exitDate: "",
-        imageEnd: "",
+        imageEnd: null,
         stress: "",
         tags: [],
         notes: "по тех анализу про версии",
@@ -38,7 +38,7 @@ const initDeals = [
         deposit: "",
         progress: "0.00",
         exitDate: "",
-        imageEnd: "",
+        imageEnd: null,
         stress: "",
         tags: [
             {
@@ -62,7 +62,7 @@ const initDeals = [
         deposit: "",
         progress: "0.00",
         exitDate: new Date().setDate(4),
-        imageEnd: "",
+        imageEnd: null,
         stress: "2",
         tags: [
             {
@@ -86,7 +86,7 @@ const initDeals = [
         deposit: "",
         progress: "0.00",
         exitDate: "",
-        imageEnd: "",
+        imageEnd: null,
         stress: "3",
         tags: [
             { id: "tag3", label: "двигал стоп", value: getRandomHexColor() },
@@ -108,7 +108,7 @@ const initData = {
     deposit: "",
     progress: "",
     exitDate: "",
-    imageEnd: "",
+    imageEnd: null,
     stress: "",
     tags: [],
     notes: "",

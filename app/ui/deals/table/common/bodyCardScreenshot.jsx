@@ -1,15 +1,21 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import InputUploadImg from "@/app/ui/common/InputUploadImg";
 
 export default function BodyCardScreenshot({
+    inputName,
     dealImageSrc,
     imageAlt,
     width,
     height,
 }) {
     const [open, setOpen] = useState(false);
+
+    const handleChange = (image) => {
+        console.log(image);
+    };
 
     const handleClick = () => {
         setOpen((prev) => !prev);
@@ -30,7 +36,7 @@ export default function BodyCardScreenshot({
 
     return (
         <div className="flex items-center justify-center border-r w-24 min-w-4 h-8 px-2 text-xs">
-            {dealImageSrc && !open && (
+            {dealImageSrc && !open ? (
                 <Image
                     src={`/${dealImageSrc}`}
                     alt={imageAlt}
@@ -39,8 +45,7 @@ export default function BodyCardScreenshot({
                     onClick={handleClick}
                     className="hover:scale-125 cursor-pointer"
                 />
-            )}
-            {dealImageSrc && (
+            ) : dealImageSrc && open ? (
                 <div
                     className={`fixed w-screen h-screen z-50 top-0 left-0 bg-slate-900 p-4 ${
                         !open
@@ -71,6 +76,13 @@ export default function BodyCardScreenshot({
                         className="mt-6 m-auto w-5/6"
                     />
                 </div>
+            ) : (
+                <InputUploadImg
+                    name={inputName}
+                    width={width}
+                    height={height}
+                    onImageChange={handleChange}
+                />
             )}
         </div>
     );
