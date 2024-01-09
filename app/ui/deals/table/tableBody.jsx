@@ -45,7 +45,7 @@ export default function TableBody({
             >
                 <div
                     style={{ width: columnWidth.column1 }}
-                    className="flex items-center fixed border-r"
+                    className="flex items-center fixed border-l border-r"
                 >
                     <ButtonPlus
                         className={

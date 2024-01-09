@@ -17,7 +17,7 @@ export default function TableHead({
                     nameColumn="column1"
                     initWidth={columnWidth.column1}
                     onResize={onResize}
-                    className="fixed z-50 bg-gray-50"
+                    className="fixed z-50 bg-gray-50 border-l"
                     style={{ paddingLeft: "34px" }}
                     styleBtn={{ width: "100%" }}
                 >
