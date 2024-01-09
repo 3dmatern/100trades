@@ -10,7 +10,7 @@ const initTags = [
     { id: "tag4", label: "усреднял", value: getRandomHexColor() },
 ];
 
-const initLPs = [
+const initRRs = [
     { id: "lp1", label: "1:2", value: getRandomHexColor() },
     { id: "lp2", label: "1:7", value: getRandomHexColor() },
     { id: "lp3", label: "1:10", value: getRandomHexColor() },
@@ -34,7 +34,7 @@ export default function TableBody({
                     deal={deal}
                     selectedDeals={selectedDeals}
                     tags={initTags}
-                    lps={initLPs}
+                    rrs={initRRs}
                     checkAll={checkAll}
                     columnWidth={columnWidth}
                     onChangeCheckbox={onChangeCheckbox}

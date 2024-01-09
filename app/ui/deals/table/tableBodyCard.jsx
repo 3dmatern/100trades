@@ -10,7 +10,8 @@ import BodyCardName from "./common/bodyCardName";
 import BodyCardEffect from "./common/bodyCardEffect";
 import BodyCardPose from "./common/bodyCardPose";
 import BodyCardRisk from "./common/bodyCardRisk";
-import BodyCardLP from "./common/bodyCardLP";
+import BodyCardProfit from "./common/bodyCardProfit";
+import BodyCardRR from "./common/bodyCardRR";
 import BodyCardDate from "./common/bodyCardDate";
 import BodyCardScreenshot from "./common/bodyCardScreenshot";
 import BodyCardDeposit from "./common/bodyCardDeposit";
@@ -27,7 +28,7 @@ export default function TableBodyCard({
     deal,
     selectedDeals,
     tags,
-    lps,
+    rrs,
     checkAll,
     columnWidth,
     onChangeCheckbox,
@@ -73,16 +74,21 @@ export default function TableBodyCard({
                     dealHover={hover}
                     columnWidth={columnWidth.column4}
                 />
-                <BodyCardLP
-                    lps={lps}
-                    dealLP={deal.lp}
+                <BodyCardProfit
+                    dealProfit={deal.profit}
+                    dealHover={hover}
                     columnWidth={columnWidth.column5}
+                />
+                <BodyCardRR
+                    rrs={rrs}
+                    dealRR={deal.rr}
+                    columnWidth={columnWidth.column6}
                     determineTextColor={determineTextColor}
                     getRandomHexColor={getRandomHexColor}
                 />
                 <BodyCardDate
                     dealDate={deal.entryDate}
-                    columnWidth={columnWidth.column6}
+                    columnWidth={columnWidth.column7}
                 />
                 <BodyCardScreenshot
                     inputName="imageStart"
@@ -90,20 +96,20 @@ export default function TableBodyCard({
                     imageAlt="screenshot start"
                     width={49}
                     height={25}
-                    columnWidth={columnWidth.column7}
+                    columnWidth={columnWidth.column8}
                 />
                 <BodyCardDeposit
                     dealDeposit={deal.deposit}
                     dealHover={hover}
-                    columnWidth={columnWidth.column8}
+                    columnWidth={columnWidth.column9}
                 />
                 <BodyCardProgress
                     dealProgress={deal.progress}
-                    columnWidth={columnWidth.column9}
+                    columnWidth={columnWidth.column10}
                 />
                 <BodyCardDate
                     dealDate={deal.exitDate}
-                    columnWidth={columnWidth.column10}
+                    columnWidth={columnWidth.column11}
                 />
                 <BodyCardScreenshot
                     inputName="imageEnd"
@@ -111,41 +117,41 @@ export default function TableBodyCard({
                     imageAlt="screenshot end"
                     width={49}
                     height={25}
-                    columnWidth={columnWidth.column11}
+                    columnWidth={columnWidth.column12}
                 />
                 <BodyCardInfoAction
                     dealEntryDate={deal.entryDate}
                     dealExitDate={deal.exitDate}
                     dealTimeScreenshot={deal.timeScreenshot}
                     dealImageEndSrc={deal.imageEnd}
-                    columnWidth={columnWidth.column12}
+                    columnWidth={columnWidth.column13}
                 />
                 <BodyCardStress
                     dealStress={deal.stress}
-                    columnWidth={columnWidth.column13}
+                    columnWidth={columnWidth.column14}
                 />
                 <BodyCardTags
                     dealId={deal.id}
                     tags={tags}
                     dealTags={deal.tags}
-                    columnWidth={columnWidth.column14}
+                    columnWidth={columnWidth.column15}
                     determineTextColor={determineTextColor}
                     getRandomHexColor={getRandomHexColor}
                 />
                 <BodyCardNotes
                     dealNotes={deal.notes}
-                    columnWidth={columnWidth.column15}
+                    columnWidth={columnWidth.column16}
                 />
                 <BodyCardTimeInTrade
                     dealEntryDate={deal.entryDate}
                     dealExitDate={deal.exitDate}
-                    columnWidth={columnWidth.column16}
+                    columnWidth={columnWidth.column17}
                     getTimeInTrade={getTimeInTrade}
                 />
                 <BodyCardTimeScreenshot
                     dealTimeScreenshot={deal.timeScreenshot}
                     dealHover={hover}
-                    columnWidth={columnWidth.column17}
+                    columnWidth={columnWidth.column18}
                 />
             </div>
         </div>

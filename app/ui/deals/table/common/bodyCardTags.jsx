@@ -69,38 +69,43 @@ export default function BodyCardTags({
             ref={listRef}
             onClick={() => setActive(true)}
             style={{ width: columnWidth, minWidth: "64px" }}
-            className={`flex items-center justify-start gap-1 relative ${
+            className={`flex items-center justify-start relative ${
                 active
                     ? "flex-wrap border border-blue-800"
                     : "flex-nowrap border-r "
-            } h-8 px-2 text-xs overflow-hidden `}
+            } h-8 text-xs`}
         >
-            {dealTags?.map((tag) => (
-                <span
-                    key={tag.label}
-                    style={{
-                        color: determineTextColor(tag.value),
-                        backgroundColor: tag.value,
-                    }}
-                    className="flex items-center gap-1 rounded-xl px-2 py-px"
-                >
-                    <span className="whitespace-nowrap text-ellipsis">
-                        {tag.label}
+            <div className="flex items-center justify-start gap-1 px-2 overflow-hidden">
+                {dealTags?.map((tag) => (
+                    <span
+                        key={tag.label}
+                        style={{
+                            color: determineTextColor(tag.value),
+                            backgroundColor: tag.value,
+                        }}
+                        className="flex items-center gap-1 rounded-xl px-2 py-px"
+                    >
+                        <span className="whitespace-nowrap text-ellipsis">
+                            {tag.label}
+                        </span>
+                        {active && (
+                            <button
+                                type="button"
+                                className="p-0.5 cursor-pointer"
+                            >
+                                <Image
+                                    src="./remove.svg"
+                                    alt="remove"
+                                    width={10}
+                                    height={10}
+                                />
+                            </button>
+                        )}
                     </span>
-                    {active && (
-                        <button type="button" className="p-0.5 cursor-pointer">
-                            <Image
-                                src="./remove.svg"
-                                alt="remove"
-                                width={10}
-                                height={10}
-                            />
-                        </button>
-                    )}
-                </span>
-            ))}
+                ))}
 
-            {active && <ButtonPlus onClick={() => setOpen(!open)} />}
+                {active && <ButtonPlus onClick={() => setOpen(!open)} />}
+            </div>
 
             {open && (
                 <div className="absolute left-0 top-8 z-10 w-full rounded-md py-2 bg-white border border-gray-300">
