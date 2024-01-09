@@ -1,4 +1,4 @@
-import FormSignIn from "./ui/deals/formSignIn";
+import FormSignIn from "./ui/formSignIn";
 
 export default function Home() {
     return (

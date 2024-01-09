@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-import InputField from "../common/inputField";
-import ButtonSubmit from "../common/buttonSubmit";
+import InputField from "./common/inputField";
+import ButtonSubmit from "./common/buttonSubmit";
 
 export default function FormSignUp() {
     const router = useRouter();

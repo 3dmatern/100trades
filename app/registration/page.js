@@ -1,4 +1,4 @@
-import FormSignUp from "../ui/deals/formSignUp";
+import FormSignUp from "../ui/formSignUp";
 
 export const metadata = {
     title: "Регистрация | Журнал сделок",
