@@ -3,11 +3,10 @@
 import Image from "next/image";
 import React, { useState } from "react";
 
-const InputUploadImg = ({ name, onImageChange, width, height }) => {
+export default function InputUploadImg({ name, onImageChange, width, height }) {
     const [selectedImage, setSelectedImage] = useState(null);
 
-    const handleImageUpload = (e) => {
-        const file = e.target.files[0];
+    const handleImageUpload = (file) => {
         const reader = new FileReader();
 
         reader.onload = () => {
@@ -27,27 +26,38 @@ const InputUploadImg = ({ name, onImageChange, width, height }) => {
     const handleDrop = (e) => {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
-        const reader = new FileReader();
+        handleImageUpload(file);
+    };
 
-        reader.onload = () => {
-            setSelectedImage(reader.result);
-        };
+    const handlePast = (e) => {
+        console.log("пытаюсь вставить");
+        const items = e.clipboardData.items;
 
-        if (file) {
-            onImageChange(file);
-            reader.readAsDataURL(file);
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf("image") !== -1) {
+                const file = items[i].getAsFile();
+                handleImageUpload(file);
+                break;
+            }
         }
     };
 
+    const handleRemove = (e) => {
+        e.stopPropagation();
+        setSelectedImage(null);
+        onImageChange(null);
+    };
+
     return (
-        <label className="block relative w-full h-full">
+        <label className="block w-full h-full">
             <input
                 type="file"
                 accept="image/*"
                 name={name}
-                onChange={handleImageUpload}
+                onChange={(e) => handleImageUpload(e.target.files[0])}
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
+                onPaste={handlePast}
                 className="absolute top-0 left-1/2 -translate-x-1/2 z-10 w-full h-full cursor-pointer opacity-0"
             />
 
@@ -60,6 +70,4 @@ const InputUploadImg = ({ name, onImageChange, width, height }) => {
             />
         </label>
     );
-};
-
-export default InputUploadImg;
+}

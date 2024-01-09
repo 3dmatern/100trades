@@ -91,6 +91,7 @@ export default function TableBodyCard({
                     columnWidth={columnWidth.column7}
                 />
                 <BodyCardScreenshot
+                    dealName={deal.name}
                     inputName="imageStart"
                     dealImageSrc={deal.imageStart}
                     imageAlt="screenshot start"
@@ -112,6 +113,7 @@ export default function TableBodyCard({
                     columnWidth={columnWidth.column11}
                 />
                 <BodyCardScreenshot
+                    dealName={deal.name}
                     inputName="imageEnd"
                     dealImageSrc={deal.imageEnd}
                     imageAlt="screenshot end"
