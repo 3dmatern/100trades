@@ -47,9 +47,9 @@ async function seedResults(client) {
         const createTable = await client.sql`
             CREATE TABLE IF NOT EXISTS results (
                 id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-                label VARCHAR(255) NOT NULL,
-                value VARCHAR(255) NOT NULL,
-                type VARCHAR(255) NOT NULL
+                label VARCHAR(255) NOT NULL UNIQUE,
+                value VARCHAR(255) NOT NULL UNIQUE,
+                type VARCHAR(255) NOT NULL UNIQUE
             );
         `;
         console.log('Создана таблица "results"');
