@@ -1,5 +1,6 @@
 import Navbar from "../ui/navbar";
-import FormProfile from "../ui/profile/formProfile";
+import FormPassword from "../ui/profile/FormPassword";
+import FormName from "../ui/profile/formName";
 import UserCard from "../ui/profile/userCard";
 
 export const metadata = {
@@ -7,7 +8,7 @@ export const metadata = {
     description: "Страница профиля журнала сделок Homa-Trading",
 };
 
-const user = {
+const currentUser = {
     id: "first",
     image: null,
     firstname: "Test",
@@ -24,13 +25,16 @@ export default function Home() {
                     <h1 className="mb-8 md:text-2xl text-xl md:text-start text-center font-bold underline underline-offset-8">
                         Профиль
                     </h1>
-                    <UserCard user={user} />
+                    <UserCard currentUser={currentUser} />
                 </div>
                 <div className="md:w-1/2 w-full">
                     <h1 className="mb-8 md:text-2xl text-xl md:text-start text-center font-bold underline underline-offset-8">
                         Редактировать профиль
                     </h1>
-                    <FormProfile user={user} />
+                    <div className="block lg:flex items-center justify-between gap-5">
+                        <FormName currentUser={currentUser} />
+                        <FormPassword currentUser={currentUser} />
+                    </div>
                 </div>
             </main>
         </div>

@@ -6,21 +6,15 @@ import InputField from "../common/inputField";
 import ButtonSubmit from "../common/buttonSubmit";
 
 const initData = {
-    firstname: "",
-    lastname: "",
     password: "",
     confPassword: "",
 };
 
-export default function FormProfile() {
+export default function FormPassword({ currentUser }) {
     const [data, setData] = useState(initData);
 
     const handleChange = ({ target }) => {
         setData((prev) => ({ ...prev, [target.name]: target.value }));
-    };
-
-    const handleChangeImage = (img) => {
-        setData((prev) => ({ ...prev, image: img }));
     };
 
     const handleSubmit = (e) => {
@@ -31,22 +25,8 @@ export default function FormProfile() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="max-w-80 md:mx-0 mx-auto w-full relative"
+            className="max-w-80 lg:mt-0 mt-5 md:mx-0 mx-auto w-full relative"
         >
-            <InputField
-                label="Введите имя"
-                type="text"
-                name="firstname"
-                value={data.firstname}
-                onChange={handleChange}
-            />
-            <InputField
-                label="Введите фамилию"
-                type="text"
-                name="lastname"
-                value={data.lastname}
-                onChange={handleChange}
-            />
             <InputField
                 label="Введите новый пароль"
                 type="password"
@@ -62,7 +42,7 @@ export default function FormProfile() {
                 onChange={handleChange}
             />
 
-            <ButtonSubmit className="mt-5" name="Сохранить изменения" />
+            <ButtonSubmit className="mt-5" name="Изменить пароль" />
         </form>
     );
 }
