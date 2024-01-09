@@ -25,7 +25,6 @@ const initDeals = [
         stress: "",
         tags: [],
         notes: "по тех анализу про версии",
-        timeScreenshot: "",
     },
     {
         id: "qwefgh",
@@ -50,7 +49,6 @@ const initDeals = [
             },
         ],
         notes: "",
-        timeScreenshot: "",
     },
     {
         id: "qwevbn",
@@ -64,7 +62,7 @@ const initDeals = [
         imageStart: "afks.png",
         deposit: "",
         progress: "0.00",
-        exitDate: new Date().setDate(4),
+        exitDate: new Date().setDate(6),
         imageEnd: null,
         stress: "2",
         tags: [
@@ -75,7 +73,6 @@ const initDeals = [
             },
         ],
         notes: "",
-        timeScreenshot: "",
     },
     {
         id: "qwerfv",
@@ -97,7 +94,6 @@ const initDeals = [
             { id: "tag4", label: "усреднял", value: getRandomHexColor() },
         ],
         notes: "",
-        timeScreenshot: "",
     },
 ];
 
@@ -119,7 +115,6 @@ const initHeaders = [
     { name: "Tags", up: false, w: "288px" },
     { name: "Заметки", up: false, w: "176px" },
     { name: "Время в сделке", up: true, w: "128px" },
-    { name: "Для скрина (мин)", up: false, w: "128px" },
 ];
 
 const initColumnWidth = {
@@ -140,7 +135,6 @@ const initColumnWidth = {
     column15: "288px",
     column16: "176px",
     column17: "128px",
-    column18: "128px",
 };
 
 const initData = {
@@ -159,7 +153,6 @@ const initData = {
     stress: "",
     tags: [],
     notes: "",
-    timeScreenshot: "",
 };
 
 export default function Table() {

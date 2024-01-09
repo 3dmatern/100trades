@@ -23,6 +23,8 @@ import BodyCardNotes from "./common/bodyCardNotes";
 import BodyCardInfoAction from "./common/bodyCardInfoAction";
 import BodyCardTimeInTrade from "./common/bodyCardTimeInTrade";
 
+const TIME_SCREENSHOT = 172800000; // 2 дня
+
 export default function TableBodyCard({
     index,
     deal,
@@ -124,7 +126,7 @@ export default function TableBodyCard({
                 <BodyCardInfoAction
                     dealEntryDate={deal.entryDate}
                     dealExitDate={deal.exitDate}
-                    dealTimeScreenshot={deal.timeScreenshot}
+                    timeScreenshot={TIME_SCREENSHOT}
                     dealImageEndSrc={deal.imageEnd}
                     columnWidth={columnWidth.column13}
                 />
@@ -149,11 +151,6 @@ export default function TableBodyCard({
                     dealExitDate={deal.exitDate}
                     columnWidth={columnWidth.column17}
                     getTimeInTrade={getTimeInTrade}
-                />
-                <BodyCardTimeScreenshot
-                    dealTimeScreenshot={deal.timeScreenshot}
-                    dealHover={hover}
-                    columnWidth={columnWidth.column18}
                 />
             </div>
         </div>
