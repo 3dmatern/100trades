@@ -1,7 +1,7 @@
 import { getRandomHexColor } from "@/app/utils/getRandomHexColor";
 
 import TableBodyCard from "./tableBodyCard";
-import ButtonPlus from "../../common/buttonPlus";
+import ButtonPlus from "../common/buttonPlus";
 
 const initTags = [
     { id: "tag1", label: "фиксировал часть", value: getRandomHexColor() },

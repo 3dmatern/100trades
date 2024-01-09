@@ -1,4 +1,4 @@
-import Table from "../ui/deals/table/table";
+import Table from "../ui/deals/table";
 import Navbar from "../ui/navbar";
 
 export const metadata = {
