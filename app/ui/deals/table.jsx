@@ -11,7 +11,7 @@ const initDeals = [
     {
         id: "qwerty",
         name: "NMTP",
-        effect: "win",
+        result: "win",
         pose: "25000",
         risk: "0.50",
         profit: "",
@@ -29,7 +29,7 @@ const initDeals = [
     {
         id: "qwefgh",
         name: "AFLT",
-        effect: "active",
+        result: "active",
         pose: "50000",
         risk: "0.90",
         profit: "0.50",
@@ -53,7 +53,7 @@ const initDeals = [
     {
         id: "qwevbn",
         name: "AFKS",
-        effect: "loss",
+        result: "loss",
         pose: "50000",
         risk: "1.10",
         profit: "1.90",
@@ -77,7 +77,7 @@ const initDeals = [
     {
         id: "qwerfv",
         name: "MOEX",
-        effect: "noLoss",
+        result: "noLoss",
         pose: "5000",
         risk: "",
         profit: "1.10",
@@ -139,7 +139,7 @@ const initColumnWidth = {
 
 const initData = {
     name: "",
-    effect: "",
+    result: "",
     pose: "",
     risk: "",
     profit: "",

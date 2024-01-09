@@ -7,7 +7,7 @@ import { getRandomHexColor } from "@/app/utils/getRandomHexColor";
 import { getTimeInTrade } from "@/app/utils/formatedDate";
 
 import BodyCardName from "./common/bodyCardName";
-import BodyCardEffect from "./common/bodyCardEffect";
+import BodyCardResult from "./common/BodyCardResult";
 import BodyCardPose from "./common/bodyCardPose";
 import BodyCardRisk from "./common/bodyCardRisk";
 import BodyCardProfit from "./common/bodyCardProfit";
@@ -16,7 +16,6 @@ import BodyCardDate from "./common/bodyCardDate";
 import BodyCardScreenshot from "./common/bodyCardScreenshot";
 import BodyCardDeposit from "./common/bodyCardDeposit";
 import BodyCardProgress from "./common/bodyCardProgress";
-import BodyCardTimeScreenshot from "./common/bodyCardTimeScreenshot";
 import BodyCardStress from "./common/bodyCardStress";
 import BodyCardTags from "./common/bodyCardTags";
 import BodyCardNotes from "./common/bodyCardNotes";
@@ -62,8 +61,8 @@ export default function TableBodyCard({
                 style={{ paddingLeft: columnWidth.column1 }}
                 className="flex items-center"
             >
-                <BodyCardEffect
-                    dealEffect={deal.effect}
+                <BodyCardResult
+                    dealResult={deal.result}
                     columnWidth={columnWidth.column2}
                 />
                 <BodyCardPose
