@@ -12,7 +12,6 @@ import Button from "./common/button";
 export default function FormSignUp() {
     const [errorMessage, dispatch] = useFormState(registration, undefined);
     const [email, setEmail] = useState("");
-    console.log(errorMessage);
 
     const handleChange = ({ target }) => {
         setEmail(target.value);

@@ -272,7 +272,6 @@ export async function registration(prevState, formData) {
         const isUser = await sql`
             SELECT * FROM users WHERE email = ${email}
         `;
-        console.log(isUser);
         if (isUser.rowCount > 0) {
             return { message: "Пользователь с таким email уже существует." };
         }
@@ -285,7 +284,6 @@ export async function registration(prevState, formData) {
         const user = await sql`
             SELECT email, password FROM users WHERE email = ${email}
         `;
-        console.log(user.rows[0]);
 
         if (user.rows[0]) {
             sendMail(
@@ -337,7 +335,6 @@ export async function authenticate(prevState, formData) {
 export async function activateAccount(token) {
     try {
         const trimToken = token.trim().toString();
-        console.log(trimToken);
 
         const searchToken = await sql`
             SELECT * FROM activation_tokens WHERE token = ${trimToken};

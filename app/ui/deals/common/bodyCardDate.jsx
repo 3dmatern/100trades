@@ -8,7 +8,6 @@ export default function BodyCardDate({ dealDate, name, columnWidth }) {
     const [date, setDate] = useState("");
 
     const handleChange = ({ target }) => {
-        console.log(target.value);
         setDate(target.value);
     };
 

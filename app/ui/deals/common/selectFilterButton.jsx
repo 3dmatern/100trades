@@ -31,7 +31,6 @@ export default function SelectFilterButton({
             if (rect.right > window.innerWidth) {
                 list.style.left = "unset";
                 list.style.right = "0px";
-                console.log(list.style.left);
             }
         }
     }, [open]);

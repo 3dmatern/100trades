@@ -25,7 +25,6 @@ export default function BodyCardRR({
 
     const handleSelectLP = (e, rr) => {
         e.stopPropagation();
-        console.log(rr);
         setActive(false);
         setOpen(false);
         setCurrentRR(rr);

@@ -26,7 +26,6 @@ export default function BodyCardTags({
     };
 
     const handleSelectTag = (tag) => {
-        console.log(tag);
         setOpen(false);
         setActive(false);
         setTag("");

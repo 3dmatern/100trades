@@ -30,7 +30,6 @@ export default function InputUploadImg({ name, onImageChange, width, height }) {
     };
 
     const handlePast = (e) => {
-        console.log("пытаюсь вставить");
         const items = e.clipboardData.items;
 
         for (let i = 0; i < items.length; i++) {

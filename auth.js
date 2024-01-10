@@ -28,8 +28,6 @@ export const { auth, signIn, signOut } = NextAuth({
                     })
                     .safeParse(credentials);
 
-                console.log(parsedCredentials);
-
                 if (parsedCredentials.success) {
                     const { email, password } = parsedCredentials.data;
                     const user = await getUser(email);
@@ -42,7 +40,6 @@ export const { auth, signIn, signOut } = NextAuth({
                     if (passwordMatch) return user;
                 }
 
-                console.log("Неверные учетные данные");
                 return null;
             },
         }),

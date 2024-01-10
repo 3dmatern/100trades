@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 import { authenticate } from "@/app/lib/actions";
@@ -16,10 +15,8 @@ const initData = {
 };
 
 export default function FormSignIn() {
-    const router = useRouter();
     const [errorMessage, dispatch] = useFormState(authenticate, undefined);
     const [data, setData] = useState(initData);
-    console.log(errorMessage);
 
     const handleChange = ({ target }) => {
         setData((prev) => ({ ...prev, [target.name]: target.value }));
