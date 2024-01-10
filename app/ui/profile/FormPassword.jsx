@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 import InputField from "../common/inputField";
-import ButtonSubmit from "../common/buttonSubmit";
+import ButtonSubmit from "../common/button";
 
 const initData = {
     password: "",

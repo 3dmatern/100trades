@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import InputField from "../common/inputField";
-import ButtonSubmit from "../common/buttonSubmit";
+import ButtonSubmit from "../common/button";
 
 export default function FormName({ currentUser }) {
     const [data, setData] = useState({

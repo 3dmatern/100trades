@@ -10,7 +10,9 @@ async function seedUsers(client) {
                 firstname VARCHAR(255),
                 lastname VARCHAR(255),
                 email VARCHAR(255) NOT NULL UNIQUE,
-                password VARCHAR(255) NOT NULL
+                password VARCHAR(255) NOT NULL,
+                verified_email BOOLEAN DEFAULT false NOT NULL,
+                role INTEGER DEFAULT 2 NOT NULL
             );
         `;
         console.log('Создана таблица "users"');
@@ -123,7 +125,7 @@ async function seedEntries(client) {
                 pose VARCHAR(255),
                 risk VARCHAR(255),
                 profit VARCHAR(255),
-                rr UUID REFERENCES risks_rewards(id) ON DELETE SET NULL DEFAULT null,
+                rr_id UUID REFERENCES risks_rewards(id) ON DELETE SET NULL DEFAULT null,
                 entry_date DATE,
                 image_start VARCHAR(255) DEFAULT null,
                 deposit VARCHAR(255),
@@ -142,21 +144,41 @@ async function seedEntries(client) {
     }
 }
 
-async function seedEntryTag(client) {
+async function seedEntrieTag(client) {
     try {
         await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
         const createTable = await client.sql`
-            CREATE TABLE IF NOT EXISTS entry_tag (
-                entry_id UUID REFERENCES entries(id) ON DELETE CASCADE,
+            CREATE TABLE IF NOT EXISTS entrie_tag (
+                entrie_id UUID REFERENCES entries(id) ON DELETE CASCADE,
                 tag_id UUID REFERENCES tags(id) ON DELETE SET NULL,
-                PRIMARY KEY (entry_id, tag_id)
+                PRIMARY KEY (entrie_id, tag_id)
             );
         `;
-        console.log('Создана таблица "entry_tag"');
+        console.log('Создана таблица "entrie_tag"');
 
         return { createTable };
     } catch (error) {
-        console.error("Ошибка добавления entry_tag:", error);
+        console.error("Ошибка добавления entrie_tag:", error);
+        throw error;
+    }
+}
+
+async function seedActivationToken(client) {
+    try {
+        await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+        const createTable = await client.sql`
+            CREATE TABLE IF NOT EXISTS activation_tokens (
+                id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+                user_id UUID REFERENCES users(id),
+                token UUID UNIQUE NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        `;
+        console.log('Создана таблица "activation_tokens"');
+
+        return { createTable };
+    } catch (error) {
+        console.error("Ошибка добавления activation_tokens:", error);
         throw error;
     }
 }
@@ -170,7 +192,8 @@ async function main() {
     await seedRisksRewards(client);
     await seedTags(client);
     await seedEntries(client);
-    await seedEntryTag(client);
+    await seedEntrieTag(client);
+    await seedActivationToken(client);
 
     await client.end();
 }

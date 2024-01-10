@@ -3,9 +3,12 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useFormState, useFormStatus } from "react-dom";
+import { authenticate } from "@/app/lib/actions";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
 import InputField from "./common/inputField";
-import ButtonSubmit from "./common/buttonSubmit";
+import Button from "./common/button";
 
 const initData = {
     email: "",
@@ -14,19 +17,16 @@ const initData = {
 
 export default function FormSignIn() {
     const router = useRouter();
+    const [errorMessage, dispatch] = useFormState(authenticate, undefined);
     const [data, setData] = useState(initData);
+    console.log(errorMessage);
 
     const handleChange = ({ target }) => {
         setData((prev) => ({ ...prev, [target.name]: target.value }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        router.push("/deals");
-    };
-
     return (
-        <form onSubmit={handleSubmit} className="max-w-80 w-full">
+        <form action={dispatch} className="max-w-80 w-full">
             <span className="block text-center text-gray-700 text-xl mb-7">
                 Авторизация
             </span>
@@ -45,7 +45,23 @@ export default function FormSignIn() {
                 onChange={handleChange}
             />
 
-            <ButtonSubmit className="mt-5" name="Войти" />
+            {!!errorMessage?.message && (
+                <div
+                    className="flex h-8 items-end space-x-1"
+                    aria-live="polite"
+                    aria-atomic="true"
+                >
+                    <>
+                        <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
+                        <p className="text-sm text-red-500">
+                            {errorMessage.message}
+                        </p>
+                    </>
+                </div>
+            )}
+
+            <LoginButton />
+            {/* <Button className="mt-5" name="Войти" /> */}
 
             <p className="mt-5 text-gray-700 text-center">
                 Не аккаунта?{" "}
@@ -57,5 +73,19 @@ export default function FormSignIn() {
                 </Link>
             </p>
         </form>
+    );
+}
+
+function LoginButton({ disabled }) {
+    const { pending } = useFormStatus();
+
+    return (
+        <Button
+            className="mt-5 w-max"
+            disabled={disabled}
+            aria-disabled={pending}
+        >
+            Войти
+        </Button>
     );
 }
