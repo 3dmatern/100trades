@@ -1,6 +1,6 @@
-import Navbar from "../ui/navbar";
+import Navbar from "@/components/ui/navbar";
 
-import Sheets from "../ui/deals/sheets";
+import Sheets from "@/components/ui/deals/sheets";
 
 export const metadata = {
     title: "Сделки",

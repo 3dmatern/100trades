@@ -4,7 +4,7 @@ import Link from "next/link";
 import { redirect, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { activateAccount } from "@/app/lib/actions";
+import { activateAccount } from "@/lib/actions";
 
 export default function TokenPage() {
     const { token } = useParams();

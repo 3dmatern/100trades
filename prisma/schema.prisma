@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") 
+  directUrl = env("POSTGRES_URL_NON_POOLING") 
+}
+
+model User {
+  id            String    @id @default(cuid())
+  firstname     String?
+  lastname      String?
+  email         String    @unique
+  emailVerified DateTime?
+  password      String?
+  accounts      Account[]
+  sheets        Sheets[]
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Sheets {
+  id                 String  @id @default(cuid())
+  userId             String
+  name               String
+  entries            Entries[]
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model Results {
+  id                 String  @id @default(cuid())
+  label              String
+  value              String
+  type               String
+  entries            Entries[]
+}
+
+model RisksRewards {
+  id                 String  @id @default(cuid())
+  label              String
+  value              String
+  entries            Entries[]
+}
+
+model Tags {
+  id                 String  @id @default(cuid())
+  label              String
+  value              String
+  entrieTag          EntrieTag[]
+}
+
+model Entries {
+  id                 String  @id @default(cuid())
+  name               String?
+  pose               String?
+  risk               String?
+  profit             String?
+  entryDate          String?
+  imageStart         String?
+  deposit            String?
+  exitDate           String?
+  imageEnd           String?
+  stress             String?
+  notes              String?
+  sheetId            String
+  resultId           String?
+  rrId               String?
+  entrieTag          EntrieTag[]
+
+  sheet Sheets @relation(fields: [sheetId], references: [id], onDelete: Cascade)
+  results Results? @relation(fields: [resultId], references: [id])
+  risksRewards RisksRewards? @relation(fields: [rrId], references: [id])
+}
+
+model EntrieTag {
+  entrieId           String @id @unique
+  tagId              String
+
+  entries Entries @relation(fields: [entrieId], references: [id], onDelete: Cascade)
+  tags Tags @relation(fields: [tagId], references: [id])
+}

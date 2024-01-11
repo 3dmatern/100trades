@@ -1,5 +1,5 @@
 const { db } = require("@vercel/postgres");
-const { results } = require("../app/lib/placeholder-data.js");
+const { results } = require("../lib/placeholder-data.js");
 
 async function seedUsers(client) {
     try {
