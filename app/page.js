@@ -1,4 +1,6 @@
-import { LoginForm } from "@/components/auth/loginForm";
+import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
     return (
@@ -13,8 +15,13 @@ export default function Home() {
                     className="max-w-xl min-w-80 max-h-80 w-full h-screen"
                 ></iframe>
             </div>
-            <div className="lg:w-2/5 flex items-center justify-center">
-                <LoginForm />
+            <div className="lg:w-2/5 flex items-center flex-col gap-y-4 justify-center">
+                <Button size="lg" className="w-48" asChild>
+                    <Link href="/auth/login">Войти</Link>
+                </Button>
+                <Button size="lg" variant="outline" className="w-48" asChild>
+                    <Link href="/auth/register">Зарегистрироваться</Link>
+                </Button>
             </div>
         </main>
     );

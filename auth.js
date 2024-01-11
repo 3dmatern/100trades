@@ -1,8 +1,9 @@
 import NextAuth from "next-auth";
+import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
 import { sql } from "@vercel/postgres";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 import { authConfig } from "./auth.config";
 
@@ -16,9 +17,13 @@ async function getUser(email) {
     }
 }
 
-export const { auth, signIn, signOut } = NextAuth({
+export const {
+    handlers: { GET, POST },
+    auth,
+} = NextAuth({
     ...authConfig,
     providers: [
+        Google,
         Credentials({
             async authorize(credentials) {
                 const parsedCredentials = z

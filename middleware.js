@@ -1,9 +1,12 @@
-import NextAuth from "next-auth";
-import { authConfig } from "./auth.config";
+import { auth } from "./auth";
 
-export default NextAuth(authConfig).auth;
+export default auth((req) => {
+    const isLoggedIn = !!req.auth;
+    console.log("ROUTE: ", req.nextUrl.pathname);
+    console.log("IS LOGGEDIN: ", isLoggedIn);
+});
 
+// Optionally, don't invoke Middleware on some paths
 export const config = {
-    // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
-    matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
+    matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
