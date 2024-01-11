@@ -9,7 +9,7 @@ export default function TableHead({
     onChange,
 }) {
     return (
-        <div className="flex items-center border-t border-b border-slate-300 bg-gray-50">
+        <div className="flex items-center relative border-t border-b border-slate-300 bg-gray-50">
             {initHeaders.slice(0, 1).map((item) => (
                 <SelectFilterButton
                     key={item.name}
@@ -17,7 +17,7 @@ export default function TableHead({
                     nameColumn="column1"
                     initWidth={columnWidth.column1}
                     onResize={onResize}
-                    className="fixed z-50 bg-gray-50 border-l"
+                    className="sticky top-0 left-0 z-20 bg-gray-50 border-l"
                     style={{ paddingLeft: "34px" }}
                     styleBtn={{ width: "100%" }}
                 >
@@ -32,28 +32,23 @@ export default function TableHead({
                 </SelectFilterButton>
             ))}
 
-            <div
-                style={{ marginLeft: columnWidth.column1 }}
-                className="flex items-center"
-            >
-                {initHeaders.slice(1).map((item, index) => (
-                    <SelectFilterButton
-                        key={item.name}
-                        name={item.name}
-                        nameColumn={`column${index + 2}`}
-                        initWidth={columnWidth[`column${index + 2}`]}
-                        onResize={onResize}
-                        styleBtn={
-                            item.up
-                                ? {
-                                      textTransform: "uppercase",
-                                      width: "100%",
-                                  }
-                                : { width: "100%" }
-                        }
-                    />
-                ))}
-            </div>
+            {initHeaders.slice(1).map((item, index) => (
+                <SelectFilterButton
+                    key={item.name}
+                    name={item.name}
+                    nameColumn={`column${index + 2}`}
+                    initWidth={columnWidth[`column${index + 2}`]}
+                    onResize={onResize}
+                    styleBtn={
+                        item.up
+                            ? {
+                                  textTransform: "uppercase",
+                                  width: "100%",
+                              }
+                            : { width: "100%" }
+                    }
+                />
+            ))}
         </div>
     );
 }

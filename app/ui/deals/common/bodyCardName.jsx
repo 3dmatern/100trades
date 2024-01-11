@@ -30,7 +30,7 @@ export default function BodyCardName({
     return (
         <div
             style={{ width: columnWidth, minWidth: "64px" }}
-            className={`flex items-center fixed z-10 ${
+            className={`flex items-center sticky top-0 left-0 z-20 ${
                 open ? "border border-blue-800" : "border-l border-r"
             } ${
                 selectedDeals?.includes(dealId) || dealHover

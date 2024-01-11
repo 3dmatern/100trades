@@ -2,6 +2,7 @@ import { getRandomHexColor } from "@/app/utils/getRandomHexColor";
 
 import TableBodyCard from "./tableBodyCard";
 import ButtonPlus from "../common/buttonPlus";
+import Button from "../common/button";
 
 const initTags = [
     { id: "tag1", label: "фиксировал часть", value: getRandomHexColor() },
@@ -45,7 +46,7 @@ export default function TableBody({
             >
                 <div
                     style={{ width: columnWidth.column1 }}
-                    className="flex items-center fixed border-l border-r"
+                    className="flex items-center sticky top-0 left-0 border-l border-r"
                 >
                     <ButtonPlus
                         className={
@@ -54,6 +55,15 @@ export default function TableBody({
                         onClick={onAddDeal}
                     />
                 </div>
+
+                {selectedDeals.length > 0 && (
+                    <Button
+                        type="button"
+                        className="w-max bg-red-700 hover:bg-red-600 ml-20 text-sm"
+                    >
+                        Удалить выбранные сделки
+                    </Button>
+                )}
             </div>
         </div>
     );
