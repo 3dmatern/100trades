@@ -1,11 +1,13 @@
 import NextAuth from "next-auth";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
 import { sql } from "@vercel/postgres";
 import bcrypt from "bcryptjs";
 
-import { authConfig } from "./auth.config";
+import { db } from "@/lib/db";
+import { authConfig } from "@/auth.config";
 
 async function getUser(email) {
     try {
@@ -21,6 +23,8 @@ export const {
     handlers: { GET, POST },
     auth,
 } = NextAuth({
+    adapter: PrismaAdapter(db),
+    session: { strategy: "jwt" },
     ...authConfig,
     providers: [
         Google,
