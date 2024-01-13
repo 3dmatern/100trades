@@ -3,9 +3,53 @@
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/lib/db";
-import { SheetSchema } from "@/schemas";
+import { SheetCreateSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
-import { getSheetsByUserId } from "@/data/sheet";
+import {
+    getSheetBySheetId,
+    getSheetsByUserId,
+    removeSheetBySheetId,
+} from "@/data/sheet";
+
+export const createSheet = async (values) => {
+    const validatedFields = SheetCreateSchema.safeParse(values);
+
+    if (!validatedFields.success) {
+        return {
+            error: "Несанкционированный доступ!",
+        };
+    }
+
+    const { userId, name, date } = validatedFields.data;
+
+    const existingUser = await getUserById(userId);
+
+    if (!existingUser) {
+        return {
+            error: "Несанкционированный доступ!",
+        };
+    }
+
+    try {
+        await db.sheet.create({
+            data: {
+                userId,
+                name,
+                date,
+            },
+        });
+
+        revalidatePath("/deals");
+        return {
+            success: "Лист успешно создан",
+        };
+    } catch (error) {
+        console.error("Error creating sheet: ", error);
+        return {
+            error: "Ошибка создания листа!",
+        };
+    }
+};
 
 export const getSheets = async (userId) => {
     const existingUser = await getUserById(userId);
@@ -30,41 +74,33 @@ export const getSheets = async (userId) => {
     }
 };
 
-export const createSheet = async (values) => {
-    const validatedFields = SheetSchema.safeParse(values);
+export const removeSheet = async ({ sheetId, userId }) => {
+    const existingSheet = await getSheetBySheetId(sheetId);
 
-    if (!validatedFields.success) {
+    if (!existingSheet) {
         return {
             error: "Несанкционированный доступ!",
         };
     }
 
-    const { userId, name } = validatedFields.data;
-
     const existingUser = await getUserById(userId);
 
-    if (!existingUser) {
+    if (!existingUser || existingSheet.userId !== existingUser.id) {
+        console.log({ sheetId, userId });
         return {
             error: "Несанкционированный доступ!",
         };
     }
 
     try {
-        await db.sheet.create({
-            data: {
-                userId,
-                name,
-            },
-        });
-
+        const sheets = await removeSheetBySheetId(existingSheet.id);
         revalidatePath("/deals");
-        return {
-            success: "Лист успешно создан",
-        };
+
+        return sheets;
     } catch (error) {
-        console.error("Error creating sheet: ", error);
+        console.error("Error deleting sheet: ", error);
         return {
-            error: "Ошибка создания листа!",
+            error: "Ошибка удаления листа!",
         };
     }
 };

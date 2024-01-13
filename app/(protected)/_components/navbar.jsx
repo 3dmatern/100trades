@@ -34,7 +34,6 @@ export default function Navbar() {
                 >
                     <Link href="/settings">Настройки профиля</Link>
                 </Button>
-                <p>loader saved...</p>
             </div>
 
             <UserButton />

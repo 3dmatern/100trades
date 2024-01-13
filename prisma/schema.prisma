@@ -48,6 +48,7 @@ model Sheet {
   id                 String  @id @default(cuid())
   userId             String
   name               String
+  date               DateTime @default(dbgenerated("now()"))
   entries            Entrie[]
   
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)

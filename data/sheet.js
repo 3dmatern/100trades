@@ -16,3 +16,34 @@ export const getSheetsByUserId = async (userId) => {
         return null;
     }
 };
+
+export const getSheetBySheetId = async (sheetId) => {
+    noStore();
+    try {
+        const sheet = await db.sheet.findUnique({
+            where: {
+                id: sheetId,
+            },
+        });
+
+        return sheet;
+    } catch (error) {
+        return null;
+    }
+};
+
+export const removeSheetBySheetId = async (sheetId) => {
+    noStore();
+    try {
+        const sheet = await db.sheet.delete({
+            where: {
+                id: sheetId,
+            },
+        });
+        console.log("remove ", sheet);
+
+        return sheet;
+    } catch (error) {
+        return null;
+    }
+};

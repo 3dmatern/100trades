@@ -3,12 +3,14 @@
 import clsx from "clsx";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { BeatLoader } from "react-spinners";
 
 export default function Sheet({
     className,
-    index,
     selectSheet,
     sheet,
+    isPendingRemove,
+    onRemove,
     onClickId,
 }) {
     const sheetRef = useRef(null);
@@ -61,55 +63,60 @@ export default function Sheet({
                 className
             )}
         >
-            <span>{sheet.name}</span>
-
-            {index === selectSheet ? (
-                <button
-                    type="button"
-                    onClick={() => setOpen(!open)}
-                    className="cursor-pointer"
-                >
-                    <Image
-                        src="./pencil.svg"
-                        alt="edit"
-                        width={13}
-                        height={13}
-                        className="pointer-events-none"
-                    />
-                </button>
+            {isPendingRemove ? (
+                <BeatLoader size={10} />
             ) : (
-                <button
-                    type="button"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        console.log(sheet.id);
-                    }}
-                    className="cursor-pointer hover:scale-110"
-                >
-                    <Image
-                        src="./removeSheet.svg"
-                        alt="remove"
-                        width={13}
-                        height={13}
-                        className="pointer-events-none"
-                    />
-                </button>
+                <>
+                    {" "}
+                    <span>{sheet.name}</span>
+                    {sheet.id === selectSheet ? (
+                        <button
+                            type="button"
+                            onClick={() => setOpen(!open)}
+                            className="cursor-pointer"
+                        >
+                            <Image
+                                src="./pencil.svg"
+                                alt="edit"
+                                width={13}
+                                height={13}
+                                className="pointer-events-none"
+                            />
+                        </button>
+                    ) : (
+                        <button
+                            type="button"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                onRemove(sheet.id);
+                            }}
+                            className="cursor-pointer hover:scale-110"
+                        >
+                            <Image
+                                src="./removeSheet.svg"
+                                alt="remove"
+                                width={13}
+                                height={13}
+                                className="pointer-events-none"
+                            />
+                        </button>
+                    )}
+                    <form
+                        ref={formRef}
+                        className={`${
+                            open ? "block" : "hidden"
+                        } absolute top-9 left-0 z-30 p-2 bg-sky-200 rounded-md w-28`}
+                    >
+                        <input
+                            type="text"
+                            name="sheet"
+                            value={sheetValue}
+                            onChange={(e) => setSheetValue(e.target.value)}
+                            className="w-full outline-none"
+                        />
+                    </form>{" "}
+                </>
             )}
-
-            <form
-                ref={formRef}
-                className={`${
-                    open ? "block" : "hidden"
-                } absolute top-9 left-0 z-30 p-2 bg-sky-200 rounded-md w-28`}
-            >
-                <input
-                    type="text"
-                    name="sheet"
-                    value={sheetValue}
-                    onChange={(e) => setSheetValue(e.target.value)}
-                    className="w-full outline-none"
-                />
-            </form>
         </div>
     );
 }

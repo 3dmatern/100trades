@@ -1,6 +1,26 @@
 import z from "zod";
 
-export const SheetSchema = z
+export const SheetRemoveSchema = z
+    .object({
+        sheetId: z.string(),
+        userId: z.string(),
+    })
+    .refine((data) => {
+        if (!data.sheetId) {
+            return false;
+        }
+
+        return true;
+    })
+    .refine((data) => {
+        if (!data.userId) {
+            return false;
+        }
+
+        return true;
+    });
+
+export const SheetCreateSchema = z
     .object({
         userId: z.string(),
         name: z.string(),
