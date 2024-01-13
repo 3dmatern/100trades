@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 
-import ButtonPlus from "../buttonPlus";
-import Sheet from "./sheet";
-import Table from "./table";
+import ButtonPlus from "@/components/ui/buttonPlus";
+import Sheet from "@/components/ui/deals/sheet";
+import Table from "@/components/ui/deals/table";
 
 export default function Sheets({ className, sheets }) {
     const [open, setOpen] = useState(false);

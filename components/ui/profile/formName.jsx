@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 
-import InputField from "../input";
-import ButtonSubmit from "../button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-export default function FormName({ currentUser }) {
+export function FormName({ currentUser }) {
     const [data, setData] = useState({
         firstname: "",
         lastname: "",
@@ -34,14 +34,14 @@ export default function FormName({ currentUser }) {
             onSubmit={handleSubmit}
             className="max-w-80 md:mx-0 mx-auto w-full relative"
         >
-            <InputField
+            <Input
                 label="Введите имя"
                 type="text"
                 name="firstname"
                 value={data.firstname}
                 onChange={handleChange}
             />
-            <InputField
+            <Input
                 label="Введите фамилию"
                 type="text"
                 name="lastname"
@@ -49,7 +49,7 @@ export default function FormName({ currentUser }) {
                 onChange={handleChange}
             />
 
-            <ButtonSubmit className="mt-5" name="Сохранить изменения" />
+            <Button className="mt-5" name="Сохранить изменения" />
         </form>
     );
 }

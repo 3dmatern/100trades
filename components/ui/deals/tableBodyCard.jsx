@@ -6,22 +6,21 @@ import { determineTextColor } from "@/utils/determinateTextColor";
 import { getRandomHexColor } from "@/utils/getRandomHexColor";
 import { getTimeInTrade } from "@/utils/formatedDate";
 
-import BodyCardName from "./common/bodyCardName";
-import BodyCardResult from "./common/BodyCardResult";
-import BodyCardPose from "./common/bodyCardPose";
-import BodyCardRisk from "./common/bodyCardRisk";
-import BodyCardProfit from "./common/bodyCardProfit";
-import BodyCardRR from "./common/bodyCardRR";
-import BodyCardDate from "./common/bodyCardDate";
-import BodyCardScreenshot from "./common/bodyCardScreenshot";
-import BodyCardDeposit from "./common/bodyCardDeposit";
-import BodyCardProgress from "./common/bodyCardProgress";
-import BodyCardStress from "./common/bodyCardStress";
-import BodyCardTags from "./common/bodyCardTags";
-import BodyCardNotes from "./common/bodyCardNotes";
-import BodyCardInfoAction from "./common/bodyCardInfoAction";
-import BodyCardTimeInTrade from "./common/bodyCardTimeInTrade";
-import Button from "../button";
+import BodyCardName from "@/components/ui/deals/common/bodyCardName";
+import BodyCardResult from "@/components/ui/deals/common/BodyCardResult";
+import BodyCardPose from "@/components/ui/deals/common/bodyCardPose";
+import BodyCardRisk from "@/components/ui/deals/common/bodyCardRisk";
+import BodyCardProfit from "@/components/ui/deals/common/bodyCardProfit";
+import BodyCardRR from "@/components/ui/deals/common/bodyCardRR";
+import BodyCardDate from "@/components/ui/deals/common/bodyCardDate";
+import BodyCardScreenshot from "@/components/ui/deals/common/bodyCardScreenshot";
+import BodyCardDeposit from "@/components/ui/deals/common/bodyCardDeposit";
+import BodyCardProgress from "@/components/ui/deals/common/bodyCardProgress";
+import BodyCardStress from "@/components/ui/deals/common/bodyCardStress";
+import BodyCardTags from "@/components/ui/deals/common/bodyCardTags";
+import BodyCardNotes from "@/components/ui/deals/common/bodyCardNotes";
+import BodyCardInfoAction from "@/components/ui/deals/common/bodyCardInfoAction";
+import BodyCardTimeInTrade from "@/components/ui/deals/common/bodyCardTimeInTrade";
 
 const TIME_SCREENSHOT = 172800000; // 2 дня
 

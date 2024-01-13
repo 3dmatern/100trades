@@ -4,8 +4,8 @@ import React, { useState } from "react";
 
 import { getRandomHexColor } from "@/utils/getRandomHexColor";
 
-import TableBody from "./tableBody";
-import TableHead from "./tableHead";
+import TableBody from "@/components/ui/deals/tableBody";
+import TableHead from "@/components/ui/deals/tableHead";
 
 const initDeals = [
     {

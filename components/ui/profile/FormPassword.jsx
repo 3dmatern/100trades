@@ -2,15 +2,15 @@
 
 import React, { useState } from "react";
 
-import InputField from "../input";
-import ButtonSubmit from "../button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const initData = {
     password: "",
     confPassword: "",
 };
 
-export default function FormPassword({ currentUser }) {
+export function FormPassword({ currentUser }) {
     const [data, setData] = useState(initData);
 
     const handleChange = ({ target }) => {
@@ -27,14 +27,14 @@ export default function FormPassword({ currentUser }) {
             onSubmit={handleSubmit}
             className="max-w-80 lg:mt-0 mt-5 md:mx-0 mx-auto w-full relative"
         >
-            <InputField
+            <Input
                 label="Введите новый пароль"
                 type="password"
                 name="password"
                 value={data.password}
                 onChange={handleChange}
             />
-            <InputField
+            <Input
                 label="Повторите пароль"
                 type="password"
                 name="password"
@@ -42,7 +42,7 @@ export default function FormPassword({ currentUser }) {
                 onChange={handleChange}
             />
 
-            <ButtonSubmit className="mt-5" name="Изменить пароль" />
+            <Button className="mt-5" name="Изменить пароль" />
         </form>
     );
 }

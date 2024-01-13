@@ -3,6 +3,8 @@
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 import { LoginSchema } from "@/schemas";
 import {
@@ -15,12 +17,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import CardWrapper from "@/components/auth/cardWrapper";
-import FormSuccess from "@/components/formSuccess";
-import FormError from "@/components/formError";
+import { CardWrapper } from "@/components/auth/cardWrapper";
+import { FormSuccess } from "@/components/formSuccess";
+import { FormError } from "@/components/formError";
 import { login } from "@/actions/login";
 
 export function LoginForm() {
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get("callbackUrl");
+
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [isPending, startTransition] = useTransition();
@@ -37,7 +42,7 @@ export function LoginForm() {
         setError("");
 
         startTransition(() => {
-            login(values).then((data) => {
+            login(values, callbackUrl).then((data) => {
                 setError(data.error);
                 setSuccess(data.success);
             });
@@ -49,7 +54,6 @@ export function LoginForm() {
             headerLabel="Добро пожаловать назад"
             backButtonLabel="Ещё нет аккаунта?"
             backButtonHref="/auth/register"
-            showSocial
         >
             <Form {...form}>
                 <form
@@ -91,6 +95,16 @@ export function LoginForm() {
                                             placeholder="******"
                                         />
                                     </FormControl>
+                                    <Button
+                                        size="sm"
+                                        variant="link"
+                                        asChild
+                                        className="px-0 font-normal"
+                                    >
+                                        <Link href="/auth/reset">
+                                            Забыли пароль?
+                                        </Link>
+                                    </Button>
                                     <FormMessage />
                                 </FormItem>
                             )}

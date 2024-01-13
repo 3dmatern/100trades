@@ -8,6 +8,11 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") 
 }
 
+enum UserRole {
+  ADMIN
+  USER
+}
+
 model User {
   id            String    @id @default(cuid())
   firstname     String?
@@ -15,6 +20,7 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   password      String?
+  role          UserRole  @default(USER)
   accounts      Account[]
   sheets        Sheets[]
 }
@@ -93,9 +99,27 @@ model Entries {
 }
 
 model EntrieTag {
-  entrieId           String @id @unique
+  entrieId           String @id
   tagId              String
 
   entries Entries @relation(fields: [entrieId], references: [id], onDelete: Cascade)
   tags Tags @relation(fields: [tagId], references: [id])
+}
+
+model VerificationToken {
+  id  String @id @default(cuid())
+  email String
+  token String @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
+  id String @id @default(cuid())
+  email String
+  token String @unique
+  expires DateTime
+  
+  @@unique([email, token])
 }

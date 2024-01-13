@@ -4,7 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 
 import { Button } from "@/components/ui/button";
 
-export default function Social() {
+export function Social() {
     return (
         <div className="flex items-center w-full gap-x-2">
             <Button

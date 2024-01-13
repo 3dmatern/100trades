@@ -6,11 +6,11 @@ import {
     CardContent,
     CardFooter,
 } from "@/components/ui/card";
-import Header from "@/components/auth/header";
-import Social from "@/components/auth/social";
-import BackButton from "@/components/auth/backButton";
+import { Header } from "@/components/auth/header";
+import { Social } from "@/components/auth/social";
+import { BackButton } from "@/components/auth/backButton";
 
-export default function CardWrapper({
+export function CardWrapper({
     children,
     headerLabel,
     backButtonLabel,

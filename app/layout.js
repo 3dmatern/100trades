@@ -1,4 +1,6 @@
 import { Inter } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["cyrillic"] });
@@ -8,10 +10,13 @@ export const metadata = {
     description: "Журнал сделок трейдинга Homa-Trading",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+    const session = await auth();
     return (
-        <html lang="ru">
-            <body className={inter.className}>{children}</body>
-        </html>
+        <SessionProvider session={session}>
+            <html lang="ru">
+                <body className={inter.className}>{children}</body>
+            </html>
+        </SessionProvider>
     );
 }

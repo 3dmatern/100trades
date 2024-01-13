@@ -1,22 +1,31 @@
-export const authConfig = {
-    pages: {
-        signIn: "/",
-    },
-    // callbacks: {
-    //     authorized({ auth, request: { nextUrl } }) {
-    //         const isLoggedIn = !!auth?.user;
-    //         const isOnHomePage = nextUrl.pathname === "/";
-    //         const isOnRegistrationPage = nextUrl.pathname === "/registration";
-    //         const isOnDealsPage = nextUrl.pathname === "/deals";
-    //         const isOnProfilePage = nextUrl.pathname === "/profile";
+import bcrypt from "bcryptjs";
+import Credentials from "next-auth/providers/credentials";
 
-    //         if (isLoggedIn && (isOnHomePage || isOnRegistrationPage)) {
-    //             return Response.redirect(new URL("/deals", nextUrl));
-    //         } else if (!isLoggedIn && (isOnDealsPage || isOnProfilePage)) {
-    //             return Response.redirect(new URL("/", nextUrl));
-    //         }
-    //         return true;
-    //     },
-    // },
-    providers: [], // Пока добавляем провайдеров с пустым массивом
+import { LoginSchema } from "@/schemas";
+import { getUserByEmail } from "@/data/user";
+
+// eslint-disable-next-line import/no-anonymous-default-export
+export default {
+    providers: [
+        Credentials({
+            async authorize(credentials) {
+                const validatedFields = LoginSchema.safeParse(credentials);
+
+                if (validatedFields.success) {
+                    const { email, password } = validatedFields.data;
+
+                    const user = await getUserByEmail(email);
+                    if (!user || !user.password) return null;
+
+                    const passwordsMatch = await bcrypt.compare(
+                        password,
+                        user.password
+                    );
+                    if (passwordsMatch) return user;
+                }
+
+                return null;
+            },
+        }),
+    ],
 };

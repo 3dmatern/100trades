@@ -1,5 +1,5 @@
-import CheckboxOrNumber from "./common/checkboxOrNumber";
-import SelectFilterButton from "./common/selectFilterButton";
+import CheckboxOrNumber from "@/components/ui/deals/common/checkboxOrNumber";
+import SelectFilterButton from "@/components/ui/deals/common/selectFilterButton";
 
 export default function TableHead({
     initHeaders,

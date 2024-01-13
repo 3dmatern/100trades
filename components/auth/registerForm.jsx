@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import CardWrapper from "@/components/auth/cardWrapper";
-import FormSuccess from "@/components/formSuccess";
-import FormError from "@/components/formError";
+import { CardWrapper } from "@/components/auth/cardWrapper";
+import { FormSuccess } from "@/components/formSuccess";
+import { FormError } from "@/components/formError";
 import { register } from "@/actions/register";
 
 export function RegisterForm() {
@@ -36,10 +36,12 @@ export function RegisterForm() {
         setError("");
 
         startTransition(() => {
-            register(values).then((data) => {
-                setError(data.error);
-                setSuccess(data.success);
-            });
+            register(values)
+                .then((data) => {
+                    setError(data.error);
+                    setSuccess(data.success);
+                })
+                .catch(() => setError("Что-то пошло не так!"));
         });
     };
 
@@ -48,7 +50,6 @@ export function RegisterForm() {
             headerLabel="Создать аккаунт"
             backButtonLabel="Уже есть аккаунта?"
             backButtonHref="/auth/login"
-            showSocial
         >
             <Form {...form}>
                 <form

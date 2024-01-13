@@ -3,10 +3,11 @@
 import { db } from "@/lib/db";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
-import { v4 as uuidv4 } from "uuid";
 
 import { RegisterSchema } from "@/schemas";
 import { getUserByEmail } from "@/data/user";
+import { generateVerificationToken } from "@/lib/tokens";
+import { sendVerificationEmail } from "@/lib/mail";
 
 export const register = async (values) => {
     const validatedFields = RegisterSchema.safeParse(values);
@@ -29,7 +30,6 @@ export const register = async (values) => {
 
     const password = crypto.randomBytes(8).toString("hex"); // Генерация 16-символьного пароля
     const hashedPassword = await bcrypt.hash(password, 10);
-    const activationToken = uuidv4();
 
     await db.user.create({
         data: {
@@ -38,8 +38,13 @@ export const register = async (values) => {
         },
     });
 
-    // TODO: Send verefication token email
+    const verificationToken = await generateVerificationToken(email);
 
-    // return { success: "Письмо отправлено! Проверьте почту." };
-    return { success: "Пользователь создан!" };
+    await sendVerificationEmail(
+        verificationToken.email,
+        verificationToken.token,
+        password
+    );
+
+    return { success: "Письмо с активацией отправлено на почту!" };
 };

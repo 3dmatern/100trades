@@ -1,56 +1,73 @@
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import Google from "next-auth/providers/google";
-import Credentials from "next-auth/providers/credentials";
-import { z } from "zod";
-import { sql } from "@vercel/postgres";
-import bcrypt from "bcryptjs";
 
 import { db } from "@/lib/db";
-import { authConfig } from "@/auth.config";
-
-async function getUser(email) {
-    try {
-        const user = await sql`SELECT * FROM users WHERE email=${email}`;
-        return user.rows[0];
-    } catch (error) {
-        console.error("Failed to fetch user:", error);
-        throw new Error("Не удалось получить пользователя.");
-    }
-}
+import authConfig from "@/auth.config";
+import { getUserById } from "@/data/user";
 
 export const {
     handlers: { GET, POST },
     auth,
+    signIn,
+    signOut,
+    update,
 } = NextAuth({
+    pages: {
+        signIn: "/auth/login",
+        error: "/auth/error",
+    },
+    events: {
+        async linkAccount({ user }) {
+            await db.user.update({
+                where: { id: user.id },
+                data: { emailVerified: new Date() },
+            });
+        },
+    },
+    callbacks: {
+        async signIn({ user }) {
+            const existingUser = await getUserById(user.id);
+
+            // Запретить вход без подтверждения электронной почты
+            if (!existingUser || !existingUser.emailVerified) {
+                return false;
+            }
+
+            return true;
+        },
+        async session({ token, session }) {
+            if (token.sub && session.user) {
+                session.user.id = token.sub;
+            }
+
+            if (token.role && session.user) {
+                session.user.role = token.role;
+            }
+
+            if (session.user) {
+                session.user.firstname = token.firstname;
+                session.user.lastname = token.lastname;
+                session.user.email = token.email;
+            }
+
+            return session;
+        },
+        async jwt({ token }) {
+            if (!token.sub) return token;
+
+            const existingUser = await getUserById(token.sub);
+
+            if (!existingUser) return token;
+
+            token.firstname = existingUser.firstname;
+            token.lastname = existingUser.lastname;
+            token.email = existingUser.email;
+            token.role = existingUser.role;
+
+            return token;
+        },
+    },
     adapter: PrismaAdapter(db),
     session: { strategy: "jwt" },
     ...authConfig,
-    providers: [
-        Google,
-        Credentials({
-            async authorize(credentials) {
-                const parsedCredentials = z
-                    .object({
-                        email: z.string().email(),
-                        password: z.string().min(6),
-                    })
-                    .safeParse(credentials);
-
-                if (parsedCredentials.success) {
-                    const { email, password } = parsedCredentials.data;
-                    const user = await getUser(email);
-                    if (!user) return null;
-
-                    const passwordMatch = await bcrypt.compare(
-                        password,
-                        user.password
-                    );
-                    if (passwordMatch) return user;
-                }
-
-                return null;
-            },
-        }),
-    ],
 });
