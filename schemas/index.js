@@ -1,5 +1,25 @@
 import z from "zod";
 
+export const SheetSchema = z
+    .object({
+        userId: z.string(),
+        name: z.string(),
+    })
+    .refine((data) => {
+        if (!data.name) {
+            return false;
+        }
+
+        return true;
+    })
+    .refine((data) => {
+        if (!data.userId) {
+            return false;
+        }
+
+        return true;
+    });
+
 export const SettingsSchema = z
     .object({
         firstname: z.optional(z.string()),

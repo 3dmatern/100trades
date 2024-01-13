@@ -1,19 +1,14 @@
-"use client";
-
+import { getSheets } from "@/actions/sheet";
 import Sheets from "@/components/ui/deals/sheets";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { currentUser } from "@/lib/auth";
 
-const initSheets = [
-    { id: "s1", name: "Лист 1" },
-    { id: "s2", name: "Лист 2" },
-    { id: "s3", name: "Лист 3" },
-];
+export default async function DealsPage() {
+    const user = await currentUser();
+    const sheets = await getSheets(user.id);
 
-export default function DealsPage() {
-    const user = useCurrentUser();
     return (
         <main className="mx-auto p-5 overflow-x-auto">
-            <Sheets className="mt-8" sheets={initSheets} />
+            <Sheets className="mt-8" userId={user.id} sheets={sheets} />
         </main>
     );
 }

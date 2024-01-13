@@ -9,7 +9,7 @@ export default function Sheet({
     index,
     selectSheet,
     sheet,
-    onClickIndex,
+    onClickId,
 }) {
     const sheetRef = useRef(null);
     const formRef = useRef(null);
@@ -55,7 +55,7 @@ export default function Sheet({
     return (
         <div
             ref={sheetRef}
-            onClick={() => onClickIndex(index)}
+            onClick={() => onClickId(sheet.id)}
             className={clsx(
                 "flex items-center justify-center gap-1 w-max h-9 px-2 relative bg-gray-200 hover:bg-gray-100 rounded-t-lg cursor-pointer",
                 className

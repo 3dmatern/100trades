@@ -1,7 +1,5 @@
 "use server";
 
-import { db } from "@/lib/db";
-
 import { ResetSchema } from "@/schemas";
 import { getUserByEmail } from "@/data/user";
 import { generatePasswordResetToken } from "@/lib/tokens";
