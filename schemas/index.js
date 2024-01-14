@@ -1,5 +1,10 @@
 import z from "zod";
 
+export const RiskRewardSchema = z.object({
+    label: z.string(),
+    value: z.string(),
+});
+
 export const EntrieSchema = z
     .object({
         id: z.string(),

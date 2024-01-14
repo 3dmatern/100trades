@@ -192,7 +192,6 @@ export default function Table({ userId, sheetId }) {
                     }
                     return data;
                 });
-                console.log(result);
                 setDeals(result);
             };
             entries();

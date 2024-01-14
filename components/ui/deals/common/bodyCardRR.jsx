@@ -3,6 +3,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
+import { getRisksRewards } from "@/actions/riskReward";
+import { getRandomHexColor } from "@/utils/getRandomHexColor";
+
 const initRRs = [
     { id: "lp1", label: "1:2", value: getRandomHexColor() },
     { id: "lp2", label: "1:7", value: getRandomHexColor() },
@@ -18,6 +21,7 @@ export default function BodyCardRR({
     const listRef = useRef(null);
     const [active, setActive] = useState(false);
     const [open, setOpen] = useState(false);
+    const [risksRewards, setRisksRewards] = useState([]);
     const [filterRRs, setFilterRRs] = useState([]);
     const [lpBgColor, setLPBgColor] = useState("");
     const [currentRR, setCurrentRR] = useState(undefined);
@@ -42,12 +46,20 @@ export default function BodyCardRR({
     }, [dealRR]);
 
     useEffect(() => {
-        if (rrs) {
-            setFilterRRs(rrs);
+        const onRR = async () => {
+            const rr = await getRisksRewards();
+            if (rr) {
+                setRisksRewards(rr);
+                setFilterRRs(rr);
+            } else {
+                setRisksRewards([]);
+                setFilterRRs([]);
+            }
             const color = getRandomHexColor();
-            setLPBgColor(rrs.some((l) => l.value !== color) && color);
-        }
-    }, [rrs.length]);
+            setLPBgColor(rr?.some((l) => l.value !== color) && color);
+        };
+        onRR();
+    }, [getRandomHexColor]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -55,14 +67,14 @@ export default function BodyCardRR({
                 setActive(false);
                 setOpen(false);
                 setRR("");
-                setFilterRRs(rrs);
+                setFilterRRs(risksRewards);
             }
         };
         const handleScroll = () => {
             setActive(false);
             setOpen(false);
             setRR("");
-            setFilterRRs(rrs);
+            setFilterRRs(risksRewards);
         };
 
         document.addEventListener("click", handleClickOutside);
@@ -71,7 +83,7 @@ export default function BodyCardRR({
             document.removeEventListener("click", handleClickOutside);
             window.removeEventListener("scroll", handleScroll);
         };
-    }, [rrs]);
+    }, [risksRewards]);
 
     return (
         <div
