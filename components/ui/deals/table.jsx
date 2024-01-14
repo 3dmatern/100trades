@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { getRandomHexColor } from "@/utils/getRandomHexColor";
 
 import TableBody from "@/components/ui/deals/tableBody";
 import TableHead from "@/components/ui/deals/tableHead";
+import { getEntries } from "@/actions/entrie";
 
 const initDeals = [
     {
@@ -155,7 +156,7 @@ const initData = {
     notes: "",
 };
 
-export default function Table() {
+export default function Table({ sheetId }) {
     const [data, setData] = useState(initData);
     const [deals, setDeals] = useState(initDeals);
     const [checkAll, setCheckAll] = useState(false);
@@ -191,6 +192,18 @@ export default function Table() {
     const handleAddDeal = () => {
         setDeals((prev) => [...prev, { ...data, id: Date.now() }]);
     };
+
+    useEffect(() => {
+        if (sheetId) {
+            const entries = async () => {
+                const result = await getEntries(sheetId);
+                console.log(result);
+                // setDeals(result)
+            };
+
+            entries();
+        }
+    }, [sheetId]);
 
     return (
         <div className="w-max">

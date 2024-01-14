@@ -59,6 +59,12 @@ export default function Sheets({ className, userId, sheets }) {
     };
 
     useEffect(() => {
+        if (sheets.length > 0) {
+            setSheetId(sheets[0].id);
+        }
+    }, [sheets]);
+
+    useEffect(() => {
         const handleClickOutside = async (e) => {
             if (
                 sheetsRef.current &&
