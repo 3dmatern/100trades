@@ -22,7 +22,7 @@ import Sheet from "@/components/ui/deals/sheet";
 import Table from "@/components/ui/deals/table";
 
 export default function Sheets({ className, userId, sheets }) {
-    const sheetRef = useRef(null);
+    const sheetsRef = useRef(null);
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
     const [sheetId, setSheetId] = useState("");
@@ -36,12 +36,12 @@ export default function Sheets({ className, userId, sheets }) {
     });
 
     const onSubmit = (values) => {
+        if (!values.name) {
+            setOpen(false);
+            form.reset();
+            return;
+        }
         startTransition(() => {
-            if (!values.name) {
-                setOpen(false);
-                form.reset();
-                return;
-            }
             createSheet(values)
                 .then((data) => {
                     if (data.error) {
@@ -61,8 +61,8 @@ export default function Sheets({ className, userId, sheets }) {
     useEffect(() => {
         const handleClickOutside = async (e) => {
             if (
-                sheetRef.current &&
-                !sheetRef.current.contains(e.target) &&
+                sheetsRef.current &&
+                !sheetsRef.current.contains(e.target) &&
                 open
             ) {
                 form.handleSubmit(onSubmit(form.getValues()));
@@ -77,7 +77,7 @@ export default function Sheets({ className, userId, sheets }) {
     }, [form, open]);
 
     return (
-        <div ref={sheetRef} className={className}>
+        <div ref={sheetsRef} className={className}>
             <div className="flex items-center justify-start gap-1 h-9">
                 {sheets.length > 0 &&
                     sheets?.map((sheet, index) => (

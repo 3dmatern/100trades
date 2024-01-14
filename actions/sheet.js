@@ -3,13 +3,9 @@
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/lib/db";
-import { SheetCreateSchema } from "@/schemas";
+import { SheetCreateSchema, SheetUpdateSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
-import {
-    getSheetBySheetId,
-    getSheetsByUserId,
-    removeSheetBySheetId,
-} from "@/data/sheet";
+import { getSheetBySheetId, getSheetsByUserId } from "@/data/sheet";
 
 export const createSheet = async (values) => {
     const validatedFields = SheetCreateSchema.safeParse(values);
@@ -20,7 +16,7 @@ export const createSheet = async (values) => {
         };
     }
 
-    const { userId, name, date } = validatedFields.data;
+    const { userId, name } = validatedFields.data;
 
     const existingUser = await getUserById(userId);
 
@@ -35,7 +31,6 @@ export const createSheet = async (values) => {
             data: {
                 userId,
                 name,
-                date,
             },
         });
 
@@ -74,6 +69,55 @@ export const getSheets = async (userId) => {
     }
 };
 
+export const updateSheet = async (values) => {
+    const validatedFields = SheetUpdateSchema.safeParse(values);
+
+    if (!validatedFields.success) {
+        return {
+            error: "Несанкционированный доступ!",
+        };
+    }
+
+    const { id, userId, name } = validatedFields.data;
+
+    const existingSheet = await getSheetBySheetId(id);
+
+    if (!existingSheet) {
+        return {
+            error: "Несанкционированный доступ!",
+        };
+    }
+
+    const existingUser = await getUserById(userId);
+
+    if (!existingUser) {
+        return {
+            error: "Несанкционированный доступ!",
+        };
+    }
+
+    try {
+        await db.sheet.update({
+            where: {
+                id: existingSheet.id,
+            },
+            data: {
+                name,
+            },
+        });
+
+        revalidatePath("/deals");
+        return {
+            success: "Лист успешно обновлен!",
+        };
+    } catch (error) {
+        console.error("Error creating sheet: ", error);
+        return {
+            error: "Ошибка обновления листа!",
+        };
+    }
+};
+
 export const removeSheet = async ({ sheetId, userId }) => {
     const existingSheet = await getSheetBySheetId(sheetId);
 
@@ -92,7 +136,12 @@ export const removeSheet = async ({ sheetId, userId }) => {
     }
 
     try {
-        await removeSheetBySheetId(existingSheet.id);
+        await db.sheet.delete({
+            where: {
+                id: existingSheet.id,
+            },
+        });
+
         revalidatePath("/deals");
 
         return {

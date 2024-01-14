@@ -2,11 +2,22 @@
 
 import clsx from "clsx";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { BeatLoader } from "react-spinners";
-
-import { removeSheet } from "@/actions/sheet";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+
+import { SheetUpdateSchema } from "@/schemas";
+import { removeSheet, updateSheet } from "@/actions/sheet";
+import {
+    Form,
+    FormField,
+    FormItem,
+    FormControl,
+    FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 export default function Sheet({
     className,
@@ -16,10 +27,18 @@ export default function Sheet({
     onClickId,
 }) {
     const sheetRef = useRef(null);
-    const formRef = useRef(null);
-    const [open, setOpen] = useState(false);
+    const [isPending, startTransition] = useTransition();
     const [isPendingRemove, setIsPendingRemove] = useState(false);
-    const [sheetValue, setSheetValue] = useState("");
+    const [open, setOpen] = useState(false);
+
+    const form = useForm({
+        resolver: zodResolver(SheetUpdateSchema),
+        defaultValues: {
+            id: sheet.id,
+            userId,
+            name: sheet.name,
+        },
+    });
 
     const onRemoveSheet = async (sheetId) => {
         setIsPendingRemove(true);
@@ -39,41 +58,45 @@ export default function Sheet({
             });
     };
 
-    useEffect(() => {
-        if (sheet) {
-            setSheetValue(sheet.name);
+    const onSubmit = (values) => {
+        if (!values.name || values.name === sheet.name) {
+            setOpen(false);
+            form.reset();
+            return;
         }
-    }, [sheet]);
-
-    useEffect(() => {
-        if (formRef.current) {
-            const form = formRef.current;
-            const rect = form.getBoundingClientRect();
-
-            if (rect.right > window.innerWidth) {
-                form.style.left = "unset";
-                form.style.right = "0px";
-            }
-        }
-    }, [open]);
+        startTransition(() => {
+            updateSheet(values)
+                .then((data) => {
+                    if (data.error) {
+                        setOpen(true);
+                        toast.error(data.error);
+                    }
+                    if (data.success) {
+                        setOpen(false);
+                        toast.success(data.success);
+                        form.reset();
+                    }
+                })
+                .catch(() => toast.error("Что-то пошло не так!"));
+        });
+    };
 
     useEffect(() => {
         const handleClickOutside = (e) => {
-            if (sheetRef.current && !sheetRef.current.contains(e.target)) {
-                setOpen(false);
+            if (
+                sheetRef.current &&
+                !sheetRef.current.contains(e.target) &&
+                open
+            ) {
+                form.handleSubmit(onSubmit(form.getValues()));
             }
-        };
-        const handleScroll = () => {
-            setOpen(false);
         };
 
         document.addEventListener("click", handleClickOutside);
-        window.addEventListener("scroll", handleScroll);
         return () => {
             document.removeEventListener("click", handleClickOutside);
-            window.removeEventListener("scroll", handleScroll);
         };
-    }, []);
+    }, [open]);
 
     return (
         <div
@@ -88,8 +111,37 @@ export default function Sheet({
                 <BeatLoader size={10} />
             ) : (
                 <>
-                    {" "}
-                    <span>{sheet.name}</span>
+                    {open ? (
+                        <Form {...form}>
+                            <form className="flex items-center justify-center h-9 px-2 relative bg-gray-200 rounded-t-lg">
+                                {isPending ? (
+                                    <BeatLoader size={10} />
+                                ) : (
+                                    <div className="space-y-4">
+                                        <FormField
+                                            control={form.control}
+                                            name="name"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormControl>
+                                                        <Input
+                                                            {...field}
+                                                            disabled={isPending}
+                                                            placeholder="Лист 1"
+                                                            className="bg-white h-8 max-w-24"
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+                                )}
+                            </form>
+                        </Form>
+                    ) : (
+                        <span>{sheet.name}</span>
+                    )}
                     {sheet.id === selectSheet ? (
                         <button
                             type="button"
@@ -122,20 +174,6 @@ export default function Sheet({
                             />
                         </button>
                     )}
-                    <form
-                        ref={formRef}
-                        className={`${
-                            open ? "block" : "hidden"
-                        } absolute top-9 left-0 z-30 p-2 bg-sky-200 rounded-md w-28`}
-                    >
-                        <input
-                            type="text"
-                            name="sheet"
-                            value={sheetValue}
-                            onChange={(e) => setSheetValue(e.target.value)}
-                            className="w-full outline-none"
-                        />
-                    </form>{" "}
                 </>
             )}
         </div>

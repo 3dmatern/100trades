@@ -30,19 +30,3 @@ export const getSheetBySheetId = async (sheetId) => {
         return null;
     }
 };
-
-export const removeSheetBySheetId = async (sheetId) => {
-    noStore();
-    try {
-        const sheet = await db.sheet.delete({
-            where: {
-                id: sheetId,
-            },
-        });
-        console.log("remove ", sheet);
-
-        return sheet;
-    } catch (error) {
-        return null;
-    }
-};
