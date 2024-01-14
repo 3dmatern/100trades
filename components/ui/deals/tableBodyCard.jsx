@@ -112,7 +112,7 @@ export default function TableBodyCard({
                 userId={userId}
                 sheetId={sheetId}
                 dealId={deal.id}
-                dealRR={deal.rr}
+                rrId={deal.rrId}
                 columnWidth={columnWidth.column6}
                 determineTextColor={determineTextColor}
                 getRandomHexColor={getRandomHexColor}

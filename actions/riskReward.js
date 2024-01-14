@@ -24,7 +24,7 @@ export const createRiskReward = async ({ userId, values }) => {
     }
 
     try {
-        await db.riskReward.create({
+        const newRR = await db.riskReward.create({
             data: {
                 label,
                 value,
@@ -34,6 +34,7 @@ export const createRiskReward = async ({ userId, values }) => {
         revalidatePath("/sheets");
 
         return {
+            newRR,
             success: "R:R успешно создан!",
         };
     } catch (error) {

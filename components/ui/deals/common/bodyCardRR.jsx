@@ -1,24 +1,23 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
+import { toast } from "sonner";
 
-import { getRisksRewards } from "@/actions/riskReward";
+import { createRiskReward, getRisksRewards } from "@/actions/riskReward";
 import { getRandomHexColor } from "@/utils/getRandomHexColor";
-
-const initRRs = [
-    { id: "lp1", label: "1:2", value: getRandomHexColor() },
-    { id: "lp2", label: "1:7", value: getRandomHexColor() },
-    { id: "lp3", label: "1:10", value: getRandomHexColor() },
-];
+import { updateEntrie } from "@/actions/entrie";
 
 export default function BodyCardRR({
-    dealRR,
+    userId,
+    sheetId,
+    dealId,
+    rrId,
     columnWidth,
     determineTextColor,
-    getRandomHexColor,
 }) {
     const listRef = useRef(null);
+    const [isPending, startTransition] = useTransition();
     const [active, setActive] = useState(false);
     const [open, setOpen] = useState(false);
     const [risksRewards, setRisksRewards] = useState([]);
@@ -36,14 +35,73 @@ export default function BodyCardRR({
         e.stopPropagation();
         setActive(false);
         setOpen(false);
-        setCurrentRR(rr);
+        startTransition(() => {
+            if (risksRewards.some((r) => r.label === rr.label)) {
+                updateEntrie({
+                    userId,
+                    values: { id: dealId, sheetId, rrId: rr.id },
+                })
+                    .then((data) => {
+                        if (data.error) {
+                            toast.error(data.error);
+                            setActive(true);
+                            setOpen(true);
+                        }
+                        if (data.success) {
+                            toast.success(data.success);
+                            setActive(false);
+                            setOpen(false);
+                            setCurrentRR(rr);
+                            setRR("");
+                        }
+                    })
+                    .catch(() => toast.error("Что-то пошло не так!"));
+            } else {
+                createRiskReward({ userId, values: rr })
+                    .then((data) => {
+                        if (data.error) {
+                            toast.error(data.error);
+                        }
+                        if (data.success) {
+                            toast.success(data.success);
+                            setRisksRewards((prev) => [...prev, data.newRR]);
+                            updateEntrie({
+                                userId,
+                                values: {
+                                    id: dealId,
+                                    sheetId,
+                                    rrId: data.newRR.id,
+                                },
+                            })
+                                .then((data) => {
+                                    if (data.error) {
+                                        toast.error(data.error);
+                                        setActive(true);
+                                        setOpen(true);
+                                    }
+                                    if (data.success) {
+                                        toast.success(data.success);
+                                        setActive(false);
+                                        setOpen(false);
+                                        setCurrentRR(rr);
+                                        setRR("");
+                                    }
+                                })
+                                .catch(() =>
+                                    toast.error("Что-то пошло не так!")
+                                );
+                        }
+                    })
+                    .catch(() => toast.error("Что-то пошло не так!"));
+            }
+        });
     };
 
     useEffect(() => {
-        if (dealRR) {
-            setCurrentRR(dealRR);
+        if (rrId && risksRewards) {
+            setCurrentRR(risksRewards.find((item) => item.id === rrId));
         }
-    }, [dealRR]);
+    }, [risksRewards, rrId]);
 
     useEffect(() => {
         const onRR = async () => {
@@ -56,10 +114,11 @@ export default function BodyCardRR({
                 setFilterRRs([]);
             }
             const color = getRandomHexColor();
-            setLPBgColor(rr?.some((l) => l.value !== color) && color);
+            console.log(color);
+            setLPBgColor(!rr.some((l) => l.value === color) && color);
         };
         onRR();
-    }, [getRandomHexColor]);
+    }, []);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -96,6 +155,7 @@ export default function BodyCardRR({
         >
             <button
                 type="button"
+                disabled={isPending}
                 className="flex items-center justify-between w-full"
             >
                 <span
@@ -130,7 +190,7 @@ export default function BodyCardRR({
                         type="text"
                         name="rr"
                         value={rr}
-                        placeholder="Введите L:P"
+                        placeholder="Введите R:R"
                         onChange={(e) => handleChange(e.target.value)}
                         className="py-1 px-2 outline-none w-full"
                     />
@@ -138,7 +198,7 @@ export default function BodyCardRR({
                     {filterRRs.length > 0 ? (
                         <ul>
                             {filterRRs
-                                .filter((t) => !dealRR?.id !== t.id)
+                                .filter((t) => !rrId?.id !== t.id)
                                 .map((l) => (
                                     <li
                                         key={l.label}
@@ -162,7 +222,7 @@ export default function BodyCardRR({
                         </ul>
                     ) : (
                         <div className="flex items-center gap-1 px-2 text-xs">
-                            Добавит L:P{" "}
+                            Добавить R:R{" "}
                             <span
                                 onClick={(e) =>
                                     handleSelectLP(e, {
