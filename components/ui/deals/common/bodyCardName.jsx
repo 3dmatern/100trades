@@ -9,8 +9,8 @@ import { BeatLoader } from "react-spinners";
 import { EntrieSchema } from "@/schemas";
 import { updateEntrie } from "@/actions/entrie";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import CheckboxOrNumber from "@/components/ui/deals/common/checkboxOrNumber";
 import { Input } from "@/components/ui/input";
+import CheckboxOrNumber from "@/components/ui/deals/common/checkboxOrNumber";
 
 export default function BodyCardName({
     userId,

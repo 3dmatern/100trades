@@ -3,8 +3,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
+const initRRs = [
+    { id: "lp1", label: "1:2", value: getRandomHexColor() },
+    { id: "lp2", label: "1:7", value: getRandomHexColor() },
+    { id: "lp3", label: "1:10", value: getRandomHexColor() },
+];
+
 export default function BodyCardRR({
-    rrs,
     dealRR,
     columnWidth,
     determineTextColor,

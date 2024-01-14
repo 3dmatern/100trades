@@ -49,7 +49,6 @@ export default function TableBodyCard({
     deal,
     selectedDeals,
     tags,
-    rrs,
     checkAll,
     columnWidth,
     onCheckDeal,
@@ -94,17 +93,25 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column3}
             />
             <BodyCardRisk
+                userId={userId}
+                sheetId={sheetId}
+                dealId={deal.id}
                 dealRisk={deal.risk}
                 dealHover={hover}
                 columnWidth={columnWidth.column4}
             />
             <BodyCardProfit
+                userId={userId}
+                sheetId={sheetId}
+                dealId={deal.id}
                 dealProfit={deal.profit}
                 dealHover={hover}
                 columnWidth={columnWidth.column5}
             />
             <BodyCardRR
-                rrs={rrs}
+                userId={userId}
+                sheetId={sheetId}
+                dealId={deal.id}
                 dealRR={deal.rr}
                 columnWidth={columnWidth.column6}
                 determineTextColor={determineTextColor}
