@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import { getRandomHexColor } from "@/utils/getRandomHexColor";
+import { createEntrie, getEntries } from "@/actions/entrie";
 
 import TableBody from "@/components/ui/deals/tableBody";
 import TableHead from "@/components/ui/deals/tableHead";
-import { getEntries } from "@/actions/entrie";
 
 const initDeals = [
     {
@@ -156,9 +157,8 @@ const initData = {
     notes: "",
 };
 
-export default function Table({ sheetId }) {
-    const [data, setData] = useState(initData);
-    const [deals, setDeals] = useState(initDeals);
+export default function Table({ userId, sheetId }) {
+    const [deals, setDeals] = useState([]);
     const [checkAll, setCheckAll] = useState(false);
     const [columnWidth, setColumnWidth] = useState(initColumnWidth);
     const [selectedDeals, setSelectedDeals] = useState([]);
@@ -189,18 +189,30 @@ export default function Table({ sheetId }) {
         }));
     };
 
-    const handleAddDeal = () => {
-        setDeals((prev) => [...prev, { ...data, id: Date.now() }]);
+    const handleCreateDeal = async () => {
+        await createEntrie({ userId, sheetId }).then((data) => {
+            if (data.error) {
+                toast.error(data.error);
+            }
+            if (data.success) {
+                setDeals((prev) => [...prev, data.newEntrie]);
+                toast.success(data.success);
+            }
+        });
     };
 
     useEffect(() => {
         if (sheetId) {
             const entries = async () => {
-                const result = await getEntries(sheetId);
+                const result = await getEntries(sheetId).then((data) => {
+                    if (data.error) {
+                        toast.error(data.error);
+                    }
+                    return data;
+                });
                 console.log(result);
-                // setDeals(result)
+                setDeals(result);
             };
-
             entries();
         }
     }, [sheetId]);
@@ -221,7 +233,7 @@ export default function Table({ sheetId }) {
                 columnWidth={columnWidth}
                 onChangeCheckbox={handleSelectDeal}
                 onChange={handleChange}
-                onAddDeal={handleAddDeal}
+                onCreateDeal={handleCreateDeal}
             />
         </div>
     );

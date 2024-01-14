@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { SheetCreateSchema, SheetUpdateSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
-import { getSheetBySheetId, getSheetsByUserId } from "@/data/sheet";
+import { getSheetById, getSheetsByUserId } from "@/data/sheet";
 
 export const createSheet = async (values) => {
     const validatedFields = SheetCreateSchema.safeParse(values);
@@ -80,7 +80,7 @@ export const updateSheet = async (values) => {
 
     const { id, userId, name } = validatedFields.data;
 
-    const existingSheet = await getSheetBySheetId(id);
+    const existingSheet = await getSheetById(id);
 
     if (!existingSheet) {
         return {
@@ -119,7 +119,7 @@ export const updateSheet = async (values) => {
 };
 
 export const removeSheet = async ({ sheetId, userId }) => {
-    const existingSheet = await getSheetBySheetId(sheetId);
+    const existingSheet = await getSheetById(sheetId);
 
     if (!existingSheet) {
         return {

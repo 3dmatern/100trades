@@ -14,7 +14,7 @@ export const getSheetsByUserId = async (userId) => {
     }
 };
 
-export const getSheetBySheetId = async (sheetId) => {
+export const getSheetById = async (sheetId) => {
     noStore();
     try {
         const sheet = await db.sheet.findUnique({

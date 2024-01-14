@@ -3,22 +3,12 @@
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/lib/db";
-import { EntrieCreateSchema, EntrieUpdateSchema } from "@/schemas";
+import { EntrieSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
-import { getSheetBySheetId } from "@/data/sheet";
+import { getSheetById } from "@/data/sheet";
 import { getEntrieByEntrieId, getEntriesBySheetId } from "@/data/entrie";
 
-export const createEntrie = async (values) => {
-    const validatedFields = EntrieCreateSchema.safeParse(values);
-
-    if (!validatedFields.success) {
-        return {
-            error: "Несанкционированный доступ!",
-        };
-    }
-
-    const { userId } = validatedFields.data;
-
+export const createEntrie = async ({ userId, sheetId }) => {
     const existingUser = await getUserById(userId);
 
     if (!existingUser) {
@@ -26,15 +16,22 @@ export const createEntrie = async (values) => {
             error: "Несанкционированный доступ!",
         };
     }
+    const existingSheet = await getSheetById(sheetId);
+
+    if (!existingSheet || existingSheet.userId !== existingUser.id) {
+        return {
+            error: "Несанкционированный доступ!",
+        };
+    }
 
     try {
-        await db.entrie.create({
-            data: { userId },
+        const newEntrie = await db.entrie.create({
+            data: { sheetId: existingSheet.id },
         });
 
         revalidatePath("/deals");
-
         return {
+            newEntrie,
             success: "Запись успешно создана!",
         };
     } catch (error) {
@@ -46,7 +43,7 @@ export const createEntrie = async (values) => {
 };
 
 export const getEntries = async (sheetId) => {
-    const existingSheet = await getSheetBySheetId(sheetId);
+    const existingSheet = await getSheetById(sheetId);
 
     if (!existingSheet) {
         return {
@@ -69,7 +66,7 @@ export const getEntries = async (sheetId) => {
 };
 
 export const updateEntrie = async ({ userId, values }) => {
-    const validatedFields = EntrieUpdateSchema.safeParse(values);
+    const validatedFields = EntrieSchema.safeParse(values);
     if (!validatedFields) {
         return {
             error: "Несанкционированный доступ!",
@@ -95,7 +92,7 @@ export const updateEntrie = async ({ userId, values }) => {
         entrieTag,
     } = validatedFields.data;
 
-    const existingSheet = await getSheetBySheetId(sheetId);
+    const existingSheet = await getSheetById(sheetId);
     if (!existingSheet) {
         return {
             error: "Несанкционированный доступ!",
@@ -145,7 +142,7 @@ export const updateEntrie = async ({ userId, values }) => {
 };
 
 export const removeEntrie = async ({ userId, sheetId, entrieId }) => {
-    const existingSheet = await getSheetBySheetId(sheetId);
+    const existingSheet = await getSheetById(sheetId);
     if (!existingSheet) {
         return {
             error: "Несанкционированный доступ!",

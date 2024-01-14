@@ -1,32 +1,6 @@
 import z from "zod";
 
-export const EntrieCreateSchema = z
-    .object({
-        sheetId: z.string(),
-        name: z.optional(z.string()),
-        pose: z.optional(z.string()),
-        risk: z.optional(z.string()),
-        profit: z.optional(z.string()),
-        entryDate: z.optional(z.string()),
-        imageStart: z.optional(z.string()),
-        deposit: z.optional(z.string()),
-        exitDate: z.optional(z.string()),
-        imageEnd: z.optional(z.string()),
-        stress: z.optional(z.string()),
-        notes: z.optional(z.string()),
-        resultId: z.optional(z.string()),
-        rrId: z.optional(z.string()),
-        entrieTag: z.optional(z.array()),
-    })
-    .refine((data) => {
-        if (!data.sheetId) {
-            return false;
-        }
-
-        return true;
-    });
-
-export const EntrieUpdateSchema = z
+export const EntrieSchema = z
     .object({
         id: z.string(),
         sheetId: z.string(),

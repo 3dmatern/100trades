@@ -142,7 +142,7 @@ export default function Sheets({ className, userId, sheets }) {
                     />
                 </Button>
             </div>
-            <Table sheetId={sheetId} />
+            <Table userId={userId} sheetId={sheetId} />
         </div>
     );
 }
