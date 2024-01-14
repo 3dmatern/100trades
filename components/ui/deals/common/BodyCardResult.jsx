@@ -1,33 +1,51 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
+import { toast } from "sonner";
 
 import { getResults } from "@/actions/result";
+import { updateEntrie } from "@/actions/entrie";
 
 export default function BodyCardResult({
     userId,
     sheetId,
     dealId,
-    dealResult,
+    resultId,
     columnWidth,
 }) {
     const listRef = useRef(null);
+    const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
     const [results, setResults] = useState([]);
     const [result, setResult] = useState(undefined);
 
     const handleSelectResult = (res) => {
-        // e.stopPropagation();
-        setOpen(false);
         setResult(res);
+        // e.stopPropagation();
+        startTransition(() => {
+            updateEntrie({
+                userId,
+                values: { id: dealId, sheetId, resultId: res.id },
+            })
+                .then((data) => {
+                    if (data.error) {
+                        toast.error(data.error);
+                    }
+                    if (data.success) {
+                        setOpen(false);
+                        toast.success(data.success);
+                    }
+                })
+                .catch(() => toast.error("Что-то пошло не так!"));
+        });
     };
 
     useEffect(() => {
-        if (dealResult) {
-            setResult(results.find((item) => item.type === dealResult));
+        if (resultId && results) {
+            setResult(results.find((item) => item.id === resultId));
         }
-    }, [dealResult, results]);
+    }, [resultId, results]);
 
     useEffect(() => {
         const onResults = async () => {
@@ -69,6 +87,7 @@ export default function BodyCardResult({
             {result && (
                 <button
                     type="button"
+                    disabled={isPending}
                     className="flex items-center justify-between w-full"
                 >
                     <span
@@ -95,7 +114,7 @@ export default function BodyCardResult({
                     {
                         <ul>
                             {results
-                                .filter((r) => !dealResult !== r.type)
+                                .filter((r) => !resultId !== r.type)
                                 .map((res) => (
                                     <li
                                         key={res.label}

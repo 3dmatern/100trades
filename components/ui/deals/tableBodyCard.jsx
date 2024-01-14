@@ -82,7 +82,7 @@ export default function TableBodyCard({
                 userId={userId}
                 sheetId={sheetId}
                 dealId={deal.id}
-                dealResult={deal.result}
+                resultId={deal.resultId}
                 columnWidth={columnWidth.column2}
             />
             <BodyCardPose

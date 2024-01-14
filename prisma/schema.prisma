@@ -58,7 +58,6 @@ model Result {
   id                 String  @id @default(cuid())
   label              String
   value              String
-  type               String
   entries            Entrie[]
 }
 
