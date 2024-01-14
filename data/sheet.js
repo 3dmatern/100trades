@@ -9,7 +9,6 @@ export const getSheetsByUserId = async (userId) => {
                 userId,
             },
         });
-        console.log("getSheetsByUserId -> sheets ", sheets);
 
         return sheets;
     } catch (error) {

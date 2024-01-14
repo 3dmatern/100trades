@@ -86,17 +86,18 @@ export const removeSheet = async ({ sheetId, userId }) => {
     const existingUser = await getUserById(userId);
 
     if (!existingUser || existingSheet.userId !== existingUser.id) {
-        console.log({ sheetId, userId });
         return {
             error: "Несанкционированный доступ!",
         };
     }
 
     try {
-        const sheets = await removeSheetBySheetId(existingSheet.id);
+        await removeSheetBySheetId(existingSheet.id);
         revalidatePath("/deals");
 
-        return sheets;
+        return {
+            success: "Лист успешно удален!",
+        };
     } catch (error) {
         console.error("Error deleting sheet: ", error);
         return {

@@ -2,13 +2,13 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { BeatLoader } from "react-spinners";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import { toast } from "sonner";
 
 import { SheetCreateSchema } from "@/schemas";
-import { createSheet, removeSheet } from "@/actions/sheet";
+import { createSheet } from "@/actions/sheet";
 import {
     Form,
     FormField,
@@ -20,17 +20,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Sheet from "@/components/ui/deals/sheet";
 import Table from "@/components/ui/deals/table";
-import { FormError } from "@/components/formError";
-import { FormSuccess } from "@/components/formSuccess";
 
 export default function Sheets({ className, userId, sheets }) {
     const sheetRef = useRef(null);
     const [isPending, startTransition] = useTransition();
-    const [isPendingRemove, setIsPendingRemove] = useState(false);
     const [open, setOpen] = useState(false);
     const [sheetId, setSheetId] = useState("");
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
 
     const form = useForm({
         resolver: zodResolver(SheetCreateSchema),
@@ -40,44 +35,37 @@ export default function Sheets({ className, userId, sheets }) {
         },
     });
 
-    const onRemoveSheet = async (sheetId) => {
-        setIsPendingRemove(true);
-        await removeSheet({ sheetId, userId })
-            .then((data) => {
-                setError(data.error);
-                setSuccess(data.success);
-                setIsPendingRemove(false);
-            })
-            .catch(() => {
-                setIsPendingRemove(false);
-                setError("Что-то пошло не так!");
-            });
-    };
-
     const onSubmit = (values) => {
-        setError("");
-        setSuccess("");
-
         startTransition(() => {
+            if (!values.name) {
+                setOpen(false);
+                form.reset();
+                return;
+            }
             createSheet(values)
                 .then((data) => {
-                    setError(data.error);
-                    setSuccess(data.success);
+                    if (data.error) {
+                        setOpen(true);
+                        toast.error(data.error);
+                    }
+                    if (data.success) {
+                        setOpen(false);
+                        toast.success(data.success);
+                        form.reset();
+                    }
                 })
-                .catch(() => setError("Что-то пошло не так!"));
+                .catch(() => toast.error("Что-то пошло не так!"));
         });
     };
 
     useEffect(() => {
-        const handleClickOutside = (e) => {
+        const handleClickOutside = async (e) => {
             if (
                 sheetRef.current &&
                 !sheetRef.current.contains(e.target) &&
                 open
             ) {
                 form.handleSubmit(onSubmit(form.getValues()));
-                setOpen(false);
-                form.formState.defaultValues.name = "";
             }
         };
 
@@ -85,14 +73,11 @@ export default function Sheets({ className, userId, sheets }) {
         return () => {
             document.removeEventListener("click", handleClickOutside);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [form, open]);
 
     return (
         <div ref={sheetRef} className={className}>
-            <div className="w-max max-w-80 mx-auto">
-                <FormError message={error} />
-                <FormSuccess message={success} />
-            </div>
             <div className="flex items-center justify-start gap-1 h-9">
                 {sheets.length > 0 &&
                     sheets?.map((sheet, index) => (
@@ -100,9 +85,8 @@ export default function Sheets({ className, userId, sheets }) {
                             key={sheet.id}
                             selectSheet={sheetId}
                             sheet={sheet}
-                            isPendingRemove={isPendingRemove}
+                            userId={userId}
                             onClickId={setSheetId}
-                            onRemove={onRemoveSheet}
                             className={
                                 sheetId === index
                                     ? "bg-gray-100"

@@ -5,18 +5,39 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { BeatLoader } from "react-spinners";
 
+import { removeSheet } from "@/actions/sheet";
+import { toast } from "sonner";
+
 export default function Sheet({
     className,
     selectSheet,
     sheet,
-    isPendingRemove,
-    onRemove,
+    userId,
     onClickId,
 }) {
     const sheetRef = useRef(null);
     const formRef = useRef(null);
     const [open, setOpen] = useState(false);
+    const [isPendingRemove, setIsPendingRemove] = useState(false);
     const [sheetValue, setSheetValue] = useState("");
+
+    const onRemoveSheet = async (sheetId) => {
+        setIsPendingRemove(true);
+        await removeSheet({ sheetId, userId })
+            .then((data) => {
+                if (data.error) {
+                    toast.error(data.error);
+                }
+                if (data.success) {
+                    toast.success(data.success);
+                }
+                setIsPendingRemove(false);
+            })
+            .catch(() => {
+                setIsPendingRemove(false);
+                toast.error("Что-то пошло не так!");
+            });
+    };
 
     useEffect(() => {
         if (sheet) {
@@ -88,7 +109,7 @@ export default function Sheet({
                             type="button"
                             onClick={(e) => {
                                 e.stopPropagation();
-                                onRemove(sheet.id);
+                                onRemoveSheet(sheet.id);
                             }}
                             className="cursor-pointer hover:scale-110"
                         >

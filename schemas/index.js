@@ -23,14 +23,7 @@ export const SheetRemoveSchema = z
 export const SheetCreateSchema = z
     .object({
         userId: z.string(),
-        name: z.string(),
-    })
-    .refine((data) => {
-        if (!data.name) {
-            return false;
-        }
-
-        return true;
+        name: z.optional(z.string()),
     })
     .refine((data) => {
         if (!data.userId) {
