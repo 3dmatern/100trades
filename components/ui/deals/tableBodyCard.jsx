@@ -86,6 +86,9 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column2}
             />
             <BodyCardPose
+                userId={userId}
+                sheetId={sheetId}
+                dealId={deal.id}
                 dealPose={deal.pose}
                 dealHover={hover}
                 columnWidth={columnWidth.column3}

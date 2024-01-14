@@ -58,7 +58,7 @@ export default function BodyCardName({
         });
     };
 
-    const creatName = async () => {
+    const updateName = async () => {
         form.handleSubmit(onSubmit(form.getValues()));
         setOpen(false);
     };
@@ -101,7 +101,7 @@ export default function BodyCardName({
                                             disabled={isPending}
                                             placeholder="AAAA"
                                             onFocus={() => setOpen(true)}
-                                            onBlur={creatName}
+                                            onBlur={updateName}
                                             className={`w-20 h-8 px-2 text-xs border-none outline-none overflow-hidden whitespace-nowrap text-ellipsis ${
                                                 selectedDeals?.includes(
                                                     dealId
