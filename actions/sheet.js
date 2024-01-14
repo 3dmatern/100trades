@@ -34,7 +34,7 @@ export const createSheet = async (values) => {
             },
         });
 
-        revalidatePath("/deals");
+        revalidatePath("/sheets");
         return {
             success: "Лист успешно создан",
         };
@@ -58,7 +58,7 @@ export const getSheets = async (userId) => {
     try {
         const sheets = getSheetsByUserId(existingUser.id);
 
-        revalidatePath("/deals");
+        revalidatePath("/sheets");
 
         return sheets;
     } catch (error) {
@@ -106,7 +106,7 @@ export const updateSheet = async (values) => {
             },
         });
 
-        revalidatePath("/deals");
+        revalidatePath("/sheets");
         return {
             success: "Лист успешно обновлен!",
         };
@@ -142,7 +142,7 @@ export const removeSheet = async ({ sheetId, userId }) => {
             },
         });
 
-        revalidatePath("/deals");
+        revalidatePath("/sheets");
 
         return {
             success: "Лист успешно удален!",

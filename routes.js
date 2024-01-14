@@ -8,7 +8,7 @@ export const publicRoutes = ["/", "/auth/new-verification"];
 
 /**
  * An array of routes that are used for authentication
- * These routes will redirect logged in users to /deals
+ * These routes will redirect logged in users to /sheets
  * @type {string[]}
  */
 
@@ -33,4 +33,4 @@ export const apiAuthPrefix = "/api/auth";
  * @type {string}
  */
 
-export const DEFAULT_LOGIN_REDIRECT = "/deals";
+export const DEFAULT_LOGIN_REDIRECT = "/sheets";

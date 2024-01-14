@@ -139,31 +139,13 @@ const initColumnWidth = {
     column17: "128px",
 };
 
-const initData = {
-    name: "",
-    result: "",
-    pose: "",
-    risk: "",
-    profit: "",
-    rr: null,
-    entryDate: "",
-    imageStart: "",
-    deposit: "",
-    progress: "",
-    exitDate: "",
-    imageEnd: null,
-    stress: "",
-    tags: [],
-    notes: "",
-};
-
 export default function Table({ userId, sheetId }) {
     const [deals, setDeals] = useState([]);
     const [checkAll, setCheckAll] = useState(false);
     const [columnWidth, setColumnWidth] = useState(initColumnWidth);
     const [selectedDeals, setSelectedDeals] = useState([]);
 
-    const handleChange = ({ target }) => {
+    const handleCheckAll = ({ target }) => {
         if (target.name === "checkAll") {
             setCheckAll((prev) => {
                 !prev
@@ -174,7 +156,7 @@ export default function Table({ userId, sheetId }) {
         }
     };
 
-    const handleSelectDeal = ({ target }) => {
+    const handleCheckDeal = ({ target }) => {
         setSelectedDeals((prev) =>
             !prev.includes(target.value)
                 ? [...prev, target.value]
@@ -224,15 +206,16 @@ export default function Table({ userId, sheetId }) {
                 checkAll={checkAll}
                 columnWidth={columnWidth}
                 onResize={handleResize}
-                onChange={handleChange}
+                onCheckAll={handleCheckAll}
             />
             <TableBody
+                userId={userId}
+                sheetId={sheetId}
                 deals={deals}
                 selectedDeals={selectedDeals}
                 checkAll={checkAll}
                 columnWidth={columnWidth}
-                onChangeCheckbox={handleSelectDeal}
-                onChange={handleChange}
+                onCheckDeal={handleCheckDeal}
                 onCreateDeal={handleCreateDeal}
             />
         </div>

@@ -6,7 +6,7 @@ export default function TableHead({
     checkAll,
     columnWidth,
     onResize,
-    onChange,
+    onCheckAll,
 }) {
     return (
         <div className="flex items-center relative border-t border-b border-slate-300 bg-gray-50">
@@ -27,7 +27,7 @@ export default function TableHead({
                         }
                         name="checkAll"
                         checked={checkAll}
-                        onChange={onChange}
+                        onChange={onCheckAll}
                     />
                 </SelectFilterButton>
             ))}

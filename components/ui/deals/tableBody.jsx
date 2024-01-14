@@ -19,12 +19,13 @@ const initRRs = [
 ];
 
 export default function TableBody({
+    userId,
+    sheetId,
     deals,
     selectedDeals,
     checkAll,
     columnWidth,
-    onChangeCheckbox,
-    onChange,
+    onCheckDeal,
     onCreateDeal,
 }) {
     return (
@@ -33,6 +34,8 @@ export default function TableBody({
                 deals?.map((deal, index) => (
                     <TableBodyCard
                         key={deal.id}
+                        userId={userId}
+                        sheetId={sheetId}
                         index={index}
                         deal={deal}
                         selectedDeals={selectedDeals}
@@ -40,7 +43,7 @@ export default function TableBody({
                         rrs={initRRs}
                         checkAll={checkAll}
                         columnWidth={columnWidth}
-                        onChangeCheckbox={onChangeCheckbox}
+                        onCheckDeal={onCheckDeal}
                     />
                 ))
             ) : (

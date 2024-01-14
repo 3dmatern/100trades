@@ -29,7 +29,7 @@ export const createEntrie = async ({ userId, sheetId }) => {
             data: { sheetId: existingSheet.id },
         });
 
-        revalidatePath("/deals");
+        revalidatePath("/sheets");
         return {
             newEntrie,
             success: "Запись успешно создана!",
@@ -54,7 +54,7 @@ export const getEntries = async (sheetId) => {
     try {
         const entries = getEntriesBySheetId(existingSheet.id);
 
-        revalidatePath("/deals");
+        revalidatePath("/sheets");
 
         return entries;
     } catch (error) {
@@ -107,7 +107,7 @@ export const updateEntrie = async ({ userId, values }) => {
     }
 
     try {
-        await db.entrie.update({
+        const updatedEntrie = await db.entrie.update({
             where: { id },
             data: {
                 sheetId: existingSheet.id,
@@ -128,9 +128,10 @@ export const updateEntrie = async ({ userId, values }) => {
             },
         });
 
-        revalidatePath("/deals");
+        revalidatePath("/sheets");
 
         return {
+            updatedEntrie,
             success: "Запись успешно обновлена!",
         };
     } catch (error) {
@@ -168,7 +169,7 @@ export const removeEntrie = async ({ userId, sheetId, entrieId }) => {
             where: { id: existingEntrie.id },
         });
 
-        revalidatePath("/deals");
+        revalidatePath("/sheets");
 
         return {
             success: "Запись успешно удалена!",

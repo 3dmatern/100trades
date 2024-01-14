@@ -10,14 +10,9 @@ import { toast } from "sonner";
 
 import { SheetUpdateSchema } from "@/schemas";
 import { removeSheet, updateSheet } from "@/actions/sheet";
-import {
-    Form,
-    FormField,
-    FormItem,
-    FormControl,
-    FormMessage,
-} from "@/components/ui/form";
+import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 export default function Sheet({
     className,
@@ -100,11 +95,12 @@ export default function Sheet({
     }, [form, open]);
 
     return (
-        <div
+        <Link
             ref={sheetRef}
-            onClick={() => onClickId(sheet.id)}
+            // onClick={() => onClickId(sheet.id)}
+            href={`/sheets/${sheet.id}`}
             className={clsx(
-                "flex items-center justify-center gap-1 w-max h-9 px-2 relative bg-gray-200 hover:bg-gray-100 rounded-t-lg cursor-pointer",
+                "flex items-center justify-center gap-1 w-max h-9 px-2 relative bg-gray-200 hover:bg-gray-100 rounded-t-lg",
                 className
             )}
         >
@@ -132,7 +128,6 @@ export default function Sheet({
                                                             className="bg-white h-8 max-w-24"
                                                         />
                                                     </FormControl>
-                                                    <FormMessage />
                                                 </FormItem>
                                             )}
                                         />
@@ -177,6 +172,6 @@ export default function Sheet({
                     )}
                 </>
             )}
-        </div>
+        </Link>
     );
 }

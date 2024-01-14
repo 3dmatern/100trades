@@ -3,16 +3,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
-const initResults = [
-    { label: "win", value: "bg-green-300", type: "win" },
-    { label: "активна", value: "bg-orange-300", type: "active" },
-    { label: "бу", value: "bg-gray-300", type: "noLoss" },
-    { label: "loss", value: "bg-red-300", type: "loss" },
-];
+import { getResults } from "@/actions/result";
 
-export default function BodyCardResult({ dealResult, columnWidth }) {
+export default function BodyCardResult({
+    userId,
+    sheetId,
+    dealId,
+    dealResult,
+    columnWidth,
+}) {
     const listRef = useRef(null);
     const [open, setOpen] = useState(false);
+    const [results, setResults] = useState([]);
     const [result, setResult] = useState(undefined);
 
     const handleSelectResult = (res) => {
@@ -23,9 +25,21 @@ export default function BodyCardResult({ dealResult, columnWidth }) {
 
     useEffect(() => {
         if (dealResult) {
-            setResult(initResults.find((item) => item.type === dealResult));
+            setResult(results.find((item) => item.type === dealResult));
         }
-    }, [dealResult]);
+    }, [dealResult, results]);
+
+    useEffect(() => {
+        const onResults = async () => {
+            const result = await getResults();
+            if (result) {
+                setResults(result);
+            } else {
+                setResults([]);
+            }
+        };
+        onResults();
+    }, []);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -80,7 +94,7 @@ export default function BodyCardResult({ dealResult, columnWidth }) {
                 <div className="absolute left-0 top-8 z-10 w-max rounded-md py-2 bg-white border border-gray-300">
                     {
                         <ul>
-                            {initResults
+                            {results
                                 .filter((r) => !dealResult !== r.type)
                                 .map((res) => (
                                     <li

@@ -17,10 +17,10 @@ export default function Navbar() {
 
             <div className="flex items-center justify-center gap-x-2">
                 <Button
-                    variant={pathname === "/deals" ? "default" : "outline"}
+                    variant={pathname === "/sheets" ? "default" : "outline"}
                     asChild
                 >
-                    <Link href="/deals">Сделки</Link>
+                    <Link href="/sheets">Сделки</Link>
                 </Button>
                 <Button
                     variant={pathname === "/profile" ? "default" : "outline"}

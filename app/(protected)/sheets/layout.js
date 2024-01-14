@@ -3,6 +3,6 @@ export const metadata = {
     description: "Сделки трейдинга Homa-Trading",
 };
 
-export default function DealsLayout({ children }) {
+export default function SheetsLayout({ children }) {
     return children;
 }

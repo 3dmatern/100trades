@@ -24,7 +24,27 @@ import BodyCardTimeInTrade from "@/components/ui/deals/common/bodyCardTimeInTrad
 
 const TIME_SCREENSHOT = 172800000; // 2 дня
 
+const initData = {
+    name: "",
+    result: "",
+    pose: "",
+    risk: "",
+    profit: "",
+    rr: null,
+    entryDate: "",
+    imageStart: "",
+    deposit: "",
+    progress: "",
+    exitDate: "",
+    imageEnd: null,
+    stress: "",
+    tags: [],
+    notes: "",
+};
+
 export default function TableBodyCard({
+    userId,
+    sheetId,
     index,
     deal,
     selectedDeals,
@@ -32,7 +52,7 @@ export default function TableBodyCard({
     rrs,
     checkAll,
     columnWidth,
-    onChangeCheckbox,
+    onCheckDeal,
 }) {
     const [hover, setHover] = useState(false);
 
@@ -47,16 +67,21 @@ export default function TableBodyCard({
             }`}
         >
             <BodyCardName
-                index={index}
+                userId={userId}
+                sheetId={sheetId}
                 dealId={deal.id}
+                index={index}
                 dealName={deal.name}
                 selectedDeals={selectedDeals}
                 checkAll={checkAll}
                 dealHover={hover}
                 columnWidth={columnWidth.column1}
-                onChangeCheckbox={onChangeCheckbox}
+                onCheckDeal={onCheckDeal}
             />
             <BodyCardResult
+                userId={userId}
+                sheetId={sheetId}
+                dealId={deal.id}
                 dealResult={deal.result}
                 columnWidth={columnWidth.column2}
             />

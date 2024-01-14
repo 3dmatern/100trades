@@ -1,10 +1,20 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { BeatLoader } from "react-spinners";
 
-import CheckboxOrNumber from "./checkboxOrNumber";
+import { EntrieSchema } from "@/schemas";
+import { updateEntrie } from "@/actions/entrie";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import CheckboxOrNumber from "@/components/ui/deals/common/checkboxOrNumber";
+import { Input } from "@/components/ui/input";
 
 export default function BodyCardName({
+    userId,
+    sheetId,
     index,
     dealId,
     dealName,
@@ -12,20 +22,46 @@ export default function BodyCardName({
     checkAll,
     dealHover,
     columnWidth,
-    onChangeCheckbox,
+    onCheckDeal,
 }) {
+    const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
-    const [name, setName] = useState("");
 
-    const handleChange = ({ target }) => {
-        setName(target.value);
+    const form = useForm({
+        resolver: zodResolver(EntrieSchema),
+        defaultValues: {
+            id: dealId,
+            sheetId,
+            name: dealName || undefined,
+        },
+    });
+
+    const onSubmit = (values) => {
+        if (!values.name && !dealName) {
+            setOpen(false);
+            form.reset();
+            return;
+        }
+        startTransition(() => {
+            updateEntrie({ userId, values })
+                .then((data) => {
+                    if (data.error) {
+                        toast.error(data.error);
+                    }
+                    if (data.success) {
+                        setOpen(false);
+                        toast.success(data.success);
+                        // form.setValue("name", data.updatedEntrie.name);
+                    }
+                })
+                .catch(() => toast.error("Что-то пошло не так!"));
+        });
     };
 
-    useEffect(() => {
-        if (dealName) {
-            setName(dealName);
-        }
-    }, [dealName]);
+    const creatName = async () => {
+        form.handleSubmit(onSubmit(form.getValues()));
+        setOpen(false);
+    };
 
     return (
         <div
@@ -44,22 +80,43 @@ export default function BodyCardName({
                 value={dealId}
                 checked={selectedDeals?.includes(dealId)}
                 checkAll={checkAll}
-                onChange={onChangeCheckbox}
+                onChange={onCheckDeal}
             />
 
-            <input
-                type="text"
-                name="name"
-                value={name}
-                onChange={handleChange}
-                onFocus={() => setOpen(true)}
-                onBlur={() => setOpen(false)}
-                className={`h-8 px-2 text-xs w-4/5 outline-none overflow-hidden whitespace-nowrap text-ellipsis ${
-                    selectedDeals?.includes(dealId) || dealHover
-                        ? "bg-slate-50"
-                        : "bg-white"
-                }`}
-            />
+            <Form {...form}>
+                <form>
+                    {isPending ? (
+                        <div className="w-20 h-8 px-2 flex items-center justify-center">
+                            <BeatLoader size={8} />
+                        </div>
+                    ) : (
+                        <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            disabled={isPending}
+                                            placeholder="AAAA"
+                                            onFocus={() => setOpen(true)}
+                                            onBlur={creatName}
+                                            className={`w-20 h-8 px-2 text-xs border-none outline-none overflow-hidden whitespace-nowrap text-ellipsis ${
+                                                selectedDeals?.includes(
+                                                    dealId
+                                                ) || dealHover
+                                                    ? "bg-slate-50"
+                                                    : "bg-white"
+                                            }`}
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                    )}
+                </form>
+            </Form>
         </div>
     );
 }

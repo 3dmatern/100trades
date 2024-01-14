@@ -1,8 +1,8 @@
+import { currentUser } from "@/lib/auth";
 import { getSheets } from "@/actions/sheet";
 import Sheets from "@/components/ui/deals/sheets";
-import { currentUser } from "@/lib/auth";
 
-export default async function DealsPage() {
+export default async function SheetsPage() {
     const user = await currentUser();
     const sheets = await getSheets(user.id);
 
