@@ -5,9 +5,7 @@ export const getSheetsByUserId = async (userId) => {
     noStore();
     try {
         const sheets = await db.sheet.findMany({
-            where: {
-                userId,
-            },
+            where: { userId },
         });
 
         return sheets;

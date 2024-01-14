@@ -8,7 +8,7 @@ export default async function DealsPage() {
 
     return (
         <main className="mx-auto p-5 overflow-x-auto">
-            <Sheets className="mt-8" userId={user.id} sheets={sheets} />
+            <Sheets className="mt-8 h-full" userId={user.id} sheets={sheets} />
         </main>
     );
 }

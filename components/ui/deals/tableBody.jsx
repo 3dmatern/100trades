@@ -27,7 +27,7 @@ export default function TableBody({
     onAddDeal,
 }) {
     return (
-        <div className="bg-white" style={{ height: "calc(100vh - 155px)" }}>
+        <div className="bg-white h-screen">
             {deals?.map((deal, index) => (
                 <TableBodyCard
                     key={deal.id}

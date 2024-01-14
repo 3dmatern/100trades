@@ -111,7 +111,7 @@ export const updateSheet = async (values) => {
             success: "Лист успешно обновлен!",
         };
     } catch (error) {
-        console.error("Error creating sheet: ", error);
+        console.error("Sheet update error: ", error);
         return {
             error: "Ошибка обновления листа!",
         };

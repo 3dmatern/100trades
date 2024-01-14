@@ -96,7 +96,8 @@ export default function Sheet({
         return () => {
             document.removeEventListener("click", handleClickOutside);
         };
-    }, [open]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [form, open]);
 
     return (
         <div

@@ -83,15 +83,16 @@ model Entrie {
   risk               String?
   profit             String?
   entryDate          String?
-  imageStart         String?
+  imageStart         String? @default("null")
   deposit            String?
   exitDate           String?
-  imageEnd           String?
+  imageEnd           String? @default("null")
   stress             String?
   notes              String?
   sheetId            String
   resultId           String?
   rrId               String?
+  date               DateTime @default(dbgenerated("now()"))
   entrieTag          EntrieTag[]
 
   sheet Sheet @relation(fields: [sheetId], references: [id], onDelete: Cascade)
@@ -100,7 +101,8 @@ model Entrie {
 }
 
 model EntrieTag {
-  entrieId           String @id
+  id                 String @id @default(cuid())
+  entrieId           String
   tagId              String
 
   entries Entrie @relation(fields: [entrieId], references: [id], onDelete: Cascade)
