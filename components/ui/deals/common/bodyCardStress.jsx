@@ -1,9 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
+import { toast } from "sonner";
 
-export default function BodyCardStress({ dealStress, columnWidth }) {
+import { updateEntrie } from "@/actions/entrie";
+
+export default function BodyCardStress({
+    userId,
+    sheetId,
+    dealId,
+    dealStress,
+    columnWidth,
+}) {
+    const [isPending, startTransition] = useTransition();
     const [hoveredRating, setHoveredRating] = useState(0);
+    const [stress, setStress] = useState(0);
 
     const handleMouseOver = (hoveredValue) => {
         setHoveredRating(hoveredValue);
@@ -14,13 +25,34 @@ export default function BodyCardStress({ dealStress, columnWidth }) {
     };
 
     const handleClick = (selectedValue) => {
-        setRating(selectedValue);
+        setStress(selectedValue);
+        startTransition(() => {
+            updateEntrie({
+                userId,
+                values: { id: dealId, sheetId, stress: selectedValue },
+            })
+                .then((data) => {
+                    if (data.error) {
+                        toast.error(data.error);
+                    }
+                    if (data.success) {
+                        toast.success(data.success);
+                    }
+                })
+                .catch(() => toast.error("Что-то пошло не так!"));
+        });
     };
+
+    useEffect(() => {
+        if (dealStress) {
+            setStress(dealStress);
+        }
+    }, [dealStress]);
 
     return (
         <div
             style={{ width: columnWidth, minWidth: "64px" }}
-            className="relative border-r h-8 px-2 text-xs overflow-hidden"
+            className={`relative border-r h-8 px-2 text-xs overflow-hidden`}
         >
             <div className="flex items-center justify-start gap-1 w-max absolute top-1/2 -translate-y-1/2 left-2">
                 {[1, 2, 3, 4, 5].map((value) => (
@@ -28,11 +60,11 @@ export default function BodyCardStress({ dealStress, columnWidth }) {
                         key={value}
                         onMouseOver={() => handleMouseOver(value)}
                         onMouseLeave={handleMouseLeave}
-                        onClick={() => handleClick(value)}
+                        onClick={() => (isPending ? {} : handleClick(value))}
                         className={`block size-2.5 rounded-full cursor-pointer ${
                             value <= hoveredRating
                                 ? "bg-red-400"
-                                : value <= dealStress
+                                : value <= stress
                                 ? "bg-red-600"
                                 : "bg-slate-200"
                         }`}

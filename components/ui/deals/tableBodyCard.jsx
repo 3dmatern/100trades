@@ -135,6 +135,9 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column8}
             />
             <BodyCardDeposit
+                userId={userId}
+                sheetId={sheetId}
+                dealId={deal.id}
                 dealDeposit={deal.deposit}
                 dealHover={hover}
                 columnWidth={columnWidth.column9}
@@ -168,6 +171,9 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column13}
             />
             <BodyCardStress
+                userId={userId}
+                sheetId={sheetId}
+                dealId={deal.id}
                 dealStress={deal.stress}
                 columnWidth={columnWidth.column14}
             />
@@ -180,6 +186,9 @@ export default function TableBodyCard({
                 getRandomHexColor={getRandomHexColor}
             />
             <BodyCardNotes
+                userId={userId}
+                sheetId={sheetId}
+                dealId={deal.id}
                 dealNotes={deal.notes}
                 columnWidth={columnWidth.column16}
             />

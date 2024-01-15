@@ -32,7 +32,7 @@ export default function BodyCardProfit({
     });
 
     const onSubmit = (values) => {
-        if (values.risk === dealProfit) {
+        if (values.profit === dealProfit) {
             setOpen(false);
             form.reset();
             return;
@@ -88,7 +88,7 @@ export default function BodyCardProfit({
                                                 disabled={isPending}
                                                 onFocus={() => setOpen(true)}
                                                 onBlur={updateProfit}
-                                                className={`w-full h-8 pr-4 text-xs border-none text-start outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
+                                                className={`w-full h-7 pr-4 text-xs border-none text-start outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
                                                     dealHover
                                                         ? "bg-slate-50"
                                                         : "bg-white"

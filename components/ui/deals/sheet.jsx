@@ -1,18 +1,17 @@
 "use client";
 
-import clsx from "clsx";
 import Image from "next/image";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { BeatLoader } from "react-spinners";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 import { SheetUpdateSchema } from "@/schemas";
 import { removeSheet, updateSheet } from "@/actions/sheet";
 import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 
 export default function Sheet({
     className,
@@ -95,12 +94,11 @@ export default function Sheet({
     }, [form, open]);
 
     return (
-        <Link
+        <div
             ref={sheetRef}
-            // onClick={() => onClickId(sheet.id)}
-            href={`/sheets/${sheet.id}`}
-            className={clsx(
-                "flex items-center justify-center gap-1 w-max h-9 px-2 relative bg-gray-200 hover:bg-gray-100 rounded-t-lg",
+            onClick={() => onClickId(sheet.id)}
+            className={cn(
+                "flex items-center justify-center gap-1 w-max h-9 px-2 relative hover:bg-gray-100 rounded-t-lg cursor-pointer",
                 className
             )}
         >
@@ -172,6 +170,6 @@ export default function Sheet({
                     )}
                 </>
             )}
-        </Link>
+        </div>
     );
 }

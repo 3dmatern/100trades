@@ -94,7 +94,7 @@ export default function Sheets({ className, userId, sheets }) {
                             userId={userId}
                             onClickId={setSheetId}
                             className={
-                                sheetId === index
+                                sheetId === sheet.id
                                     ? "bg-gray-100"
                                     : "bg-gray-200"
                             }

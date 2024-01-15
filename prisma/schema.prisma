@@ -86,7 +86,7 @@ model Entrie {
   deposit            String?
   exitDate           String?
   imageEnd           String? @default("null")
-  stress             String?
+  stress             Int?
   notes              String?
   sheetId            String
   resultId           String?

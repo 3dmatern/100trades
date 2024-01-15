@@ -1,9 +1,20 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
+import { toast } from "sonner";
 
-export default function BodyCardNotes({ dealNotes, columnWidth }) {
+import { EntrieSchema } from "@/schemas";
+import { updateEntrie } from "@/actions/entrie";
+
+export default function BodyCardNotes({
+    userId,
+    sheetId,
+    dealId,
+    dealNotes,
+    columnWidth,
+}) {
     const textRef = useRef(null);
+    const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
     const [note, setNote] = useState("");
 
@@ -19,8 +30,32 @@ export default function BodyCardNotes({ dealNotes, columnWidth }) {
 
     useEffect(() => {
         const handleClickOutside = (e) => {
-            if (textRef.current && !textRef.current.contains(e.target)) {
-                setOpen(false);
+            if (
+                textRef.current &&
+                !textRef.current.contains(e.target) &&
+                open
+            ) {
+                startTransition(() => {
+                    if ((!dealNotes && !note) || dealNotes === note) {
+                        setOpen(false);
+                        return;
+                    }
+                    updateEntrie({
+                        userId,
+                        values: { id: dealId, sheetId, notes: note },
+                    })
+                        .then((data) => {
+                            if (data.error) {
+                                toast.error(data.error);
+                                setOpen(true);
+                            }
+                            if (data.success) {
+                                toast.success(data.success);
+                                setOpen(false);
+                            }
+                        })
+                        .catch(() => toast.error("Что-то пошло не так!"));
+                });
             }
         };
         const handleScroll = () => {
@@ -33,7 +68,8 @@ export default function BodyCardNotes({ dealNotes, columnWidth }) {
             document.removeEventListener("click", handleClickOutside);
             window.removeEventListener("scroll", handleScroll);
         };
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [open]);
 
     return (
         <div
@@ -42,7 +78,7 @@ export default function BodyCardNotes({ dealNotes, columnWidth }) {
             style={{ width: columnWidth, minWidth: "64px" }}
             className={`flex items-center relative border-r h-8 px-2`}
         >
-            {open ? (
+            {open && !isPending ? (
                 <textarea
                     type="text"
                     name="note"

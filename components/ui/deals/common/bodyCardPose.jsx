@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { BeatLoader } from "react-spinners";
 
 import { EntrieSchema } from "@/schemas";
 import { updateEntrie } from "@/actions/entrie";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { formatPrice } from "@/utils/formattedNumber";
 
 export default function BodyCardPose({
     userId,
@@ -19,8 +19,10 @@ export default function BodyCardPose({
     dealHover,
     columnWidth,
 }) {
+    const cellRef = useRef(null);
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
+    const [pose, setPose] = useState("");
 
     const form = useForm({
         resolver: zodResolver(EntrieSchema),
@@ -32,7 +34,7 @@ export default function BodyCardPose({
     });
 
     const onSubmit = (values) => {
-        if (!values.pose && !dealPose) {
+        if ((!values.pose && !dealPose) || values.pose === dealPose) {
             setOpen(false);
             form.reset();
             return;
@@ -46,7 +48,6 @@ export default function BodyCardPose({
                     if (data.success) {
                         setOpen(false);
                         toast.success(data.success);
-                        // form.setValue("pose", data.updatedEntrie.pose);
                     }
                 })
                 .catch(() => toast.error("Что-то пошло не так!"));
@@ -55,49 +56,83 @@ export default function BodyCardPose({
 
     const updatePose = async () => {
         form.handleSubmit(onSubmit(form.getValues()));
+        const formattedPrice = formatPrice(form.getValues("pose"));
+        if (formattedPrice !== "NaN") {
+            setPose(formattedPrice);
+        }
         setOpen(false);
     };
 
+    useEffect(() => {
+        if (dealPose) {
+            form.setValue("pose", dealPose);
+
+            const formattedPrice = formatPrice(dealPose);
+            setPose(formattedPrice);
+        }
+    }, [dealPose, form]);
+
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (cellRef.current && !cellRef.current.contains(e.target)) {
+                setOpen(false);
+            }
+        };
+        const handleScroll = () => {
+            setOpen(false);
+        };
+
+        document.addEventListener("click", handleClickOutside);
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
     return (
         <div
+            ref={cellRef}
+            onClick={() => setOpen(true)}
             style={{ width: columnWidth, minWidth: "64px" }}
             className={`flex items-center justify-center relative ${
                 open ? "border border-blue-800" : "border-r"
             } h-8 px-2 text-xs`}
         >
-            {isPending ? (
-                <div className="w-full h-8 flex items-center justify-center">
-                    <BeatLoader size={8} />
-                </div>
+            <span className="absolute top-auto left-1">₽</span>
+            {open ? (
+                <Form {...form}>
+                    <form>
+                        <FormField
+                            control={form.control}
+                            name="pose"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            type="number"
+                                            step={0.01}
+                                            min={0}
+                                            disabled={isPending}
+                                            onFocus={() => setOpen(true)}
+                                            onBlur={updatePose}
+                                            className={`h-7 ml-2 border-none text-xs w-full outline-none overflow-hidden focus-visible:ring-0 whitespace-nowrap text-ellipsis ${
+                                                dealHover
+                                                    ? "bg-slate-50"
+                                                    : "bg-white"
+                                            }`}
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                    </form>
+                </Form>
             ) : (
-                <>
-                    <span className="absolute top-auto left-1">₽</span>
-                    <Form {...form}>
-                        <form>
-                            <FormField
-                                control={form.control}
-                                name="pose"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormControl>
-                                            <Input
-                                                {...field}
-                                                disabled={isPending}
-                                                onFocus={() => setOpen(true)}
-                                                onBlur={updatePose}
-                                                className={`h-8 ml-2 border-none text-xs w-full outline-none overflow-hidden focus-visible:ring-0 whitespace-nowrap text-ellipsis ${
-                                                    dealHover
-                                                        ? "bg-slate-50"
-                                                        : "bg-white"
-                                                }`}
-                                            />
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                            />
-                        </form>
-                    </Form>
-                </>
+                <span className="overflow-hidden whitespace-nowrap text-ellipsis pointer-events-none">
+                    {pose}
+                </span>
             )}
         </div>
     );
