@@ -27,10 +27,11 @@ export default function BodyCardTags({
         setActive(false);
     };
 
-    const handleRemoveTag = (id) => {
+    const handleRemoveTag = (e, id) => {
+        e.stopPropagation();
+        onRemoveItem(id);
         setOpen(false);
         setActive(false);
-        onRemoveItem(id);
     };
 
     useEffect(() => {
@@ -87,7 +88,7 @@ export default function BodyCardTags({
                             {active && (
                                 <button
                                     type="button"
-                                    onClick={() => handleRemoveTag(t.id)}
+                                    onClick={(e) => handleRemoveTag(e, t.id)}
                                     className="p-0.5 cursor-pointer"
                                 >
                                     <Image

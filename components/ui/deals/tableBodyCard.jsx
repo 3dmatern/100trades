@@ -69,6 +69,7 @@ export default function TableBodyCard({
     const [currentTags, setCurrentTags] = useState([]);
 
     const handleRemoveItem = async (tagId) => {
+        setCurrentTags((prev) => prev.filter((tag) => tag.id !== tagId));
         await removeEntrieTag({
             userId,
             entrieTag: { entrieId: deal.id, tagId },
@@ -78,9 +79,6 @@ export default function TableBodyCard({
             }
             if (data.success) {
                 toast.success(data.success);
-                setCurrentTags((prev) =>
-                    prev.filter((tag) => tag.id !== tagId)
-                );
             }
         });
     };
