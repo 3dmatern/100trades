@@ -1,22 +1,19 @@
-import Image from "next/image";
+"use client";
 
-import { getRandomHexColor } from "@/utils/getRandomHexColor";
+import Image from "next/image";
+import { useState, useEffect } from "react";
 
 import TableBodyCard from "@/components/ui/deals/tableBodyCard";
 import { Button } from "@/components/ui/button";
-
-const initTags = [
-    { id: "tag1", label: "фиксировал часть", value: getRandomHexColor() },
-    { id: "tag2", label: "человеческий фактор", value: getRandomHexColor() },
-    { id: "tag3", label: "двигал стоп", value: getRandomHexColor() },
-    { id: "tag4", label: "усреднял", value: getRandomHexColor() },
-];
 
 export default function TableBody({
     userId,
     sheetId,
     deals,
     selectedDeals,
+    results,
+    risksRewards,
+    tags,
     checkAll,
     columnWidth,
     onCheckDeal,
@@ -33,7 +30,9 @@ export default function TableBody({
                         index={index}
                         deal={deal}
                         selectedDeals={selectedDeals}
-                        tags={initTags}
+                        results={results}
+                        risksRewards={risksRewards}
+                        tags={tags}
                         checkAll={checkAll}
                         columnWidth={columnWidth}
                         onCheckDeal={onCheckDeal}

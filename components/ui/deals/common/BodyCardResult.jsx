@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
 
-import { getResults } from "@/actions/result";
 import { updateEntrie } from "@/actions/entrie";
 
 export default function BodyCardResult({
@@ -12,12 +11,12 @@ export default function BodyCardResult({
     sheetId,
     dealId,
     resultId,
+    results,
     columnWidth,
 }) {
     const listRef = useRef(null);
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
-    const [results, setResults] = useState([]);
     const [result, setResult] = useState(undefined);
 
     const handleSelectResult = (res) => {
@@ -46,18 +45,6 @@ export default function BodyCardResult({
             setResult(results.find((item) => item.id === resultId));
         }
     }, [resultId, results]);
-
-    useEffect(() => {
-        const onResults = async () => {
-            const result = await getResults();
-            if (result) {
-                setResults(result);
-            } else {
-                setResults([]);
-            }
-        };
-        onResults();
-    }, []);
 
     useEffect(() => {
         const handleClickOutside = (e) => {

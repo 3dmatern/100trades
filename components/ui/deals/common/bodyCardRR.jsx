@@ -13,6 +13,7 @@ export default function BodyCardRR({
     sheetId,
     dealId,
     rrId,
+    risksRewards,
     columnWidth,
     determineTextColor,
 }) {
@@ -20,7 +21,6 @@ export default function BodyCardRR({
     const [isPending, startTransition] = useTransition();
     const [active, setActive] = useState(false);
     const [open, setOpen] = useState(false);
-    const [risksRewards, setRisksRewards] = useState([]);
     const [filterRRs, setFilterRRs] = useState([]);
     const [lpBgColor, setLPBgColor] = useState("");
     const [currentRR, setCurrentRR] = useState(undefined);
@@ -66,15 +66,6 @@ export default function BodyCardRR({
                         if (data.success) {
                             toast.success(data.success);
                             setCurrentRR(rr);
-                            setRisksRewards((prev) => {
-                                const updRR = [...prev, data.newRR];
-                                const color = getRandomHexColor();
-                                setLPBgColor(
-                                    !updRR.some((l) => l.value === color) &&
-                                        color
-                                );
-                                return updRR;
-                            });
 
                             setCurrentRR(rr);
                             updateEntrie({
@@ -115,22 +106,13 @@ export default function BodyCardRR({
         }
     }, [risksRewards, rrId]);
 
-    const onRR = async () => {
-        const rr = await getRisksRewards();
-        if (rr) {
-            setRisksRewards(rr);
-            setFilterRRs(rr);
-            const color = getRandomHexColor();
-            setLPBgColor(!rr.some((l) => l.value === color) && color);
-        } else {
-            setRisksRewards([]);
-            setFilterRRs([]);
-        }
-    };
-
     useEffect(() => {
-        onRR();
-    }, []);
+        if (risksRewards) {
+            setFilterRRs(risksRewards);
+            const color = getRandomHexColor();
+            setLPBgColor(!risksRewards.some((l) => l.value === color) && color);
+        }
+    }, [risksRewards]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {

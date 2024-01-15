@@ -6,7 +6,7 @@ import { db } from "@/lib/db";
 import { EntrieSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
 import { getSheetById } from "@/data/sheet";
-import { getEntrieByEntrieId, getEntriesBySheetId } from "@/data/entrie";
+import { getEntrieById, getEntriesBySheetId } from "@/data/entrie";
 
 export const createEntrie = async ({ userId, sheetId }) => {
     noStore();
@@ -161,7 +161,7 @@ export const removeEntrie = async ({ userId, sheetId, entrieId }) => {
         };
     }
 
-    const existingEntrie = await getEntrieByEntrieId(entrieId);
+    const existingEntrie = await getEntrieById(entrieId);
     if (!existingEntrie || existingEntrie.sheetId !== existingSheet.id) {
         return {
             error: "Несанкционированный доступ!",

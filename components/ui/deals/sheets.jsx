@@ -21,10 +21,21 @@ import { Button } from "@/components/ui/button";
 import Sheet from "@/components/ui/deals/sheet";
 import Table from "@/components/ui/deals/table";
 
-export default function Sheets({ className, userId, sheets }) {
+export default function Sheets({
+    className,
+    userId,
+    sheetsData,
+    resultsData,
+    risksRewarsData,
+    tagsData,
+}) {
     const sheetsRef = useRef(null);
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
+    const [sheets, setSheets] = useState([]);
+    const [results, setResults] = useState([]);
+    const [risksRewards, setRisksRewards] = useState([]);
+    const [tags, setTags] = useState([]);
     const [sheetId, setSheetId] = useState("");
 
     const form = useForm({
@@ -59,10 +70,45 @@ export default function Sheets({ className, userId, sheets }) {
     };
 
     useEffect(() => {
-        if (sheets.length > 0) {
-            setSheetId(sheets[0].id);
+        if (resultsData) {
+            if (resultsData.error) {
+                toast.error(resultsData.error);
+                return;
+            }
+            setResults(resultsData);
         }
-    }, [sheets]);
+    }, [resultsData]);
+
+    useEffect(() => {
+        if (risksRewarsData) {
+            if (risksRewarsData.error) {
+                toast.error(risksRewarsData.error);
+                return;
+            }
+            setRisksRewards(risksRewarsData);
+        }
+    }, [risksRewarsData]);
+
+    useEffect(() => {
+        if (tagsData) {
+            if (tagsData.error) {
+                toast.error(tagsData.error);
+                return;
+            }
+            setTags(tagsData);
+        }
+    }, [tagsData]);
+
+    useEffect(() => {
+        if (sheetsData) {
+            if (sheetsData.error) {
+                toast.error(error);
+                return;
+            }
+            setSheets(sheetsData);
+            setSheetId(sheetsData[0]?.id);
+        }
+    }, [sheetsData]);
 
     useEffect(() => {
         const handleClickOutside = async (e) => {
@@ -86,7 +132,7 @@ export default function Sheets({ className, userId, sheets }) {
         <div ref={sheetsRef} className={className}>
             <div className="flex items-center justify-start gap-1 h-9">
                 {sheets.length > 0 &&
-                    sheets?.map((sheet, index) => (
+                    sheets?.map((sheet) => (
                         <Sheet
                             key={sheet.id}
                             selectSheet={sheetId}
@@ -142,7 +188,13 @@ export default function Sheets({ className, userId, sheets }) {
                     />
                 </Button>
             </div>
-            <Table userId={userId} sheetId={sheetId} />
+            <Table
+                userId={userId}
+                sheetId={sheetId}
+                results={results}
+                risksRewards={risksRewards}
+                tags={tags}
+            />
         </div>
     );
 }

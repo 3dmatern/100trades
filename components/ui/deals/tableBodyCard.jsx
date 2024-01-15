@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { determineTextColor } from "@/utils/determinateTextColor";
 import { getRandomHexColor } from "@/utils/getRandomHexColor";
@@ -21,6 +21,9 @@ import BodyCardTags from "@/components/ui/deals/common/bodyCardTags";
 import BodyCardNotes from "@/components/ui/deals/common/bodyCardNotes";
 import BodyCardInfoAction from "@/components/ui/deals/common/bodyCardInfoAction";
 import BodyCardTimeInTrade from "@/components/ui/deals/common/bodyCardTimeInTrade";
+import { createTag } from "@/actions/tag";
+import { createEntrieTag, getEntrieTags } from "@/actions/entrieTag";
+import { toast } from "sonner";
 
 const TIME_SCREENSHOT = 172800000; // 2 дня
 
@@ -48,12 +51,79 @@ export default function TableBodyCard({
     index,
     deal,
     selectedDeals,
+    results,
+    risksRewards,
     tags,
     checkAll,
     columnWidth,
     onCheckDeal,
 }) {
     const [hover, setHover] = useState(false);
+    const [tag, setTag] = useState("");
+    const [filteredTags, setFilteredTags] = useState([]);
+    const [currentTags, setCurrentTags] = useState([]);
+
+    const handleItemSearch = ({ target }) => {
+        if (target.name === "tag") {
+            setTag(target.value);
+            setFilteredTags(
+                tags.filter((tag) => tag.label.includes(target.value))
+            );
+        }
+    };
+
+    const handleClickSelectedTag = async (tag) => {
+        let selectTag = tag;
+        if (!selectTag.id) {
+            const { newTag, success, error } = await createTag({
+                userId,
+                values: tag,
+            });
+            if (error) {
+                toast.error(error);
+                return;
+            } else {
+                toast.success(success);
+                selectTag = newTag;
+            }
+        }
+        setCurrentTags((prev) => [...prev, selectTag]);
+        const { newEntrieTag, success, error } = await createEntrieTag({
+            userId,
+            values: { entrieId: deal.id, tagId: selectTag.id },
+        });
+        if (error) {
+            toast.error(error);
+        }
+        if (success) {
+            toast.success(success);
+        }
+    };
+
+    useEffect(() => {
+        const getData = async () => {
+            const entrieTagsData = await getEntrieTags(deal.id);
+            setFilteredTags(tags);
+            if (entrieTagsData.error) {
+                toast.error(entrieTagsData.error);
+                return;
+            } else {
+                setCurrentTags(
+                    tags.filter((tag) =>
+                        entrieTagsData.entrieTags.some(
+                            (et) => tag.id === et.tagId
+                        )
+                    )
+                );
+            }
+        };
+
+        if (tags.length > 0) {
+            getData();
+        }
+    }, []);
+
+    console.log("s");
 
     return (
         <div
@@ -82,6 +152,7 @@ export default function TableBodyCard({
                 sheetId={sheetId}
                 dealId={deal.id}
                 resultId={deal.resultId}
+                results={results}
                 columnWidth={columnWidth.column2}
             />
             <BodyCardPose
@@ -113,6 +184,7 @@ export default function TableBodyCard({
                 sheetId={sheetId}
                 dealId={deal.id}
                 rrId={deal.rrId}
+                risksRewards={risksRewards}
                 columnWidth={columnWidth.column6}
                 determineTextColor={determineTextColor}
                 getRandomHexColor={getRandomHexColor}
@@ -178,9 +250,11 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column14}
             />
             <BodyCardTags
-                dealId={deal.id}
-                tags={tags}
-                dealTags={deal.tags}
+                tag={tag}
+                filteredTags={filteredTags}
+                currentTags={currentTags}
+                onItemSearch={handleItemSearch}
+                onClickSelectTag={handleClickSelectedTag}
                 columnWidth={columnWidth.column15}
                 determineTextColor={determineTextColor}
                 getRandomHexColor={getRandomHexColor}

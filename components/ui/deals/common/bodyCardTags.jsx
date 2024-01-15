@@ -6,9 +6,11 @@ import Image from "next/image";
 import ButtonPlus from "@/components/ui/buttonPlus";
 
 export default function BodyCardTags({
-    dealId,
-    tags,
-    dealTags,
+    tag,
+    filteredTags,
+    currentTags,
+    onItemSearch,
+    onClickSelectTag,
     columnWidth,
     determineTextColor,
     getRandomHexColor,
@@ -16,43 +18,30 @@ export default function BodyCardTags({
     const listRef = useRef(null);
     const [active, setActive] = useState(false);
     const [open, setOpen] = useState(false);
-    const [filterTags, setFilterTags] = useState([]);
     const [tagBgColor, setTagBgColor] = useState("");
-    const [tag, setTag] = useState("");
-
-    const handleChange = (value) => {
-        setTag(value);
-        setFilterTags((prev) => prev.filter((p) => p.label.includes(value)));
-    };
 
     const handleSelectTag = (tag) => {
+        onClickSelectTag(tag);
         setOpen(false);
         setActive(false);
-        setTag("");
     };
 
     useEffect(() => {
-        if (tags) {
-            setFilterTags(tags);
-            const color = getRandomHexColor();
-            setTagBgColor(tags.some((tag) => tag.value !== color) && color);
+        if (open) {
+            setTagBgColor(getRandomHexColor());
         }
-    }, [tags.length]);
+    }, [getRandomHexColor, open]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (listRef.current && !listRef.current.contains(e.target)) {
                 setOpen(false);
                 setActive(false);
-                setTag("");
-                setFilterTags(tags);
             }
         };
         const handleScroll = () => {
             setOpen(false);
             setActive(false);
-            setTag("");
-            setFilterTags(tags);
         };
 
         document.addEventListener("click", handleClickOutside);
@@ -61,7 +50,7 @@ export default function BodyCardTags({
             document.removeEventListener("click", handleClickOutside);
             window.removeEventListener("scroll", handleScroll);
         };
-    }, [tags]);
+    }, []);
 
     return (
         <div
@@ -75,33 +64,34 @@ export default function BodyCardTags({
             } h-8 text-xs`}
         >
             <div className="flex items-center justify-start gap-1 px-2 overflow-hidden">
-                {dealTags?.map((tag) => (
-                    <span
-                        key={tag.label}
-                        style={{
-                            color: determineTextColor(tag.value),
-                            backgroundColor: tag.value,
-                        }}
-                        className="flex items-center gap-1 rounded-xl px-2 py-px"
-                    >
-                        <span className="whitespace-nowrap text-ellipsis">
-                            {tag.label}
+                {currentTags.length > 0 &&
+                    currentTags?.map((t) => (
+                        <span
+                            key={t.label}
+                            style={{
+                                color: determineTextColor(t.value),
+                                backgroundColor: t.value,
+                            }}
+                            className="flex items-center gap-1 rounded-xl px-2 py-px"
+                        >
+                            <span className="whitespace-nowrap text-ellipsis">
+                                {t.label}
+                            </span>
+                            {active && (
+                                <button
+                                    type="button"
+                                    className="p-0.5 cursor-pointer"
+                                >
+                                    <Image
+                                        src="./remove.svg"
+                                        alt="remove"
+                                        width={10}
+                                        height={10}
+                                    />
+                                </button>
+                            )}
                         </span>
-                        {active && (
-                            <button
-                                type="button"
-                                className="p-0.5 cursor-pointer"
-                            >
-                                <Image
-                                    src="./remove.svg"
-                                    alt="remove"
-                                    width={10}
-                                    height={10}
-                                />
-                            </button>
-                        )}
-                    </span>
-                ))}
+                    ))}
 
                 {active && <ButtonPlus onClick={() => setOpen(!open)} />}
             </div>
@@ -113,16 +103,16 @@ export default function BodyCardTags({
                         name="tag"
                         value={tag}
                         placeholder="Введите тэг"
-                        onChange={(e) => handleChange(e.target.value)}
+                        onChange={onItemSearch}
                         className="py-1 px-2 outline-none w-full"
                     />
 
-                    {filterTags.length > 0 ? (
+                    {filteredTags.length > 0 ? (
                         <ul>
-                            {filterTags
+                            {filteredTags
                                 .filter(
                                     (t) =>
-                                        !dealTags?.some(
+                                        !currentTags?.some(
                                             (item) => item.id === t.id
                                         )
                                 )

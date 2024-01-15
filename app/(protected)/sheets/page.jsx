@@ -1,14 +1,27 @@
+import Sheets from "@/components/ui/deals/sheets";
 import { currentUser } from "@/lib/auth";
 import { getSheets } from "@/actions/sheet";
-import Sheets from "@/components/ui/deals/sheets";
+import { getResults } from "@/actions/result";
+import { getTags } from "@/actions/tag";
+import { getRisksRewards } from "@/actions/riskReward";
 
 export default async function SheetsPage() {
     const user = await currentUser();
-    const sheets = await getSheets(user.id);
+    const sheetsData = await getSheets(user.id);
+    const resultsData = await getResults();
+    const risksRewarsData = await getRisksRewards();
+    const tagsData = await getTags();
 
     return (
         <main className="mx-auto p-5 overflow-x-auto">
-            <Sheets className="mt-8 h-full" userId={user.id} sheets={sheets} />
+            <Sheets
+                className="mt-8 h-full"
+                userId={user.id}
+                sheetsData={sheetsData}
+                resultsData={resultsData}
+                risksRewarsData={risksRewarsData}
+                tagsData={tagsData}
+            />
         </main>
     );
 }

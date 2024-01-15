@@ -9,96 +9,6 @@ import { createEntrie, getEntries } from "@/actions/entrie";
 import TableBody from "@/components/ui/deals/tableBody";
 import TableHead from "@/components/ui/deals/tableHead";
 
-const initDeals = [
-    {
-        id: "qwerty",
-        name: "NMTP",
-        result: "win",
-        pose: "25000",
-        risk: "0.50",
-        profit: "",
-        rr: { label: "1:2", value: getRandomHexColor() },
-        entryDate: new Date().setDate(3),
-        imageStart: "nmtp.png",
-        deposit: "",
-        progress: "0.00",
-        exitDate: "",
-        imageEnd: null,
-        stress: "",
-        tags: [],
-        notes: "по тех анализу про версии",
-    },
-    {
-        id: "qwefgh",
-        name: "AFLT",
-        result: "active",
-        pose: "50000",
-        risk: "0.90",
-        profit: "0.50",
-        rr: { label: "1:2", value: getRandomHexColor() },
-        entryDate: new Date().setDate(4),
-        imageStart: "aflt.png",
-        deposit: "",
-        progress: "0.00",
-        exitDate: "",
-        imageEnd: null,
-        stress: "",
-        tags: [
-            {
-                id: "tag1",
-                label: "фиксировал часть",
-                value: getRandomHexColor(),
-            },
-        ],
-        notes: "",
-    },
-    {
-        id: "qwevbn",
-        name: "AFKS",
-        result: "loss",
-        pose: "50000",
-        risk: "1.10",
-        profit: "1.90",
-        rr: { label: "1:7", value: getRandomHexColor() },
-        entryDate: new Date().setDate(3),
-        imageStart: "afks.png",
-        deposit: "",
-        progress: "0.00",
-        exitDate: new Date().setDate(6),
-        imageEnd: null,
-        stress: "2",
-        tags: [
-            {
-                id: "tag2",
-                label: "человеческий фактор",
-                value: getRandomHexColor(),
-            },
-        ],
-        notes: "",
-    },
-    {
-        id: "qwerfv",
-        name: "MOEX",
-        result: "noLoss",
-        pose: "5000",
-        risk: "",
-        profit: "1.10",
-        rr: null,
-        entryDate: new Date().setDate(3),
-        imageStart: "moex.png",
-        deposit: "",
-        progress: "0.00",
-        exitDate: "",
-        imageEnd: null,
-        stress: "3",
-        tags: [
-            { id: "tag3", label: "двигал стоп", value: getRandomHexColor() },
-            { id: "tag4", label: "усреднял", value: getRandomHexColor() },
-        ],
-        notes: "",
-    },
-];
-
 const initHeaders = [
     { name: "Тикер", up: false, w: "112px" },
     { name: "Win-Loss", up: true, w: "96px" },
@@ -139,7 +49,13 @@ const initColumnWidth = {
     column17: "128px",
 };
 
-export default function Table({ userId, sheetId }) {
+export default function Table({
+    userId,
+    sheetId,
+    results,
+    risksRewards,
+    tags,
+}) {
     const [deals, setDeals] = useState([]);
     const [checkAll, setCheckAll] = useState(false);
     const [columnWidth, setColumnWidth] = useState(initColumnWidth);
@@ -212,6 +128,9 @@ export default function Table({ userId, sheetId }) {
                 sheetId={sheetId}
                 deals={deals}
                 selectedDeals={selectedDeals}
+                results={results}
+                risksRewards={risksRewards}
+                tags={tags}
                 checkAll={checkAll}
                 columnWidth={columnWidth}
                 onCheckDeal={handleCheckDeal}

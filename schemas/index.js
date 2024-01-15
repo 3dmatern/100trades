@@ -1,5 +1,30 @@
 import z from "zod";
 
+export const EntrieTagSchema = z
+    .object({
+        entrieId: z.string(),
+        tagId: z.string(),
+    })
+    .refine((data) => {
+        if (!data.entrieId) {
+            return false;
+        }
+
+        return true;
+    })
+    .refine((data) => {
+        if (!data.tagId) {
+            return false;
+        }
+
+        return true;
+    });
+
+export const TagSchema = z.object({
+    label: z.string(),
+    value: z.string(),
+});
+
 export const RiskRewardSchema = z.object({
     label: z.string(),
     value: z.string(),
@@ -18,7 +43,7 @@ export const EntrieSchema = z
         deposit: z.optional(z.string()),
         exitDate: z.optional(z.string()),
         imageEnd: z.optional(z.string()),
-        stress: z.optional(z.string()),
+        stress: z.optional(z.number()),
         notes: z.optional(z.string()),
         resultId: z.optional(z.string()),
         rrId: z.optional(z.string()),

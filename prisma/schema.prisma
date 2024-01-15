@@ -82,10 +82,10 @@ model Entrie {
   risk               String?
   profit             String?
   entryDate          String?
-  imageStart         String? @default("null")
+  imageStart         String?
   deposit            String?
   exitDate           String?
-  imageEnd           String? @default("null")
+  imageEnd           String?
   stress             Int?
   notes              String?
   sheetId            String
