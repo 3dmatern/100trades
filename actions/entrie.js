@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 
 import { db } from "@/lib/db";
 import { EntrieSchema } from "@/schemas";
@@ -9,6 +9,7 @@ import { getSheetById } from "@/data/sheet";
 import { getEntrieByEntrieId, getEntriesBySheetId } from "@/data/entrie";
 
 export const createEntrie = async ({ userId, sheetId }) => {
+    noStore();
     const existingUser = await getUserById(userId);
 
     if (!existingUser) {
@@ -43,6 +44,7 @@ export const createEntrie = async ({ userId, sheetId }) => {
 };
 
 export const getEntries = async (sheetId) => {
+    noStore();
     const existingSheet = await getSheetById(sheetId);
 
     if (!existingSheet) {
@@ -66,6 +68,7 @@ export const getEntries = async (sheetId) => {
 };
 
 export const updateEntrie = async ({ userId, values }) => {
+    noStore();
     const validatedFields = EntrieSchema.safeParse(values);
     if (!validatedFields) {
         return {
@@ -143,6 +146,7 @@ export const updateEntrie = async ({ userId, values }) => {
 };
 
 export const removeEntrie = async ({ userId, sheetId, entrieId }) => {
+    noStore();
     const existingSheet = await getSheetById(sheetId);
     if (!existingSheet) {
         return {

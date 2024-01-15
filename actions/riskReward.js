@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 
 import { db } from "@/lib/db";
 import { RiskRewardSchema } from "@/schemas";
@@ -8,6 +8,7 @@ import { getUserById } from "@/data/user";
 import { getAllRiskReward } from "@/data/riskReward";
 
 export const createRiskReward = async ({ userId, values }) => {
+    noStore();
     const validatedFields = RiskRewardSchema.safeParse(values);
     if (!validatedFields.success) {
         return {
@@ -46,6 +47,7 @@ export const createRiskReward = async ({ userId, values }) => {
 };
 
 export const getRisksRewards = async () => {
+    noStore();
     try {
         const rr = getAllRiskReward();
 

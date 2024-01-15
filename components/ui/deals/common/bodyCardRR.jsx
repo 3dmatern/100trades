@@ -28,13 +28,14 @@ export default function BodyCardRR({
 
     const handleChange = (value) => {
         setRR(value);
-        setFilterRRs((prev) => prev.filter((p) => p.label.includes(value)));
+        setFilterRRs(risksRewards.filter((r) => r.label.includes(value)));
     };
 
     const handleSelectLP = (e, rr) => {
         e.stopPropagation();
         setActive(false);
         setOpen(false);
+
         startTransition(() => {
             if (risksRewards.some((r) => r.label === rr.label)) {
                 updateEntrie({
@@ -64,7 +65,18 @@ export default function BodyCardRR({
                         }
                         if (data.success) {
                             toast.success(data.success);
-                            setRisksRewards((prev) => [...prev, data.newRR]);
+                            setCurrentRR(rr);
+                            setRisksRewards((prev) => {
+                                const updRR = [...prev, data.newRR];
+                                const color = getRandomHexColor();
+                                setLPBgColor(
+                                    !updRR.some((l) => l.value === color) &&
+                                        color
+                                );
+                                return updRR;
+                            });
+
+                            setCurrentRR(rr);
                             updateEntrie({
                                 userId,
                                 values: {
@@ -103,20 +115,20 @@ export default function BodyCardRR({
         }
     }, [risksRewards, rrId]);
 
-    useEffect(() => {
-        const onRR = async () => {
-            const rr = await getRisksRewards();
-            if (rr) {
-                setRisksRewards(rr);
-                setFilterRRs(rr);
-            } else {
-                setRisksRewards([]);
-                setFilterRRs([]);
-            }
+    const onRR = async () => {
+        const rr = await getRisksRewards();
+        if (rr) {
+            setRisksRewards(rr);
+            setFilterRRs(rr);
             const color = getRandomHexColor();
-            console.log(color);
             setLPBgColor(!rr.some((l) => l.value === color) && color);
-        };
+        } else {
+            setRisksRewards([]);
+            setFilterRRs([]);
+        }
+    };
+
+    useEffect(() => {
         onRR();
     }, []);
 

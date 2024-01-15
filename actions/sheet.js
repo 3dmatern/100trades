@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 
 import { db } from "@/lib/db";
 import { SheetCreateSchema, SheetUpdateSchema } from "@/schemas";
@@ -8,6 +8,7 @@ import { getUserById } from "@/data/user";
 import { getSheetById, getSheetsByUserId } from "@/data/sheet";
 
 export const createSheet = async (values) => {
+    noStore();
     const validatedFields = SheetCreateSchema.safeParse(values);
 
     if (!validatedFields.success) {
@@ -47,6 +48,7 @@ export const createSheet = async (values) => {
 };
 
 export const getSheets = async (userId) => {
+    noStore();
     const existingUser = await getUserById(userId);
 
     if (!existingUser) {
@@ -70,6 +72,7 @@ export const getSheets = async (userId) => {
 };
 
 export const updateSheet = async (values) => {
+    noStore();
     const validatedFields = SheetUpdateSchema.safeParse(values);
 
     if (!validatedFields.success) {
@@ -119,6 +122,7 @@ export const updateSheet = async (values) => {
 };
 
 export const removeSheet = async ({ sheetId, userId }) => {
+    noStore();
     const existingSheet = await getSheetById(sheetId);
 
     if (!existingSheet) {
