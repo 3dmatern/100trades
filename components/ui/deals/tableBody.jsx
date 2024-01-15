@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { BeatLoader } from "react-spinners";
 
 import TableBodyCard from "@/components/ui/deals/tableBodyCard";
 import { Button } from "@/components/ui/button";
@@ -19,9 +20,28 @@ export default function TableBody({
     onCheckDeal,
     onCreateDeal,
 }) {
+    const [loader, setLoader] = useState(<BeatLoader size={8} />);
+
+    useEffect(() => {
+        if (!deals && deals.length === 0) {
+            const timer = setTimeout(() => {
+                setLoader(
+                    <p className="text-xl font-semibold drop-shadow-md">
+                        Записей нет...
+                    </p>
+                );
+            }, 3000);
+            return clearTimeout(timer);
+        }
+    }, [deals]);
+
     return (
         <div className="bg-white h-screen">
-            {deals.length > 0 ? (
+            {deals.length === 0 ? (
+                <div className="flex items-center justify-center h-8 border">
+                    {loader}
+                </div>
+            ) : (
                 deals?.map((deal, index) => (
                     <TableBodyCard
                         key={deal.id}
@@ -38,12 +58,6 @@ export default function TableBody({
                         onCheckDeal={onCheckDeal}
                     />
                 ))
-            ) : (
-                <div className="flex items-center justify-center h-8 border">
-                    <p className="text-xl font-semibold drop-shadow-md">
-                        Записей нет...
-                    </p>
-                </div>
             )}
             <div
                 className={`flex items-center h-8 bg-white hover:bg-slate-50 border-r border-b`}

@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { getRandomHexColor } from "@/utils/getRandomHexColor";
 import { createEntrie, getEntries } from "@/actions/entrie";
 
 import TableBody from "@/components/ui/deals/tableBody";
