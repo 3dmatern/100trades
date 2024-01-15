@@ -1,21 +1,71 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
-export default function BodyCardDate({ dealDate, name, columnWidth }) {
+import { EntrieSchema } from "@/schemas";
+import { updateEntrie } from "@/actions/entrie";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { dealDateWithTime } from "@/utils/formatedDate";
+
+export default function BodyCardDate({
+    userId,
+    sheetId,
+    dealId,
+    dealDate,
+    name,
+    columnWidth,
+}) {
     const cellRef = useRef(null);
+    const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState(false);
 
-    const handleChange = ({ target }) => {
-        setDate(target.value);
+    const form = useForm({
+        resolver: zodResolver(EntrieSchema),
+        defaultValues: {
+            id: dealId,
+            sheetId,
+            entryDate: dealDate || undefined,
+        },
+    });
+    const onSubmit = (values) => {
+        if (values[name] === dealDate) {
+            setOpen(false);
+            form.reset();
+            return;
+        }
+        startTransition(() => {
+            updateEntrie({ userId, values })
+                .then((data) => {
+                    if (data.error) {
+                        toast.error(data.error);
+                    }
+                    if (data.success) {
+                        setOpen(false);
+                        toast.success(data.success);
+                    }
+                })
+                .catch(() => toast.error("Что-то пошло не так!"));
+        });
+    };
+
+    const updateDate = async () => {
+        form.handleSubmit(onSubmit(form.getValues()));
+        const newDate = form.getValues(name);
+        setDate(dealDateWithTime(newDate));
+        setOpen(false);
     };
 
     useEffect(() => {
         if (dealDate) {
-            setDate(new Date(dealDate).toISOString().slice(0, 16));
+            form.setValue(name, dealDate);
+            setDate(dealDateWithTime(dealDate));
         }
-    }, [dealDate]);
+    }, [dealDate, form, name]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -40,22 +90,39 @@ export default function BodyCardDate({ dealDate, name, columnWidth }) {
             ref={cellRef}
             onClick={() => setOpen(true)}
             style={{ width: columnWidth, minWidth: "64px" }}
-            className={`flex items-center ${
-                open ? "border border-blue-800" : "border-r"
-            } h-8 px-2 text-xs`}
+            className={`flex items-center h-8 text-xs overflow-hidden ${
+                open ? "border border-blue-800" : "px-2 border-r"
+            }`}
         >
             {open ? (
-                <input
-                    type="datetime-local"
-                    name={name}
-                    defaultValue={date}
-                    onChange={handleChange}
-                    onBlur={() => setOpen(false)}
-                    className="outline-none"
-                />
+                <Form {...form}>
+                    <form>
+                        <FormField
+                            control={form.control}
+                            name={name}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            type="datetime-local"
+                                            onBlur={updateDate}
+                                            disabled={isPending}
+                                            style={{
+                                                width: columnWidth,
+                                                minWidth: "64px",
+                                            }}
+                                            className={`text-xs outline-none border-none focus-visible:ring-0`}
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                    </form>
+                </Form>
             ) : (
-                <span className="overflow-hidden whitespace-nowrap text-ellipsis">
-                    {date && date.split("T")[0] + " " + date.split("T")[1]}
+                <span className="overflow-hidden whitespace-nowrap text-ellipsis pointer-events-none">
+                    {date}
                 </span>
             )}
         </div>

@@ -85,7 +85,7 @@ export default function BodyCardPose({
                                                 disabled={isPending}
                                                 onFocus={() => setOpen(true)}
                                                 onBlur={updatePose}
-                                                className={`h-8 ml-2 border-none text-xs w-full outline-none overflow-hidden whitespace-nowrap text-ellipsis ${
+                                                className={`h-8 ml-2 border-none text-xs w-full outline-none overflow-hidden focus-visible:ring-0 whitespace-nowrap text-ellipsis ${
                                                     dealHover
                                                         ? "bg-slate-50"
                                                         : "bg-white"

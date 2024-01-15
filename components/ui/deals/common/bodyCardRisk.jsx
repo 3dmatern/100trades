@@ -89,7 +89,7 @@ export default function BodyCardRisk({
                                                 disabled={isPending}
                                                 onFocus={() => setOpen(true)}
                                                 onBlur={updateRisk}
-                                                className={`w-full h-8 pr-4 text-xs border-none text-start outline-none overflow-hidden whitespace-nowrap text-ellipsis ${
+                                                className={`w-full h-8 pr-4 text-xs border-none text-start outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
                                                     dealHover
                                                         ? "bg-slate-50"
                                                         : "bg-white"

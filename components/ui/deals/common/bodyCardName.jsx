@@ -102,7 +102,7 @@ export default function BodyCardName({
                                             placeholder="AAAA"
                                             onFocus={() => setOpen(true)}
                                             onBlur={updateName}
-                                            className={`w-20 h-8 px-2 text-xs border-none outline-none overflow-hidden whitespace-nowrap text-ellipsis ${
+                                            className={`w-20 h-8 px-2 text-xs border-none outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
                                                 selectedDeals?.includes(
                                                     dealId
                                                 ) || dealHover

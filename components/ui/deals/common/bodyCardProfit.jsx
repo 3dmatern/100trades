@@ -46,7 +46,6 @@ export default function BodyCardProfit({
                     if (data.success) {
                         setOpen(false);
                         toast.success(data.success);
-                        // form.setValue("name", data.updatedEntrie.name);
                     }
                 })
                 .catch(() => toast.error("Что-то пошло не так!"));
@@ -89,7 +88,7 @@ export default function BodyCardProfit({
                                                 disabled={isPending}
                                                 onFocus={() => setOpen(true)}
                                                 onBlur={updateProfit}
-                                                className={`w-full h-8 pr-4 text-xs border-none text-start outline-none overflow-hidden whitespace-nowrap text-ellipsis ${
+                                                className={`w-full h-8 pr-4 text-xs border-none text-start outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
                                                     dealHover
                                                         ? "bg-slate-50"
                                                         : "bg-white"

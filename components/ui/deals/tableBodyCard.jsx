@@ -118,7 +118,11 @@ export default function TableBodyCard({
                 getRandomHexColor={getRandomHexColor}
             />
             <BodyCardDate
+                userId={userId}
+                sheetId={sheetId}
+                dealId={deal.id}
                 dealDate={deal.entryDate}
+                name="entryDate"
                 columnWidth={columnWidth.column7}
             />
             <BodyCardScreenshot
