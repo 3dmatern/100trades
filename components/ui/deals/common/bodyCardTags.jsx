@@ -11,6 +11,7 @@ export default function BodyCardTags({
     currentTags,
     onItemSearch,
     onClickSelectTag,
+    onRemoveItem,
     columnWidth,
     determineTextColor,
     getRandomHexColor,
@@ -24,6 +25,12 @@ export default function BodyCardTags({
         onClickSelectTag(tag);
         setOpen(false);
         setActive(false);
+    };
+
+    const handleRemoveTag = (id) => {
+        setOpen(false);
+        setActive(false);
+        onRemoveItem(id);
     };
 
     useEffect(() => {
@@ -80,6 +87,7 @@ export default function BodyCardTags({
                             {active && (
                                 <button
                                     type="button"
+                                    onClick={() => handleRemoveTag(t.id)}
                                     className="p-0.5 cursor-pointer"
                                 >
                                     <Image

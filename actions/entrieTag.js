@@ -7,7 +7,10 @@ import { EntrieTagSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
 import { getTagById } from "@/data/tag";
 import { getEntrieById } from "@/data/entrie";
-import { getEntrieTagsByEntrieId } from "@/data/entrieTag";
+import {
+    getEntrieTagByEntrieIdTagId,
+    getEntrieTagsByEntrieId,
+} from "@/data/entrieTag";
 
 export const createEntrieTag = async ({ userId, values }) => {
     noStore();
@@ -48,7 +51,7 @@ export const createEntrieTag = async ({ userId, values }) => {
             },
         });
 
-        revalidatePath("/sheets");
+        // revalidatePath("/sheets");
 
         return {
             newEntrieTag,
@@ -67,13 +70,50 @@ export const getEntrieTags = async (entrieId) => {
     try {
         const entrieTags = await getEntrieTagsByEntrieId(entrieId);
 
-        revalidatePath("/sheets");
+        // revalidatePath("/sheets");
 
         return { entrieTags };
     } catch (error) {
         console.error("Error receiving entrieTags: ", error);
         return {
             error: "Ошибка получения тегов!",
+        };
+    }
+};
+
+export const removeEntrieTag = async ({ userId, entrieTag }) => {
+    noStore();
+
+    const existingEntrieTag = await getEntrieTagByEntrieIdTagId(entrieTag);
+    if (!existingEntrieTag) {
+        return {
+            error: "Несанкционированный доступ!",
+        };
+    }
+
+    const existingUser = await getUserById(userId);
+    if (!existingUser) {
+        return {
+            error: "Несанкционированный доступ!",
+        };
+    }
+
+    try {
+        await db.entrieTag.delete({
+            where: {
+                id: existingEntrieTag.id,
+                entrieId: existingEntrieTag.entrieId,
+                tagId: existingEntrieTag.tagId,
+            },
+        });
+
+        return {
+            success: "Тег успешно удален!",
+        };
+    } catch (error) {
+        console.error("Error deleting entrieTag: ", error);
+        return {
+            error: "Ошибка удаления тега!",
         };
     }
 };

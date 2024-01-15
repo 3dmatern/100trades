@@ -51,7 +51,7 @@ export const getRisksRewards = async () => {
     try {
         const risksRewards = getAllRiskReward();
 
-        revalidatePath("/sheets");
+        // revalidatePath("/sheets");
 
         return risksRewards;
     } catch (error) {

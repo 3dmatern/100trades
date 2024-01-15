@@ -60,7 +60,7 @@ export const getSheets = async (userId) => {
     try {
         const sheets = getSheetsByUserId(existingUser.id);
 
-        revalidatePath("/sheets");
+        // revalidatePath("/sheets");
 
         return sheets;
     } catch (error) {

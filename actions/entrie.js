@@ -56,7 +56,7 @@ export const getEntries = async (sheetId) => {
     try {
         const entries = getEntriesBySheetId(existingSheet.id);
 
-        revalidatePath("/sheets");
+        // revalidatePath("/sheets");
 
         return entries;
     } catch (error) {

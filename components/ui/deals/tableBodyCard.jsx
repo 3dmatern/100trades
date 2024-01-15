@@ -22,7 +22,11 @@ import BodyCardNotes from "@/components/ui/deals/common/bodyCardNotes";
 import BodyCardInfoAction from "@/components/ui/deals/common/bodyCardInfoAction";
 import BodyCardTimeInTrade from "@/components/ui/deals/common/bodyCardTimeInTrade";
 import { createTag } from "@/actions/tag";
-import { createEntrieTag, getEntrieTags } from "@/actions/entrieTag";
+import {
+    createEntrieTag,
+    getEntrieTags,
+    removeEntrieTag,
+} from "@/actions/entrieTag";
 import { toast } from "sonner";
 
 const TIME_SCREENSHOT = 172800000; // 2 дня
@@ -61,7 +65,25 @@ export default function TableBodyCard({
     const [hover, setHover] = useState(false);
     const [tag, setTag] = useState("");
     const [filteredTags, setFilteredTags] = useState([]);
+    const [entrieTags, setEntrieTags] = useState([]);
     const [currentTags, setCurrentTags] = useState([]);
+
+    const handleRemoveItem = async (tagId) => {
+        await removeEntrieTag({
+            userId,
+            entrieTag: { entrieId: deal.id, tagId },
+        }).then((data) => {
+            if (data.error) {
+                toast.error(data.error);
+            }
+            if (data.success) {
+                toast.success(data.success);
+                setCurrentTags((prev) =>
+                    prev.filter((tag) => tag.id !== tagId)
+                );
+            }
+        });
+    };
 
     const handleItemSearch = ({ target }) => {
         if (target.name === "tag") {
@@ -101,29 +123,33 @@ export default function TableBodyCard({
     };
 
     useEffect(() => {
+        if (tags) {
+            setFilteredTags(tags);
+        }
+    }, [tags]);
+
+    useEffect(() => {
         const getData = async () => {
             const entrieTagsData = await getEntrieTags(deal.id);
-            setFilteredTags(tags);
             if (entrieTagsData.error) {
                 toast.error(entrieTagsData.error);
                 return;
             } else {
-                setCurrentTags(
-                    tags.filter((tag) =>
-                        entrieTagsData.entrieTags.some(
-                            (et) => tag.id === et.tagId
-                        )
-                    )
-                );
+                setEntrieTags(entrieTagsData.entrieTags);
             }
         };
+        getData();
+    }, [deal.id]);
 
-        if (tags.length > 0) {
-            getData();
+    useEffect(() => {
+        if (tags) {
+            setCurrentTags(
+                tags.filter((tag) =>
+                    entrieTags.some((et) => tag.id === et.tagId)
+                )
+            );
         }
-    }, []);
-
-    console.log("s");
+    }, [entrieTags, tags]);
 
     return (
         <div
@@ -255,6 +281,7 @@ export default function TableBodyCard({
                 currentTags={currentTags}
                 onItemSearch={handleItemSearch}
                 onClickSelectTag={handleClickSelectedTag}
+                onRemoveItem={handleRemoveItem}
                 columnWidth={columnWidth.column15}
                 determineTextColor={determineTextColor}
                 getRandomHexColor={getRandomHexColor}

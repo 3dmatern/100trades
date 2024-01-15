@@ -15,3 +15,19 @@ export const getEntrieTagsByEntrieId = async (entrieId) => {
         return null;
     }
 };
+
+export const getEntrieTagByEntrieIdTagId = async ({ entrieId, tagId }) => {
+    noStore();
+    try {
+        const entrieTag = await db.entrieTag.findFirst({
+            where: {
+                entrieId,
+                tagId,
+            },
+        });
+
+        return entrieTag;
+    } catch (error) {
+        return null;
+    }
+};

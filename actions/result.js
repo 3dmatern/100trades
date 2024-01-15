@@ -9,7 +9,7 @@ export const getResults = async () => {
     try {
         const results = await getAllResult();
 
-        revalidatePath("/sheets");
+        // revalidatePath("/sheets");
 
         return results;
     } catch (error) {

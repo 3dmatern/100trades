@@ -103,6 +103,7 @@ model EntrieTag {
   id                 String @id @default(cuid())
   entrieId           String
   tagId              String
+  date               DateTime @default(dbgenerated("now()"))
 
   entries Entrie @relation(fields: [entrieId], references: [id], onDelete: Cascade)
   tags Tag @relation(fields: [tagId], references: [id])

@@ -32,7 +32,7 @@ export const createTag = async ({ userId, values }) => {
             },
         });
 
-        revalidatePath("/sheets");
+        // revalidatePath("/sheets");
 
         return {
             newTag,
@@ -51,7 +51,7 @@ export const getTags = async () => {
     try {
         const tags = await getAllTag();
 
-        revalidatePath("/sheets");
+        // revalidatePath("/sheets");
 
         return tags;
     } catch (error) {
