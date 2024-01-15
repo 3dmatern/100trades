@@ -144,7 +144,11 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column10}
             />
             <BodyCardDate
+                userId={userId}
+                sheetId={sheetId}
+                dealId={deal.id}
                 dealDate={deal.exitDate}
+                name="exitDate"
                 columnWidth={columnWidth.column11}
             />
             <BodyCardScreenshot

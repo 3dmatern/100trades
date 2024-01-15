@@ -29,7 +29,7 @@ export default function BodyCardDate({
         defaultValues: {
             id: dealId,
             sheetId,
-            entryDate: dealDate || undefined,
+            [name]: dealDate || undefined,
         },
     });
     const onSubmit = (values) => {
