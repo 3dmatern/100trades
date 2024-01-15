@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@/components/auth/userButton";
-import { LogoutButton } from "@/components/auth/logoutButton";
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -23,14 +22,16 @@ export default function Navbar() {
                     <Link href="/sheets">Сделки</Link>
                 </Button>
                 <Button
-                    variant={pathname === "/profile" ? "default" : "outline"}
                     asChild
+                    variant={pathname === "/profile" ? "default" : "outline"}
+                    className="md:block hidden"
                 >
                     <Link href="/profile">Профиль</Link>
                 </Button>
                 <Button
-                    variant={pathname === "/settings" ? "default" : "outline"}
                     asChild
+                    variant={pathname === "/settings" ? "default" : "outline"}
+                    className="md:block hidden"
                 >
                     <Link href="/settings">Настройки профиля</Link>
                 </Button>

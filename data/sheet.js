@@ -6,6 +6,9 @@ export const getSheetsByUserId = async (userId) => {
     try {
         const sheets = await db.sheet.findMany({
             where: { userId },
+            orderBy: {
+                date: "asc",
+            },
         });
 
         return sheets;

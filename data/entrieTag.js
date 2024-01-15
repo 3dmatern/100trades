@@ -8,6 +8,9 @@ export const getEntrieTagsByEntrieId = async (entrieId) => {
             where: {
                 entrieId,
             },
+            orderBy: {
+                date: "asc",
+            },
         });
 
         return entrieTags;
@@ -23,6 +26,9 @@ export const getEntrieTagByEntrieIdTagId = async ({ entrieId, tagId }) => {
             where: {
                 entrieId,
                 tagId,
+            },
+            orderBy: {
+                date: "asc",
             },
         });
 
