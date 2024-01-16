@@ -222,6 +222,7 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column7}
             />
             <BodyCardScreenshot
+                userId={userId}
                 dealName={deal.name}
                 inputName="imageStart"
                 dealImageSrc={deal.imageStart}

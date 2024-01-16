@@ -9,12 +9,11 @@ export default function InputUploadImg({ name, onImageChange, width, height }) {
     const handleImageUpload = (file) => {
         const reader = new FileReader();
 
-        reader.onload = () => {
-            setSelectedImage(reader.result);
+        reader.onloadend = () => {
+            onImageChange(reader.result);
         };
 
         if (file) {
-            onImageChange(file);
             reader.readAsDataURL(file);
         }
     };

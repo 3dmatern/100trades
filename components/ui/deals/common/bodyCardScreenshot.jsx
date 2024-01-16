@@ -2,9 +2,13 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { toast } from "sonner";
+
 import InputUploadImg from "@/components/ui/inputUploadImg";
+import { uploadImage } from "@/actions/upload";
 
 export default function BodyCardScreenshot({
+    userId,
     dealName,
     inputName,
     dealImageSrc,
@@ -18,8 +22,16 @@ export default function BodyCardScreenshot({
     const [openImage, setOpenImage] = useState(false);
     const [imageSrc, setImageSrc] = useState(null);
 
-    const handleChange = (image) => {
-        console.log(image);
+    const handleChange = async (base64String) => {
+        const fileName = `${userId}_${inputName}`;
+
+        await uploadImage({ base64String, fileName }).then((data) => {
+            if (data.error) {
+                toast.error(data.error);
+                return;
+            }
+            setImageSrc(data);
+        });
     };
 
     const handleClick = () => {
