@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
 
 import InputUploadImg from "@/components/ui/inputUploadImg";
 import { deleteFile, uploadFile } from "@/actions/files";
 import { updateEntrie } from "@/actions/entrie";
+import { BeatLoader } from "react-spinners";
 
 export default function BodyCardScreenshot({
     userId,
@@ -21,21 +22,50 @@ export default function BodyCardScreenshot({
     columnWidth,
 }) {
     const cellRef = useRef(null);
+    const [isPending, startTransition] = useTransition();
     const [active, setActive] = useState(false);
     const [openImage, setOpenImage] = useState(false);
     const [imageSrc, setImageSrc] = useState(null);
 
     const handleChange = (base64String) => {
         const fileName = `${userId}_${inputName}`;
+        startTransition(() => {
+            uploadFile({ base64String, fileName }).then((data) => {
+                if (data.error) {
+                    toast.error(data.error);
+                    return;
+                }
+                updateEntrie({
+                    userId,
+                    values: { id: dealId, sheetId, [inputName]: data },
+                })
+                    .then((data) => {
+                        if (data.error) {
+                            toast.error(data.error);
+                            setActive(true);
+                            setOpen(true);
+                        }
+                        if (data.success) {
+                            toast.success(data.success);
+                            setImageSrc(data.updatedEntrie[inputName]);
+                            setActive(false);
+                            setOpenImage(false);
+                        }
+                    })
+                    .catch(() => toast.error("Что-то пошло не так!"));
+            });
+        });
+    };
 
-        uploadFile({ base64String, fileName }).then((data) => {
-            if (data.error) {
-                toast.error(data.error);
-                return;
-            }
+    const handleClick = () => {
+        setOpenImage((prev) => !prev);
+    };
+
+    const handleRemove = (fileName) => {
+        startTransition(() => {
             updateEntrie({
                 userId,
-                values: { id: dealId, sheetId, [inputName]: data },
+                values: { id: dealId, sheetId, [inputName]: undefined },
             })
                 .then((data) => {
                     if (data.error) {
@@ -45,49 +75,24 @@ export default function BodyCardScreenshot({
                     }
                     if (data.success) {
                         toast.success(data.success);
-                        setImageSrc(data.updatedEntrie[inputName]);
+                        setImageSrc(null);
                         setActive(false);
                         setOpenImage(false);
                     }
                 })
                 .catch(() => toast.error("Что-то пошло не так!"));
-        });
-    };
 
-    const handleClick = () => {
-        setOpenImage((prev) => !prev);
-    };
-
-    const handleRemove = (fileName) => {
-        updateEntrie({
-            userId,
-            values: { id: dealId, sheetId, [inputName]: undefined },
-        })
-            .then((data) => {
+            deleteFile(fileName).then((data) => {
                 if (data.error) {
                     toast.error(data.error);
-                    setActive(true);
-                    setOpen(true);
+                    return;
                 }
                 if (data.success) {
                     toast.success(data.success);
                     setImageSrc(null);
-                    setActive(false);
                     setOpenImage(false);
                 }
-            })
-            .catch(() => toast.error("Что-то пошло не так!"));
-
-        deleteFile(fileName).then((data) => {
-            if (data.error) {
-                toast.error(data.error);
-                return;
-            }
-            if (data.success) {
-                toast.success(data.success);
-                setImageSrc(null);
-                setOpenImage(false);
-            }
+            });
         });
     };
 
@@ -137,71 +142,76 @@ export default function BodyCardScreenshot({
                 active ? "border border-blue-800" : "border-r "
             }`}
         >
-            {imageSrc && !openImage ? (
-                <Image
-                    src={`/${imageSrc}`}
-                    alt={imageAlt}
-                    width={width}
-                    height={height}
-                    style={{ width, height }}
-                    onClick={handleClick}
-                    className="hover:scale-125 cursor-pointer"
-                />
-            ) : imageSrc && openImage ? (
-                <div
-                    className={`fixed w-screen h-screen z-50 top-0 left-0 bg-slate-900 p-4 ${
-                        !openImage
-                            ? "opacity-0 transform scale-0"
-                            : "opacity-100 transform scale-100"
-                    } transition-transform duration-300`}
-                >
-                    <button
-                        type="button"
-                        onClick={handleClick}
-                        className="absolute top-4 right-4 z-50 p-0.5 cursor-pointer text-cyan-500"
-                    >
-                        <Image
-                            src="./close.svg"
-                            alt="close"
-                            width={16}
-                            height={16}
-                        />
-                    </button>
-
-                    <p className="text-center text-sm text-white">{dealName}</p>
-
-                    <img
+            {!isPending ? (
+                imageSrc && !openImage ? (
+                    <Image
                         src={`/${imageSrc}`}
                         alt={imageAlt}
-                        style={{ maxWidth: "80%", width: "auto" }}
-                        className="mt-6 m-auto"
+                        width={width}
+                        height={height}
+                        style={{ width, height }}
+                        onClick={handleClick}
+                        className="hover:scale-125 cursor-pointer"
                     />
-
-                    <button
-                        type="button"
-                        onClick={() => handleRemove(imageSrc)}
-                        className="block mx-auto mt-5 w-max py-1 px-2 bg-red-700 hover:bg-red-500 rounded-md text-white"
+                ) : imageSrc && openImage ? (
+                    <div
+                        className={`fixed w-screen h-screen z-50 top-0 left-0 bg-slate-900 p-4 ${
+                            !openImage
+                                ? "opacity-0 transform scale-0"
+                                : "opacity-100 transform scale-100"
+                        } transition-transform duration-300`}
                     >
-                        Удалить скриншот
-                    </button>
-                </div>
-            ) : active ? (
-                <InputUploadImg
-                    name={inputName}
-                    width={width}
-                    height={height}
-                    onImageChange={handleChange}
-                />
-            ) : (
-                <Image
-                    src="./dropbox.svg"
-                    alt="dropbox"
-                    width={16}
-                    height={16}
-                    className="pointer-events-none"
-                />
-            )}
+                        <button
+                            type="button"
+                            onClick={handleClick}
+                            className="absolute top-4 right-4 z-50 p-0.5 cursor-pointer text-cyan-500"
+                        >
+                            <Image
+                                src="./close.svg"
+                                alt="close"
+                                width={16}
+                                height={16}
+                            />
+                        </button>
 
+                        <p className="text-center text-sm text-white">
+                            {dealName}
+                        </p>
+
+                        <img
+                            src={`/${imageSrc}`}
+                            alt={imageAlt}
+                            style={{ maxWidth: "80%", width: "auto" }}
+                            className="mt-6 m-auto"
+                        />
+
+                        <button
+                            type="button"
+                            onClick={() => handleRemove(imageSrc)}
+                            className="block mx-auto mt-5 w-max py-1 px-2 bg-red-700 hover:bg-red-500 rounded-md text-white"
+                        >
+                            Удалить скриншот
+                        </button>
+                    </div>
+                ) : active ? (
+                    <InputUploadImg
+                        name={inputName}
+                        width={width}
+                        height={height}
+                        onImageChange={handleChange}
+                    />
+                ) : (
+                    <Image
+                        src="./dropbox.svg"
+                        alt="dropbox"
+                        width={16}
+                        height={16}
+                        className="pointer-events-none"
+                    />
+                )
+            ) : (
+                <BeatLoader size={8} />
+            )}
             {imageSrc && (
                 <div
                     onClick={() => handleRemove(imageSrc)}
