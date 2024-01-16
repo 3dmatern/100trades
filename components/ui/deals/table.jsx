@@ -1,19 +1,21 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { toast } from "sonner";
 
 import { createEntrie, getEntries } from "@/actions/entrie";
 
 import TableBody from "@/components/ui/deals/tableBody";
 import TableHead from "@/components/ui/deals/tableHead";
+import { Button } from "@/components/ui/button";
 
 const initHeaders = [
     { name: "Тикер", up: false, w: "112px" },
     { name: "Win-Loss", up: true, w: "96px" },
     { name: "Поза", up: false, w: "96px" },
     { name: "Риск", up: false, w: "70px" },
-    { name: "Профит", up: false, w: "75px" },
+    { name: "Профит", up: false, w: "80px" },
     { name: "R:R", up: true, w: "80px" },
     { name: "Вход", up: true, w: "144px" },
     { name: "Скрин", up: true, w: "96px" },
@@ -33,7 +35,7 @@ const initColumnWidth = {
     column2: "105px",
     column3: "96px",
     column4: "70px",
-    column5: "75px",
+    column5: "80px",
     column6: "80px",
     column7: "144px",
     column8: "96px",
@@ -55,6 +57,9 @@ export default function Table({
     risksRewards,
     tags,
 }) {
+    const tableRef = useRef(null);
+    const [heightTop, setHeightTop] = useState(0);
+
     const [deals, setDeals] = useState([]);
     const [checkAll, setCheckAll] = useState(false);
     const [columnWidth, setColumnWidth] = useState(initColumnWidth);
@@ -113,28 +118,87 @@ export default function Table({
         }
     }, [sheetId]);
 
+    useEffect(() => {
+        const calculateDistance = () => {
+            if (tableRef.current) {
+                const { top } = tableRef.current.getBoundingClientRect();
+                setHeightTop(top);
+            }
+        };
+        calculateDistance();
+
+        const handleResize = () => {
+            calculateDistance();
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, [tableRef]);
+
     return (
-        <div className="w-max">
-            <TableHead
-                initHeaders={initHeaders}
-                checkAll={checkAll}
-                columnWidth={columnWidth}
-                onResize={handleResize}
-                onCheckAll={handleCheckAll}
-            />
-            <TableBody
-                userId={userId}
-                sheetId={sheetId}
-                deals={deals}
-                selectedDeals={selectedDeals}
-                results={results}
-                risksRewards={risksRewards}
-                tags={tags}
-                checkAll={checkAll}
-                columnWidth={columnWidth}
-                onCheckDeal={handleCheckDeal}
-                onCreateDeal={handleCreateDeal}
-            />
+        <div
+            ref={tableRef}
+            style={{ height: `calc(100vh - ${heightTop}px)` }}
+            className="w-full overflow-x-auto"
+        >
+            <div ref={tableRef} className="table w-full border-collapse">
+                <TableHead
+                    initHeaders={initHeaders}
+                    checkAll={checkAll}
+                    columnWidth={columnWidth}
+                    onResize={handleResize}
+                    onCheckAll={handleCheckAll}
+                />
+
+                {deals.length > 0 && (
+                    <TableBody
+                        userId={userId}
+                        sheetId={sheetId}
+                        deals={deals}
+                        selectedDeals={selectedDeals}
+                        results={results}
+                        risksRewards={risksRewards}
+                        tags={tags}
+                        checkAll={checkAll}
+                        columnWidth={columnWidth}
+                        onCheckDeal={handleCheckDeal}
+                        onCreateDeal={handleCreateDeal}
+                    />
+                )}
+
+                <div className="table-row-group h-8 border border-slate-300 bg-white hover:bg-slate-50">
+                    <div className="table-cell sticky left-0 z-[1]">
+                        <div
+                            style={{ width: columnWidth.column1 }}
+                            className="flex items-center sticky top-0 left-0 border-l border-r"
+                        >
+                            <Button
+                                type="button"
+                                onClick={handleCreateDeal}
+                                className="flex items-center justify-center size-7 p-1 rounded-sm bg-slate-50 hover:bg-slate-200"
+                            >
+                                <Image
+                                    src="./plus-lg.svg"
+                                    alt="plus"
+                                    width={16}
+                                    height={16}
+                                />
+                            </Button>
+                        </div>
+                    </div>
+
+                    {selectedDeals.length > 0 && (
+                        <Button
+                            type="button"
+                            className="w-max bg-red-700 hover:bg-red-600 ml-20 text-sm"
+                        >
+                            Удалить выбранные сделки
+                        </Button>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }

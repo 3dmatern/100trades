@@ -90,7 +90,7 @@ export default function BodyCardDate({
             ref={cellRef}
             onClick={() => setOpen(true)}
             style={{ width: columnWidth, minWidth: "64px" }}
-            className={`flex items-center h-8 text-xs overflow-hidden ${
+            className={`table-cell align-middle h-8 text-xs overflow-hidden ${
                 open ? "border border-blue-800" : "px-2 border-r"
             }`}
         >
@@ -112,7 +112,7 @@ export default function BodyCardDate({
                                                 width: columnWidth,
                                                 minWidth: "64px",
                                             }}
-                                            className={`text-xs outline-none border-none focus-visible:ring-0`}
+                                            className={`h-8 text-xs outline-none border-none focus-visible:ring-0`}
                                         />
                                     </FormControl>
                                 </FormItem>

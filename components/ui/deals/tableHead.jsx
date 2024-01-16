@@ -9,7 +9,7 @@ export default function TableHead({
     onCheckAll,
 }) {
     return (
-        <div className="flex items-center relative border-t border-b border-slate-300 bg-gray-50">
+        <div className="table-row-group border border-slate-300 bg-gray-50">
             {initHeaders.slice(0, 1).map((item) => (
                 <SelectFilterButton
                     key={item.name}
@@ -17,17 +17,15 @@ export default function TableHead({
                     nameColumn="column1"
                     initWidth={columnWidth.column1}
                     onResize={onResize}
-                    className="sticky top-0 left-0 z-20 bg-gray-50 border-l"
-                    style={{ paddingLeft: "34px" }}
+                    className="sticky left-0 z-[2]"
+                    classNameContent="pl-8 pr-2 bg-gray-50 border-l"
                     styleBtn={{ width: "100%" }}
                 >
                     <CheckboxOrNumber
-                        className={
-                            "absolute top-1/2 left-0 -translate-y-1/2 bg-gray-50"
-                        }
                         name="checkAll"
                         checked={checkAll}
                         onChange={onCheckAll}
+                        className="size-7 absolute top-1/2 left-0 -translate-y-1/2 bg-gray-50"
                     />
                 </SelectFilterButton>
             ))}

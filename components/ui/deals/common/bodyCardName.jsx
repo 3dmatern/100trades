@@ -62,52 +62,56 @@ export default function BodyCardName({
     };
 
     return (
-        <div
-            style={{ width: columnWidth, minWidth: "64px" }}
-            className={`flex items-center sticky top-0 left-0 z-20 ${
-                open ? "border border-blue-800" : "border-l border-r"
-            } ${
-                selectedDeals?.includes(dealId) || dealHover
-                    ? "bg-slate-50"
-                    : "bg-white"
-            }`}
-        >
-            <CheckboxOrNumber
-                number={index + 1}
-                name="deals"
-                value={dealId}
-                checked={selectedDeals?.includes(dealId)}
-                checkAll={checkAll}
-                onChange={onCheckDeal}
-            />
+        <div className="table-cell sticky left-0 z-[1]">
+            <div
+                style={{ width: columnWidth, minWidth: "64px" }}
+                className={`flex items-center pl-8 overflow-hidden ${
+                    open ? "border border-blue-800" : "border-r"
+                } ${
+                    selectedDeals?.includes(dealId) || dealHover
+                        ? "bg-slate-50"
+                        : "bg-white"
+                }`}
+            >
+                <CheckboxOrNumber
+                    number={index + 1}
+                    name="deals"
+                    value={dealId}
+                    checked={selectedDeals?.includes(dealId)}
+                    checkAll={checkAll}
+                    onChange={onCheckDeal}
+                    className="size-7 absolute top-1/2 left-0 -translate-y-1/2"
+                />
 
-            <Form {...form}>
-                <form>
-                    <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        disabled={isPending}
-                                        placeholder="AAAA"
-                                        onFocus={() => setOpen(true)}
-                                        onBlur={updateName}
-                                        className={`w-20 h-8 px-2 text-xs border-none outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
-                                            selectedDeals?.includes(dealId) ||
-                                            dealHover
-                                                ? "bg-slate-50"
-                                                : "bg-white"
-                                        }`}
-                                    />
-                                </FormControl>
-                            </FormItem>
-                        )}
-                    />
-                </form>
-            </Form>
+                <Form {...form}>
+                    <form>
+                        <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            disabled={isPending}
+                                            placeholder="AAAA"
+                                            onFocus={() => setOpen(true)}
+                                            onBlur={updateName}
+                                            className={`w-20 h-8 px-2 text-xs border-none outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
+                                                selectedDeals?.includes(
+                                                    dealId
+                                                ) || dealHover
+                                                    ? "bg-slate-50"
+                                                    : "bg-white"
+                                            }`}
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                    </form>
+                </Form>
+            </div>
         </div>
     );
 }

@@ -52,7 +52,7 @@ export default function BodyCardStress({
     return (
         <div
             style={{ width: columnWidth, minWidth: "64px" }}
-            className={`relative border-r h-8 px-2 text-xs overflow-hidden`}
+            className={`table-cell align-middle relative border-r h-8 px-2 text-xs overflow-hidden`}
         >
             <div className="flex items-center justify-start gap-1 w-max absolute top-1/2 -translate-y-1/2 left-2">
                 {[1, 2, 3, 4, 5].map((value) => (

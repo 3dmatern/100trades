@@ -75,7 +75,7 @@ export default function BodyCardNotes({
             ref={textRef}
             onClick={() => setOpen(true)}
             style={{ width: columnWidth, minWidth: "64px" }}
-            className={`flex items-center relative border-r h-8 px-2`}
+            className={`table-cell align-middle relative border-r h-8 px-2`}
         >
             {open && !isPending ? (
                 <textarea

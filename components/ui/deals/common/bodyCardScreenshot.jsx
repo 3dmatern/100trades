@@ -145,7 +145,7 @@ export default function BodyCardScreenshot({
             ref={cellRef}
             onClick={() => setActive(true)}
             style={{ width: columnWidth, minWidth: "64px" }}
-            className={`flex items-center justify-center h-8 px-2 relative text-xs ${
+            className={`table-cell align-middle h-8 px-2 relative text-xs ${
                 active ? "border border-blue-800" : "border-r "
             }`}
         >
@@ -158,7 +158,7 @@ export default function BodyCardScreenshot({
                         height={height}
                         style={{ width, height }}
                         onClick={handleClick}
-                        className="hover:scale-125 cursor-pointer"
+                        className="mx-auto hover:scale-125 cursor-pointer"
                     />
                 ) : imageSrc && openImage ? (
                     <div
@@ -213,7 +213,7 @@ export default function BodyCardScreenshot({
                         alt="dropbox"
                         width={16}
                         height={16}
-                        className="pointer-events-none"
+                        className="mx-auto pointer-events-none"
                     />
                 )
             ) : (
@@ -222,7 +222,7 @@ export default function BodyCardScreenshot({
             {imageSrc && !isPending && (
                 <div
                     onClick={() => handleRemove(imageSrc)}
-                    className="w-max absolute top-0.5 right-0.5 p-0.5 bg-gray-300 hover:bg-gray-500 rounded-full cursor-pointer z-10 hover:scale-110"
+                    className="w-max mx-auto absolute top-0.5 right-0.5 p-0.5 bg-gray-300 hover:bg-gray-500 rounded-full cursor-pointer z-10 hover:scale-110"
                 >
                     <Image
                         src="./remove.svg"

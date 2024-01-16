@@ -66,64 +66,66 @@ export default function BodyCardResult({
     }, []);
 
     return (
-        <div
-            ref={listRef}
-            onClick={() => setOpen(!open)}
-            style={{ width: columnWidth, minWidth: "64px" }}
-            className="flex items-center justify-center relative border-r h-8 px-2"
-        >
-            {result && (
-                <button
-                    type="button"
-                    disabled={isPending}
-                    className="flex items-center justify-between w-full"
-                >
-                    <span
-                        className={cn(
-                            `inline-block py-1 px-2 rounded-xl text-xs uppercase overflow-hidden whitespace-nowrap text-ellipsis`,
-                            result.value
-                        )}
+        <div className="table-cell">
+            <div
+                ref={listRef}
+                onClick={() => setOpen(!open)}
+                style={{ width: columnWidth, minWidth: "64px" }}
+                className="flex items-center relative h-8 px-2 border-r"
+            >
+                {result && (
+                    <button
+                        type="button"
+                        disabled={isPending}
+                        className="flex items-center justify-between w-full"
                     >
-                        {result.label}
-                    </span>
+                        <span
+                            className={cn(
+                                `inline-block py-1 px-2 rounded-xl text-xs uppercase overflow-hidden whitespace-nowrap text-ellipsis`,
+                                result.value
+                            )}
+                        >
+                            {result.label}
+                        </span>
 
-                    <Image
-                        src="./arrow-down.svg"
-                        alt="arrow"
-                        width={10}
-                        height={10}
-                        style={{
-                            rotate: open ? "180deg" : "0deg",
-                            transition: "all .3s",
-                        }}
-                    />
-                </button>
-            )}
+                        <Image
+                            src="./arrow-down.svg"
+                            alt="arrow"
+                            width={10}
+                            height={10}
+                            style={{
+                                rotate: open ? "180deg" : "0deg",
+                                transition: "all .3s",
+                            }}
+                        />
+                    </button>
+                )}
 
-            {open && (
-                <div className="absolute left-0 top-8 z-10 w-max rounded-md py-2 bg-white border border-gray-300">
-                    <ul>
-                        {results
-                            ?.filter((r) => resultId !== r.id)
-                            .map((res) => (
-                                <li
-                                    key={res.label}
-                                    onClick={() => handleSelectResult(res)}
-                                    className="flex items-center justify-start h-8 px-2 hover:bg-slate-200 cursor-pointer"
-                                >
-                                    <span
-                                        className={cn(
-                                            `inline-block py-1 px-2 rounded-xl text-xs uppercase`,
-                                            res.value
-                                        )}
+                {open && (
+                    <div className="absolute left-0 top-8 z-10 w-max rounded-md py-2 bg-white border border-gray-300">
+                        <ul>
+                            {results
+                                ?.filter((r) => resultId !== r.id)
+                                .map((res) => (
+                                    <li
+                                        key={res.label}
+                                        onClick={() => handleSelectResult(res)}
+                                        className="flex items-center justify-start h-8 px-2 hover:bg-slate-200 cursor-pointer"
                                     >
-                                        {res.label}
-                                    </span>
-                                </li>
-                            ))}
-                    </ul>
-                </div>
-            )}
+                                        <span
+                                            className={cn(
+                                                `inline-block py-1 px-2 rounded-xl text-xs uppercase`,
+                                                res.value
+                                            )}
+                                        >
+                                            {res.label}
+                                        </span>
+                                    </li>
+                                ))}
+                        </ul>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

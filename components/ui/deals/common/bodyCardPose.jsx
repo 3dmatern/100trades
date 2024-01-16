@@ -91,49 +91,51 @@ export default function BodyCardPose({
     }, []);
 
     return (
-        <div
-            ref={cellRef}
-            onClick={() => setOpen(true)}
-            style={{ width: columnWidth, minWidth: "64px" }}
-            className={`flex items-center justify-center relative ${
-                open ? "border border-blue-800" : "border-r"
-            } h-8 px-2 text-xs`}
-        >
-            <span className="absolute top-auto left-1">₽</span>
-            {open ? (
-                <Form {...form}>
-                    <form>
-                        <FormField
-                            control={form.control}
-                            name="pose"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            type="number"
-                                            step={0.01}
-                                            min={0}
-                                            disabled={isPending}
-                                            onFocus={() => setOpen(true)}
-                                            onBlur={updatePose}
-                                            className={`h-7 ml-2 border-none text-xs w-full outline-none overflow-hidden focus-visible:ring-0 whitespace-nowrap text-ellipsis ${
-                                                dealHover
-                                                    ? "bg-slate-50"
-                                                    : "bg-white"
-                                            }`}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                    </form>
-                </Form>
-            ) : (
-                <span className="overflow-hidden whitespace-nowrap text-ellipsis pointer-events-none">
-                    {pose}
-                </span>
-            )}
+        <div className="table-cell">
+            <div
+                ref={cellRef}
+                onClick={() => setOpen(true)}
+                style={{ width: columnWidth, minWidth: "64px" }}
+                className={`flex items-center relative w-full h-8 px-2 text-xs ${
+                    open ? "border border-blue-800" : "border-r"
+                }`}
+            >
+                <span>₽</span>
+                {open ? (
+                    <Form {...form}>
+                        <form>
+                            <FormField
+                                control={form.control}
+                                name="pose"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                type="number"
+                                                step={0.01}
+                                                min={0}
+                                                disabled={isPending}
+                                                onFocus={() => setOpen(true)}
+                                                onBlur={updatePose}
+                                                className={`w-full h-7 px-0 pl-1 border-none text-xs outline-none overflow-hidden focus-visible:ring-0 whitespace-nowrap text-ellipsis ${
+                                                    dealHover
+                                                        ? "bg-slate-50"
+                                                        : "bg-white"
+                                                }`}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        </form>
+                    </Form>
+                ) : (
+                    <span className="pl-1 overflow-hidden whitespace-nowrap text-ellipsis pointer-events-none">
+                        {pose}
+                    </span>
+                )}
+            </div>
         </div>
     );
 }

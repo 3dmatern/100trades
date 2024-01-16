@@ -108,103 +108,109 @@ export default function BodyCardRR({
     }, [risksRewards]);
 
     return (
-        <div
-            ref={listRef}
-            onClick={() => setActive(true)}
-            style={{ width: columnWidth, minWidth: "64px" }}
-            className={`flex items-center justify-start relative ${
-                active ? "border border-blue-800" : "border-r"
-            } h-8 px-2 text-xs`}
-        >
-            <button
-                type="button"
-                disabled={isPending}
-                className="flex items-center justify-between w-full"
+        <div className="table-cell">
+            <div
+                ref={listRef}
+                onClick={() => setActive(true)}
+                style={{ width: columnWidth, minWidth: "64px" }}
+                className={`flex items-center relative h-8 px-2 text-xs ${
+                    active ? "border border-blue-800" : "border-r"
+                }`}
             >
-                <span
-                    style={
-                        currentRR
-                            ? {
-                                  color: determineTextColor(currentRR.value),
-                                  backgroundColor: currentRR.value,
-                              }
-                            : null
-                    }
-                    className="rounded-xl px-2 overflow-hidden whitespace-nowrap text-ellipsis"
+                <button
+                    type="button"
+                    disabled={isPending}
+                    className="flex items-center justify-between w-full"
                 >
-                    {currentRR?.label}
-                </span>
+                    <span
+                        style={
+                            currentRR
+                                ? {
+                                      color: determineTextColor(
+                                          currentRR.value
+                                      ),
+                                      backgroundColor: currentRR.value,
+                                  }
+                                : null
+                        }
+                        className="rounded-xl px-2 overflow-hidden whitespace-nowrap text-ellipsis"
+                    >
+                        {currentRR?.label}
+                    </span>
 
-                <Image
-                    src="./arrow-down.svg"
-                    alt="arrow"
-                    width={10}
-                    height={10}
-                    style={{
-                        rotate: open ? "180deg" : "0deg",
-                        transition: "all .3s",
-                    }}
-                />
-            </button>
-
-            {active && (
-                <div className="absolute left-0 top-8 z-10 w-max rounded-md py-2 bg-white border border-gray-300">
-                    <input
-                        type="text"
-                        name="rr"
-                        value={rr}
-                        placeholder="Введите R:R"
-                        onChange={(e) => handleChange(e.target.value)}
-                        className="py-1 px-2 outline-none w-full"
+                    <Image
+                        src="./arrow-down.svg"
+                        alt="arrow"
+                        width={10}
+                        height={10}
+                        style={{
+                            rotate: open ? "180deg" : "0deg",
+                            transition: "all .3s",
+                        }}
                     />
+                </button>
 
-                    {filterRRs.length > 0 ? (
-                        <ul>
-                            {filterRRs
-                                .filter((t) => !rrId?.id !== t.id)
-                                .map((rr) => (
-                                    <li
-                                        key={rr.label}
-                                        onClick={(e) => handleSelectRR(e, rr)}
-                                        className="flex items-center justify-start h-8 px-2 hover:bg-slate-200 cursor-pointer"
-                                    >
-                                        <span
+                {active && (
+                    <div className="absolute left-0 top-8 z-10 w-max rounded-md py-2 bg-white border border-gray-300">
+                        <input
+                            type="text"
+                            name="rr"
+                            value={rr}
+                            placeholder="Введите R:R"
+                            onChange={(e) => handleChange(e.target.value)}
+                            className="py-1 px-2 outline-none w-full"
+                        />
+
+                        {filterRRs.length > 0 ? (
+                            <ul>
+                                {filterRRs
+                                    .filter((t) => !rrId?.id !== t.id)
+                                    .map((rr) => (
+                                        <li
                                             key={rr.label}
-                                            style={{
-                                                color: determineTextColor(
-                                                    rr.value
-                                                ),
-                                                backgroundColor: rr.value,
-                                            }}
-                                            className="rounded-xl px-2 py-px"
+                                            onClick={(e) =>
+                                                handleSelectRR(e, rr)
+                                            }
+                                            className="flex items-center justify-start h-8 px-2 hover:bg-slate-200 cursor-pointer"
                                         >
-                                            {rr.label}
-                                        </span>
-                                    </li>
-                                ))}
-                        </ul>
-                    ) : (
-                        <div className="flex items-center gap-1 px-2 text-xs">
-                            Добавить R:R{" "}
-                            <span
-                                onClick={(e) =>
-                                    handleSelectRR(e, {
-                                        label: rr,
-                                        value: lpBgColor,
-                                    })
-                                }
-                                style={{
-                                    color: determineTextColor(lpBgColor),
-                                    backgroundColor: lpBgColor,
-                                }}
-                                className="rounded-xl px-2 py-px cursor-pointer"
-                            >
-                                {rr}
-                            </span>
-                        </div>
-                    )}
-                </div>
-            )}
+                                            <span
+                                                key={rr.label}
+                                                style={{
+                                                    color: determineTextColor(
+                                                        rr.value
+                                                    ),
+                                                    backgroundColor: rr.value,
+                                                }}
+                                                className="rounded-xl px-2 py-px"
+                                            >
+                                                {rr.label}
+                                            </span>
+                                        </li>
+                                    ))}
+                            </ul>
+                        ) : (
+                            <div className="flex items-center gap-1 px-2 text-xs">
+                                Добавить R:R{" "}
+                                <span
+                                    onClick={(e) =>
+                                        handleSelectRR(e, {
+                                            label: rr,
+                                            value: lpBgColor,
+                                        })
+                                    }
+                                    style={{
+                                        color: determineTextColor(lpBgColor),
+                                        backgroundColor: lpBgColor,
+                                    }}
+                                    className="rounded-xl px-2 py-px cursor-pointer"
+                                >
+                                    {rr}
+                                </span>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

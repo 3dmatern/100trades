@@ -58,50 +58,54 @@ export default function BodyCardProfit({
     };
 
     return (
-        <div
-            style={{ width: columnWidth, minWidth: "64px" }}
-            className={`flex items-center justify-center relative h-8 text-xs ${
-                open ? "border border-blue-800" : "border-r"
-            }`}
-        >
-            {isPending ? (
-                <div className="w-full h-8 flex items-center justify-center">
-                    <BeatLoader size={8} />
-                </div>
-            ) : (
-                <>
-                    <span className="absolute top-auto right-2">%</span>
-                    <Form {...form}>
-                        <form>
-                            <FormField
-                                control={form.control}
-                                name="profit"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormControl>
-                                            <Input
-                                                {...field}
-                                                type="number"
-                                                step="0.10"
-                                                max={100.0}
-                                                min={0.0}
-                                                disabled={isPending}
-                                                onFocus={() => setOpen(true)}
-                                                onBlur={updateProfit}
-                                                className={`w-full h-7 pr-4 text-xs border-none text-start outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
-                                                    dealHover
-                                                        ? "bg-slate-50"
-                                                        : "bg-white"
-                                                }`}
-                                            />
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                            />
-                        </form>
-                    </Form>
-                </>
-            )}
+        <div className="table-cell">
+            <div
+                style={{ width: columnWidth, minWidth: "64px" }}
+                className={`flex items-center relative w-full h-8 text-xs ${
+                    open ? "border border-blue-800" : "border-r"
+                }`}
+            >
+                {isPending ? (
+                    <div className="w-full h-8 flex items-center justify-center">
+                        <BeatLoader size={8} />
+                    </div>
+                ) : (
+                    <>
+                        <span className="absolute top-auto right-2">%</span>
+                        <Form {...form}>
+                            <form>
+                                <FormField
+                                    control={form.control}
+                                    name="profit"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    type="number"
+                                                    step="0.10"
+                                                    max={100.0}
+                                                    min={0.0}
+                                                    disabled={isPending}
+                                                    onFocus={() =>
+                                                        setOpen(true)
+                                                    }
+                                                    onBlur={updateProfit}
+                                                    className={`w-full h-7 pr-4 text-xs border-none text-start outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
+                                                        dealHover
+                                                            ? "bg-slate-50"
+                                                            : "bg-white"
+                                                    }`}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                            </form>
+                        </Form>
+                    </>
+                )}
+            </div>
         </div>
     );
 }

@@ -150,14 +150,15 @@ export default function TableBodyCard({
     }, [entrieTags, tags]);
 
     return (
-        <div
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
-            className={`flex items-center border-b relative ${
-                selectedDeals?.includes(deal.id) || hover
-                    ? "bg-slate-50"
-                    : "bg-white"
-            }`}
+        <
+            // div
+            // onMouseEnter={() => setHover(true)}
+            // onMouseLeave={() => setHover(false)}
+            // className={`flex items-center border-b relative ${
+            //     selectedDeals?.includes(deal.id) || hover
+            //         ? "bg-slate-50"
+            //         : "bg-white"
+            // }`}
         >
             <BodyCardName
                 userId={userId}
@@ -303,6 +304,8 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column17}
                 getTimeInTrade={getTimeInTrade}
             />
-        </div>
+        </
+            // div
+        >
     );
 }

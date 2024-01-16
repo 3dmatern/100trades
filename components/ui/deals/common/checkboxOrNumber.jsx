@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 
 export default function CheckboxOrNumber({
@@ -17,7 +18,10 @@ export default function CheckboxOrNumber({
         <div
             onMouseEnter={() => setMove(true)}
             onMouseLeave={() => setMove(false)}
-            className={`flex items-center justify-center size-8 hover:bg-slate-100 ${className}`}
+            className={cn(
+                "flex items-center justify-center size-8 hover:bg-slate-100",
+                className
+            )}
         >
             {number && !move && !checkAll && !checked ? (
                 <p className="text-xs">{number}</p>
