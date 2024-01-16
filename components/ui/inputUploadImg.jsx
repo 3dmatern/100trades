@@ -4,8 +4,6 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 export default function InputUploadImg({ name, onImageChange, width, height }) {
-    const [selectedImage, setSelectedImage] = useState(null);
-
     const handleImageUpload = (file) => {
         const reader = new FileReader();
 
@@ -40,12 +38,6 @@ export default function InputUploadImg({ name, onImageChange, width, height }) {
         }
     };
 
-    const handleRemove = (e) => {
-        e.stopPropagation();
-        setSelectedImage(null);
-        onImageChange(null);
-    };
-
     return (
         <label className="block w-full h-full">
             <input
@@ -61,9 +53,9 @@ export default function InputUploadImg({ name, onImageChange, width, height }) {
 
             <Image
                 className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-0"
-                src={selectedImage ? selectedImage : "./dropbox.svg"}
-                width={selectedImage ? width : 16}
-                height={selectedImage ? height : 16}
+                src="./dropbox.svg"
+                width={16}
+                height={16}
                 alt="dropbox"
             />
         </label>

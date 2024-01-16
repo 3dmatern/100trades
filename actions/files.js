@@ -3,7 +3,7 @@
 import fs from "fs";
 import path from "path";
 
-export const uploadImage = async (data) => {
+export const uploadFile = (data) => {
     try {
         const maxSize = 5 * 1024 * 1024; // 5MB
 
@@ -60,5 +60,25 @@ export const uploadImage = async (data) => {
         return {
             error: "Ошибка загрузки изображения!",
         };
+    }
+};
+
+export const deleteFile = (fileName) => {
+    const filePathToDelete = path.join(process.cwd(), "public/", fileName);
+    console.log(filePathToDelete);
+
+    // Проверяем, существует ли файл перед уделением
+    if (!fs.existsSync(filePathToDelete)) {
+        return {
+            error: "Несанкционированный доступ!",
+        };
+    }
+
+    try {
+        fs.unlinkSync(filePathToDelete);
+        return { success: "Файл успешно удален!" };
+    } catch (error) {
+        console.error(`Error deleting file: ${fileName}`, error);
+        return "Ошибка при удалении файла!";
     }
 };

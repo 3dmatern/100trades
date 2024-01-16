@@ -5,7 +5,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 
 import InputUploadImg from "@/components/ui/inputUploadImg";
-import { uploadImage } from "@/actions/upload";
+import { deleteFile, uploadFile } from "@/actions/files";
 
 export default function BodyCardScreenshot({
     userId,
@@ -22,15 +22,17 @@ export default function BodyCardScreenshot({
     const [openImage, setOpenImage] = useState(false);
     const [imageSrc, setImageSrc] = useState(null);
 
-    const handleChange = async (base64String) => {
+    const handleChange = (base64String) => {
         const fileName = `${userId}_${inputName}`;
 
-        await uploadImage({ base64String, fileName }).then((data) => {
+        uploadFile({ base64String, fileName }).then((data) => {
             if (data.error) {
                 toast.error(data.error);
                 return;
             }
             setImageSrc(data);
+            setActive(false);
+            setOpenImage(false);
         });
     };
 
@@ -38,9 +40,18 @@ export default function BodyCardScreenshot({
         setOpenImage((prev) => !prev);
     };
 
-    const handleRemove = () => {
-        setImageSrc(null);
-        setOpenImage(false);
+    const handleRemove = (fileName) => {
+        deleteFile(fileName).then((data) => {
+            if (data.error) {
+                toast.error(data.error);
+                return;
+            }
+            if (data.success) {
+                toast.success(data.success);
+                setImageSrc(null);
+                setOpenImage(false);
+            }
+        });
     };
 
     useEffect(() => {
@@ -95,6 +106,7 @@ export default function BodyCardScreenshot({
                     alt={imageAlt}
                     width={width}
                     height={height}
+                    style={{ width, height }}
                     onClick={handleClick}
                     className="hover:scale-125 cursor-pointer"
                 />
@@ -124,12 +136,13 @@ export default function BodyCardScreenshot({
                     <img
                         src={`/${imageSrc}`}
                         alt={imageAlt}
-                        className="mt-6 m-auto w-5/6"
+                        style={{ maxWidth: "80%", width: "auto" }}
+                        className="mt-6 m-auto"
                     />
 
                     <button
                         type="button"
-                        onClick={handleRemove}
+                        onClick={() => handleRemove(imageSrc)}
                         className="block mx-auto mt-5 w-max py-1 px-2 bg-red-700 hover:bg-red-500 rounded-md text-white"
                     >
                         Удалить скриншот
@@ -154,7 +167,7 @@ export default function BodyCardScreenshot({
 
             {imageSrc && (
                 <div
-                    onClick={handleRemove}
+                    onClick={() => handleRemove(imageSrc)}
                     className="w-max absolute top-0.5 right-0.5 p-0.5 bg-gray-300 hover:bg-gray-500 rounded-full cursor-pointer z-10 hover:scale-110"
                 >
                     <Image
