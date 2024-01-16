@@ -103,6 +103,13 @@ export default function BodyCardScreenshot({
     }, [dealImageSrc]);
 
     useEffect(() => {
+        if (isPending) {
+            setActive(false);
+            setOpenImage(false);
+        }
+    }, [isPending]);
+
+    useEffect(() => {
         const handleKyeDown = (e) => {
             if (e.key === "Escape" && openImage) {
                 setOpenImage(false);
@@ -212,7 +219,7 @@ export default function BodyCardScreenshot({
             ) : (
                 <BeatLoader size={8} />
             )}
-            {imageSrc && (
+            {imageSrc && !isPending && (
                 <div
                     onClick={() => handleRemove(imageSrc)}
                     className="w-max absolute top-0.5 right-0.5 p-0.5 bg-gray-300 hover:bg-gray-500 rounded-full cursor-pointer z-10 hover:scale-110"
