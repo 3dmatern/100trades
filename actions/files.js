@@ -65,7 +65,6 @@ export const uploadFile = (data) => {
 
 export const deleteFile = (fileName) => {
     const filePathToDelete = path.join(process.cwd(), "public/", fileName);
-    console.log(filePathToDelete);
 
     // Проверяем, существует ли файл перед уделением
     if (!fs.existsSync(filePathToDelete)) {

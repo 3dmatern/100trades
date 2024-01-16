@@ -6,9 +6,12 @@ import { toast } from "sonner";
 
 import InputUploadImg from "@/components/ui/inputUploadImg";
 import { deleteFile, uploadFile } from "@/actions/files";
+import { updateEntrie } from "@/actions/entrie";
 
 export default function BodyCardScreenshot({
     userId,
+    sheetId,
+    dealId,
     dealName,
     inputName,
     dealImageSrc,
@@ -30,9 +33,24 @@ export default function BodyCardScreenshot({
                 toast.error(data.error);
                 return;
             }
-            setImageSrc(data);
-            setActive(false);
-            setOpenImage(false);
+            updateEntrie({
+                userId,
+                values: { id: dealId, sheetId, [inputName]: data },
+            })
+                .then((data) => {
+                    if (data.error) {
+                        toast.error(data.error);
+                        setActive(true);
+                        setOpen(true);
+                    }
+                    if (data.success) {
+                        toast.success(data.success);
+                        setImageSrc(data.updatedEntrie[inputName]);
+                        setActive(false);
+                        setOpenImage(false);
+                    }
+                })
+                .catch(() => toast.error("Что-то пошло не так!"));
         });
     };
 
@@ -41,6 +59,25 @@ export default function BodyCardScreenshot({
     };
 
     const handleRemove = (fileName) => {
+        updateEntrie({
+            userId,
+            values: { id: dealId, sheetId, [inputName]: undefined },
+        })
+            .then((data) => {
+                if (data.error) {
+                    toast.error(data.error);
+                    setActive(true);
+                    setOpen(true);
+                }
+                if (data.success) {
+                    toast.success(data.success);
+                    setImageSrc(null);
+                    setActive(false);
+                    setOpenImage(false);
+                }
+            })
+            .catch(() => toast.error("Что-то пошло не так!"));
+
         deleteFile(fileName).then((data) => {
             if (data.error) {
                 toast.error(data.error);

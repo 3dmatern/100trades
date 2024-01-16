@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
 
-import { createRiskReward, getRisksRewards } from "@/actions/riskReward";
+import { createRiskReward } from "@/actions/riskReward";
 import { getRandomHexColor } from "@/utils/getRandomHexColor";
 import { updateEntrie } from "@/actions/entrie";
 

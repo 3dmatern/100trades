@@ -223,6 +223,8 @@ export default function TableBodyCard({
             />
             <BodyCardScreenshot
                 userId={userId}
+                sheetId={sheetId}
+                dealId={deal.id}
                 dealName={deal.name}
                 inputName="imageStart"
                 dealImageSrc={deal.imageStart}
@@ -252,6 +254,9 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column11}
             />
             <BodyCardScreenshot
+                userId={userId}
+                sheetId={sheetId}
+                dealId={deal.id}
                 dealName={deal.name}
                 inputName="imageEnd"
                 dealImageSrc={deal.imageEnd}
