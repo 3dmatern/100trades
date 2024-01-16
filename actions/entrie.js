@@ -131,7 +131,7 @@ export const updateEntrie = async ({ userId, values }) => {
             },
         });
 
-        revalidatePath("/sheets");
+        // revalidatePath("/sheets");
 
         return {
             updatedEntrie,

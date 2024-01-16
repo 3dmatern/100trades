@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 import { updateEntrie } from "@/actions/entrie";
 
@@ -20,8 +21,8 @@ export default function BodyCardResult({
     const [result, setResult] = useState(undefined);
 
     const handleSelectResult = (res) => {
-        setResult(res);
         // e.stopPropagation();
+        setResult(res);
         startTransition(() => {
             updateEntrie({
                 userId,
@@ -78,7 +79,10 @@ export default function BodyCardResult({
                     className="flex items-center justify-between w-full"
                 >
                     <span
-                        className={`inline-block py-1 px-2 ${result.value} rounded-xl text-xs uppercase overflow-hidden whitespace-nowrap text-ellipsis`}
+                        className={cn(
+                            `inline-block py-1 px-2 rounded-xl text-xs uppercase overflow-hidden whitespace-nowrap text-ellipsis`,
+                            result.value
+                        )}
                     >
                         {result.label}
                     </span>
@@ -98,25 +102,26 @@ export default function BodyCardResult({
 
             {open && (
                 <div className="absolute left-0 top-8 z-10 w-max rounded-md py-2 bg-white border border-gray-300">
-                    {
-                        <ul>
-                            {results
-                                .filter((r) => !resultId !== r.type)
-                                .map((res) => (
-                                    <li
-                                        key={res.label}
-                                        onClick={() => handleSelectResult(res)}
-                                        className="flex items-center justify-start h-8 px-2 hover:bg-slate-200 cursor-pointer"
+                    <ul>
+                        {results
+                            ?.filter((r) => resultId !== r.id)
+                            .map((res) => (
+                                <li
+                                    key={res.label}
+                                    onClick={() => handleSelectResult(res)}
+                                    className="flex items-center justify-start h-8 px-2 hover:bg-slate-200 cursor-pointer"
+                                >
+                                    <span
+                                        className={cn(
+                                            `inline-block py-1 px-2 rounded-xl text-xs uppercase`,
+                                            res.value
+                                        )}
                                     >
-                                        <span
-                                            className={`inline-block py-1 px-2 rounded-xl ${res.value} text-xs uppercase`}
-                                        >
-                                            {res.label}
-                                        </span>
-                                    </li>
-                                ))}
-                        </ul>
-                    }
+                                        {res.label}
+                                    </span>
+                                </li>
+                            ))}
+                    </ul>
                 </div>
             )}
         </div>

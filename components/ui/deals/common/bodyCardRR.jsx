@@ -31,72 +31,41 @@ export default function BodyCardRR({
         setFilterRRs(risksRewards.filter((r) => r.label.includes(value)));
     };
 
-    const handleSelectLP = (e, rr) => {
+    const handleSelectRR = async (e, rr) => {
         e.stopPropagation();
         setActive(false);
         setOpen(false);
 
-        startTransition(() => {
-            if (risksRewards.some((r) => r.label === rr.label)) {
-                updateEntrie({
-                    userId,
-                    values: { id: dealId, sheetId, rrId: rr.id },
-                })
-                    .then((data) => {
-                        if (data.error) {
-                            toast.error(data.error);
-                            setActive(true);
-                            setOpen(true);
-                        }
-                        if (data.success) {
-                            toast.success(data.success);
-                            setActive(false);
-                            setOpen(false);
-                            setCurrentRR(rr);
-                            setRR("");
-                        }
-                    })
-                    .catch(() => toast.error("Что-то пошло не так!"));
+        let selectRR = rr;
+        if (!selectRR.id) {
+            const { newRR, success, error } = await createRiskReward({
+                userId,
+                values: rr,
+            });
+            if (error) {
+                toast.error(error);
+                return;
             } else {
-                createRiskReward({ userId, values: rr })
-                    .then((data) => {
-                        if (data.error) {
-                            toast.error(data.error);
-                        }
-                        if (data.success) {
-                            toast.success(data.success);
-                            setCurrentRR(rr);
-
-                            setCurrentRR(rr);
-                            updateEntrie({
-                                userId,
-                                values: {
-                                    id: dealId,
-                                    sheetId,
-                                    rrId: data.newRR.id,
-                                },
-                            })
-                                .then((data) => {
-                                    if (data.error) {
-                                        toast.error(data.error);
-                                        setActive(true);
-                                        setOpen(true);
-                                    }
-                                    if (data.success) {
-                                        toast.success(data.success);
-                                        setActive(false);
-                                        setOpen(false);
-                                        setCurrentRR(rr);
-                                        setRR("");
-                                    }
-                                })
-                                .catch(() =>
-                                    toast.error("Что-то пошло не так!")
-                                );
-                        }
-                    })
-                    .catch(() => toast.error("Что-то пошло не так!"));
+                toast.success(success);
+                selectRR = newRR;
+                setRR("");
             }
+        }
+        setCurrentRR(selectRR);
+
+        startTransition(() => {
+            updateEntrie({
+                userId,
+                values: { id: dealId, sheetId, rrId: selectRR.id },
+            }).then((data) => {
+                if (data.error) {
+                    toast.error(data.error);
+                }
+                if (data.success) {
+                    toast.success(data.success);
+                    // setCurrentRR(risksRewards.find(item => item.id === data.updatedEntrie.rrId));
+                }
+            });
         });
     };
 
@@ -193,23 +162,23 @@ export default function BodyCardRR({
                         <ul>
                             {filterRRs
                                 .filter((t) => !rrId?.id !== t.id)
-                                .map((l) => (
+                                .map((rr) => (
                                     <li
-                                        key={l.label}
-                                        onClick={(e) => handleSelectLP(e, l)}
+                                        key={rr.label}
+                                        onClick={(e) => handleSelectRR(e, rr)}
                                         className="flex items-center justify-start h-8 px-2 hover:bg-slate-200 cursor-pointer"
                                     >
                                         <span
-                                            key={l.label}
+                                            key={rr.label}
                                             style={{
                                                 color: determineTextColor(
-                                                    l.value
+                                                    rr.value
                                                 ),
-                                                backgroundColor: l.value,
+                                                backgroundColor: rr.value,
                                             }}
                                             className="rounded-xl px-2 py-px"
                                         >
-                                            {l.label}
+                                            {rr.label}
                                         </span>
                                     </li>
                                 ))}
@@ -219,7 +188,7 @@ export default function BodyCardRR({
                             Добавить R:R{" "}
                             <span
                                 onClick={(e) =>
-                                    handleSelectLP(e, {
+                                    handleSelectRR(e, {
                                         label: rr,
                                         value: lpBgColor,
                                     })

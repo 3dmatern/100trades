@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 
-import { EntrieSchema } from "@/schemas";
 import { updateEntrie } from "@/actions/entrie";
 
 export default function BodyCardNotes({

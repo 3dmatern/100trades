@@ -36,7 +36,7 @@ export default function TableBody({
     }, [deals]);
 
     return (
-        <div className="bg-white h-screen">
+        <div className="bg-white" style={{ height: "calc(100vh - 250px)" }}>
             {deals.length === 0 ? (
                 <div className="flex items-center justify-center h-8 border">
                     {loader}

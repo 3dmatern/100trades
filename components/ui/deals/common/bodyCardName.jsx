@@ -4,7 +4,6 @@ import React, { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { BeatLoader } from "react-spinners";
 
 import { EntrieSchema } from "@/schemas";
 import { updateEntrie } from "@/actions/entrie";
@@ -51,7 +50,6 @@ export default function BodyCardName({
                     if (data.success) {
                         setOpen(false);
                         toast.success(data.success);
-                        // form.setValue("name", data.updatedEntrie.name);
                     }
                 })
                 .catch(() => toast.error("Что-то пошло не так!"));
@@ -85,36 +83,29 @@ export default function BodyCardName({
 
             <Form {...form}>
                 <form>
-                    {isPending ? (
-                        <div className="w-20 h-8 px-2 flex items-center justify-center">
-                            <BeatLoader size={8} />
-                        </div>
-                    ) : (
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            disabled={isPending}
-                                            placeholder="AAAA"
-                                            onFocus={() => setOpen(true)}
-                                            onBlur={updateName}
-                                            className={`w-20 h-8 px-2 text-xs border-none outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
-                                                selectedDeals?.includes(
-                                                    dealId
-                                                ) || dealHover
-                                                    ? "bg-slate-50"
-                                                    : "bg-white"
-                                            }`}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                    )}
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        disabled={isPending}
+                                        placeholder="AAAA"
+                                        onFocus={() => setOpen(true)}
+                                        onBlur={updateName}
+                                        className={`w-20 h-8 px-2 text-xs border-none outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
+                                            selectedDeals?.includes(dealId) ||
+                                            dealHover
+                                                ? "bg-slate-50"
+                                                : "bg-white"
+                                        }`}
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
                 </form>
             </Form>
         </div>

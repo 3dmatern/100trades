@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import { determineTextColor } from "@/utils/determinateTextColor";
 import { getRandomHexColor } from "@/utils/getRandomHexColor";
@@ -27,7 +28,6 @@ import {
     getEntrieTags,
     removeEntrieTag,
 } from "@/actions/entrieTag";
-import { toast } from "sonner";
 
 const TIME_SCREENSHOT = 172800000; // 2 дня
 
@@ -68,21 +68,6 @@ export default function TableBodyCard({
     const [entrieTags, setEntrieTags] = useState([]);
     const [currentTags, setCurrentTags] = useState([]);
 
-    const handleRemoveItem = async (tagId) => {
-        setCurrentTags((prev) => prev.filter((tag) => tag.id !== tagId));
-        await removeEntrieTag({
-            userId,
-            entrieTag: { entrieId: deal.id, tagId },
-        }).then((data) => {
-            if (data.error) {
-                toast.error(data.error);
-            }
-            if (data.success) {
-                toast.success(data.success);
-            }
-        });
-    };
-
     const handleItemSearch = ({ target }) => {
         if (target.name === "tag") {
             setTag(target.value);
@@ -118,6 +103,21 @@ export default function TableBodyCard({
         if (success) {
             toast.success(success);
         }
+    };
+
+    const handleRemoveItem = async (tagId) => {
+        setCurrentTags((prev) => prev.filter((tag) => tag.id !== tagId));
+        await removeEntrieTag({
+            userId,
+            entrieTag: { entrieId: deal.id, tagId },
+        }).then((data) => {
+            if (data.error) {
+                toast.error(data.error);
+            }
+            if (data.success) {
+                toast.success(data.success);
+            }
+        });
     };
 
     useEffect(() => {
