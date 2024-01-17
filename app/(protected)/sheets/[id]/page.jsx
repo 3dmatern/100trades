@@ -5,6 +5,11 @@ import { getResults } from "@/actions/result";
 import { getTags } from "@/actions/tag";
 import { getRisksRewards } from "@/actions/riskReward";
 
+export const metadata = {
+    title: "Лист сделок",
+    description: "Лист сделок Homa-Trading",
+};
+
 export default async function SheetPage({ params }) {
     const { id } = params;
     const user = await currentUser();

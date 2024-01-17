@@ -1,6 +1,6 @@
 export const metadata = {
-    title: "Сделки",
-    description: "Сделки трейдинга Homa-Trading",
+    title: "Листы сделок",
+    description: "Листы сделок Homa-Trading",
 };
 
 export default function SheetsLayout({ children }) {

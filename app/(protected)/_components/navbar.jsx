@@ -19,7 +19,7 @@ export default function Navbar() {
                     variant={pathname === "/sheets" ? "default" : "outline"}
                     asChild
                 >
-                    <Link href="/sheets">Сделки</Link>
+                    <Link href="/sheets">Листы</Link>
                 </Button>
                 <Button
                     asChild

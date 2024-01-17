@@ -1,6 +1,7 @@
 "use client";
 
 import TableBodyCard from "@/components/ui/deals/tableBodyCard";
+import { sortByAscString, sortByDescString } from "@/utils/sortBy";
 import { useEffect, useState } from "react";
 
 export default function TableBody({
@@ -15,6 +16,7 @@ export default function TableBody({
     columnWidth,
     onCheckDeal,
 }) {
+    const [sortedDeals, setSortedDeals] = useState([]);
     const [allTags, setAllTags] = useState([]);
     const [allRRs, setAllRRs] = useState([]);
 
@@ -25,6 +27,30 @@ export default function TableBody({
     const changeAllTags = (tag) => {
         setAllTags((prev) => [...prev, tag]);
     };
+
+    const handleSort = (data) => {
+        switch (data.iter) {
+            case "name":
+                data.order === "asc"
+                    ? setSortedDeals(sortByAscString(deals))
+                    : setSortedDeals(sortByDescString(deals));
+                break;
+            case "result":
+                data.order === "asc"
+                    ? setSortedDeals(sortByAscString(deals))
+                    : setSortedDeals(sortByDescString(deals));
+                break;
+
+            default:
+                break;
+        }
+    };
+
+    useEffect(() => {
+        if (deals) {
+            setSortedDeals(deals);
+        }
+    }, [deals]);
 
     useEffect(() => {
         if (risksRewards) {
@@ -38,7 +64,7 @@ export default function TableBody({
         }
     }, [tags]);
 
-    return deals?.map((deal, index) => (
+    return sortedDeals?.map((deal, index) => (
         <TableBodyCard
             key={deal.id}
             userId={userId}
