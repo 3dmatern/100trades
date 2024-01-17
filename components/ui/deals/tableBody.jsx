@@ -15,7 +15,7 @@ export default function TableBody({
     onCheckDeal,
 }) {
     return (
-        <div className="table-row-group border border-slate-300 bg-white">
+        <div className="table-row-group border-x border-slate-300 bg-white">
             {deals?.map((deal, index) => (
                 <TableBodyCard
                     key={deal.id}

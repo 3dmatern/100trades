@@ -108,7 +108,7 @@ export default function BodyCardRR({
     }, [risksRewards]);
 
     return (
-        <div className="table-cell">
+        <div className="table-cell align-middle">
             <div
                 ref={listRef}
                 onClick={() => setActive(true)}

@@ -58,12 +58,9 @@ export default function SelectFilterButton({
         <div className={cn("table-cell", className)}>
             <div
                 ref={filterRef}
-                style={{
-                    width: initWidth,
-                    minWidth: "64px",
-                }}
+                style={{ width: initWidth, minWidth: "64px" }}
                 className={cn(
-                    "flex items-center w-full h-8 px-2 relative border-r border-slate-300",
+                    "flex items-center h-8 px-2 relative border-r border-slate-300",
                     classNameContent
                 )}
             >

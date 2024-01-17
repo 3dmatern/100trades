@@ -62,11 +62,13 @@ export default function BodyCardName({
     };
 
     return (
-        <div className="table-cell sticky left-0 z-[1]">
+        <div className="table-cell align-middle sticky left-0 z-[1]">
             <div
                 style={{ width: columnWidth, minWidth: "64px" }}
-                className={`flex items-center pl-8 overflow-hidden ${
-                    open ? "border border-blue-800" : "border-r"
+                className={`flex items-center h-8 pl-7 pr-2 ${
+                    open
+                        ? "border border-blue-800"
+                        : "border-r border-slate-300"
                 } ${
                     selectedDeals?.includes(dealId) || dealHover
                         ? "bg-slate-50"
@@ -89,7 +91,7 @@ export default function BodyCardName({
                             control={form.control}
                             name="name"
                             render={({ field }) => (
-                                <FormItem>
+                                <FormItem className="space-y-0">
                                     <FormControl>
                                         <Input
                                             {...field}
@@ -97,7 +99,7 @@ export default function BodyCardName({
                                             placeholder="AAAA"
                                             onFocus={() => setOpen(true)}
                                             onBlur={updateName}
-                                            className={`w-20 h-8 px-2 text-xs border-none outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
+                                            className={`h-7 p-0 pl-1 text-xs border-none outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
                                                 selectedDeals?.includes(
                                                     dealId
                                                 ) || dealHover

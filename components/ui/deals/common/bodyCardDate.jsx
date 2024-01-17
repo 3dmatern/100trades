@@ -86,45 +86,47 @@ export default function BodyCardDate({
     }, []);
 
     return (
-        <div
-            ref={cellRef}
-            onClick={() => setOpen(true)}
-            style={{ width: columnWidth, minWidth: "64px" }}
-            className={`table-cell align-middle h-8 text-xs overflow-hidden ${
-                open ? "border border-blue-800" : "px-2 border-r"
-            }`}
-        >
-            {open ? (
-                <Form {...form}>
-                    <form>
-                        <FormField
-                            control={form.control}
-                            name={name}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            type="datetime-local"
-                                            onBlur={updateDate}
-                                            disabled={isPending}
-                                            style={{
-                                                width: columnWidth,
-                                                minWidth: "64px",
-                                            }}
-                                            className={`h-8 text-xs outline-none border-none focus-visible:ring-0`}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                    </form>
-                </Form>
-            ) : (
-                <span className="overflow-hidden whitespace-nowrap text-ellipsis pointer-events-none">
-                    {date}
-                </span>
-            )}
+        <div className="table-cell">
+            <div
+                ref={cellRef}
+                onClick={() => setOpen(true)}
+                style={{ width: columnWidth, minWidth: "64px" }}
+                className={`flex items-center justify-center h-8 text-xs overflow-hidden ${
+                    open ? "border border-blue-800" : "border-r px-2"
+                }`}
+            >
+                {open ? (
+                    <Form {...form}>
+                        <form>
+                            <FormField
+                                control={form.control}
+                                name={name}
+                                render={({ field }) => (
+                                    <FormItem className="space-y-0">
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                type="datetime-local"
+                                                onBlur={updateDate}
+                                                disabled={isPending}
+                                                style={{
+                                                    width: columnWidth,
+                                                    minWidth: "64px",
+                                                }}
+                                                className={`h-8 py-0 px-2 text-xs outline-none border-none focus-visible:ring-0`}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        </form>
+                    </Form>
+                ) : (
+                    <span className="overflow-hidden whitespace-nowrap text-ellipsis pointer-events-none">
+                        {date}
+                    </span>
+                )}
+            </div>
         </div>
     );
 }

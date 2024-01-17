@@ -50,26 +50,31 @@ export default function BodyCardStress({
     }, [dealStress]);
 
     return (
-        <div
-            style={{ width: columnWidth, minWidth: "64px" }}
-            className={`table-cell align-middle relative border-r h-8 px-2 text-xs overflow-hidden`}
-        >
-            <div className="flex items-center justify-start gap-1 w-max absolute top-1/2 -translate-y-1/2 left-2">
-                {[1, 2, 3, 4, 5].map((value) => (
-                    <span
-                        key={value}
-                        onMouseOver={() => handleMouseOver(value)}
-                        onMouseLeave={handleMouseLeave}
-                        onClick={() => (isPending ? {} : handleClick(value))}
-                        className={`block size-2.5 rounded-full cursor-pointer ${
-                            value <= hoveredRating
-                                ? "bg-red-400"
-                                : value <= stress
-                                ? "bg-red-600"
-                                : "bg-slate-200"
-                        }`}
-                    />
-                ))}
+        <div className="table-cell align-middle">
+            {" "}
+            <div
+                style={{ width: columnWidth, minWidth: "64px" }}
+                className={`flex items-center justify-center h-8 px-2 relative border-r text-xs overflow-hidden`}
+            >
+                <div className="flex items-center justify-start gap-1 w-max absolute top-1/2 -translate-y-1/2 left-2">
+                    {[1, 2, 3, 4, 5].map((value) => (
+                        <span
+                            key={value}
+                            onMouseOver={() => handleMouseOver(value)}
+                            onMouseLeave={handleMouseLeave}
+                            onClick={() =>
+                                isPending ? {} : handleClick(value)
+                            }
+                            className={`block size-2.5 rounded-full cursor-pointer ${
+                                value <= hoveredRating
+                                    ? "bg-red-400"
+                                    : value <= stress
+                                    ? "bg-red-600"
+                                    : "bg-slate-200"
+                            }`}
+                        />
+                    ))}
+                </div>
             </div>
         </div>
     );

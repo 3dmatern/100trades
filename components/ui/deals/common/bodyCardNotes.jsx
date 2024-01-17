@@ -71,30 +71,32 @@ export default function BodyCardNotes({
     }, [open]);
 
     return (
-        <div
-            ref={textRef}
-            onClick={() => setOpen(true)}
-            style={{ width: columnWidth, minWidth: "64px" }}
-            className={`table-cell align-middle relative border-r h-8 px-2`}
-        >
-            {open && !isPending ? (
-                <textarea
-                    type="text"
-                    name="note"
-                    value={note}
-                    onChange={handleChange}
-                    className={`w-full h-32 text-xs border border-blue-800 absolute left-0 top-0 z-10 p-1 ${
-                        open ? "outline-blue-800" : ""
-                    } resize-none`}
-                />
-            ) : (
-                <span
-                    onClick={() => setOpen(true)}
-                    className="w-full overflow-hidden text-xs whitespace-nowrap text-ellipsis pointer-events-none"
-                >
-                    {note}
-                </span>
-            )}
+        <div className="table-cell align-middle">
+            <div
+                ref={textRef}
+                onClick={() => setOpen(true)}
+                style={{ width: columnWidth, minWidth: "64px" }}
+                className={`flxe items-center justify-center h-8 px-2 relative border-r`}
+            >
+                {open && !isPending ? (
+                    <textarea
+                        type="text"
+                        name="note"
+                        value={note}
+                        onChange={handleChange}
+                        className={`w-full h-32 text-xs border border-blue-800 absolute left-0 top-0 z-10 p-1 ${
+                            open ? "outline-blue-800" : ""
+                        } resize-none`}
+                    />
+                ) : (
+                    <span
+                        onClick={() => setOpen(true)}
+                        className="w-full overflow-hidden text-xs whitespace-nowrap text-ellipsis pointer-events-none"
+                    >
+                        {note}
+                    </span>
+                )}
+            </div>
         </div>
     );
 }

@@ -127,23 +127,26 @@ export default function Table({
         };
         calculateDistance();
 
-        const handleResize = () => {
+        const handleResizeScreen = () => {
             calculateDistance();
         };
 
-        window.addEventListener("resize", handleResize);
+        window.addEventListener("resize", handleResizeScreen);
         return () => {
-            window.removeEventListener("resize", handleResize);
+            window.removeEventListener("resize", handleResizeScreen);
         };
     }, [tableRef]);
 
     return (
         <div
             ref={tableRef}
-            style={{ height: `calc(100vh - ${heightTop}px)` }}
-            className="w-full overflow-x-auto"
+            style={{
+                minWidth: "max-content",
+                height: `calc(100vh - ${heightTop}px)`,
+            }}
+            className="overflow-x-auto"
         >
-            <div ref={tableRef} className="table w-full border-collapse">
+            <div ref={tableRef} className="table w-max border-collapse">
                 <TableHead
                     initHeaders={initHeaders}
                     checkAll={checkAll}
@@ -171,7 +174,10 @@ export default function Table({
                 <div className="table-row-group h-8 border border-slate-300 bg-white hover:bg-slate-50">
                     <div className="table-cell sticky left-0 z-[1]">
                         <div
-                            style={{ width: columnWidth.column1 }}
+                            style={{
+                                width: columnWidth.column1,
+                                minWidth: "64px",
+                            }}
                             className="flex items-center sticky top-0 left-0 border-l border-r"
                         >
                             <Button

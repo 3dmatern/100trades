@@ -66,12 +66,12 @@ export default function BodyCardResult({
     }, []);
 
     return (
-        <div className="table-cell">
+        <div className="table-cell align-middle">
             <div
                 ref={listRef}
                 onClick={() => setOpen(!open)}
                 style={{ width: columnWidth, minWidth: "64px" }}
-                className="flex items-center relative h-8 px-2 border-r"
+                className="flex items-center h-8 px-2 relative border-r border-slate-300"
             >
                 {result && (
                     <button
