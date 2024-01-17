@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
 
-import { createEntrie, getEntries } from "@/actions/entrie";
+import { createEntrie, getEntries, removeEntrie } from "@/actions/entrie";
 
 import TableBody from "@/components/ui/deals/tableBody";
 import TableHead from "@/components/ui/deals/tableHead";
@@ -103,6 +103,42 @@ export default function Table({
         });
     };
 
+    const handleRmoveDeal = async () => {
+        let removedDeal = [];
+        let copyDeals = deals;
+        let copySelectedDeals = selectedDeals;
+        setSelectedDeals([]);
+
+        setDeals((prev) =>
+            prev.filter((deal) => !copySelectedDeals.includes(deal.id))
+        );
+
+        const allRemoved = await Promise.all(
+            copySelectedDeals.map(
+                async (dealId) =>
+                    await removeEntrie({ userId, sheetId, entrieId: dealId })
+            )
+        );
+
+        const successLength = allRemoved.map((i) => {
+            removedDeal.push(i.id);
+            return i.success;
+        }).length;
+
+        removedDeal = copySelectedDeals.filter((d) => !removedDeal.includes(d));
+        if (removedDeal.length > 0) {
+            setDeals((prev) => [
+                ...prev,
+                ...copyDeals.filter((c) => removedDeal.includes(c.id)),
+            ]);
+            setSelectedDeals(removedDeal);
+        }
+
+        toast.success(
+            `Удалено записей ${successLength} из ${allRemoved.length}`
+        );
+    };
+
     useEffect(() => {
         if (sheetId) {
             const entries = async () => {
@@ -195,6 +231,7 @@ export default function Table({
                     {selectedDeals.length > 0 && (
                         <Button
                             type="button"
+                            onClick={handleRmoveDeal}
                             className="w-max h-full bg-red-700 hover:bg-red-600 ml-20 text-sm"
                         >
                             Удалить выбранные сделки

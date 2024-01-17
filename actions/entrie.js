@@ -1,6 +1,6 @@
 "use server";
 
-import { unstable_noStore as noStore, revalidatePath } from "next/cache";
+import { unstable_noStore as noStore } from "next/cache";
 
 import { db } from "@/lib/db";
 import { EntrieSchema } from "@/schemas";
@@ -30,7 +30,6 @@ export const createEntrie = async ({ userId, sheetId }) => {
             data: { sheetId: existingSheet.id },
         });
 
-        revalidatePath("/sheets");
         return {
             newEntrie,
             success: "Запись успешно создана!",
@@ -55,8 +54,6 @@ export const getEntries = async (sheetId) => {
 
     try {
         const entries = getEntriesBySheetId(existingSheet.id);
-
-        // revalidatePath("/sheets");
 
         return entries;
     } catch (error) {
@@ -131,8 +128,6 @@ export const updateEntrie = async ({ userId, values }) => {
             },
         });
 
-        // revalidatePath("/sheets");
-
         return {
             updatedEntrie,
             success: "Запись успешно обновлена!",
@@ -169,13 +164,12 @@ export const removeEntrie = async ({ userId, sheetId, entrieId }) => {
     }
 
     try {
-        await db.entrie.delete({
+        const { id } = await db.entrie.delete({
             where: { id: existingEntrie.id },
         });
 
-        revalidatePath("/sheets");
-
         return {
+            id,
             success: "Запись успешно удалена!",
         };
     } catch (error) {
