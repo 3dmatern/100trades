@@ -74,7 +74,7 @@ export default function SelectFilterButton({
                         {name}
                     </span>{" "}
                     <Image
-                        src="./arrow-down.svg"
+                        src="/arrow-down.svg"
                         alt="arrow"
                         width={10}
                         height={10}
@@ -97,7 +97,7 @@ export default function SelectFilterButton({
                             className="flex items-center gap-3 w-full hover:bg-slate-100 hover:rounded-md px-2"
                         >
                             <Image
-                                src="./sort-down.svg"
+                                src="/sort-down.svg"
                                 alt="sort-down"
                                 width={16}
                                 height={16}
@@ -112,7 +112,7 @@ export default function SelectFilterButton({
                             className="flex items-center gap-3 w-full hover:bg-slate-100 hover:rounded-md px-2"
                         >
                             <Image
-                                src="./sort-up.svg"
+                                src="/sort-up.svg"
                                 alt="sort-up"
                                 width={16}
                                 height={16}

@@ -175,7 +175,7 @@ export default function BodyCardScreenshot({
                                 className="absolute top-4 right-4 z-50 p-0.5 cursor-pointer text-cyan-500"
                             >
                                 <Image
-                                    src="./close.svg"
+                                    src="/close.svg"
                                     alt="close"
                                     width={16}
                                     height={16}
@@ -210,7 +210,7 @@ export default function BodyCardScreenshot({
                         />
                     ) : (
                         <Image
-                            src="./dropbox.svg"
+                            src="/dropbox.svg"
                             alt="dropbox"
                             width={16}
                             height={16}
@@ -226,7 +226,7 @@ export default function BodyCardScreenshot({
                         className="w-max absolute top-0.5 right-0.5 p-0.5 bg-gray-300 hover:bg-gray-500 rounded-full cursor-pointer z-10 hover:scale-110"
                     >
                         <Image
-                            src="./remove.svg"
+                            src="/remove.svg"
                             alt="remove"
                             width={10}
                             height={10}

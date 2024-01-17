@@ -52,7 +52,7 @@ export default function InputUploadImg({ name, onImageChange, width, height }) {
 
             <Image
                 className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-0"
-                src="./dropbox.svg"
+                src="/dropbox.svg"
                 width={16}
                 height={16}
                 alt="dropbox"

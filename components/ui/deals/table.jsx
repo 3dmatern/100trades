@@ -219,7 +219,7 @@ export default function Table({
                                 className="flex items-center justify-center size-7 p-1 rounded-sm bg-slate-50 hover:bg-slate-200"
                             >
                                 <Image
-                                    src="./plus-lg.svg"
+                                    src="/plus-lg.svg"
                                     alt="plus"
                                     width={16}
                                     height={16}

@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 import { SheetUpdateSchema } from "@/schemas";
 import { removeSheet, updateSheet } from "@/actions/sheet";
@@ -94,9 +95,9 @@ export default function Sheet({
     }, [form, open]);
 
     return (
-        <div
+        <Link
             ref={sheetRef}
-            onClick={() => onClickId(sheet.id)}
+            href={`/sheets/${sheet.id}`}
             className={cn(
                 "flex items-center justify-center gap-1 w-max h-9 px-2 relative hover:bg-gray-100 rounded-t-lg cursor-pointer",
                 className
@@ -143,7 +144,7 @@ export default function Sheet({
                             className="cursor-pointer"
                         >
                             <Image
-                                src="./pencil.svg"
+                                src="/pencil.svg"
                                 alt="edit"
                                 width={13}
                                 height={13}
@@ -160,7 +161,7 @@ export default function Sheet({
                             className="cursor-pointer hover:scale-110"
                         >
                             <Image
-                                src="./removeSheet.svg"
+                                src="/removeSheet.svg"
                                 alt="remove"
                                 width={13}
                                 height={13}
@@ -170,6 +171,6 @@ export default function Sheet({
                     )}
                 </>
             )}
-        </div>
+        </Link>
     );
 }

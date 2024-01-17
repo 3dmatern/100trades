@@ -183,7 +183,7 @@ export default function BodyCardTags({
                                     className="p-0.5 cursor-pointer"
                                 >
                                     <Image
-                                        src="./remove.svg"
+                                        src="/remove.svg"
                                         alt="remove"
                                         width={10}
                                         height={10}
@@ -201,7 +201,7 @@ export default function BodyCardTags({
                         className="flex items-center justify-center size-4 p-0.5 rounded-sm bg-slate-200 hover:bg-slate-300"
                     >
                         <Image
-                            src="./plus-lg.svg"
+                            src="/plus-lg.svg"
                             alt="plus"
                             width={10}
                             height={10}

@@ -137,7 +137,7 @@ export default function BodyCardRisksRewards({
                     </span>
 
                     <Image
-                        src="./arrow-down.svg"
+                        src="/arrow-down.svg"
                         alt="arrow"
                         width={10}
                         height={10}
