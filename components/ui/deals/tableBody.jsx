@@ -39,25 +39,21 @@ export default function TableBody({
     }, [tags]);
 
     return deals?.map((deal, index) => (
-        <div
+        <TableBodyCard
             key={deal.id}
-            className="flex items-center h-8 border-x border-b border-slate-300 bg-white"
-        >
-            <TableBodyCard
-                userId={userId}
-                sheetId={sheetId}
-                index={index}
-                deal={deal}
-                selectedDeals={selectedDeals}
-                results={results}
-                allRRs={allRRs}
-                onChangeAllRRs={changeAllRRs}
-                allTags={allTags}
-                onChangeAllTags={changeAllTags}
-                checkAll={checkAll}
-                columnWidth={columnWidth}
-                onCheckDeal={onCheckDeal}
-            />
-        </div>
+            userId={userId}
+            sheetId={sheetId}
+            index={index}
+            deal={deal}
+            selectedDeals={selectedDeals}
+            results={results}
+            allRRs={allRRs}
+            onChangeAllRRs={changeAllRRs}
+            allTags={allTags}
+            onChangeAllTags={changeAllTags}
+            checkAll={checkAll}
+            columnWidth={columnWidth}
+            onCheckDeal={onCheckDeal}
+        />
     ));
 }
