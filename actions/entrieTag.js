@@ -1,6 +1,6 @@
 "use server";
 
-import { unstable_noStore as noStore, revalidatePath } from "next/cache";
+import { unstable_noStore as noStore } from "next/cache";
 
 import { db } from "@/lib/db";
 import { EntrieTagSchema } from "@/schemas";
@@ -50,8 +50,6 @@ export const createEntrieTag = async ({ userId, values }) => {
                 tagId,
             },
         });
-
-        // revalidatePath("/sheets");
 
         return {
             newEntrieTag,

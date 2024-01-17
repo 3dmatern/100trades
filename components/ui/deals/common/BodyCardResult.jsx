@@ -80,10 +80,8 @@ export default function BodyCardResult({
                         className="flex items-center justify-between w-full"
                     >
                         <span
-                            className={cn(
-                                `inline-block py-1 px-2 rounded-xl text-xs uppercase overflow-hidden whitespace-nowrap text-ellipsis`,
-                                result.value
-                            )}
+                            style={{ backgroundColor: result.value }}
+                            className="inline-block py-1 px-2 rounded-xl text-xs uppercase overflow-hidden whitespace-nowrap text-ellipsis"
                         >
                             {result.label}
                         </span>
@@ -113,10 +111,10 @@ export default function BodyCardResult({
                                         className="flex items-center justify-start h-8 px-2 hover:bg-slate-200 cursor-pointer"
                                     >
                                         <span
-                                            className={cn(
-                                                `inline-block py-1 px-2 rounded-xl text-xs uppercase`,
-                                                res.value
-                                            )}
+                                            style={{
+                                                backgroundColor: res.value,
+                                            }}
+                                            className="inline-block py-1 px-2 rounded-xl text-xs uppercase"
                                         >
                                             {res.label}
                                         </span>

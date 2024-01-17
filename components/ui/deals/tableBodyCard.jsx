@@ -31,24 +31,6 @@ import {
 
 const TIME_SCREENSHOT = 172800000; // 2 дня
 
-const initData = {
-    name: "",
-    result: "",
-    pose: "",
-    risk: "",
-    profit: "",
-    rr: null,
-    entryDate: "",
-    imageStart: "",
-    deposit: "",
-    progress: "",
-    exitDate: "",
-    imageEnd: null,
-    stress: "",
-    tags: [],
-    notes: "",
-};
-
 export default function TableBodyCard({
     userId,
     sheetId,
@@ -57,13 +39,15 @@ export default function TableBodyCard({
     selectedDeals,
     results,
     risksRewards,
-    tags,
+    allTags,
+    onChangeAllTags,
     checkAll,
     columnWidth,
     onCheckDeal,
 }) {
     const [hover, setHover] = useState(false);
     const [tag, setTag] = useState("");
+    const [tags, setTags] = useState([]);
     const [filteredTags, setFilteredTags] = useState([]);
     const [entrieTags, setEntrieTags] = useState([]);
     const [currentTags, setCurrentTags] = useState([]);
@@ -78,7 +62,9 @@ export default function TableBodyCard({
     };
 
     const handleClickSelectedTag = async (tag) => {
+        setTag("");
         let selectTag = tag;
+
         if (!selectTag.id) {
             const { newTag, success, error } = await createTag({
                 userId,
@@ -90,9 +76,11 @@ export default function TableBodyCard({
             } else {
                 toast.success(success);
                 selectTag = newTag;
+                onChangeAllTags(selectTag);
             }
         }
         setCurrentTags((prev) => [...prev, selectTag]);
+
         const { newEntrieTag, success, error } = await createEntrieTag({
             userId,
             values: { entrieId: deal.id, tagId: selectTag.id },
@@ -121,10 +109,10 @@ export default function TableBodyCard({
     };
 
     useEffect(() => {
-        if (tags) {
-            setFilteredTags(tags);
+        if (allTags) {
+            setFilteredTags(allTags);
         }
-    }, [tags]);
+    }, [allTags]);
 
     useEffect(() => {
         const getData = async () => {
@@ -133,21 +121,17 @@ export default function TableBodyCard({
                 toast.error(entrieTagsData.error);
                 return;
             } else {
-                setEntrieTags(entrieTagsData.entrieTags);
+                setCurrentTags(
+                    allTags.filter((tag) =>
+                        entrieTagsData.entrieTags.some(
+                            (et) => tag.id === et.tagId
+                        )
+                    )
+                );
             }
         };
         getData();
-    }, [deal.id]);
-
-    useEffect(() => {
-        if (tags) {
-            setCurrentTags(
-                tags.filter((tag) =>
-                    entrieTags.some((et) => tag.id === et.tagId)
-                )
-            );
-        }
-    }, [entrieTags, tags]);
+    }, [allTags, deal.id]);
 
     return (
         <

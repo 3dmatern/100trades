@@ -63,7 +63,6 @@ export default function BodyCardRR({
                 }
                 if (data.success) {
                     toast.success(data.success);
-                    // setCurrentRR(risksRewards.find(item => item.id === data.updatedEntrie.rrId));
                 }
             });
         });

@@ -65,10 +65,10 @@ export default function BodyCardTags({
             <div
                 onClick={() => setActive(true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
-                className={`flex items-center justify-start gap-1 w-full text-xs bg-white ${
+                className={`flex justify-start gap-1 w-full text-xs bg-white ${
                     active
-                        ? "flex-wrap h-16 overflow-y-auto absolute top-0 left-0 z-[1] p-1 border border-blue-800"
-                        : "h-full border-r px-2 overflow-hidden"
+                        ? "items-start flex-wrap h-16 overflow-y-auto absolute top-0 left-0 z-[1] p-1 border border-blue-800"
+                        : "items-center h-full border-r px-2 overflow-hidden"
                 }`}
             >
                 {currentTags.length > 0 &&
@@ -105,13 +105,13 @@ export default function BodyCardTags({
                     <Button
                         type="button"
                         onClick={() => setOpen(!open)}
-                        className="flex items-center justify-center size-7 p-1 rounded-sm bg-slate-100 hover:bg-slate-200"
+                        className="flex items-center justify-center size-4 p-0.5 rounded-sm bg-slate-200 hover:bg-slate-300"
                     >
                         <Image
                             src="./plus-lg.svg"
                             alt="plus"
-                            width={16}
-                            height={16}
+                            width={10}
+                            height={10}
                         />
                     </Button>
                 )}
@@ -128,7 +128,7 @@ export default function BodyCardTags({
                         value={tag}
                         placeholder="Введите тэг"
                         onChange={onItemSearch}
-                        className="w-full py-1 px-2 outline-none"
+                        className="w-full mb-1 py-1 px-2 text-xs outline-none"
                     />
 
                     {filteredTags.length > 0 ? (
