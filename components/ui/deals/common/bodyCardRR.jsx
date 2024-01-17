@@ -13,7 +13,8 @@ export default function BodyCardRR({
     sheetId,
     dealId,
     rrId,
-    risksRewards,
+    allRRs,
+    onChangeAllRRs,
     columnWidth,
     determineTextColor,
 }) {
@@ -28,15 +29,17 @@ export default function BodyCardRR({
 
     const handleChange = (value) => {
         setRR(value);
-        setFilterRRs(risksRewards.filter((r) => r.label.includes(value)));
+        setFilterRRs(allRRs.filter((r) => r.label.includes(value)));
     };
 
     const handleSelectRR = async (e, rr) => {
         e.stopPropagation();
+        setRR("");
         setActive(false);
         setOpen(false);
 
         let selectRR = rr;
+
         if (!selectRR.id) {
             const { newRR, success, error } = await createRiskReward({
                 userId,
@@ -48,7 +51,7 @@ export default function BodyCardRR({
             } else {
                 toast.success(success);
                 selectRR = newRR;
-                setRR("");
+                onChangeAllRRs(newRR);
             }
         }
         setCurrentRR(selectRR);
@@ -69,33 +72,29 @@ export default function BodyCardRR({
     };
 
     useEffect(() => {
-        if (rrId && risksRewards) {
-            setCurrentRR(risksRewards.find((item) => item.id === rrId));
+        if (rrId && allRRs) {
+            setCurrentRR(allRRs.find((item) => item.id === rrId));
         }
-    }, [risksRewards, rrId]);
+    }, [allRRs, rrId]);
 
     useEffect(() => {
-        if (risksRewards) {
-            setFilterRRs(risksRewards);
+        if (allRRs) {
+            setFilterRRs(allRRs);
             const color = getRandomHexColor();
-            setLPBgColor(!risksRewards.some((l) => l.value === color) && color);
+            setLPBgColor(!allRRs.some((l) => l.value === color) && color);
         }
-    }, [risksRewards]);
+    }, [allRRs]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (listRef.current && !listRef.current.contains(e.target)) {
                 setActive(false);
                 setOpen(false);
-                setRR("");
-                setFilterRRs(risksRewards);
             }
         };
         const handleScroll = () => {
             setActive(false);
             setOpen(false);
-            setRR("");
-            setFilterRRs(risksRewards);
         };
 
         document.addEventListener("click", handleClickOutside);
@@ -104,7 +103,7 @@ export default function BodyCardRR({
             document.removeEventListener("click", handleClickOutside);
             window.removeEventListener("scroll", handleScroll);
         };
-    }, [risksRewards]);
+    }, []);
 
     return (
         <div className="table-cell align-middle h-full">

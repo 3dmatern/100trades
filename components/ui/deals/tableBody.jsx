@@ -16,10 +16,21 @@ export default function TableBody({
     onCheckDeal,
 }) {
     const [allTags, setAllTags] = useState([]);
+    const [allRRs, setAllRRs] = useState([]);
+
+    const changeAllRRs = (rr) => {
+        setAllTags((prev) => [...prev, rr]);
+    };
 
     const changeAllTags = (tag) => {
         setAllTags((prev) => [...prev, tag]);
     };
+
+    useEffect(() => {
+        if (risksRewards) {
+            setAllRRs(risksRewards);
+        }
+    }, [risksRewards]);
 
     useEffect(() => {
         if (tags) {
@@ -39,8 +50,8 @@ export default function TableBody({
                 deal={deal}
                 selectedDeals={selectedDeals}
                 results={results}
-                risksRewards={risksRewards}
-                tags={tags}
+                allRRs={allRRs}
+                onChangeAllRRs={changeAllRRs}
                 allTags={allTags}
                 onChangeAllTags={changeAllTags}
                 checkAll={checkAll}

@@ -38,7 +38,8 @@ export default function TableBodyCard({
     deal,
     selectedDeals,
     results,
-    risksRewards,
+    allRRs,
+    onChangeAllRRs,
     allTags,
     onChangeAllTags,
     checkAll,
@@ -47,22 +48,21 @@ export default function TableBodyCard({
 }) {
     const [hover, setHover] = useState(false);
     const [tag, setTag] = useState("");
-    const [tags, setTags] = useState([]);
     const [filteredTags, setFilteredTags] = useState([]);
-    const [entrieTags, setEntrieTags] = useState([]);
     const [currentTags, setCurrentTags] = useState([]);
 
     const handleItemSearch = ({ target }) => {
         if (target.name === "tag") {
             setTag(target.value);
             setFilteredTags(
-                tags.filter((tag) => tag.label.includes(target.value))
+                allTags.filter((tag) => tag.label.includes(target.value))
             );
         }
     };
 
     const handleClickSelectedTag = async (tag) => {
         setTag("");
+
         let selectTag = tag;
 
         if (!selectTag.id) {
@@ -193,7 +193,8 @@ export default function TableBodyCard({
                 sheetId={sheetId}
                 dealId={deal.id}
                 rrId={deal.rrId}
-                risksRewards={risksRewards}
+                allRRs={allRRs}
+                onChangeAllRRs={onChangeAllRRs}
                 columnWidth={columnWidth.column6}
                 determineTextColor={determineTextColor}
                 getRandomHexColor={getRandomHexColor}
