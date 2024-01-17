@@ -175,7 +175,7 @@ export default function Table({
                                 width: columnWidth.column1,
                                 minWidth: "64px",
                             }}
-                            className="flex items-center h-full border-l border-r border-slate-300"
+                            className="flex items-center h-full border-l border-r border-slate-300 bg-inherit hover:bg-inherit"
                         >
                             <Button
                                 type="button"
@@ -195,7 +195,7 @@ export default function Table({
                     {selectedDeals.length > 0 && (
                         <Button
                             type="button"
-                            className="w-max bg-red-700 hover:bg-red-600 ml-20 text-sm"
+                            className="w-max h-full bg-red-700 hover:bg-red-600 ml-20 text-sm"
                         >
                             Удалить выбранные сделки
                         </Button>

@@ -17,6 +17,7 @@ export default function BodyCardProfit({
     dealId,
     dealProfit,
     dealHover,
+    selectedDeals,
     columnWidth,
 }) {
     const [isPending, startTransition] = useTransition();
@@ -62,8 +63,10 @@ export default function BodyCardProfit({
             <div
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className={`flex items-center w-full h-full relative text-xs ${
-                    open ? "border border-blue-800" : "border-r"
-                }`}
+                    selectedDeals?.includes(dealId) || dealHover
+                        ? "bg-slate-50"
+                        : "bg-white"
+                } ${open ? "border border-blue-800" : "border-r"}`}
             >
                 {isPending ? (
                     <div className="w-full h-8 flex items-center justify-center">

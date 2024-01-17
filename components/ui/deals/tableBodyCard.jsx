@@ -114,6 +114,7 @@ export default function TableBodyCard({
                 dealId={deal.id}
                 dealRisk={deal.risk}
                 dealHover={hover}
+                selectedDeals={selectedDeals}
                 columnWidth={columnWidth.column4}
             />
             <BodyCardProfit
@@ -122,6 +123,7 @@ export default function TableBodyCard({
                 dealId={deal.id}
                 dealProfit={deal.profit}
                 dealHover={hover}
+                selectedDeals={selectedDeals}
                 columnWidth={columnWidth.column5}
             />
             <BodyCardRisksRewards
@@ -212,6 +214,8 @@ export default function TableBodyCard({
                 allTags={allTags}
                 onChangeAllTags={onChangeAllTags}
                 columnWidth={columnWidth.column15}
+                dealHover={hover}
+                selectedDeals={selectedDeals}
                 determineTextColor={determineTextColor}
                 getRandomHexColor={getRandomHexColor}
             />

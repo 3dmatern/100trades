@@ -19,6 +19,8 @@ export default function BodyCardTags({
     allTags,
     onChangeAllTags,
     columnWidth,
+    dealHover,
+    selectedDeals,
     determineTextColor,
     getRandomHexColor,
 }) {
@@ -149,7 +151,11 @@ export default function BodyCardTags({
             <div
                 onClick={() => setActive(true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
-                className={`flex justify-start gap-1 w-full text-xs bg-white ${
+                className={`flex justify-start gap-1 w-full text-xs ${
+                    selectedDeals?.includes(dealId) || dealHover
+                        ? "bg-slate-50"
+                        : "bg-white"
+                } ${
                     active
                         ? "items-start flex-wrap h-16 overflow-y-auto absolute top-0 left-0 z-[1] p-1 border border-blue-800"
                         : "items-center h-full border-r px-2 overflow-hidden"
