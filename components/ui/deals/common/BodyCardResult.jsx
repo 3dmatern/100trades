@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 
 import { updateEntrie } from "@/actions/entrie";
 
@@ -73,31 +72,32 @@ export default function BodyCardResult({
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className="flex items-center h-full px-2 relative border-r border-slate-300"
             >
-                {result && (
-                    <button
-                        type="button"
-                        disabled={isPending}
-                        className="flex items-center justify-between w-full"
-                    >
+                <button
+                    type="button"
+                    disabled={isPending}
+                    className="flex items-center justify-between w-full"
+                >
+                    {result ? (
                         <span
                             style={{ backgroundColor: result.value }}
                             className="inline-block py-1 px-2 rounded-xl text-xs uppercase overflow-hidden whitespace-nowrap text-ellipsis"
                         >
                             {result.label}
                         </span>
-
-                        <Image
-                            src="./arrow-down.svg"
-                            alt="arrow"
-                            width={10}
-                            height={10}
-                            style={{
-                                rotate: open ? "180deg" : "0deg",
-                                transition: "all .3s",
-                            }}
-                        />
-                    </button>
-                )}
+                    ) : (
+                        <span />
+                    )}
+                    <Image
+                        src="./arrow-down.svg"
+                        alt="arrow"
+                        width={10}
+                        height={10}
+                        style={{
+                            rotate: open ? "180deg" : "0deg",
+                            transition: "all .3s",
+                        }}
+                    />
+                </button>
 
                 {open && (
                     <div className="absolute left-0 top-8 z-10 w-max rounded-md py-2 bg-white border border-gray-300">
