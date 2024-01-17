@@ -65,10 +65,10 @@ export default function BodyCardTags({
             <div
                 onClick={() => setActive(true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
-                className={`flex items-center justify-start gap-1 w-full h-full text-xs bg-white ${
-                    open
-                        ? "flex-wrap min-h-8 max-h-16 overflow-y-auto absolute top-0 left-0 p-1 border border-blue-800"
-                        : "border-r px-2 overflow-hidden"
+                className={`flex items-center justify-start gap-1 w-full text-xs bg-white ${
+                    active
+                        ? "flex-wrap h-16 overflow-y-auto absolute top-0 left-0 z-[1] p-1 border border-blue-800"
+                        : "h-full border-r px-2 overflow-hidden"
                 }`}
             >
                 {currentTags.length > 0 &&
@@ -118,14 +118,17 @@ export default function BodyCardTags({
             </div>
 
             {open && (
-                <div className="w-full absolute top-16 left-0 z-10 rounded-md py-2 bg-white border border-gray-300">
+                <div
+                    style={{ width: columnWidth }}
+                    className="absolute top-16 left-0 z-[1] rounded-md py-2 bg-white border border-gray-300"
+                >
                     <input
                         type="text"
                         name="tag"
                         value={tag}
                         placeholder="Введите тэг"
                         onChange={onItemSearch}
-                        className="py-1 px-2 outline-none w-full"
+                        className="w-full py-1 px-2 outline-none"
                     />
 
                     {filteredTags.length > 0 ? (
