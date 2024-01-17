@@ -55,12 +55,12 @@ export default function SelectFilterButton({
     }, []);
 
     return (
-        <div className={cn("table-cell", className)}>
+        <div className={cn("table-cell align-middle h-full", className)}>
             <div
                 ref={filterRef}
                 style={{ width: initWidth, minWidth: "64px" }}
                 className={cn(
-                    "flex items-center h-8 px-2 relative border-r border-slate-300",
+                    "flex items-center h-full px-2 relative border-r border-slate-300",
                     classNameContent
                 )}
             >

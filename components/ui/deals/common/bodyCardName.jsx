@@ -62,10 +62,10 @@ export default function BodyCardName({
     };
 
     return (
-        <div className="table-cell align-middle sticky left-0 z-[1]">
+        <div className="table-cell align-middle h-full sticky left-0 z-[1]">
             <div
                 style={{ width: columnWidth, minWidth: "64px" }}
-                className={`flex items-center h-8 pl-7 pr-2 ${
+                className={`flex items-center h-full pl-7 pr-2 ${
                     open
                         ? "border border-blue-800"
                         : "border-r border-slate-300"

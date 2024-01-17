@@ -17,7 +17,7 @@ export default function TableBody({
     return deals?.map((deal, index) => (
         <div
             key={deal.id}
-            className="table-row-group border h-8 border-slate-300 bg-white"
+            className="flex items-center h-8 border-x border-b border-slate-300 bg-white"
         >
             <TableBodyCard
                 userId={userId}

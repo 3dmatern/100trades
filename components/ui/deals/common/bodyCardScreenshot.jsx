@@ -141,12 +141,12 @@ export default function BodyCardScreenshot({
     }, []);
 
     return (
-        <div className="table-cell align-middle">
+        <div className="table-cell align-middle h-full">
             <div
                 ref={cellRef}
                 onClick={() => setActive(true)}
                 style={{ width: columnWidth, minWidth: "64px", height: "32px" }}
-                className={`flex items-center justify-center h-8 relative text-xs ${
+                className={`flex items-center justify-center h-full relative text-xs ${
                     active ? "border border-blue-800" : "border-r"
                 }`}
             >

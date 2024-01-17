@@ -108,12 +108,12 @@ export default function BodyCardRR({
     }, [risksRewards]);
 
     return (
-        <div className="table-cell align-middle">
+        <div className="table-cell align-middle h-full">
             <div
                 ref={listRef}
                 onClick={() => setActive(true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
-                className={`flex items-center relative h-8 px-2 text-xs ${
+                className={`flex items-center h-full px-2 relative text-xs ${
                     active ? "border border-blue-800" : "border-r"
                 }`}
             >

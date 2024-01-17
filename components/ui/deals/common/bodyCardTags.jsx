@@ -61,11 +61,11 @@ export default function BodyCardTags({
     }, []);
 
     return (
-        <div ref={listRef} className="table-cell relative">
+        <div ref={listRef} className="table-cell relative h-full">
             <div
                 onClick={() => setActive(true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
-                className={`flex items-center justify-start gap-1 w-full h-8 text-xs bg-white ${
+                className={`flex items-center justify-start gap-1 w-full h-full text-xs bg-white ${
                     open
                         ? "flex-wrap min-h-8 max-h-16 overflow-y-auto absolute top-0 left-0 p-1 border border-blue-800"
                         : "border-r px-2 overflow-hidden"

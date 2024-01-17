@@ -6,10 +6,10 @@ export default function BodyCardInfoAction({
     dealImageEndSrc,
 }) {
     return (
-        <div className="table-cell align-middle">
+        <div className="table-cell align-middle h-full">
             <div
                 style={{ width: columnWidth, minWidth: "64px" }}
-                className="flex items-center justify-center border-r h-8 px-2 text-xs"
+                className="flex items-center justify-center h-full px-2 border-r text-xs"
             >
                 <span className=" overflow-hidden whitespace-nowrap text-ellipsis">
                     {dealImageEndSrc

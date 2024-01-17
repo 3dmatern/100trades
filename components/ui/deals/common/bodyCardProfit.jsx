@@ -58,10 +58,10 @@ export default function BodyCardProfit({
     };
 
     return (
-        <div className="table-cell">
+        <div className="table-cell align-middle h-full">
             <div
                 style={{ width: columnWidth, minWidth: "64px" }}
-                className={`flex items-center relative w-full h-8 text-xs ${
+                className={`flex items-center w-full h-full relative text-xs ${
                     open ? "border border-blue-800" : "border-r"
                 }`}
             >

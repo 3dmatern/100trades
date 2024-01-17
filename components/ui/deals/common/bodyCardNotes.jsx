@@ -71,12 +71,12 @@ export default function BodyCardNotes({
     }, [open]);
 
     return (
-        <div className="table-cell align-middle">
+        <div className="table-cell align-middle h-full">
             <div
                 ref={textRef}
                 onClick={() => setOpen(true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
-                className={`flxe items-center justify-center h-8 px-2 relative border-r`}
+                className={`flxe items-center justify-center h-full px-2 relative border-r`}
             >
                 {open && !isPending ? (
                     <textarea

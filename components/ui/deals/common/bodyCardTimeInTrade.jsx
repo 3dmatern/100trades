@@ -19,10 +19,10 @@ export default function BodyCardTimeInTrade({
     }, [dealEntryDate, dealExitDate]);
 
     return (
-        <div className="table-cell align-middle">
+        <div className="table-cell align-middle h-full">
             <div
                 style={{ width: columnWidth, minWidth: "64px" }}
-                className="flex items-center justify-center border-r h-8 px-2 text-xs overflow-hidden"
+                className="flex items-center justify-center h-full px-2 border-r text-xs overflow-hidden"
             >
                 <span className="whitespace-nowrap text-ellipsis">{time}</span>
             </div>

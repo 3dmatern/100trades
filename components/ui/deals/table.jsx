@@ -168,14 +168,14 @@ export default function Table({
                     />
                 )}
 
-                <div className="table-row-group h-8 border border-slate-300 bg-white hover:bg-slate-50">
-                    <div className="table-cell sticky left-0 z-[1]">
+                <div className="flex items-center h-8 border-x border-b border-slate-300 bg-white hover:bg-slate-50">
+                    <div className="table-cell align-middle h-full sticky left-0 z-[1]">
                         <div
                             style={{
                                 width: columnWidth.column1,
                                 minWidth: "64px",
                             }}
-                            className="flex items-center sticky top-0 left-0 border-l border-r"
+                            className="flex items-center h-full border-r"
                         >
                             <Button
                                 type="button"

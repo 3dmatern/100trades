@@ -50,11 +50,10 @@ export default function BodyCardStress({
     }, [dealStress]);
 
     return (
-        <div className="table-cell align-middle">
-            {" "}
+        <div className="table-cell align-middle h-full">
             <div
                 style={{ width: columnWidth, minWidth: "64px" }}
-                className={`flex items-center justify-center h-8 px-2 relative border-r text-xs overflow-hidden`}
+                className={`flex items-center justify-center h-full px-2 relative border-r text-xs overflow-hidden`}
             >
                 <div className="flex items-center justify-start gap-1 w-max absolute top-1/2 -translate-y-1/2 left-2">
                     {[1, 2, 3, 4, 5].map((value) => (

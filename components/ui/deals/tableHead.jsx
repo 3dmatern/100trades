@@ -9,7 +9,7 @@ export default function TableHead({
     onCheckAll,
 }) {
     return (
-        <div className="table-row-group border border-slate-300 bg-gray-50">
+        <div className="flex items-center h-8 border border-slate-300 bg-gray-50">
             {initHeaders.slice(0, 1).map((item) => (
                 <SelectFilterButton
                     key={item.name}
