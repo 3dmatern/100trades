@@ -1,8 +1,6 @@
-export default function BodyCardInfoAction({
-    dealEntryDate,
-    dealExitDate,
+export default function BodyCardTakeScreenshot({
+    takeScreenshot,
     columnWidth,
-    timeScreenshot,
     dealImageEndSrc,
 }) {
     return (
@@ -14,7 +12,7 @@ export default function BodyCardInfoAction({
                 <span className=" overflow-hidden whitespace-nowrap text-ellipsis">
                     {dealImageEndSrc
                         ? ""
-                        : dealExitDate - dealEntryDate > timeScreenshot
+                        : takeScreenshot
                         ? "Сделай скрин"
                         : "Рано"}
                 </span>

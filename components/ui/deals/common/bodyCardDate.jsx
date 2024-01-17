@@ -15,8 +15,12 @@ export default function BodyCardDate({
     userId,
     sheetId,
     dealId,
-    dealDate,
     name,
+    dealDate,
+    minDate,
+    maxDate,
+    disabled,
+    onChangeDate,
     columnWidth,
 }) {
     const cellRef = useRef(null);
@@ -56,7 +60,10 @@ export default function BodyCardDate({
     const updateDate = () => {
         form.handleSubmit(onSubmit(form.getValues()));
         const newDate = form.getValues(name);
-        setDate(dealDateWithTime(newDate));
+        if (newDate) {
+            setDate(dealDateWithTime(newDate));
+        }
+        onChangeDate(newDate);
         setOpen(false);
     };
 
@@ -107,8 +114,14 @@ export default function BodyCardDate({
                                             <Input
                                                 {...field}
                                                 type="datetime-local"
+                                                min={minDate}
+                                                max={maxDate}
                                                 onBlur={updateDate}
-                                                disabled={isPending}
+                                                disabled={
+                                                    disabled
+                                                        ? disabled
+                                                        : isPending
+                                                }
                                                 style={{
                                                     width: columnWidth,
                                                     minWidth: "64px",

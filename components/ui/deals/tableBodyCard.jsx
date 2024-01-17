@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { determineTextColor } from "@/utils/determinateTextColor";
 import { getRandomHexColor } from "@/utils/getRandomHexColor";
@@ -19,10 +19,10 @@ import BodyCardProgress from "@/components/ui/deals/common/bodyCardProgress";
 import BodyCardStress from "@/components/ui/deals/common/bodyCardStress";
 import BodyCardTags from "@/components/ui/deals/common/bodyCardTags";
 import BodyCardNotes from "@/components/ui/deals/common/bodyCardNotes";
-import BodyCardInfoAction from "@/components/ui/deals/common/bodyCardInfoAction";
+import BodyCardTakeScreenshot from "@/components/ui/deals/common/bodyCardTakeScreenshot";
 import BodyCardTimeInTrade from "@/components/ui/deals/common/bodyCardTimeInTrade";
 
-const TIME_SCREENSHOT = 172800000; // 2 дня
+const timeScreenshot = 172800000; // 2 дня
 
 export default function TableBodyCard({
     userId,
@@ -40,6 +40,35 @@ export default function TableBodyCard({
     onCheckDeal,
 }) {
     const [hover, setHover] = useState(false);
+    const [entryDate, setEntryDate] = useState("");
+    const [exitDate, setExitDate] = useState("");
+    const [timeInTrade, setTimeInTrade] = useState("");
+    const [takeScreenshot, setTakeScreenshot] = useState(false);
+
+    const changeEntryDate = (date) => {
+        setEntryDate(date);
+    };
+
+    const changeExitDate = (date) => {
+        setExitDate(date);
+    };
+
+    useEffect(() => {
+        if (entryDate && exitDate) {
+            const startDate = new Date(entryDate).getTime();
+            const endDate = new Date(exitDate).getTime();
+            const result = endDate - startDate;
+            setTakeScreenshot(result >= timeScreenshot);
+            setTimeInTrade(getTimeInTrade(entryDate, exitDate));
+        }
+    }, [entryDate, exitDate]);
+
+    useEffect(() => {
+        if (deal) {
+            setEntryDate(deal.entryDate);
+            setExitDate(deal.exitDate);
+        }
+    }, [deal]);
 
     return (
         <
@@ -111,8 +140,9 @@ export default function TableBodyCard({
                 userId={userId}
                 sheetId={sheetId}
                 dealId={deal.id}
-                dealDate={deal.entryDate}
                 name="entryDate"
+                dealDate={entryDate}
+                onChangeDate={changeEntryDate}
                 columnWidth={columnWidth.column7}
             />
             <BodyCardScreenshot
@@ -143,8 +173,14 @@ export default function TableBodyCard({
                 userId={userId}
                 sheetId={sheetId}
                 dealId={deal.id}
-                dealDate={deal.exitDate}
                 name="exitDate"
+                dealDate={exitDate}
+                minDate={
+                    entryDate && new Date(entryDate).toISOString().slice(0, 16)
+                }
+                maxDate={new Date().toISOString().slice(0, 16)}
+                disabled={!entryDate}
+                onChangeDate={changeExitDate}
                 columnWidth={columnWidth.column11}
             />
             <BodyCardScreenshot
@@ -159,10 +195,8 @@ export default function TableBodyCard({
                 height={25}
                 columnWidth={columnWidth.column12}
             />
-            <BodyCardInfoAction
-                dealEntryDate={deal.entryDate}
-                dealExitDate={deal.exitDate}
-                timeScreenshot={TIME_SCREENSHOT}
+            <BodyCardTakeScreenshot
+                takeScreenshot={takeScreenshot}
                 dealImageEndSrc={deal.imageEnd}
                 columnWidth={columnWidth.column13}
             />
@@ -190,10 +224,8 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column16}
             />
             <BodyCardTimeInTrade
-                dealEntryDate={deal.entryDate}
-                dealExitDate={deal.exitDate}
+                timeInTrade={timeInTrade}
                 columnWidth={columnWidth.column17}
-                getTimeInTrade={getTimeInTrade}
             />
         </
             // div
