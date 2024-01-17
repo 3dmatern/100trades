@@ -143,7 +143,7 @@ export default function Table({
             style={{ height: `calc(100vh - ${heightTop}px)` }}
             className="overflow-x-auto"
         >
-            <div ref={tableRef} className="table w-max  border-collapse">
+            <div ref={tableRef} className="table w-max border-collapse">
                 <TableHead
                     initHeaders={initHeaders}
                     checkAll={checkAll}

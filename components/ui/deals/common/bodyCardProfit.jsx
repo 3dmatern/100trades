@@ -91,7 +91,7 @@ export default function BodyCardProfit({
                                                         setOpen(true)
                                                     }
                                                     onBlur={updateProfit}
-                                                    className={`w-full h-7 pr-4 text-xs border-none text-start outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
+                                                    className={`w-full h-7 pr-4 text-xs border-none text-start outline-none shadow-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
                                                         dealHover
                                                             ? "bg-slate-50"
                                                             : "bg-white"

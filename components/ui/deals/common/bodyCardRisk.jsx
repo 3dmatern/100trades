@@ -92,7 +92,7 @@ export default function BodyCardRisk({
                                                         setOpen(true)
                                                     }
                                                     onBlur={updateRisk}
-                                                    className={`w-full h-7 pr-4 text-xs border-none text-start outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
+                                                    className={`w-full h-7 pr-4 text-xs border-none text-start outline-none shadow-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
                                                         dealHover
                                                             ? "bg-slate-50"
                                                             : "bg-white"
