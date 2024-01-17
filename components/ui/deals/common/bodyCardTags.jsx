@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
-import ButtonPlus from "@/components/ui/buttonPlus";
+import { Button } from "@/components/ui/button";
 
 export default function BodyCardTags({
     tag,
@@ -61,117 +61,125 @@ export default function BodyCardTags({
     }, []);
 
     return (
-        <div className="table-cell">
+        <div ref={listRef} className="table-cell relative">
             <div
-                ref={listRef}
                 onClick={() => setActive(true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
-                className={`flex items-center relative w-full h-8 text-xs ${
+                className={`flex items-center justify-start gap-1 w-full h-8 text-xs bg-white ${
                     active
-                        ? "flex-wrap border border-blue-800"
-                        : "flex-nowrap border-r "
+                        ? "flex-wrap h-16 overflow-y-auto absolute top-0 left-0 p-1 border border-blue-800"
+                        : "border-r px-2 overflow-hidden"
                 }`}
             >
-                <div className="flex items-center justify-start gap-1 px-2 overflow-hidden">
-                    {currentTags.length > 0 &&
-                        currentTags?.map((t) => (
-                            <span
-                                key={t.label}
-                                style={{
-                                    color: determineTextColor(t.value),
-                                    backgroundColor: t.value,
-                                }}
-                                className="flex items-center gap-1 rounded-xl px-2 py-px"
-                            >
-                                <span className="whitespace-nowrap text-ellipsis">
-                                    {t.label}
-                                </span>
-                                {active && (
-                                    <button
-                                        type="button"
-                                        onClick={(e) =>
-                                            handleRemoveTag(e, t.id)
-                                        }
-                                        className="p-0.5 cursor-pointer"
-                                    >
-                                        <Image
-                                            src="./remove.svg"
-                                            alt="remove"
-                                            width={10}
-                                            height={10}
-                                        />
-                                    </button>
-                                )}
+                {currentTags.length > 0 &&
+                    currentTags?.map((t) => (
+                        <span
+                            key={t.label}
+                            style={{
+                                color: determineTextColor(t.value),
+                                backgroundColor: t.value,
+                            }}
+                            className="flex items-center gap-1 rounded-xl px-2 py-px"
+                        >
+                            <span className="whitespace-nowrap text-ellipsis">
+                                {t.label}
                             </span>
-                        ))}
-
-                    {active && <ButtonPlus onClick={() => setOpen(!open)} />}
-                </div>
-
-                {open && (
-                    <div className="absolute left-0 top-8 z-10 w-full rounded-md py-2 bg-white border border-gray-300">
-                        <input
-                            type="text"
-                            name="tag"
-                            value={tag}
-                            placeholder="Введите тэг"
-                            onChange={onItemSearch}
-                            className="py-1 px-2 outline-none w-full"
-                        />
-
-                        {filteredTags.length > 0 ? (
-                            <ul>
-                                {filteredTags
-                                    .filter(
-                                        (t) =>
-                                            !currentTags?.some(
-                                                (item) => item.id === t.id
-                                            )
-                                    )
-                                    .map((tag) => (
-                                        <li
-                                            key={tag.label}
-                                            onClick={() => handleSelectTag(tag)}
-                                            className="flex items-center justify-start h-8 px-2 hover:bg-slate-200 cursor-pointer"
-                                        >
-                                            <span
-                                                key={tag.label}
-                                                style={{
-                                                    color: determineTextColor(
-                                                        tag.value
-                                                    ),
-                                                    backgroundColor: tag.value,
-                                                }}
-                                                className="rounded-xl px-2 py-px"
-                                            >
-                                                {tag.label}
-                                            </span>
-                                        </li>
-                                    ))}
-                            </ul>
-                        ) : (
-                            <div className="flex items-center gap-1 px-2 text-xs">
-                                Добавит тег:{" "}
-                                <span
-                                    style={{
-                                        color: determineTextColor(tagBgColor),
-                                        backgroundColor: tagBgColor,
-                                    }}
-                                    onClick={() =>
-                                        handleSelectTag({
-                                            label: tag,
-                                            value: tagBgColor,
-                                        })
-                                    }
-                                    className="rounded-xl px-2 py-px cursor-pointer"
+                            {active && (
+                                <button
+                                    type="button"
+                                    onClick={(e) => handleRemoveTag(e, t.id)}
+                                    className="p-0.5 cursor-pointer"
                                 >
-                                    {tag}
-                                </span>
-                            </div>
-                        )}
-                    </div>
+                                    <Image
+                                        src="./remove.svg"
+                                        alt="remove"
+                                        width={10}
+                                        height={10}
+                                    />
+                                </button>
+                            )}
+                        </span>
+                    ))}
+
+                {active && (
+                    <Button
+                        type="button"
+                        onClick={() => setOpen(!open)}
+                        className="flex items-center justify-center size-7 p-1 rounded-sm bg-slate-100 hover:bg-slate-200"
+                    >
+                        <Image
+                            src="./plus-lg.svg"
+                            alt="plus"
+                            width={16}
+                            height={16}
+                        />
+                    </Button>
                 )}
             </div>
+
+            {open && (
+                <div className="w-full absolute top-16 left-0 z-10 rounded-md py-2 bg-white border border-gray-300">
+                    <input
+                        type="text"
+                        name="tag"
+                        value={tag}
+                        placeholder="Введите тэг"
+                        onChange={onItemSearch}
+                        className="py-1 px-2 outline-none w-full"
+                    />
+
+                    {filteredTags.length > 0 ? (
+                        <ul className="flex items-center justify-start flex-wrap gap-1 w-full px-2 text-xs bg-white ">
+                            {filteredTags
+                                .filter(
+                                    (t) =>
+                                        !currentTags?.some(
+                                            (item) => item.id === t.id
+                                        )
+                                )
+                                .map((tag) => (
+                                    <li
+                                        key={tag.label}
+                                        onClick={() => handleSelectTag(tag)}
+                                        className="flex items-center justify-start hover:bg-slate-200 cursor-pointer"
+                                    >
+                                        <span
+                                            key={tag.label}
+                                            style={{
+                                                color: determineTextColor(
+                                                    tag.value
+                                                ),
+                                                backgroundColor: tag.value,
+                                            }}
+                                            className="rounded-xl px-2 py-px"
+                                        >
+                                            {tag.label}
+                                        </span>
+                                    </li>
+                                ))}
+                        </ul>
+                    ) : (
+                        <div className="flex items-center gap-1 px-2 text-xs">
+                            Добавит тег:{" "}
+                            <span
+                                style={{
+                                    color: determineTextColor(tagBgColor),
+                                    backgroundColor: tagBgColor,
+                                }}
+                                onClick={() =>
+                                    handleSelectTag({
+                                        label: tag,
+                                        value: tagBgColor,
+                                    })
+                                }
+                                className="rounded-xl px-2 py-px cursor-pointer"
+                            >
+                                {tag}
+                            </span>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 }

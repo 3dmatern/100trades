@@ -121,7 +121,7 @@ export default function BodyCardDeposit({
                                                 onFocus={() => setOpen(true)}
                                                 onBlur={updateDeposit}
                                                 disabled={isPending}
-                                                className={`w-full h-7 px-0 pl-1 border-none text-xs w-full outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
+                                                className={`w-full h-7 px-0 pl-1 border-none text-xs outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
                                                     dealHover
                                                         ? "bg-slate-50"
                                                         : "bg-white"
