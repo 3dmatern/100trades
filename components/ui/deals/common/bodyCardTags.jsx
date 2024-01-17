@@ -2,16 +2,21 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { createTag } from "@/actions/tag";
+import {
+    createEntrieTag,
+    getEntrieTags,
+    removeEntrieTag,
+} from "@/actions/entrieTag";
 
 export default function BodyCardTags({
-    tag,
-    filteredTags,
-    currentTags,
-    onItemSearch,
-    onClickSelectTag,
-    onRemoveItem,
+    userId,
+    dealId,
+    allTags,
+    onChangeAllTags,
     columnWidth,
     determineTextColor,
     getRandomHexColor,
@@ -19,20 +24,98 @@ export default function BodyCardTags({
     const listRef = useRef(null);
     const [active, setActive] = useState(false);
     const [open, setOpen] = useState(false);
+    const [filteredTags, setFilteredTags] = useState([]);
+    const [currentTags, setCurrentTags] = useState([]);
+    const [tag, setTag] = useState("");
     const [tagBgColor, setTagBgColor] = useState("");
 
-    const handleSelectTag = (tag) => {
-        onClickSelectTag(tag);
-        setOpen(false);
-        setActive(false);
+    const handleItemSearch = ({ target }) => {
+        if (target.name === "tag") {
+            setTag(target.value);
+            setFilteredTags(
+                allTags.filter((tag) => tag.label.includes(target.value))
+            );
+        }
     };
 
-    const handleRemoveTag = (e, id) => {
-        e.stopPropagation();
-        onRemoveItem(id);
+    const handleSelectTag = async (tag) => {
         setOpen(false);
         setActive(false);
+        setTag("");
+
+        let selectTag = tag;
+
+        if (!selectTag.id) {
+            const { newTag, success, error } = await createTag({
+                userId,
+                values: tag,
+            });
+            if (error) {
+                toast.error(error);
+                return;
+            } else {
+                toast.success(success);
+                selectTag = newTag;
+                onChangeAllTags(selectTag);
+            }
+        }
+        setCurrentTags((prev) => [...prev, selectTag]);
+
+        const { newEntrieTag, success, error } = await createEntrieTag({
+            userId,
+            values: { entrieId: dealId, tagId: selectTag.id },
+        });
+        if (error) {
+            toast.error(error);
+        }
+        if (success) {
+            toast.success(success);
+        }
     };
+
+    const handleRemoveTag = async (e, tagId) => {
+        e.stopPropagation();
+        setOpen(false);
+        setActive(false);
+        setCurrentTags((prev) => prev.filter((tag) => tag.id !== tagId));
+
+        await removeEntrieTag({
+            userId,
+            entrieTag: { entrieId: dealId, tagId },
+        }).then((data) => {
+            if (data.error) {
+                toast.error(data.error);
+            }
+            if (data.success) {
+                toast.success(data.success);
+            }
+        });
+    };
+
+    useEffect(() => {
+        if (allTags) {
+            setFilteredTags(allTags);
+        }
+    }, [allTags]);
+
+    useEffect(() => {
+        const getData = async () => {
+            const entrieTagsData = await getEntrieTags(dealId);
+            if (entrieTagsData.error) {
+                toast.error(entrieTagsData.error);
+                return;
+            } else {
+                setCurrentTags(
+                    allTags.filter((tag) =>
+                        entrieTagsData.entrieTags.some(
+                            (et) => tag.id === et.tagId
+                        )
+                    )
+                );
+            }
+        };
+        getData();
+    }, [allTags, dealId]);
 
     useEffect(() => {
         if (open) {
@@ -127,7 +210,7 @@ export default function BodyCardTags({
                         name="tag"
                         value={tag}
                         placeholder="Введите тэг"
-                        onChange={onItemSearch}
+                        onChange={handleItemSearch}
                         className="w-full mb-1 py-1 px-2 text-xs outline-none"
                     />
 

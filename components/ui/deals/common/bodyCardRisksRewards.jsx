@@ -8,7 +8,7 @@ import { createRiskReward } from "@/actions/riskReward";
 import { getRandomHexColor } from "@/utils/getRandomHexColor";
 import { updateEntrie } from "@/actions/entrie";
 
-export default function BodyCardRR({
+export default function BodyCardRisksRewards({
     userId,
     sheetId,
     dealId,

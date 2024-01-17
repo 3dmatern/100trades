@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { toast } from "sonner";
+import React, { useState } from "react";
 
 import { determineTextColor } from "@/utils/determinateTextColor";
 import { getRandomHexColor } from "@/utils/getRandomHexColor";
@@ -12,7 +11,7 @@ import BodyCardResult from "@/components/ui/deals/common/BodyCardResult";
 import BodyCardPose from "@/components/ui/deals/common/bodyCardPose";
 import BodyCardRisk from "@/components/ui/deals/common/bodyCardRisk";
 import BodyCardProfit from "@/components/ui/deals/common/bodyCardProfit";
-import BodyCardRR from "@/components/ui/deals/common/bodyCardRR";
+import BodyCardRisksRewards from "@/components/ui/deals/common/bodyCardRisksRewards";
 import BodyCardDate from "@/components/ui/deals/common/bodyCardDate";
 import BodyCardScreenshot from "@/components/ui/deals/common/bodyCardScreenshot";
 import BodyCardDeposit from "@/components/ui/deals/common/bodyCardDeposit";
@@ -22,12 +21,6 @@ import BodyCardTags from "@/components/ui/deals/common/bodyCardTags";
 import BodyCardNotes from "@/components/ui/deals/common/bodyCardNotes";
 import BodyCardInfoAction from "@/components/ui/deals/common/bodyCardInfoAction";
 import BodyCardTimeInTrade from "@/components/ui/deals/common/bodyCardTimeInTrade";
-import { createTag } from "@/actions/tag";
-import {
-    createEntrieTag,
-    getEntrieTags,
-    removeEntrieTag,
-} from "@/actions/entrieTag";
 
 const TIME_SCREENSHOT = 172800000; // 2 дня
 
@@ -47,91 +40,6 @@ export default function TableBodyCard({
     onCheckDeal,
 }) {
     const [hover, setHover] = useState(false);
-    const [tag, setTag] = useState("");
-    const [filteredTags, setFilteredTags] = useState([]);
-    const [currentTags, setCurrentTags] = useState([]);
-
-    const handleItemSearch = ({ target }) => {
-        if (target.name === "tag") {
-            setTag(target.value);
-            setFilteredTags(
-                allTags.filter((tag) => tag.label.includes(target.value))
-            );
-        }
-    };
-
-    const handleClickSelectedTag = async (tag) => {
-        setTag("");
-
-        let selectTag = tag;
-
-        if (!selectTag.id) {
-            const { newTag, success, error } = await createTag({
-                userId,
-                values: tag,
-            });
-            if (error) {
-                toast.error(error);
-                return;
-            } else {
-                toast.success(success);
-                selectTag = newTag;
-                onChangeAllTags(selectTag);
-            }
-        }
-        setCurrentTags((prev) => [...prev, selectTag]);
-
-        const { newEntrieTag, success, error } = await createEntrieTag({
-            userId,
-            values: { entrieId: deal.id, tagId: selectTag.id },
-        });
-        if (error) {
-            toast.error(error);
-        }
-        if (success) {
-            toast.success(success);
-        }
-    };
-
-    const handleRemoveItem = async (tagId) => {
-        setCurrentTags((prev) => prev.filter((tag) => tag.id !== tagId));
-        await removeEntrieTag({
-            userId,
-            entrieTag: { entrieId: deal.id, tagId },
-        }).then((data) => {
-            if (data.error) {
-                toast.error(data.error);
-            }
-            if (data.success) {
-                toast.success(data.success);
-            }
-        });
-    };
-
-    useEffect(() => {
-        if (allTags) {
-            setFilteredTags(allTags);
-        }
-    }, [allTags]);
-
-    useEffect(() => {
-        const getData = async () => {
-            const entrieTagsData = await getEntrieTags(deal.id);
-            if (entrieTagsData.error) {
-                toast.error(entrieTagsData.error);
-                return;
-            } else {
-                setCurrentTags(
-                    allTags.filter((tag) =>
-                        entrieTagsData.entrieTags.some(
-                            (et) => tag.id === et.tagId
-                        )
-                    )
-                );
-            }
-        };
-        getData();
-    }, [allTags, deal.id]);
 
     return (
         <
@@ -188,7 +96,7 @@ export default function TableBodyCard({
                 dealHover={hover}
                 columnWidth={columnWidth.column5}
             />
-            <BodyCardRR
+            <BodyCardRisksRewards
                 userId={userId}
                 sheetId={sheetId}
                 dealId={deal.id}
@@ -266,12 +174,10 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column14}
             />
             <BodyCardTags
-                tag={tag}
-                filteredTags={filteredTags}
-                currentTags={currentTags}
-                onItemSearch={handleItemSearch}
-                onClickSelectTag={handleClickSelectedTag}
-                onRemoveItem={handleRemoveItem}
+                userId={userId}
+                dealId={deal.id}
+                allTags={allTags}
+                onChangeAllTags={onChangeAllTags}
                 columnWidth={columnWidth.column15}
                 determineTextColor={determineTextColor}
                 getRandomHexColor={getRandomHexColor}
