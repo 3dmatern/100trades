@@ -11,6 +11,7 @@ import {
     getEntrieTags,
     removeEntrieTag,
 } from "@/actions/entrieTag";
+import { BeatLoader } from "react-spinners";
 
 export default function BodyCardTags({
     userId,
@@ -25,7 +26,7 @@ export default function BodyCardTags({
     const [active, setActive] = useState(false);
     const [open, setOpen] = useState(false);
     const [filteredTags, setFilteredTags] = useState([]);
-    const [currentTags, setCurrentTags] = useState([]);
+    const [currentTags, setCurrentTags] = useState(null);
     const [tag, setTag] = useState("");
     const [tagBgColor, setTagBgColor] = useState("");
 
@@ -154,8 +155,10 @@ export default function BodyCardTags({
                         : "items-center h-full border-r px-2 overflow-hidden"
                 }`}
             >
-                {currentTags.length > 0 &&
-                    currentTags?.map((t) => (
+                {!currentTags ? (
+                    <BeatLoader size={7} className="mx-auto" />
+                ) : (
+                    currentTags.map((t) => (
                         <span
                             key={t.label}
                             style={{
@@ -182,7 +185,8 @@ export default function BodyCardTags({
                                 </button>
                             )}
                         </span>
-                    ))}
+                    ))
+                )}
 
                 {active && (
                     <Button

@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 export default function BodyCardTimeInTrade({ timeInTrade, columnWidth }) {
     return (
         <div className="table-cell align-middle h-full">

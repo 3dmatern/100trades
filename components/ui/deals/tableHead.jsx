@@ -9,7 +9,7 @@ export default function TableHead({
     onCheckAll,
 }) {
     return (
-        <div className="flex items-center h-8 border border-slate-300 bg-gray-50">
+        <div className="flex items-center h-8 border-t border-b border-slate-300 bg-gray-50">
             {initHeaders.slice(0, 1).map((item) => (
                 <SelectFilterButton
                     key={item.name}
@@ -25,7 +25,7 @@ export default function TableHead({
                         name="checkAll"
                         checked={checkAll}
                         onChange={onCheckAll}
-                        className="size-7 absolute top-1/2 left-0 -translate-y-1/2 bg-gray-50"
+                        className="size-7 absolute top-1/2 left-[2px] -translate-y-1/2 bg-gray-50"
                     />
                 </SelectFilterButton>
             ))}

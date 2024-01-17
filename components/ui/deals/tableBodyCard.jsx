@@ -74,7 +74,7 @@ export default function TableBodyCard({
         <div
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            className={`flex items-center h-8 border-x border-b border-slate-300 relative ${
+            className={`flex items-center h-8 border-b border-slate-300 relative ${
                 selectedDeals?.includes(deal.id) || hover
                     ? "bg-slate-50"
                     : "bg-white"

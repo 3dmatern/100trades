@@ -68,7 +68,7 @@ export default function BodyCardName({
                 className={`flex items-center h-full pl-7 pr-2 ${
                     open
                         ? "border border-blue-800"
-                        : "border-r border-slate-300"
+                        : "border-l border-r border-slate-300"
                 } ${
                     selectedDeals?.includes(dealId) || dealHover
                         ? "bg-slate-50"
@@ -82,7 +82,7 @@ export default function BodyCardName({
                     checked={selectedDeals?.includes(dealId)}
                     checkAll={checkAll}
                     onChange={onCheckDeal}
-                    className="size-7 absolute top-1/2 left-0 -translate-y-1/2"
+                    className="size-7 absolute top-1/2 left-[2px] -translate-y-1/2"
                 />
 
                 <Form {...form}>
