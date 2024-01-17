@@ -21,6 +21,30 @@ export default function BodyCardNotes({
         setNote(target.value);
     };
 
+    const updateNote = async () => {
+        startTransition(() => {
+            if ((!dealNotes && !note) || dealNotes === note) {
+                setOpen(false);
+                return;
+            }
+            updateEntrie({
+                userId,
+                values: { id: dealId, sheetId, notes: note },
+            })
+                .then((data) => {
+                    if (data.error) {
+                        toast.error(data.error);
+                        setOpen(true);
+                    }
+                    if (data.success) {
+                        toast.success(data.success);
+                        setOpen(false);
+                    }
+                })
+                .catch(() => toast.error("Что-то пошло не так!"));
+        });
+    };
+
     useEffect(() => {
         if (dealNotes) {
             setNote(dealNotes);
@@ -29,32 +53,8 @@ export default function BodyCardNotes({
 
     useEffect(() => {
         const handleClickOutside = (e) => {
-            if (
-                textRef.current &&
-                !textRef.current.contains(e.target) &&
-                open
-            ) {
-                startTransition(() => {
-                    if ((!dealNotes && !note) || dealNotes === note) {
-                        setOpen(false);
-                        return;
-                    }
-                    updateEntrie({
-                        userId,
-                        values: { id: dealId, sheetId, notes: note },
-                    })
-                        .then((data) => {
-                            if (data.error) {
-                                toast.error(data.error);
-                                setOpen(true);
-                            }
-                            if (data.success) {
-                                toast.success(data.success);
-                                setOpen(false);
-                            }
-                        })
-                        .catch(() => toast.error("Что-то пошло не так!"));
-                });
+            if (textRef.current && !textRef.current.contains(e.target)) {
+                setOpen(false);
             }
         };
         const handleScroll = () => {
@@ -68,7 +68,7 @@ export default function BodyCardNotes({
             window.removeEventListener("scroll", handleScroll);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [open]);
+    }, []);
 
     return (
         <div className="table-cell align-middle h-full">
@@ -84,6 +84,7 @@ export default function BodyCardNotes({
                         name="note"
                         value={note}
                         onChange={handleChange}
+                        onBlur={updateNote}
                         className={`w-full h-32 text-xs border border-blue-800 absolute left-0 top-0 z-10 p-1 ${
                             open ? "outline-blue-800" : ""
                         } resize-none`}
