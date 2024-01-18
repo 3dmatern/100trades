@@ -7,9 +7,11 @@ import { cn } from "@/lib/utils";
 export default function SelectFilterButton({
     children,
     name,
+    dbName,
     nameColumn,
     initWidth,
     onResize,
+    onSort,
     className,
     classNameContent,
     styleBtn,
@@ -22,6 +24,11 @@ export default function SelectFilterButton({
 
     const handleClick = () => {
         setOpen((prev) => !prev);
+    };
+
+    const handleSort = (data) => {
+        onSort(data);
+        setOpen(false);
     };
 
     useEffect(() => {
@@ -94,6 +101,9 @@ export default function SelectFilterButton({
                     <li>
                         <button
                             type="button"
+                            onClick={() =>
+                                handleSort({ iter: dbName, order: "asc" })
+                            }
                             className="flex items-center gap-3 w-full hover:bg-slate-100 hover:rounded-md px-2"
                         >
                             <Image
@@ -109,6 +119,9 @@ export default function SelectFilterButton({
                     <li>
                         <button
                             type="button"
+                            onClick={() =>
+                                handleSort({ iter: dbName, order: "desc" })
+                            }
                             className="flex items-center gap-3 w-full hover:bg-slate-100 hover:rounded-md px-2"
                         >
                             <Image

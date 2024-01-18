@@ -14,15 +14,16 @@ export default async function SheetsPage() {
                 Листы сделок
             </h1>
             <div className="w-max mx-auto mt-8 grid md:grid-cols-5 grid-cols-4 justify-items-center gap-3">
-                {sheetsData?.map((sheet) => (
-                    <Link
-                        key={sheet.id}
-                        href={`/sheets/${sheet.id}`}
-                        className="w-max py-2 px-3 bg-gray-200 hover:bg-gray-100 rounded-sm"
-                    >
-                        {sheet.name}
-                    </Link>
-                ))}
+                {sheetsData.length > 0 &&
+                    sheetsData?.map((sheet) => (
+                        <Link
+                            key={sheet.id}
+                            href={`/sheets/${sheet.id}`}
+                            className="w-max py-2 px-3 bg-gray-200 hover:bg-gray-100 rounded-sm"
+                        >
+                            {sheet.name}
+                        </Link>
+                    ))}
 
                 <AddSheetButton
                     className="w-max h-10 py-2 px-3 bg-gray-200 hover:bg-gray-100 rounded-sm"

@@ -54,7 +54,7 @@ export default function Sheets({
     useEffect(() => {
         if (sheetsData) {
             if (sheetsData.error) {
-                toast.error(error);
+                toast.error(sheetsData.error);
                 return;
             }
             setSheets(sheetsData);

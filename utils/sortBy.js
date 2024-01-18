@@ -1,25 +1,27 @@
-export function sortByAsc(data) {
+export function sortByAsc(data, nameColumn) {
+    console.log(data, nameColumn);
     const result = data.sort((a, b) => {
-        return a - b;
+        console.log(a[nameColumn], b[nameColumn]);
+        return a[nameColumn] - b[nameColumn];
     });
 
     return result;
 }
 
-export function sortByDesc(data) {
+export function sortByDesc(data, nameColumn) {
     const result = data.sort((a, b) => {
-        return b - a;
+        return b[nameColumn] - a[nameColumn];
     });
 
     return result;
 }
 
-export function sortByAscString(data) {
+export function sortByAscString(data, nameColumn) {
     const result = data.sort((a, b) => {
-        if (a > b) {
+        if (a[nameColumn] > b[nameColumn]) {
             return 1;
         }
-        if (a < b) {
+        if (a[nameColumn] < b[nameColumn]) {
             return -1;
         }
         return 0;
@@ -28,12 +30,12 @@ export function sortByAscString(data) {
     return result;
 }
 
-export function sortByDescString(data) {
+export function sortByDescString(data, nameColumn) {
     const result = data.sort((a, b) => {
-        if (a < b) {
+        if (a[nameColumn] < b[nameColumn]) {
             return 1;
         }
-        if (a > b) {
+        if (a[nameColumn] > b[nameColumn]) {
             return -1;
         }
         return 0;

@@ -7,6 +7,7 @@ export default function TableHead({
     columnWidth,
     onResize,
     onCheckAll,
+    onSort,
 }) {
     return (
         <div className="flex items-center h-8 border-t border-b border-slate-300 bg-gray-50">
@@ -14,9 +15,11 @@ export default function TableHead({
                 <SelectFilterButton
                     key={item.name}
                     name={item.name}
+                    dbName={item.dbName}
                     nameColumn="column1"
                     initWidth={columnWidth.column1}
                     onResize={onResize}
+                    onSort={onSort}
                     className="sticky left-0 z-[2]"
                     classNameContent="pl-8 pr-2 bg-gray-50 border-l"
                     styleBtn={{ width: "100%" }}
@@ -37,6 +40,7 @@ export default function TableHead({
                     nameColumn={`column${index + 2}`}
                     initWidth={columnWidth[`column${index + 2}`]}
                     onResize={onResize}
+                    onSort={onSort}
                     styleBtn={
                         item.up
                             ? {

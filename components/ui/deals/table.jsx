@@ -9,25 +9,26 @@ import { createEntrie, getEntries, removeEntrie } from "@/actions/entrie";
 import TableBody from "@/components/ui/deals/tableBody";
 import TableHead from "@/components/ui/deals/tableHead";
 import { Button } from "@/components/ui/button";
+import { sortByAscString, sortByDescString } from "@/utils/sortBy";
 
 const initHeaders = [
-    { name: "Тикер", up: false, w: "112px" },
-    { name: "Win-Loss", up: true, w: "96px" },
-    { name: "Поза", up: false, w: "96px" },
-    { name: "Риск", up: false, w: "70px" },
-    { name: "Профит", up: false, w: "80px" },
-    { name: "R:R", up: true, w: "80px" },
-    { name: "Вход", up: true, w: "144px" },
-    { name: "Скрин", up: true, w: "96px" },
-    { name: "Депозит", up: true, w: "112px" },
-    { name: "Прогресс", up: true, w: "112px" },
-    { name: "Выход", up: true, w: "144px" },
-    { name: "Скрин2", up: true, w: "96px" },
-    { name: "Пора?", up: false, w: "112px" },
-    { name: "Стресс", up: true, w: "96px" },
-    { name: "Tags", up: false, w: "288px" },
-    { name: "Заметки", up: false, w: "176px" },
-    { name: "Время в сделке", up: true, w: "128px" },
+    { dbName: "name", name: "Тикер", up: false, w: "112px" },
+    { dbName: "pose", name: "Win-Loss", up: true, w: "96px" },
+    { dbName: "risk", name: "Поза", up: false, w: "96px" },
+    { dbName: "profit", name: "Риск", up: false, w: "70px" },
+    { dbName: "entryDate", name: "Профит", up: false, w: "80px" },
+    { dbName: "imageStart", name: "R:R", up: true, w: "80px" },
+    { dbName: "deposit", name: "Вход", up: true, w: "144px" },
+    { dbName: "exitDate", name: "Скрин", up: true, w: "96px" },
+    { dbName: "imageEnd", name: "Депозит", up: true, w: "112px" },
+    { dbName: "progress", name: "Прогресс", up: true, w: "112px" },
+    { dbName: "stress", name: "Выход", up: true, w: "144px" },
+    { dbName: "notes", name: "Скрин2", up: true, w: "96px" },
+    { dbName: "take", name: "Пора?", up: false, w: "112px" },
+    { dbName: "resultId", name: "Стресс", up: true, w: "96px" },
+    { dbName: "rrId", name: "Tags", up: false, w: "288px" },
+    { dbName: "entrieTag", name: "Заметки", up: false, w: "176px" },
+    { dbName: "timeInTrade", name: "Время в сделке", up: true, w: "128px" },
 ];
 
 const initColumnWidth = {
@@ -61,6 +62,7 @@ export default function Table({
     const [heightTop, setHeightTop] = useState(0);
 
     const [deals, setDeals] = useState([]);
+    const [sortedDeals, setSortedDeals] = useState(null);
     const [checkAll, setCheckAll] = useState(false);
     const [columnWidth, setColumnWidth] = useState(initColumnWidth);
     const [selectedDeals, setSelectedDeals] = useState([]);
@@ -69,7 +71,7 @@ export default function Table({
         if (target.name === "checkAll") {
             setCheckAll((prev) => {
                 !prev
-                    ? setSelectedDeals(deals.map((deal) => deal.id))
+                    ? setSelectedDeals(sortedDeals.map((deal) => deal.id))
                     : setSelectedDeals([]);
                 return !prev;
             });
@@ -98,6 +100,7 @@ export default function Table({
             }
             if (data.success) {
                 setDeals((prev) => [...prev, data.newEntrie]);
+                setSortedDeals((prev) => [...prev, data.newEntrie]);
                 toast.success(data.success);
             }
         });
@@ -105,11 +108,14 @@ export default function Table({
 
     const handleRmoveDeal = async () => {
         let removedDeal = [];
-        let copyDeals = deals;
+        let copyDeals = sortedDeals;
         let copySelectedDeals = selectedDeals;
         setSelectedDeals([]);
 
         setDeals((prev) =>
+            prev.filter((deal) => !copySelectedDeals.includes(deal.id))
+        );
+        setSortedDeals((prev) =>
             prev.filter((deal) => !copySelectedDeals.includes(deal.id))
         );
 
@@ -131,12 +137,38 @@ export default function Table({
                 ...prev,
                 ...copyDeals.filter((c) => removedDeal.includes(c.id)),
             ]);
+            setSortedDeals((prev) => [
+                ...prev,
+                ...copyDeals.filter((c) => removedDeal.includes(c.id)),
+            ]);
             setSelectedDeals(removedDeal);
         }
 
         toast.success(
             `Удалено записей ${successLength} из ${allRemoved.length}`
         );
+    };
+
+    const handleSort = (data) => {
+        switch (data.iter) {
+            case "name":
+                data.order === "asc"
+                    ? setSortedDeals((prev) => [
+                          ...sortByAscString(deals, data.iter),
+                      ])
+                    : setSortedDeals((prev) => [
+                          ...sortByDescString(deals, data.iter),
+                      ]);
+                break;
+            case "result":
+                data.order === "asc"
+                    ? setSortedDeals(sortByAscString(deals))
+                    : setSortedDeals(sortByDescString(deals));
+                break;
+
+            default:
+                break;
+        }
     };
 
     useEffect(() => {
@@ -153,6 +185,12 @@ export default function Table({
             entries();
         }
     }, [sheetId]);
+
+    useEffect(() => {
+        if (deals) {
+            setSortedDeals(deals);
+        }
+    }, [deals]);
 
     useEffect(() => {
         const calculateDistance = () => {
@@ -179,30 +217,28 @@ export default function Table({
             style={{ height: `calc(100vh - ${heightTop}px)` }}
             className="overflow-x-auto"
         >
-            <div ref={tableRef} className="table w-max border-collapse">
+            <div className="table w-max border-collapse">
                 <TableHead
                     initHeaders={initHeaders}
                     checkAll={checkAll}
                     columnWidth={columnWidth}
                     onResize={handleResize}
                     onCheckAll={handleCheckAll}
+                    onSort={handleSort}
                 />
 
-                {deals.length > 0 && (
-                    <TableBody
-                        userId={userId}
-                        sheetId={sheetId}
-                        deals={deals}
-                        selectedDeals={selectedDeals}
-                        results={results}
-                        risksRewards={risksRewards}
-                        tags={tags}
-                        checkAll={checkAll}
-                        columnWidth={columnWidth}
-                        onCheckDeal={handleCheckDeal}
-                        onCreateDeal={handleCreateDeal}
-                    />
-                )}
+                <TableBody
+                    userId={userId}
+                    sheetId={sheetId}
+                    sortedDeals={sortedDeals}
+                    selectedDeals={selectedDeals}
+                    results={results}
+                    risksRewards={risksRewards}
+                    tags={tags}
+                    checkAll={checkAll}
+                    columnWidth={columnWidth}
+                    onCheckDeal={handleCheckDeal}
+                />
 
                 <div className="flex items-center h-8 border-r border-b border-slate-300 bg-white hover:bg-slate-50">
                     <div className="table-cell align-middle h-full sticky left-0 z-[1]">

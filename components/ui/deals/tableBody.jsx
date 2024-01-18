@@ -1,13 +1,14 @@
 "use client";
 
-import TableBodyCard from "@/components/ui/deals/tableBodyCard";
-import { sortByAscString, sortByDescString } from "@/utils/sortBy";
 import { useEffect, useState } from "react";
+
+import TableBodyCard from "@/components/ui/deals/tableBodyCard";
+import { BeatLoader } from "react-spinners";
 
 export default function TableBody({
     userId,
     sheetId,
-    deals,
+    sortedDeals,
     selectedDeals,
     results,
     risksRewards,
@@ -16,41 +17,16 @@ export default function TableBody({
     columnWidth,
     onCheckDeal,
 }) {
-    const [sortedDeals, setSortedDeals] = useState([]);
     const [allTags, setAllTags] = useState([]);
     const [allRRs, setAllRRs] = useState([]);
 
     const changeAllRRs = (rr) => {
-        setAllTags((prev) => [...prev, rr]);
+        setAllRRs((prev) => [...prev, rr]);
     };
 
     const changeAllTags = (tag) => {
         setAllTags((prev) => [...prev, tag]);
     };
-
-    const handleSort = (data) => {
-        switch (data.iter) {
-            case "name":
-                data.order === "asc"
-                    ? setSortedDeals(sortByAscString(deals))
-                    : setSortedDeals(sortByDescString(deals));
-                break;
-            case "result":
-                data.order === "asc"
-                    ? setSortedDeals(sortByAscString(deals))
-                    : setSortedDeals(sortByDescString(deals));
-                break;
-
-            default:
-                break;
-        }
-    };
-
-    useEffect(() => {
-        if (deals) {
-            setSortedDeals(deals);
-        }
-    }, [deals]);
 
     useEffect(() => {
         if (risksRewards) {
@@ -64,22 +40,30 @@ export default function TableBody({
         }
     }, [tags]);
 
-    return sortedDeals?.map((deal, index) => (
-        <TableBodyCard
-            key={deal.id}
-            userId={userId}
-            sheetId={sheetId}
-            index={index}
-            deal={deal}
-            selectedDeals={selectedDeals}
-            results={results}
-            allRRs={allRRs}
-            onChangeAllRRs={changeAllRRs}
-            allTags={allTags}
-            onChangeAllTags={changeAllTags}
-            checkAll={checkAll}
-            columnWidth={columnWidth}
-            onCheckDeal={onCheckDeal}
-        />
-    ));
+    return sortedDeals && sortedDeals.length >= 0 ? (
+        sortedDeals?.map((deal, index) => (
+            <TableBodyCard
+                key={deal.id}
+                userId={userId}
+                sheetId={sheetId}
+                index={index}
+                deal={deal}
+                selectedDeals={selectedDeals}
+                results={results}
+                allRRs={allRRs}
+                onChangeAllRRs={changeAllRRs}
+                allTags={allTags}
+                onChangeAllTags={changeAllTags}
+                checkAll={checkAll}
+                columnWidth={columnWidth}
+                onCheckDeal={onCheckDeal}
+            />
+        ))
+    ) : (
+        <div
+            className={`flex items-center justify-center h-8 border-l border-r border-b border-slate-300 bg-white`}
+        >
+            <BeatLoader />
+        </div>
+    );
 }
