@@ -77,6 +77,7 @@ export default function Table({
     const [checkAll, setCheckAll] = useState(false);
     const [columnWidth, setColumnWidth] = useState(initColumnWidth);
     const [selectedDeals, setSelectedDeals] = useState([]);
+    const [isSortingEnabled, setIsSortingEnabled] = useState(false);
 
     const handleCheckAll = ({ target }) => {
         if (target.name === "checkAll") {
@@ -162,6 +163,7 @@ export default function Table({
 
     const handleSort = (data) => {
         console.log(data);
+        setIsSortingEnabled(true);
         switch (data.iter) {
             case "name":
                 data.order === "asc"
@@ -298,6 +300,15 @@ export default function Table({
         }
     };
 
+    const resetSort = () => {
+        setIsSortingEnabled(false);
+        setSortedDeals((prev) =>
+            prev.sort((a, b) => {
+                return new Date(a.date) - new Date(b.date);
+            })
+        );
+    };
+
     useEffect(() => {
         if (sheetId) {
             const entries = async () => {
@@ -342,7 +353,7 @@ export default function Table({
         <div
             ref={tableRef}
             style={{ height: `calc(100vh - ${heightTop}px)` }}
-            className="overflow-x-auto"
+            className="overflow-x-auto relative"
         >
             <div className="table w-max border-collapse">
                 <TableHead
@@ -367,8 +378,8 @@ export default function Table({
                     onCheckDeal={handleCheckDeal}
                 />
 
-                <div className="flex items-center h-8 border-r border-b border-slate-300 bg-white hover:bg-slate-50">
-                    <div className="table-cell align-middle h-full sticky left-0 z-[1]">
+                <div className="flex items-center h-8 relative border-r border-b border-slate-300 bg-white hover:bg-slate-50">
+                    <div className="table-cell align-middle h-full sticky left-0 z-[1] bg-white">
                         <div
                             style={{
                                 width: columnWidth.column1,
@@ -389,17 +400,42 @@ export default function Table({
                                 />
                             </Button>
                         </div>
-                    </div>
 
-                    {selectedDeals.length > 0 && (
-                        <Button
-                            type="button"
-                            onClick={handleRmoveDeal}
-                            className="w-max h-full bg-red-700 hover:bg-red-600 ml-20 text-sm"
-                        >
-                            Удалить выбранные сделки
-                        </Button>
-                    )}
+                        {selectedDeals.length > 0 && (
+                            <Button
+                                type="button"
+                                onClick={handleRmoveDeal}
+                                style={{
+                                    left: isSortingEnabled
+                                        ? `${
+                                              parseInt(columnWidth.column1) +
+                                              120
+                                          }px`
+                                        : `${
+                                              parseInt(columnWidth.column1) - 70
+                                          }px`,
+                                }}
+                                className="w-max h-7 absolute top-1/2 -translate-y-1/2 bg-red-700 hover:bg-red-600 ml-20 text-sm"
+                            >
+                                Удалить выбранные сделки
+                            </Button>
+                        )}
+
+                        {isSortingEnabled && (
+                            <Button
+                                type="button"
+                                onClick={resetSort}
+                                style={{
+                                    left: `${
+                                        parseInt(columnWidth.column1) - 70
+                                    }px`,
+                                }}
+                                className="w-max h-7 absolute top-1/2 -translate-y-1/2 bg-blue-500 hover:bg-blue-300 ml-20 text-sm"
+                            >
+                                Сбросить сортировку
+                            </Button>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
