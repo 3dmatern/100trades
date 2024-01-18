@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useTransition } from "react";
+import Image from "next/image";
 import { toast } from "sonner";
 
 import InputUploadImg from "@/components/ui/inputUploadImg";
@@ -64,7 +65,7 @@ export default function BodyCardScreenshot({
         startTransition(() => {
             updateEntrie({
                 userId,
-                values: { id: dealId, sheetId, [inputName]: undefined },
+                values: { id: dealId, sheetId, [inputName]: "" },
             })
                 .then((data) => {
                     if (data.error) {
