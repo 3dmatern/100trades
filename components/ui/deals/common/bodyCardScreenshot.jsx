@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useTransition } from "react";
-import Image from "next/image";
 import { toast } from "sonner";
 
 import InputUploadImg from "@/components/ui/inputUploadImg";
@@ -152,7 +151,7 @@ export default function BodyCardScreenshot({
             >
                 {!isPending ? (
                     imageSrc && !openImage ? (
-                        <Image
+                        <img
                             src={`/${imageSrc}`}
                             alt={imageAlt}
                             width={width}
