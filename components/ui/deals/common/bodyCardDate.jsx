@@ -58,12 +58,14 @@ export default function BodyCardDate({
     };
 
     const updateDate = () => {
-        form.handleSubmit(onSubmit(form.getValues()));
         const newDate = form.getValues(name);
         if (newDate) {
             setDate(dealDateWithTime(newDate));
+        } else {
+            setDate("");
         }
         onChangeDate(newDate);
+        form.handleSubmit(onSubmit(form.getValues()));
         setOpen(false);
     };
 

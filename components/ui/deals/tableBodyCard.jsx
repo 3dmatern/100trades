@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 import { determineTextColor } from "@/utils/determinateTextColor";
 import { getRandomHexColor } from "@/utils/getRandomHexColor";
-import { getTimeInTrade } from "@/utils/formatedDate";
+import { dealLimitionDateWithTime, getTimeInTrade } from "@/utils/formatedDate";
 
 import BodyCardName from "@/components/ui/deals/common/bodyCardName";
 import BodyCardResult from "@/components/ui/deals/common/BodyCardResult";
@@ -176,10 +176,8 @@ export default function TableBodyCard({
                 dealId={deal.id}
                 name="exitDate"
                 dealDate={exitDate}
-                minDate={
-                    entryDate && new Date(entryDate).toISOString().slice(0, 16)
-                }
-                maxDate={new Date().toISOString().slice(0, 16)}
+                minDate={entryDate && dealLimitionDateWithTime(entryDate)}
+                maxDate={dealLimitionDateWithTime(new Date())}
                 disabled={!entryDate}
                 onChangeDate={changeExitDate}
                 columnWidth={columnWidth.column11}

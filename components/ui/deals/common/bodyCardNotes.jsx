@@ -76,7 +76,7 @@ export default function BodyCardNotes({
                 ref={textRef}
                 onClick={() => setOpen(true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
-                className={`flxe items-center justify-center h-full px-2 relative border-r`}
+                className="flex items-center justify-start h-full px-2 relative border-r"
             >
                 {open && !isPending ? (
                     <textarea
@@ -92,7 +92,7 @@ export default function BodyCardNotes({
                 ) : (
                     <span
                         onClick={() => setOpen(true)}
-                        className="w-full overflow-hidden text-xs whitespace-nowrap text-ellipsis pointer-events-none"
+                        className="text-xs whitespace-nowrap text-ellipsis overflow-hidden pointer-events-none"
                     >
                         {note}
                     </span>

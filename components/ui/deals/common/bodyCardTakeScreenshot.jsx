@@ -9,7 +9,7 @@ export default function BodyCardTakeScreenshot({
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className="flex items-center justify-center h-full px-2 border-r text-xs"
             >
-                <span className=" overflow-hidden whitespace-nowrap text-ellipsis">
+                <span className="whitespace-nowrap text-ellipsis overflow-hidden">
                     {dealImageEndSrc
                         ? ""
                         : takeScreenshot
