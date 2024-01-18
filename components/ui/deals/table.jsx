@@ -9,7 +9,18 @@ import { createEntrie, getEntries, removeEntrie } from "@/actions/entrie";
 import TableBody from "@/components/ui/deals/tableBody";
 import TableHead from "@/components/ui/deals/tableHead";
 import { Button } from "@/components/ui/button";
-import { sortByAscString, sortByDescString } from "@/utils/sortBy";
+import {
+    sortByAsc,
+    sortByAscDate,
+    sortByAscRR,
+    sortByAscResult,
+    sortByAscString,
+    sortByDesc,
+    sortByDescDate,
+    sortByDescRR,
+    sortByDescResult,
+    sortByDescString,
+} from "@/utils/sortBy";
 
 const initHeaders = [
     { dbName: "name", name: "Тикер", up: false, w: "112px" },
@@ -150,6 +161,7 @@ export default function Table({
     };
 
     const handleSort = (data) => {
+        console.log(data);
         switch (data.iter) {
             case "name":
                 data.order === "asc"
@@ -160,10 +172,125 @@ export default function Table({
                           ...sortByDescString(deals, data.iter),
                       ]);
                 break;
-            case "result":
+
+            case "take":
                 data.order === "asc"
-                    ? setSortedDeals(sortByAscString(deals))
-                    : setSortedDeals(sortByDescString(deals));
+                    ? setSortedDeals((prev) => [
+                          ...sortByAscString(deals, data.iter),
+                      ])
+                    : setSortedDeals((prev) => [
+                          ...sortByDescString(deals, data.iter),
+                      ]);
+                break;
+
+            case "notes":
+                data.order === "asc"
+                    ? setSortedDeals((prev) => [
+                          ...sortByAscString(deals, data.iter),
+                      ])
+                    : setSortedDeals((prev) => [
+                          ...sortByDescString(deals, data.iter),
+                      ]);
+                break;
+
+            case "resultId":
+                data.order === "asc"
+                    ? setSortedDeals((prev) => [
+                          ...sortByAscResult(deals, data.iter, results),
+                      ])
+                    : setSortedDeals((prev) => [
+                          ...sortByDescResult(deals, data.iter, results),
+                      ]);
+                break;
+
+            case "pose":
+                data.order === "asc"
+                    ? setSortedDeals((prev) => [...sortByAsc(deals, data.iter)])
+                    : setSortedDeals((prev) => [
+                          ...sortByDesc(deals, data.iter),
+                      ]);
+                break;
+
+            case "risk":
+                data.order === "asc"
+                    ? setSortedDeals((prev) => [...sortByAsc(deals, data.iter)])
+                    : setSortedDeals((prev) => [
+                          ...sortByDesc(deals, data.iter),
+                      ]);
+                break;
+
+            case "profit":
+                data.order === "asc"
+                    ? setSortedDeals((prev) => [...sortByAsc(deals, data.iter)])
+                    : setSortedDeals((prev) => [
+                          ...sortByDesc(deals, data.iter),
+                      ]);
+                break;
+
+            case "rrId":
+                data.order === "asc"
+                    ? setSortedDeals((prev) => [
+                          ...sortByAscRR(deals, data.iter, risksRewards),
+                      ])
+                    : setSortedDeals((prev) => [
+                          ...sortByDescRR(deals, data.iter, risksRewards),
+                      ]);
+                break;
+
+            case "entryDate":
+                data.order === "asc"
+                    ? setSortedDeals((prev) => [
+                          ...sortByAscDate(deals, data.iter),
+                      ])
+                    : setSortedDeals((prev) => [
+                          ...sortByDescDate(deals, data.iter),
+                      ]);
+                break;
+
+            case "exitDate":
+                data.order === "asc"
+                    ? setSortedDeals((prev) => [
+                          ...sortByAscDate(deals, data.iter),
+                      ])
+                    : setSortedDeals((prev) => [
+                          ...sortByDescDate(deals, data.iter),
+                      ]);
+                break;
+
+            case "deposit":
+                data.order === "asc"
+                    ? setSortedDeals((prev) => [...sortByAsc(deals, data.iter)])
+                    : setSortedDeals((prev) => [
+                          ...sortByDesc(deals, data.iter),
+                      ]);
+                break;
+
+            case "progress":
+                data.order === "asc"
+                    ? setSortedDeals((prev) => [
+                          ...sortByAscString(deals, data.iter),
+                      ])
+                    : setSortedDeals((prev) => [
+                          ...sortByDescString(deals, data.iter),
+                      ]);
+                break;
+
+            case "stress":
+                data.order === "asc"
+                    ? setSortedDeals((prev) => [...sortByAsc(deals, data.iter)])
+                    : setSortedDeals((prev) => [
+                          ...sortByDesc(deals, data.iter),
+                      ]);
+                break;
+
+            case "timeInTrade":
+                data.order === "asc"
+                    ? setSortedDeals((prev) => [
+                          ...sortByAscString(deals, data.iter),
+                      ])
+                    : setSortedDeals((prev) => [
+                          ...sortByDescString(deals, data.iter),
+                      ]);
                 break;
 
             default:
