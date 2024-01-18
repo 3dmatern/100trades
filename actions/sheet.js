@@ -28,15 +28,15 @@ export const createSheet = async (values) => {
     }
 
     try {
-        await db.sheet.create({
+        const newSheet = await db.sheet.create({
             data: {
                 userId,
                 name,
             },
         });
 
-        revalidatePath("/sheets");
         return {
+            newSheet,
             success: "Лист успешно создан",
         };
     } catch (error) {
@@ -59,8 +59,6 @@ export const getSheets = async (userId) => {
 
     try {
         const sheets = getSheetsByUserId(existingUser.id);
-
-        // revalidatePath("/sheets");
 
         return sheets;
     } catch (error) {
@@ -109,7 +107,6 @@ export const updateSheet = async (values) => {
             },
         });
 
-        revalidatePath("/sheets");
         return {
             success: "Лист успешно обновлен!",
         };
@@ -123,8 +120,8 @@ export const updateSheet = async (values) => {
 
 export const removeSheet = async ({ sheetId, userId }) => {
     noStore();
-    const existingSheet = await getSheetById(sheetId);
 
+    const existingSheet = await getSheetById(sheetId);
     if (!existingSheet) {
         return {
             error: "Несанкционированный доступ!",
@@ -132,7 +129,6 @@ export const removeSheet = async ({ sheetId, userId }) => {
     }
 
     const existingUser = await getUserById(userId);
-
     if (!existingUser || existingSheet.userId !== existingUser.id) {
         return {
             error: "Несанкционированный доступ!",
@@ -145,8 +141,6 @@ export const removeSheet = async ({ sheetId, userId }) => {
                 id: existingSheet.id,
             },
         });
-
-        revalidatePath("/sheets");
 
         return {
             success: "Лист успешно удален!",

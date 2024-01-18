@@ -12,6 +12,7 @@ export const metadata = {
 
 export default async function SheetPage({ params }) {
     const { id } = params;
+
     const user = await currentUser();
     const sheetsData = await getSheets(user.id);
     const resultsData = await getResults();

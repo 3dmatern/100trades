@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import Sheet from "@/components/ui/deals/sheet";
 import Table from "@/components/ui/deals/table";
 import AddSheetButton from "./common/addSheetButton";
+import { removeSheet } from "@/actions/sheet";
 
 export default function Sheets({
     className,
@@ -20,6 +21,44 @@ export default function Sheets({
     const [results, setResults] = useState([]);
     const [risksRewards, setRisksRewards] = useState([]);
     const [tags, setTags] = useState([]);
+
+    const handleUpdateSheet = async ({ sheetId, updName }) => {
+        setSheets((prev) =>
+            prev.map((p) => p.id === sheetId && { ...p, name: updName })
+        );
+    };
+
+    const handleRemoveSheet = async (sheetId) => {
+        const sheet = sheets.find((s) => s.id === sheetId);
+        setSheets((prev) => prev.filter((p) => p.id !== sheetId));
+
+        await removeSheet({ sheetId, userId })
+            .then((data) => {
+                if (data.error) {
+                    toast.error(data.error);
+                    setSheets((prev) =>
+                        [...prev, sheet].sort((a, b) => {
+                            const start = new Date(a.date).getTime();
+                            const end = new Date(b.date).getTime();
+                            return start - end;
+                        })
+                    );
+                }
+                if (data.success) {
+                    toast.success(data.success);
+                }
+            })
+            .catch(() => {
+                toast.error("Что-то пошло не так!");
+                setSheets((prev) =>
+                    [...prev, sheet].sort((a, b) => {
+                        const start = new Date(a.date).getTime();
+                        const end = new Date(b.date).getTime();
+                        return start - end;
+                    })
+                );
+            });
+    };
 
     useEffect(() => {
         if (resultsData) {
@@ -71,6 +110,8 @@ export default function Sheets({
                             selectSheet={sheetId}
                             sheet={sheet}
                             userId={userId}
+                            onUpdateSheet={handleUpdateSheet}
+                            onRemoveSheet={handleRemoveSheet}
                             className={
                                 sheetId === sheet.id
                                     ? "bg-gray-100"

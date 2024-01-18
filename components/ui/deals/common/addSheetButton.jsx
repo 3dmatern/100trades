@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { BeatLoader } from "react-spinners";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 import { SheetCreateSchema } from "@/schemas";
 import { createSheet } from "@/actions/sheet";
@@ -22,8 +23,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export default function AddSheetButton({ className, classNameBtn, userId }) {
+    const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
+    const [newSheet, setNewSheet] = useState(null);
 
     const handleClose = () => {
         form.reset();
@@ -55,6 +58,7 @@ export default function AddSheetButton({ className, classNameBtn, userId }) {
                         setOpen(false);
                         toast.success(data.success);
                         form.reset();
+                        setNewSheet(data.newSheet);
                     }
                 })
                 .catch(() => toast.error("Что-то пошло не так!"));
@@ -65,6 +69,12 @@ export default function AddSheetButton({ className, classNameBtn, userId }) {
         form.handleSubmit(onSubmit(form.getValues()));
         setOpen(false);
     };
+
+    useEffect(() => {
+        if (newSheet) {
+            router.push(`/sheets/${newSheet.id}`);
+        }
+    }, [newSheet, router]);
 
     return (
         <>

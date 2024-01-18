@@ -7,10 +7,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { SheetUpdateSchema } from "@/schemas";
-import { removeSheet, updateSheet } from "@/actions/sheet";
+import { updateSheet } from "@/actions/sheet";
 import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
@@ -19,9 +19,11 @@ export default function Sheet({
     selectSheet,
     sheet,
     userId,
-    onClickId,
+    onUpdateSheet,
+    onRemoveSheet,
 }) {
     const sheetRef = useRef(null);
+    const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [isPendingRemove, setIsPendingRemove] = useState(false);
     const [open, setOpen] = useState(false);
@@ -35,22 +37,11 @@ export default function Sheet({
         },
     });
 
-    const onRemoveSheet = async (sheetId) => {
+    const handleRemoveSheet = async (e, sheetId) => {
+        e.stopPropagation();
         setIsPendingRemove(true);
-        await removeSheet({ sheetId, userId })
-            .then((data) => {
-                if (data.error) {
-                    toast.error(data.error);
-                }
-                if (data.success) {
-                    toast.success(data.success);
-                }
-                setIsPendingRemove(false);
-            })
-            .catch(() => {
-                setIsPendingRemove(false);
-                toast.error("Что-то пошло не так!");
-            });
+        await onRemoveSheet(sheetId);
+        setIsPendingRemove(false);
     };
 
     const onSubmit = (values) => {
@@ -68,8 +59,12 @@ export default function Sheet({
                     }
                     if (data.success) {
                         setOpen(false);
+                        onUpdateSheet({
+                            sheetId: values.id,
+                            updName: values.name,
+                        });
                         toast.success(data.success);
-                        form.reset();
+                        form.setValue("name", "");
                     }
                 })
                 .catch(() => toast.error("Что-то пошло не так!"));
@@ -95,9 +90,9 @@ export default function Sheet({
     }, [form, open]);
 
     return (
-        <Link
+        <div
             ref={sheetRef}
-            href={`/sheets/${sheet.id}`}
+            onClick={() => router.push(`/sheets/${sheet.id}`)}
             className={cn(
                 "flex items-center justify-center gap-1 w-max h-9 px-2 relative hover:bg-gray-100 rounded-t-lg cursor-pointer",
                 className
@@ -154,10 +149,7 @@ export default function Sheet({
                     ) : (
                         <button
                             type="button"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                onRemoveSheet(sheet.id);
-                            }}
+                            onClick={(e) => handleRemoveSheet(e, sheet.id)}
                             className="cursor-pointer hover:scale-110"
                         >
                             <Image
@@ -171,6 +163,6 @@ export default function Sheet({
                     )}
                 </>
             )}
-        </Link>
+        </div>
     );
 }
