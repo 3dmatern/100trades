@@ -1,10 +1,10 @@
 "use client";
 
-import { useCurrentRole } from "@/hooks/useCurrentRole";
 import { FormError } from "@/components/formError";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export function RoleGate({ children, allowedRole }) {
-    const role = useCurrentRole();
+    const { role } = useCurrentUser();
 
     if (role !== allowedRole) {
         return (

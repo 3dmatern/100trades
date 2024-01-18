@@ -53,11 +53,12 @@ export const {
             return session;
         },
         async jwt({ token }) {
-            if (!token.sub) return token;
+            if (!token.sub) return null;
 
             const existingUser = await getUserById(token.sub);
 
-            if (!existingUser) return token;
+            if (!existingUser) return null;
+            if (!existingUser.emailVerified) return null;
 
             token.firstname = existingUser.firstname;
             token.lastname = existingUser.lastname;

@@ -44,8 +44,10 @@ export function LoginForm() {
 
         startTransition(() => {
             login(values, callbackUrl).then((data) => {
-                setError(data.error);
-                setSuccess(data.success);
+                if (data) {
+                    setError(data.error);
+                    setSuccess(data.success);
+                }
             });
         });
     };

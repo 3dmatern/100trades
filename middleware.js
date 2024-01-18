@@ -7,13 +7,12 @@ import {
     apiAuthPrefix,
     DEFAULT_LOGIN_REDIRECT,
 } from "@/routes";
-import { getUserByEmail } from "./data/user";
 
 const { auth } = NextAuth(authConfig);
 
-export default auth(async (req) => {
+export default auth((req) => {
     const { nextUrl } = req;
-    let isLoggedIn = !!req.auth;
+    const isLoggedIn = !!req.auth;
 
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
@@ -21,14 +20,6 @@ export default auth(async (req) => {
 
     if (isApiAuthRoute) {
         return null;
-    }
-
-    if (isLoggedIn) {
-        const userEmail = req.auth.user.email;
-        const user = await getUserByEmail(userEmail);
-        if (!user) {
-            isLoggedIn = false;
-        }
     }
 
     if (isAuthRoute) {

@@ -100,17 +100,19 @@ export default function AddSheetButton({ className, classNameBtn, userId }) {
                                 />
                             </div>
                         )}
-                        <div
-                            onClick={handleClose}
-                            className="absolute -top-2 -right-2 cursor-pointer"
-                        >
-                            <Image
-                                src="/removeSheet.svg"
-                                alt="close"
-                                width={16}
-                                height={16}
-                            />
-                        </div>
+                        {!isPending && (
+                            <div
+                                onClick={handleClose}
+                                className="absolute -top-2 -right-2 cursor-pointer"
+                            >
+                                <Image
+                                    src="/removeSheet.svg"
+                                    alt="close"
+                                    width={16}
+                                    height={16}
+                                />
+                            </div>
+                        )}
                     </form>
                 </Form>
             )}
