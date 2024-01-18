@@ -9,6 +9,20 @@ export default function TableHead({
     onCheckAll,
     onSort,
 }) {
+    const filteredDBName = (dbName) => {
+        switch (dbName) {
+            case "imageStart":
+                return null;
+            case "imageEnd":
+                return null;
+            case "entrieTag":
+                return null;
+
+            default:
+                return dbName;
+        }
+    };
+
     return (
         <div className="flex items-center h-8 border-t border-b border-slate-300 bg-gray-50">
             {initHeaders.slice(0, 1).map((item) => (
@@ -16,6 +30,7 @@ export default function TableHead({
                     key={item.name}
                     name={item.name}
                     dbName={item.dbName}
+                    isSort={item.dbName}
                     nameColumn="column1"
                     initWidth={columnWidth.column1}
                     onResize={onResize}
@@ -37,6 +52,8 @@ export default function TableHead({
                 <SelectFilterButton
                     key={item.name}
                     name={item.name}
+                    dbName={item.dbName}
+                    isSort={filteredDBName(item.dbName)}
                     nameColumn={`column${index + 2}`}
                     initWidth={columnWidth[`column${index + 2}`]}
                     onResize={onResize}
