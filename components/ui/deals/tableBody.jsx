@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { BeatLoader } from "react-spinners";
 
 import TableBodyCard from "@/components/ui/deals/tableBodyCard";
-import { BeatLoader } from "react-spinners";
 
 export default function TableBody({
     userId,

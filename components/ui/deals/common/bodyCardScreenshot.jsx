@@ -9,6 +9,17 @@ import { uploadFile, deleteFile } from "@/actions/files";
 import { updateEntrie } from "@/actions/entrie";
 import { BeatLoader } from "react-spinners";
 
+const imageLoader = ({ src, width, quality }) => {
+    console.log(
+        `${process.env.NEXT_PUBLIC_APP_URL}/${src}?w=${width}&q=${
+            quality || 75
+        }`
+    );
+    return `${process.env.NEXT_PUBLIC_APP_URL}/${src}?w=${width}&q=${
+        quality || 75
+    }`;
+};
+
 export default function BodyCardScreenshot({
     userId,
     sheetId,
@@ -153,7 +164,8 @@ export default function BodyCardScreenshot({
                 {!isPending ? (
                     imageSrc && !openImage ? (
                         <Image
-                            src={`/${imageSrc}`}
+                            loader={imageLoader}
+                            src={imageSrc}
                             alt={imageAlt}
                             width={width}
                             height={height}
@@ -172,7 +184,7 @@ export default function BodyCardScreenshot({
                             <button
                                 type="button"
                                 onClick={handleClick}
-                                className="absolute top-4 right-4 z-50 p-0.5 cursor-pointer text-cyan-500"
+                                className="absolute top-4 right-10 z-50 p-0.5 cursor-pointer text-cyan-500"
                             >
                                 <Image
                                     src="/close.svg"
@@ -190,13 +202,13 @@ export default function BodyCardScreenshot({
                                 src={`/${imageSrc}`}
                                 alt={imageAlt}
                                 style={{ maxWidth: "80%", width: "auto" }}
-                                className="mt-6"
+                                className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
                             />
 
                             <button
                                 type="button"
                                 onClick={() => handleRemove(imageSrc)}
-                                className="block mt-5 w-max py-1 px-2 bg-red-700 hover:bg-red-500 rounded-md text-white"
+                                className="w-max py-1 px-2 absolute bottom-10 left-1/2 -translate-x-1/2 bg-red-700 hover:bg-red-500 rounded-md text-white"
                             >
                                 Удалить скриншот
                             </button>
