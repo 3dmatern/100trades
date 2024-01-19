@@ -19,6 +19,7 @@ export default function BodyCardProfit({
     dealHover,
     selectedDeals,
     columnWidth,
+    onChangeDeal,
 }) {
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
@@ -47,6 +48,11 @@ export default function BodyCardProfit({
                     if (data.success) {
                         setOpen(false);
                         toast.success(data.success);
+                        onChangeDeal({
+                            id: dealId,
+                            name: "profit",
+                            value: values.profit,
+                        });
                     }
                 })
                 .catch(() => toast.error("Что-то пошло не так!"));

@@ -18,6 +18,7 @@ export default function BodyCardPose({
     dealPose,
     dealHover,
     columnWidth,
+    onChangeDeal,
 }) {
     const cellRef = useRef(null);
     const [isPending, startTransition] = useTransition();
@@ -48,6 +49,11 @@ export default function BodyCardPose({
                     if (data.success) {
                         setOpen(false);
                         toast.success(data.success);
+                        onChangeDeal({
+                            id: dealId,
+                            name: "pose",
+                            value: values.pose,
+                        });
                     }
                 })
                 .catch(() => toast.error("Что-то пошло не так!"));

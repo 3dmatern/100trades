@@ -18,6 +18,7 @@ export default function BodyCardDeposit({
     dealDeposit,
     dealHover,
     columnWidth,
+    onChangeDeal,
 }) {
     const cellRef = useRef(null);
     const [isPending, startTransition] = useTransition();
@@ -51,6 +52,11 @@ export default function BodyCardDeposit({
                     if (data.success) {
                         setOpen(false);
                         toast.success(data.success);
+                        onChangeDeal({
+                            id: dealId,
+                            name: "deposit",
+                            value: values.deposit,
+                        });
                     }
                 })
                 .catch(() => toast.error("Что-то пошло не так!"));

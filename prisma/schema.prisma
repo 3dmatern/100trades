@@ -85,10 +85,13 @@ model Entrie {
   entryDate          String?
   imageStart         String?
   deposit            String?
+  progress           String  @default("0.00")
   exitDate           String?
   imageEnd           String?
+  take               String  @default("Рано")
   stress             Int?
   notes              String?
+  timeInTrade        String?
   sheetId            String
   resultId           String?
   rrId               String?

@@ -13,6 +13,7 @@ export default function BodyCardResult({
     resultId,
     results,
     columnWidth,
+    onChangeDeal,
 }) {
     const listRef = useRef(null);
     const [isPending, startTransition] = useTransition();
@@ -34,6 +35,11 @@ export default function BodyCardResult({
                     if (data.success) {
                         setOpen(false);
                         toast.success(data.success);
+                        onChangeDeal({
+                            id: dealId,
+                            name: "resultId",
+                            value: res.id,
+                        });
                     }
                 })
                 .catch(() => toast.error("Что-то пошло не так!"));

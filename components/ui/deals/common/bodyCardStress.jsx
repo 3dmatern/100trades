@@ -11,6 +11,7 @@ export default function BodyCardStress({
     dealId,
     dealStress,
     columnWidth,
+    onChangeDeal,
 }) {
     const [isPending, startTransition] = useTransition();
     const [hoveredRating, setHoveredRating] = useState(0);
@@ -37,6 +38,11 @@ export default function BodyCardStress({
                     }
                     if (data.success) {
                         toast.success(data.success);
+                        onChangeDeal({
+                            id: dealId,
+                            name: "stress",
+                            value: selectedValue,
+                        });
                     }
                 })
                 .catch(() => toast.error("Что-то пошло не так!"));

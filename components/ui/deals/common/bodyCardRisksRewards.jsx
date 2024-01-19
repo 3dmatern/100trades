@@ -17,6 +17,7 @@ export default function BodyCardRisksRewards({
     onChangeAllRRs,
     columnWidth,
     determineTextColor,
+    onChangeDeal,
 }) {
     const listRef = useRef(null);
     const [isPending, startTransition] = useTransition();
@@ -66,6 +67,11 @@ export default function BodyCardRisksRewards({
                 }
                 if (data.success) {
                     toast.success(data.success);
+                    onChangeDeal({
+                        id: dealId,
+                        name: "rrId",
+                        value: selectRR.id,
+                    });
                 }
             });
         });

@@ -22,6 +22,7 @@ export default function BodyCardDate({
     disabled,
     onChangeDate,
     columnWidth,
+    onChangeDeal,
 }) {
     const cellRef = useRef(null);
     const [isPending, startTransition] = useTransition();
@@ -51,6 +52,11 @@ export default function BodyCardDate({
                     if (data.success) {
                         setOpen(false);
                         toast.success(data.success);
+                        onChangeDeal({
+                            id: dealId,
+                            name,
+                            value: values[name],
+                        });
                     }
                 })
                 .catch(() => toast.error("Что-то пошло не так!"));

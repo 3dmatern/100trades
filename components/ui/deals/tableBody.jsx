@@ -11,35 +11,16 @@ export default function TableBody({
     sortedDeals,
     selectedDeals,
     results,
-    risksRewards,
-    tags,
+    allRRs,
+    onChangeAllRRs,
+    allTags,
+    onChangeAllTags,
     checkAll,
     columnWidth,
     onCheckDeal,
+    onChangeDeal,
 }) {
-    const [allTags, setAllTags] = useState([]);
-    const [allRRs, setAllRRs] = useState([]);
-
-    const changeAllRRs = (rr) => {
-        setAllRRs((prev) => [...prev, rr]);
-    };
-
-    const changeAllTags = (tag) => {
-        setAllTags((prev) => [...prev, tag]);
-    };
-
-    useEffect(() => {
-        if (risksRewards) {
-            setAllRRs(risksRewards);
-        }
-    }, [risksRewards]);
-
-    useEffect(() => {
-        if (tags) {
-            setAllTags(tags);
-        }
-    }, [tags]);
-
+    console.log(sortedDeals);
     return sortedDeals && sortedDeals.length >= 0 ? (
         sortedDeals?.map((deal, index) => (
             <TableBodyCard
@@ -51,12 +32,13 @@ export default function TableBody({
                 selectedDeals={selectedDeals}
                 results={results}
                 allRRs={allRRs}
-                onChangeAllRRs={changeAllRRs}
+                onChangeAllRRs={onChangeAllRRs}
                 allTags={allTags}
-                onChangeAllTags={changeAllTags}
+                onChangeAllTags={onChangeAllTags}
                 checkAll={checkAll}
                 columnWidth={columnWidth}
                 onCheckDeal={onCheckDeal}
+                onChangeDeal={onChangeDeal}
             />
         ))
     ) : (

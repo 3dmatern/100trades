@@ -10,11 +10,6 @@ import { updateEntrie } from "@/actions/entrie";
 import { BeatLoader } from "react-spinners";
 
 const imageLoader = ({ src, width, quality }) => {
-    console.log(
-        `${process.env.NEXT_PUBLIC_APP_URL}/${src}?w=${width}&q=${
-            quality || 75
-        }`
-    );
     return `${process.env.NEXT_PUBLIC_APP_URL}/${src}?w=${width}&q=${
         quality || 75
     }`;
@@ -31,6 +26,7 @@ export default function BodyCardScreenshot({
     width,
     height,
     columnWidth,
+    onChangeDeal,
 }) {
     const cellRef = useRef(null);
     const [isPending, startTransition] = useTransition();
@@ -46,9 +42,10 @@ export default function BodyCardScreenshot({
                     toast.error(data.error);
                     return;
                 }
+                const src = data;
                 updateEntrie({
                     userId,
-                    values: { id: dealId, sheetId, [inputName]: data },
+                    values: { id: dealId, sheetId, [inputName]: src },
                 })
                     .then((data) => {
                         if (data.error) {
@@ -61,6 +58,11 @@ export default function BodyCardScreenshot({
                             setImageSrc(data.updatedEntrie[inputName]);
                             setActive(false);
                             setOpenImage(false);
+                            onChangeDeal({
+                                id: dealId,
+                                name: inputName,
+                                value: src,
+                            });
                         }
                     })
                     .catch(() => toast.error("Что-то пошло не так!"));

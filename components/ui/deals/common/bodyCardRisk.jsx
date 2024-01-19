@@ -19,6 +19,7 @@ export default function BodyCardRisk({
     dealHover,
     selectedDeals,
     columnWidth,
+    onChangeDeal,
 }) {
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
@@ -47,7 +48,11 @@ export default function BodyCardRisk({
                     if (data.success) {
                         setOpen(false);
                         toast.success(data.success);
-                        // form.setValue("name", data.updatedEntrie.name);
+                        onChangeDeal({
+                            id: dealId,
+                            name: "risk",
+                            value: values.risk,
+                        });
                     }
                 })
                 .catch(() => toast.error("Что-то пошло не так!"));

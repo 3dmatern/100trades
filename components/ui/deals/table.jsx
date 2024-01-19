@@ -74,10 +74,29 @@ export default function Table({
 
     const [deals, setDeals] = useState([]);
     const [sortedDeals, setSortedDeals] = useState(null);
+    const [allTags, setAllTags] = useState([]);
+    const [allRRs, setAllRRs] = useState([]);
     const [checkAll, setCheckAll] = useState(false);
     const [columnWidth, setColumnWidth] = useState(initColumnWidth);
     const [selectedDeals, setSelectedDeals] = useState([]);
     const [isSortingEnabled, setIsSortingEnabled] = useState(false);
+
+    const handleChangeDeal = ({ id, name, value }) => {
+        setDeals((prev) =>
+            prev.map((p) => (p.id === id ? { ...p, [name]: value } : p))
+        );
+        setSelectedDeals((prev) =>
+            prev.map((p) => (p.id === id ? { ...p, [name]: value } : p))
+        );
+    };
+
+    const changeAllRRs = (rr) => {
+        setAllRRs((prev) => [...prev, rr]);
+    };
+
+    const changeAllTags = (tag) => {
+        setAllTags((prev) => [...prev, tag]);
+    };
 
     const handleCheckAll = ({ target }) => {
         if (target.name === "checkAll") {
@@ -331,6 +350,18 @@ export default function Table({
     }, [deals]);
 
     useEffect(() => {
+        if (risksRewards) {
+            setAllRRs(risksRewards);
+        }
+    }, [risksRewards]);
+
+    useEffect(() => {
+        if (tags) {
+            setAllTags(tags);
+        }
+    }, [tags]);
+
+    useEffect(() => {
         const calculateDistance = () => {
             if (tableRef.current) {
                 const { top } = tableRef.current.getBoundingClientRect();
@@ -371,11 +402,14 @@ export default function Table({
                     sortedDeals={sortedDeals}
                     selectedDeals={selectedDeals}
                     results={results}
-                    risksRewards={risksRewards}
-                    tags={tags}
+                    allRRs={allRRs}
+                    onChangeAllRRs={changeAllRRs}
+                    allTags={allTags}
+                    onChangeAllTags={changeAllTags}
                     checkAll={checkAll}
                     columnWidth={columnWidth}
                     onCheckDeal={handleCheckDeal}
+                    onChangeDeal={handleChangeDeal}
                 />
 
                 <div className="flex items-center h-8 relative border-r border-b border-slate-300 bg-white hover:bg-slate-50">

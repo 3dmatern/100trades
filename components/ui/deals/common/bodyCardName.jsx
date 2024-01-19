@@ -22,6 +22,7 @@ export default function BodyCardName({
     dealHover,
     columnWidth,
     onCheckDeal,
+    onChangeDeal,
 }) {
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
@@ -50,9 +51,16 @@ export default function BodyCardName({
                     if (data.success) {
                         setOpen(false);
                         toast.success(data.success);
+                        onChangeDeal({
+                            id: dealId,
+                            name: "name",
+                            value: values.name,
+                        });
                     }
                 })
-                .catch(() => toast.error("Что-то пошло не так!"));
+                .catch(() => {
+                    toast.error("Что-то пошло не так!");
+                });
         });
     };
 

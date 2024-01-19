@@ -11,25 +11,26 @@ export default function BodyCardNotes({
     dealId,
     dealNotes,
     columnWidth,
+    onChangeDeal,
 }) {
     const textRef = useRef(null);
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
-    const [note, setNote] = useState("");
+    const [notes, setNotes] = useState("");
 
     const handleChange = ({ target }) => {
-        setNote(target.value);
+        setNotes(target.value);
     };
 
     const updateNote = async () => {
         startTransition(() => {
-            if ((!dealNotes && !note) || dealNotes === note) {
+            if ((!dealNotes && !notes) || dealNotes === notes) {
                 setOpen(false);
                 return;
             }
             updateEntrie({
                 userId,
-                values: { id: dealId, sheetId, notes: note },
+                values: { id: dealId, sheetId, notes: notes },
             })
                 .then((data) => {
                     if (data.error) {
@@ -39,6 +40,11 @@ export default function BodyCardNotes({
                     if (data.success) {
                         toast.success(data.success);
                         setOpen(false);
+                        onChangeDeal({
+                            id: dealId,
+                            name: "notes",
+                            value: notes,
+                        });
                     }
                 })
                 .catch(() => toast.error("Что-то пошло не так!"));
@@ -47,7 +53,7 @@ export default function BodyCardNotes({
 
     useEffect(() => {
         if (dealNotes) {
-            setNote(dealNotes);
+            setNotes(dealNotes);
         }
     }, [dealNotes]);
 
@@ -67,7 +73,6 @@ export default function BodyCardNotes({
             document.removeEventListener("click", handleClickOutside);
             window.removeEventListener("scroll", handleScroll);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -81,8 +86,8 @@ export default function BodyCardNotes({
                 {open && !isPending ? (
                     <textarea
                         type="text"
-                        name="note"
-                        value={note}
+                        name="notes"
+                        value={notes}
                         onChange={handleChange}
                         onBlur={updateNote}
                         className={`w-full h-32 text-xs border border-blue-800 absolute left-0 top-0 z-10 p-1 ${
@@ -94,7 +99,7 @@ export default function BodyCardNotes({
                         onClick={() => setOpen(true)}
                         className="text-xs whitespace-nowrap text-ellipsis overflow-hidden pointer-events-none"
                     >
-                        {note}
+                        {notes}
                     </span>
                 )}
             </div>
