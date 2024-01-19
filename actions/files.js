@@ -25,6 +25,12 @@ export const uploadFile = (data) => {
         const imageType = matches[1];
         const imageData = matches[2];
 
+        // Проверяем, является ли тип файла изображением
+        const allowedImageTypes = ["jpeg", "jpg", "png", "gif"];
+        if (!allowedImageTypes.includes(imageType.toLowerCase())) {
+            return { error: "Выберите изображение!" };
+        }
+
         // Преобразовываем base64 в буфер
         const buffer = Buffer.from(imageData, "base64");
 
@@ -35,9 +41,7 @@ export const uploadFile = (data) => {
         }
 
         // Директория, куда будут сохраняться изображения
-        const uploadDir = path.join(process.cwd(), "public/uploads");
-        // Создаем директорию, если она не существует
-        fs.mkdirSync(uploadDir, { recursive: true });
+        const uploadDir = path.join(process.cwd(), "public");
 
         // Конкотинируем имя и формат
         const newFileName = fileName + "." + imageType;
@@ -54,7 +58,7 @@ export const uploadFile = (data) => {
         // Сохраняем изображение на сервер
         fs.writeFileSync(filePath, buffer);
 
-        return `uploads/${newFileName}`;
+        return newFileName;
     } catch (error) {
         console.error("Error uploading file: ", error);
         return {

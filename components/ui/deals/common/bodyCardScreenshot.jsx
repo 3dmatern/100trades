@@ -5,7 +5,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 
 import InputUploadImg from "@/components/ui/inputUploadImg";
-import { deleteFile, uploadFile } from "@/actions/files";
+import { uploadFile, deleteFile } from "@/actions/files";
 import { updateEntrie } from "@/actions/entrie";
 import { BeatLoader } from "react-spinners";
 
@@ -28,7 +28,7 @@ export default function BodyCardScreenshot({
     const [imageSrc, setImageSrc] = useState(null);
 
     const handleChange = (base64String) => {
-        const fileName = `${userId}_${inputName}`;
+        const fileName = `${dealId}_${Date.now()}_${inputName}`;
         startTransition(() => {
             uploadFile({ base64String, fileName }).then((data) => {
                 if (data.error) {
@@ -152,7 +152,7 @@ export default function BodyCardScreenshot({
             >
                 {!isPending ? (
                     imageSrc && !openImage ? (
-                        <img
+                        <Image
                             src={`/${imageSrc}`}
                             alt={imageAlt}
                             width={width}
