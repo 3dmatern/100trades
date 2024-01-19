@@ -4,7 +4,12 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
 
-import { createEntrie, getEntries, removeEntrie } from "@/actions/entrie";
+import {
+    createEntrie,
+    getEntries,
+    removeEntrie,
+    updateEntrie,
+} from "@/actions/entrie";
 
 import TableBody from "@/components/ui/deals/tableBody";
 import TableHead from "@/components/ui/deals/tableHead";
@@ -76,6 +81,7 @@ export default function Table({
     const [sortedDeals, setSortedDeals] = useState(null);
     const [allTags, setAllTags] = useState([]);
     const [allRRs, setAllRRs] = useState([]);
+    const [isPending, setIsPending] = useState(undefined);
     const [checkAll, setCheckAll] = useState(false);
     const [columnWidth, setColumnWidth] = useState(initColumnWidth);
     const [selectedDeals, setSelectedDeals] = useState([]);
@@ -137,6 +143,37 @@ export default function Table({
         });
     };
 
+    const handleUpdateDeal = async (values) => {
+        setIsPending((prev) => (prev = values));
+
+        await updateEntrie(userId, { ...values, sheetId }).then((data) => {
+            if (data.error) {
+                toast.error(data.error);
+            }
+            if (data.success) {
+                toast.success(data.success);
+
+                // const { payload } = data;
+
+                // const findIndexDealOfDeals = deals.findIndex(
+                //     (d) => d.id === payload.id
+                // );
+                // const updDeals = (deals[findIndexDealOfDeals] = payload);
+                // const findIndexDealOfSortedDeals = deals.findIndex(
+                //     (d) => d.id === payload.id
+                // );
+                // const updSortedDeals = (sortedDeals[
+                //     findIndexDealOfSortedDeals
+                // ] = payload);
+
+                // setDeals((prev) => [...updDeals]);
+                // setSelectedDeals((prev) => [...updSortedDeals]);
+            }
+        });
+
+        setIsPending(undefined);
+    };
+
     const handleRmoveDeal = async () => {
         let removedDeal = [];
         let copyDeals = sortedDeals;
@@ -178,6 +215,8 @@ export default function Table({
         toast.success(
             `Удалено записей ${successLength} из ${allRemoved.length}`
         );
+
+        setCheckAll(false);
     };
 
     const handleSort = (data) => {
@@ -410,6 +449,8 @@ export default function Table({
                     columnWidth={columnWidth}
                     onCheckDeal={handleCheckDeal}
                     onChangeDeal={handleChangeDeal}
+                    isPending={isPending}
+                    onUpdateDeal={handleUpdateDeal}
                 />
 
                 <div className="flex items-center h-8 relative border-r border-b border-slate-300 bg-white hover:bg-slate-50">

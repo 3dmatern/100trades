@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useTransition } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { BeatLoader } from "react-spinners";
 import { toast } from "sonner";
 
 import InputUploadImg from "@/components/ui/inputUploadImg";
 import { uploadFile, deleteFile } from "@/actions/files";
-import { updateEntrie } from "@/actions/entrie";
-import { BeatLoader } from "react-spinners";
 
 const imageLoader = ({ src, width, quality }) => {
     return `${process.env.NEXT_PUBLIC_APP_URL}/${src}?w=${width}&q=${
@@ -16,8 +15,6 @@ const imageLoader = ({ src, width, quality }) => {
 };
 
 export default function BodyCardScreenshot({
-    userId,
-    sheetId,
     dealId,
     dealName,
     inputName,
@@ -26,47 +23,24 @@ export default function BodyCardScreenshot({
     width,
     height,
     columnWidth,
-    onChangeDeal,
+    isPending,
+    onUpdateDeal,
 }) {
     const cellRef = useRef(null);
-    const [isPending, startTransition] = useTransition();
     const [active, setActive] = useState(false);
     const [openImage, setOpenImage] = useState(false);
-    const [imageSrc, setImageSrc] = useState(null);
 
     const handleChange = (base64String) => {
         const fileName = `${dealId}_${Date.now()}_${inputName}`;
-        startTransition(() => {
-            uploadFile({ base64String, fileName }).then((data) => {
-                if (data.error) {
-                    toast.error(data.error);
-                    return;
-                }
-                const src = data;
-                updateEntrie({
-                    userId,
-                    values: { id: dealId, sheetId, [inputName]: src },
-                })
-                    .then((data) => {
-                        if (data.error) {
-                            toast.error(data.error);
-                            setActive(true);
-                            setOpen(true);
-                        }
-                        if (data.success) {
-                            toast.success(data.success);
-                            setImageSrc(data.updatedEntrie[inputName]);
-                            setActive(false);
-                            setOpenImage(false);
-                            onChangeDeal({
-                                id: dealId,
-                                name: inputName,
-                                value: src,
-                            });
-                        }
-                    })
-                    .catch(() => toast.error("Что-то пошло не так!"));
-            });
+
+        uploadFile({ base64String, fileName }).then((data) => {
+            if (data.error) {
+                toast.error(data.error);
+                return;
+            }
+            const src = data;
+
+            onUpdateDeal({ id: dealId, [inputName]: src });
         });
     };
 
@@ -74,52 +48,28 @@ export default function BodyCardScreenshot({
         setOpenImage((prev) => !prev);
     };
 
-    const handleRemove = (fileName) => {
-        startTransition(() => {
-            updateEntrie({
-                userId,
-                values: { id: dealId, sheetId, [inputName]: "" },
-            })
-                .then((data) => {
-                    if (data.error) {
-                        toast.error(data.error);
-                        setActive(true);
-                        setOpen(true);
-                    }
-                    if (data.success) {
-                        toast.success(data.success);
-                        setImageSrc(null);
-                        setActive(false);
-                        setOpenImage(false);
-                    }
-                })
-                .catch(() => toast.error("Что-то пошло не так!"));
+    const handleRemove = (e, fileName) => {
+        e.stopPropagation();
+        onUpdateDeal({ id: dealId, [inputName]: "" });
 
-            deleteFile(fileName).then((data) => {
-                if (data.error) {
-                    toast.error(data.error);
-                    return;
-                }
-                if (data.success) {
-                    toast.success(data.success);
-                    setImageSrc(null);
-                    setOpenImage(false);
-                }
-            });
+        deleteFile(fileName).then((data) => {
+            if (data.error) {
+                toast.error(data.error);
+                return;
+            }
+            if (data.success) {
+                toast.success(data.success);
+                setOpenImage(false);
+            }
         });
     };
 
     useEffect(() => {
-        if (dealImageSrc) {
-            setImageSrc(dealImageSrc);
-        }
-    }, [dealImageSrc]);
-
-    useEffect(() => {
-        if (isPending) {
+        if (isPending && isPending[inputName] && isPending.id === dealId) {
             setActive(false);
             setOpenImage(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isPending]);
 
     useEffect(() => {
@@ -153,6 +103,8 @@ export default function BodyCardScreenshot({
         };
     }, []);
 
+    // console.log(isPending && isPending[inputName] && isPending.id === dealId);
+
     return (
         <div className="table-cell align-middle h-full">
             <div
@@ -163,91 +115,95 @@ export default function BodyCardScreenshot({
                     active ? "border border-blue-800" : "border-r"
                 }`}
             >
-                {!isPending ? (
-                    imageSrc && !openImage ? (
-                        <Image
-                            loader={imageLoader}
-                            src={imageSrc}
-                            alt={imageAlt}
-                            width={width}
-                            height={height}
-                            style={{ width, height }}
-                            onClick={handleClick}
-                            className="hover:scale-125 cursor-pointer"
-                        />
-                    ) : imageSrc && openImage ? (
-                        <div
-                            className={`fixed w-screen h-screen z-50 top-0 left-0 bg-slate-900 p-4 ${
-                                !openImage
-                                    ? "opacity-0 transform scale-0"
-                                    : "opacity-100 transform scale-100"
-                            } transition-transform duration-300`}
-                        >
-                            <button
-                                type="button"
-                                onClick={handleClick}
-                                className="absolute top-4 right-10 z-50 p-0.5 cursor-pointer text-cyan-500"
-                            >
-                                <Image
-                                    src="/close.svg"
-                                    alt="close"
-                                    width={16}
-                                    height={16}
-                                />
-                            </button>
-
-                            <p className="text-center text-sm text-white">
-                                {dealName}
-                            </p>
-
-                            <img
-                                src={`/${imageSrc}`}
-                                alt={imageAlt}
-                                style={{ maxWidth: "80%", width: "auto" }}
-                                className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
-                            />
-
-                            <button
-                                type="button"
-                                onClick={() => handleRemove(imageSrc)}
-                                className="w-max py-1 px-2 absolute bottom-10 left-1/2 -translate-x-1/2 bg-red-700 hover:bg-red-500 rounded-md text-white"
-                            >
-                                Удалить скриншот
-                            </button>
-                        </div>
-                    ) : active ? (
-                        <InputUploadImg
-                            name={inputName}
-                            width={width}
-                            height={height}
-                            onImageChange={handleChange}
-                        />
-                    ) : (
-                        <Image
-                            src="/dropbox.svg"
-                            alt="dropbox"
-                            width={16}
-                            height={16}
-                            className="pointer-events-none"
-                        />
-                    )
-                ) : (
+                {isPending &&
+                Object.keys(isPending)[1] === inputName &&
+                isPending.id === dealId ? (
                     <BeatLoader size={8} />
-                )}
-                {imageSrc && !isPending && (
+                ) : dealImageSrc && !openImage ? (
+                    <Image
+                        loader={imageLoader}
+                        src={dealImageSrc}
+                        alt={imageAlt}
+                        width={width}
+                        height={height}
+                        style={{ width, height }}
+                        onClick={handleClick}
+                        className="hover:scale-125 cursor-pointer"
+                    />
+                ) : dealImageSrc && openImage ? (
                     <div
-                        onClick={() => handleRemove(imageSrc)}
-                        className="w-max absolute top-0.5 right-0.5 p-0.5 bg-gray-300 hover:bg-gray-500 rounded-full cursor-pointer z-10 hover:scale-110"
+                        className={`fixed w-screen h-screen z-50 top-0 left-0 bg-slate-900 p-4 ${
+                            !openImage
+                                ? "opacity-0 transform scale-0"
+                                : "opacity-100 transform scale-100"
+                        } transition-transform duration-300`}
                     >
-                        <Image
-                            src="/remove.svg"
-                            alt="remove"
-                            width={10}
-                            height={10}
-                            className="pointer-events-none"
+                        <button
+                            type="button"
+                            onClick={handleClick}
+                            className="absolute top-4 right-10 z-50 p-0.5 cursor-pointer text-cyan-500"
+                        >
+                            <Image
+                                src="/close.svg"
+                                alt="close"
+                                width={16}
+                                height={16}
+                            />
+                        </button>
+
+                        <p className="text-center text-sm text-white">
+                            {dealName}
+                        </p>
+
+                        <img
+                            src={`/${dealImageSrc}`}
+                            alt={imageAlt}
+                            style={{ maxWidth: "80%", width: "auto" }}
+                            className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
                         />
+
+                        <button
+                            type="button"
+                            onClick={(e) => handleRemove(e, dealImageSrc)}
+                            className="w-max py-1 px-2 absolute bottom-10 left-1/2 -translate-x-1/2 bg-red-700 hover:bg-red-500 rounded-md text-white"
+                        >
+                            Удалить скриншот
+                        </button>
                     </div>
+                ) : active ? (
+                    <InputUploadImg
+                        name={inputName}
+                        width={width}
+                        height={height}
+                        onImageChange={handleChange}
+                    />
+                ) : (
+                    <Image
+                        src="/dropbox.svg"
+                        alt="dropbox"
+                        width={16}
+                        height={16}
+                        className="pointer-events-none"
+                    />
                 )}
+
+                {dealImageSrc &&
+                    (isPending &&
+                    Object.keys(isPending)[1] === inputName &&
+                    isPending.id === dealId ? null : (
+                        <div
+                            onClick={(e) => handleRemove(e, dealImageSrc)}
+                            className="w-max absolute top-0.5 right-0.5 p-0.5 bg-gray-300 hover:bg-gray-500 rounded-full cursor-pointer z-10 hover:scale-110"
+                        >
+                            <Image
+                                src="/remove.svg"
+                                alt="remove"
+                                width={10}
+                                height={10}
+                                className="pointer-events-none"
+                            />
+                        </div>
+                    ))}
             </div>
         </div>
     );

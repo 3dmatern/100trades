@@ -1,49 +1,23 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useTransition } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { toast } from "sonner";
-
-import { updateEntrie } from "@/actions/entrie";
 
 export default function BodyCardResult({
-    userId,
-    sheetId,
     dealId,
     resultId,
     results,
     columnWidth,
-    onChangeDeal,
+    isPending,
+    onUpdateDeal,
 }) {
     const listRef = useRef(null);
-    const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
     const [result, setResult] = useState(undefined);
 
     const handleSelectResult = (res) => {
-        // e.stopPropagation();
         setResult(res);
-        startTransition(() => {
-            updateEntrie({
-                userId,
-                values: { id: dealId, sheetId, resultId: res.id },
-            })
-                .then((data) => {
-                    if (data.error) {
-                        toast.error(data.error);
-                    }
-                    if (data.success) {
-                        setOpen(false);
-                        toast.success(data.success);
-                        onChangeDeal({
-                            id: dealId,
-                            name: "resultId",
-                            value: res.id,
-                        });
-                    }
-                })
-                .catch(() => toast.error("Что-то пошло не так!"));
-        });
+        onUpdateDeal({ id: dealId, resultId: res.id });
     };
 
     useEffect(() => {
@@ -80,7 +54,11 @@ export default function BodyCardResult({
             >
                 <button
                     type="button"
-                    disabled={isPending}
+                    disabled={
+                        isPending &&
+                        isPending["resultId"] &&
+                        dealId === isPending.id
+                    }
                     className="flex items-center justify-between w-full"
                 >
                     {result ? (

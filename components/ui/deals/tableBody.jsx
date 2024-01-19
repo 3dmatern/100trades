@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
 
 import TableBodyCard from "@/components/ui/deals/tableBodyCard";
@@ -19,8 +18,11 @@ export default function TableBody({
     columnWidth,
     onCheckDeal,
     onChangeDeal,
+    isPending,
+    onUpdateDeal,
 }) {
-    console.log(sortedDeals);
+    console.log(isPending);
+    // console.log(sortedDeals);
     return sortedDeals && sortedDeals.length >= 0 ? (
         sortedDeals?.map((deal, index) => (
             <TableBodyCard
@@ -39,6 +41,8 @@ export default function TableBody({
                 columnWidth={columnWidth}
                 onCheckDeal={onCheckDeal}
                 onChangeDeal={onChangeDeal}
+                isPending={isPending}
+                onUpdateDeal={onUpdateDeal}
             />
         ))
     ) : (

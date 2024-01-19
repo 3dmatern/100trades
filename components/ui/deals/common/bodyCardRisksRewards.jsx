@@ -1,26 +1,24 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useTransition } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
 
 import { createRiskReward } from "@/actions/riskReward";
 import { getRandomHexColor } from "@/utils/getRandomHexColor";
-import { updateEntrie } from "@/actions/entrie";
 
 export default function BodyCardRisksRewards({
     userId,
-    sheetId,
     dealId,
     rrId,
     allRRs,
     onChangeAllRRs,
     columnWidth,
     determineTextColor,
-    onChangeDeal,
+    isPending,
+    onUpdateDeal,
 }) {
     const listRef = useRef(null);
-    const [isPending, startTransition] = useTransition();
     const [active, setActive] = useState(false);
     const [open, setOpen] = useState(false);
     const [filterRRs, setFilterRRs] = useState([]);
@@ -57,24 +55,7 @@ export default function BodyCardRisksRewards({
         }
         setCurrentRR(selectRR);
 
-        startTransition(() => {
-            updateEntrie({
-                userId,
-                values: { id: dealId, sheetId, rrId: selectRR.id },
-            }).then((data) => {
-                if (data.error) {
-                    toast.error(data.error);
-                }
-                if (data.success) {
-                    toast.success(data.success);
-                    onChangeDeal({
-                        id: dealId,
-                        name: "rrId",
-                        value: selectRR.id,
-                    });
-                }
-            });
-        });
+        onUpdateDeal({ id: dealId, rrId: selectRR.id });
     };
 
     useEffect(() => {
@@ -123,7 +104,11 @@ export default function BodyCardRisksRewards({
             >
                 <button
                     type="button"
-                    disabled={isPending}
+                    disabled={
+                        isPending &&
+                        isPending["rrId"] &&
+                        dealId === isPending.id
+                    }
                     className="flex items-center justify-between w-full"
                 >
                     <span

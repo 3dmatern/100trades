@@ -28,10 +28,7 @@ export default function BodyCardNotes({
                 setOpen(false);
                 return;
             }
-            updateEntrie({
-                userId,
-                values: { id: dealId, sheetId, notes: notes },
-            })
+            updateEntrie(userId, { id: dealId, sheetId, notes: notes })
                 .then((data) => {
                     if (data.error) {
                         toast.error(data.error);

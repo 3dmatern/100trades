@@ -10,11 +10,7 @@ export default function BodyCardTakeScreenshot({
                 className="flex items-center justify-center h-full px-2 border-r text-xs"
             >
                 <span className="whitespace-nowrap text-ellipsis overflow-hidden">
-                    {dealImageEndSrc
-                        ? ""
-                        : takeScreenshot
-                        ? "Сделай скрин"
-                        : "Рано"}
+                    {dealImageEndSrc ? "" : takeScreenshot}
                 </span>
             </div>
         </div>

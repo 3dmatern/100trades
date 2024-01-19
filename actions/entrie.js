@@ -1,6 +1,6 @@
 "use server";
 
-import { unstable_noStore as noStore } from "next/cache";
+import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 
 import { db } from "@/lib/db";
 import { EntrieSchema } from "@/schemas";
@@ -27,7 +27,7 @@ export const createEntrie = async ({ userId, sheetId }) => {
 
     try {
         const newEntrie = await db.entrie.create({
-            data: { sheetId: existingSheet.id },
+            data: { sheetId: existingSheet.id, take: "Рано" },
         });
 
         return {
@@ -64,7 +64,7 @@ export const getEntries = async (sheetId) => {
     }
 };
 
-export const updateEntrie = async ({ userId, values }) => {
+export const updateEntrie = async (userId, values) => {
     noStore();
     const validatedFields = EntrieSchema.safeParse(values);
     if (!validatedFields) {
@@ -121,22 +121,23 @@ export const updateEntrie = async ({ userId, values }) => {
                 entryDate: entryDate === "" ? null : entryDate || undefined,
                 imageStart: imageStart === "" ? null : imageStart || undefined,
                 deposit: deposit === "" ? null : deposit || undefined,
-                progress: progress === "" ? "0.00" : progress || undefined,
+                progress: progress || undefined,
                 exitDate: exitDate === "" ? null : exitDate || undefined,
                 imageEnd: imageEnd === "" ? null : imageEnd || undefined,
-                take: take === "" ? null : take || undefined,
+                take: take || undefined,
                 stress: stress || undefined,
                 notes: notes === "" ? null : notes || undefined,
-                timeInTrade:
-                    timeInTrade === "" ? null : timeInTrade || undefined,
+                timeInTrade: timeInTrade || undefined,
                 resultId: resultId || undefined,
                 rrId: rrId || undefined,
                 entrieTag: entrieTag || undefined,
             },
         });
 
+        revalidatePath(`/sheets/${updatedEntrie.id}`);
+
         return {
-            updatedEntrie,
+            payload: updatedEntrie,
             success: "Запись успешно обновлена!",
         };
     } catch (error) {

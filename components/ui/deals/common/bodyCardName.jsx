@@ -1,19 +1,15 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
 
 import { EntrieSchema } from "@/schemas";
-import { updateEntrie } from "@/actions/entrie";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import CheckboxOrNumber from "@/components/ui/deals/common/checkboxOrNumber";
 
 export default function BodyCardName({
-    userId,
-    sheetId,
     index,
     dealId,
     dealName,
@@ -22,16 +18,15 @@ export default function BodyCardName({
     dealHover,
     columnWidth,
     onCheckDeal,
-    onChangeDeal,
+    isPending,
+    onUpdateDeal,
 }) {
-    const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
 
     const form = useForm({
         resolver: zodResolver(EntrieSchema),
         defaultValues: {
             id: dealId,
-            sheetId,
             name: dealName || undefined,
         },
     });
@@ -42,26 +37,7 @@ export default function BodyCardName({
             form.reset();
             return;
         }
-        startTransition(() => {
-            updateEntrie({ userId, values })
-                .then((data) => {
-                    if (data.error) {
-                        toast.error(data.error);
-                    }
-                    if (data.success) {
-                        setOpen(false);
-                        toast.success(data.success);
-                        onChangeDeal({
-                            id: dealId,
-                            name: "name",
-                            value: values.name,
-                        });
-                    }
-                })
-                .catch(() => {
-                    toast.error("Что-то пошло не так!");
-                });
-        });
+        onUpdateDeal(values);
     };
 
     const updateName = async () => {
@@ -103,7 +79,11 @@ export default function BodyCardName({
                                     <FormControl>
                                         <Input
                                             {...field}
-                                            disabled={isPending}
+                                            disabled={
+                                                isPending &&
+                                                isPending["name"] &&
+                                                dealId === isPending.id
+                                            }
                                             placeholder="AAAA"
                                             onFocus={() => setOpen(true)}
                                             onBlur={updateName}

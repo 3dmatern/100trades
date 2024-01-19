@@ -1,31 +1,27 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useTransition } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
 
 import { EntrieSchema } from "@/schemas";
-import { updateEntrie } from "@/actions/entrie";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { dealDateWithTime } from "@/utils/formatedDate";
 
 export default function BodyCardDate({
-    userId,
-    sheetId,
     dealId,
-    name,
+    inputName,
     dealDate,
     minDate,
     maxDate,
     disabled,
     onChangeDate,
     columnWidth,
-    onChangeDeal,
+    isPending,
+    onUpdateDeal,
 }) {
     const cellRef = useRef(null);
-    const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState(false);
 
@@ -33,38 +29,20 @@ export default function BodyCardDate({
         resolver: zodResolver(EntrieSchema),
         defaultValues: {
             id: dealId,
-            sheetId,
-            [name]: dealDate || undefined,
+            [inputName]: dealDate || undefined,
         },
     });
     const onSubmit = (values) => {
-        if (values[name] === dealDate) {
+        if (values[inputName] === dealDate) {
             setOpen(false);
             form.reset();
             return;
         }
-        startTransition(() => {
-            updateEntrie({ userId, values })
-                .then((data) => {
-                    if (data.error) {
-                        toast.error(data.error);
-                    }
-                    if (data.success) {
-                        setOpen(false);
-                        toast.success(data.success);
-                        onChangeDeal({
-                            id: dealId,
-                            name,
-                            value: values[name],
-                        });
-                    }
-                })
-                .catch(() => toast.error("Что-то пошло не так!"));
-        });
+        onUpdateDeal(values);
     };
 
     const updateDate = () => {
-        const newDate = form.getValues(name);
+        const newDate = form.getValues(inputName);
         if (newDate) {
             setDate(dealDateWithTime(newDate));
         } else {
@@ -77,10 +55,10 @@ export default function BodyCardDate({
 
     useEffect(() => {
         if (dealDate) {
-            form.setValue(name, dealDate);
+            form.setValue(inputName, dealDate);
             setDate(dealDateWithTime(dealDate));
         }
-    }, [dealDate, form, name]);
+    }, [dealDate, form, inputName]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -115,7 +93,7 @@ export default function BodyCardDate({
                         <form>
                             <FormField
                                 control={form.control}
-                                name={name}
+                                name={inputName}
                                 render={({ field }) => (
                                     <FormItem className="space-y-0">
                                         <FormControl>
@@ -128,7 +106,12 @@ export default function BodyCardDate({
                                                 disabled={
                                                     disabled
                                                         ? disabled
-                                                        : isPending
+                                                        : isPending &&
+                                                          isPending[
+                                                              inputName
+                                                          ] &&
+                                                          dealId ===
+                                                              isPending.id
                                                 }
                                                 style={{
                                                     width: columnWidth,

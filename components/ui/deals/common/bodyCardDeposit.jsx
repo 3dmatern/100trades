@@ -44,7 +44,7 @@ export default function BodyCardDeposit({
             return;
         }
         startTransition(() => {
-            updateEntrie({ userId, values })
+            updateEntrie(userId, values)
                 .then((data) => {
                     if (data.error) {
                         toast.error(data.error);

@@ -28,10 +28,7 @@ export default function BodyCardStress({
     const handleClick = (selectedValue) => {
         setStress(selectedValue);
         startTransition(() => {
-            updateEntrie({
-                userId,
-                values: { id: dealId, sheetId, stress: selectedValue },
-            })
+            updateEntrie(userId, { id: dealId, sheetId, stress: selectedValue })
                 .then((data) => {
                     if (data.error) {
                         toast.error(data.error);
