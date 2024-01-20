@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
 
@@ -15,10 +15,10 @@ export default function BodyCardRisksRewards({
     onChangeAllRRs,
     columnWidth,
     determineTextColor,
-    isPending,
     onUpdateDeal,
 }) {
     const listRef = useRef(null);
+    const [isPending, startTransaction] = useTransition();
     const [active, setActive] = useState(false);
     const [open, setOpen] = useState(false);
     const [filterRRs, setFilterRRs] = useState([]);
@@ -31,31 +31,36 @@ export default function BodyCardRisksRewards({
         setFilterRRs(allRRs.filter((r) => r.label.includes(value)));
     };
 
-    const handleSelectRR = async (e, rr) => {
+    const handleSelectRR = async (e, selectRR) => {
         e.stopPropagation();
         setRR("");
         setActive(false);
         setOpen(false);
 
-        let selectRR = rr;
-
         if (!selectRR.id) {
-            const { newRR, success, error } = await createRiskReward({
-                userId,
-                values: rr,
+            startTransaction(() => {
+                createRiskReward({
+                    userId,
+                    values: selectRR,
+                }).then((data) => {
+                    if (data.error) {
+                        toast.error(data.error);
+                        return;
+                    }
+                    if (data.success) {
+                        console.log(data.newRR);
+                        toast.success(data.success);
+                        onChangeAllRRs(data.newRR);
+                        setCurrentRR(data.newRR);
+                        onUpdateDeal({ id: dealId, rrId: data.newRR.id });
+                        return;
+                    }
+                });
             });
-            if (error) {
-                toast.error(error);
-                return;
-            } else {
-                toast.success(success);
-                selectRR = newRR;
-                onChangeAllRRs(newRR);
-            }
+        } else {
+            setCurrentRR(selectRR);
+            onUpdateDeal({ id: dealId, rrId: selectRR.id });
         }
-        setCurrentRR(selectRR);
-
-        onUpdateDeal({ id: dealId, rrId: selectRR.id });
     };
 
     useEffect(() => {
@@ -104,11 +109,7 @@ export default function BodyCardRisksRewards({
             >
                 <button
                     type="button"
-                    disabled={
-                        isPending &&
-                        isPending["rrId"] &&
-                        dealId === isPending.id
-                    }
+                    disabled={isPending}
                     className="flex items-center justify-between w-full"
                 >
                     <span

@@ -135,32 +135,47 @@ export default function Table({
     };
 
     const handleUpdateDeal = async (values) => {
-        setIsPending((prev) => (prev = values));
+        setIsPending((prev) => values);
 
-        await updateEntrie(userId, { ...values, sheetId }).then((data) => {
+        try {
+            const data = await updateEntrie(userId, { ...values, sheetId });
             if (data.error) {
                 toast.error(data.error);
-            }
-            if (data.success) {
+            } else if (data.success) {
                 toast.success(data.success);
 
-                // const { payload } = data;
+                const { payload } = data;
 
-                // const findIndexDealOfDeals = deals.findIndex(
-                //     (d) => d.id === payload.id
-                // );
-                // const updDeals = (deals[findIndexDealOfDeals] = payload);
-                // const findIndexDealOfSortedDeals = deals.findIndex(
-                //     (d) => d.id === payload.id
-                // );
-                // const updSortedDeals = (sortedDeals[
-                //     findIndexDealOfSortedDeals
-                // ] = payload);
+                setDeals((prev) => {
+                    const updatedDeals = [...prev];
+                    const findIndexDealOfDeals = updatedDeals.findIndex(
+                        (d) => d.id === payload.id
+                    );
 
-                // setDeals((prev) => [...updDeals]);
-                // setSelectedDeals((prev) => [...updSortedDeals]);
+                    if (findIndexDealOfDeals !== -1) {
+                        updatedDeals[findIndexDealOfDeals] = payload;
+                    }
+
+                    return updatedDeals;
+                });
+
+                setSortedDeals((prev) => {
+                    const updatedSortedDeals = [...prev];
+                    const findIndexDealOfSortedDeals = updatedSortedDeals.find(
+                        (d) => d.id === payload.id
+                    );
+
+                    if (findIndexDealOfSortedDeals !== -1) {
+                        updatedSortedDeals[findIndexDealOfSortedDeals] =
+                            payload;
+                    }
+
+                    return updatedSortedDeals;
+                });
             }
-        });
+        } catch (error) {
+            toast.error("Ошибка обновления сделки!");
+        }
 
         setIsPending(undefined);
     };

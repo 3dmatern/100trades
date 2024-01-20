@@ -124,7 +124,6 @@ export default function TableBodyCard({
                 onChangeAllRRs={onChangeAllRRs}
                 columnWidth={columnWidth.column6}
                 determineTextColor={determineTextColor}
-                isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
             />
             <BodyCardDate
