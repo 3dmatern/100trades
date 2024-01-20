@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import { BeatLoader } from "react-spinners";
 import { toast } from "sonner";
@@ -23,24 +23,25 @@ export default function BodyCardScreenshot({
     width,
     height,
     columnWidth,
-    isPending,
     onUpdateDeal,
 }) {
     const cellRef = useRef(null);
+    const [isPending, startTransaction] = useTransition();
     const [active, setActive] = useState(false);
     const [openImage, setOpenImage] = useState(false);
 
     const handleChange = (base64String) => {
         const fileName = `${dealId}_${Date.now()}_${inputName}`;
+        startTransaction(() => {
+            uploadFile({ base64String, fileName }).then((data) => {
+                if (data.error) {
+                    toast.error(data.error);
+                    return;
+                }
+                const src = data;
 
-        uploadFile({ base64String, fileName }).then((data) => {
-            if (data.error) {
-                toast.error(data.error);
-                return;
-            }
-            const src = data;
-
-            onUpdateDeal({ id: dealId, [inputName]: src });
+                onUpdateDeal({ id: dealId, [inputName]: src });
+            });
         });
     };
 
@@ -50,26 +51,27 @@ export default function BodyCardScreenshot({
 
     const handleRemove = (e, fileName) => {
         e.stopPropagation();
-        onUpdateDeal({ id: dealId, [inputName]: "" });
+        startTransaction(() => {
+            onUpdateDeal({ id: dealId, [inputName]: "" });
 
-        deleteFile(fileName).then((data) => {
-            if (data.error) {
-                toast.error(data.error);
-                return;
-            }
-            if (data.success) {
-                toast.success(data.success);
-                setOpenImage(false);
-            }
+            deleteFile(fileName).then((data) => {
+                if (data.error) {
+                    toast.error(data.error);
+                    return;
+                }
+                if (data.success) {
+                    toast.success(data.success);
+                    setOpenImage(false);
+                }
+            });
         });
     };
 
     useEffect(() => {
-        if (isPending && isPending[inputName] && isPending.id === dealId) {
+        if (isPending) {
             setActive(false);
             setOpenImage(false);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isPending]);
 
     useEffect(() => {
@@ -113,9 +115,7 @@ export default function BodyCardScreenshot({
                     active ? "border border-blue-800" : "border-r"
                 }`}
             >
-                {isPending &&
-                Object.keys(isPending)[1] === inputName &&
-                isPending.id === dealId ? (
+                {isPending ? (
                     <BeatLoader size={8} />
                 ) : dealImageSrc && !openImage ? (
                     <Image
@@ -185,23 +185,20 @@ export default function BodyCardScreenshot({
                     />
                 )}
 
-                {dealImageSrc &&
-                    (isPending &&
-                    Object.keys(isPending)[1] === inputName &&
-                    isPending.id === dealId ? null : (
-                        <div
-                            onClick={(e) => handleRemove(e, dealImageSrc)}
-                            className="w-max absolute top-0.5 right-0.5 p-0.5 z-[0] bg-gray-300 hover:bg-gray-500 rounded-full cursor-pointer hover:scale-110"
-                        >
-                            <Image
-                                src="/remove.svg"
-                                alt="remove"
-                                width={10}
-                                height={10}
-                                className="pointer-events-none"
-                            />
-                        </div>
-                    ))}
+                {dealImageSrc && !isPending && (
+                    <div
+                        onClick={(e) => handleRemove(e, dealImageSrc)}
+                        className="w-max absolute top-0.5 right-0.5 p-0.5 z-[0] bg-gray-300 hover:bg-gray-500 rounded-full cursor-pointer hover:scale-110"
+                    >
+                        <Image
+                            src="/remove.svg"
+                            alt="remove"
+                            width={10}
+                            height={10}
+                            className="pointer-events-none"
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -7,7 +7,7 @@ import TableBodyCard from "@/components/ui/deals/tableBodyCard";
 export default function TableBody({
     userId,
     sheetId,
-    sortedDeals,
+    deals,
     selectedDeals,
     results,
     allRRs,
@@ -20,9 +20,8 @@ export default function TableBody({
     isPending,
     onUpdateDeal,
 }) {
-    // console.log(sortedDeals);
-    return sortedDeals && sortedDeals.length >= 0 ? (
-        sortedDeals?.map((deal, index) => (
+    return deals && deals.length >= 0 ? (
+        deals?.map((deal, index) => (
             <TableBodyCard
                 key={deal.id}
                 userId={userId}

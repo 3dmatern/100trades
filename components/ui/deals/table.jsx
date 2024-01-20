@@ -78,7 +78,6 @@ export default function Table({
     const [heightTop, setHeightTop] = useState(0);
 
     const [deals, setDeals] = useState([]);
-    const [sortedDeals, setSortedDeals] = useState(null);
     const [allTags, setAllTags] = useState([]);
     const [allRRs, setAllRRs] = useState([]);
     const [isPending, setIsPending] = useState(undefined);
@@ -99,7 +98,7 @@ export default function Table({
         if (target.name === "checkAll") {
             setCheckAll((prev) => {
                 !prev
-                    ? setSelectedDeals(sortedDeals.map((deal) => deal.id))
+                    ? setSelectedDeals(deals.map((deal) => deal.id))
                     : setSelectedDeals([]);
                 return !prev;
             });
@@ -128,7 +127,6 @@ export default function Table({
             }
             if (data.success) {
                 setDeals((prev) => [...prev, data.newEntrie]);
-                setSortedDeals((prev) => [...prev, data.newEntrie]);
                 toast.success(data.success);
             }
         });
@@ -145,6 +143,7 @@ export default function Table({
                 toast.success(data.success);
 
                 const { payload } = data;
+                console.log(payload);
 
                 setDeals((prev) => {
                     const updatedDeals = [...prev];
@@ -158,20 +157,6 @@ export default function Table({
 
                     return updatedDeals;
                 });
-
-                setSortedDeals((prev) => {
-                    const updatedSortedDeals = [...prev];
-                    const findIndexDealOfSortedDeals = updatedSortedDeals.find(
-                        (d) => d.id === payload.id
-                    );
-
-                    if (findIndexDealOfSortedDeals !== -1) {
-                        updatedSortedDeals[findIndexDealOfSortedDeals] =
-                            payload;
-                    }
-
-                    return updatedSortedDeals;
-                });
             }
         } catch (error) {
             toast.error("Ошибка обновления сделки!");
@@ -182,14 +167,11 @@ export default function Table({
 
     const handleRmoveDeal = async () => {
         let removedDeal = [];
-        let copyDeals = sortedDeals;
+        let copyDeals = deals;
         let copySelectedDeals = selectedDeals;
         setSelectedDeals([]);
 
         setDeals((prev) =>
-            prev.filter((deal) => !copySelectedDeals.includes(deal.id))
-        );
-        setSortedDeals((prev) =>
             prev.filter((deal) => !copySelectedDeals.includes(deal.id))
         );
 
@@ -211,10 +193,6 @@ export default function Table({
                 ...prev,
                 ...copyDeals.filter((c) => removedDeal.includes(c.id)),
             ]);
-            setSortedDeals((prev) => [
-                ...prev,
-                ...copyDeals.filter((c) => removedDeal.includes(c.id)),
-            ]);
             setSelectedDeals(removedDeal);
         }
 
@@ -226,135 +204,76 @@ export default function Table({
     };
 
     const handleSort = (data) => {
-        console.log(data);
         setIsSortingEnabled(true);
+
+        const sortByOrderString = ({ iter, order }) => {
+            setDeals((prev) =>
+                order === "asc"
+                    ? [...sortByAscString(prev, iter)]
+                    : [...sortByDescString(prev, iter)]
+            );
+        };
+
+        const sortByOrderNumber = ({ iter, order }) => {
+            setDeals((prev) =>
+                order === "asc"
+                    ? [...sortByAsc(prev, iter)]
+                    : [...sortByDesc(prev, iter)]
+            );
+        };
+
+        const sortByOrderResult = ({ iter, order }) => {
+            setDeals((prev) =>
+                order === "asc"
+                    ? [...sortByAscResult(prev, iter, results)]
+                    : [...sortByDescResult(prev, iter, results)]
+            );
+        };
+
+        const sortByOrderRR = ({ iter, order }) => {
+            setDeals((prev) =>
+                order === "asc"
+                    ? [...sortByAscRR(prev, iter, risksRewards)]
+                    : [...sortByDescRR(prev, iter, risksRewards)]
+            );
+        };
+
+        const sortByOrderDate = ({ iter, order }) => {
+            setDeals((prev) =>
+                order === "asc"
+                    ? [...sortByAscDate(prev, iter)]
+                    : [...sortByDescDate(prev, iter)]
+            );
+        };
+
         switch (data.iter) {
             case "name":
-                data.order === "asc"
-                    ? setSortedDeals((prev) => [
-                          ...sortByAscString(deals, data.iter),
-                      ])
-                    : setSortedDeals((prev) => [
-                          ...sortByDescString(deals, data.iter),
-                      ]);
-                break;
-
             case "take":
-                data.order === "asc"
-                    ? setSortedDeals((prev) => [
-                          ...sortByAscString(deals, data.iter),
-                      ])
-                    : setSortedDeals((prev) => [
-                          ...sortByDescString(deals, data.iter),
-                      ]);
-                break;
-
             case "notes":
-                data.order === "asc"
-                    ? setSortedDeals((prev) => [
-                          ...sortByAscString(deals, data.iter),
-                      ])
-                    : setSortedDeals((prev) => [
-                          ...sortByDescString(deals, data.iter),
-                      ]);
-                break;
-
-            case "resultId":
-                data.order === "asc"
-                    ? setSortedDeals((prev) => [
-                          ...sortByAscResult(deals, data.iter, results),
-                      ])
-                    : setSortedDeals((prev) => [
-                          ...sortByDescResult(deals, data.iter, results),
-                      ]);
+            case "progress":
+                sortByOrderString(data);
                 break;
 
             case "pose":
-                data.order === "asc"
-                    ? setSortedDeals((prev) => [...sortByAsc(deals, data.iter)])
-                    : setSortedDeals((prev) => [
-                          ...sortByDesc(deals, data.iter),
-                      ]);
-                break;
-
             case "risk":
-                data.order === "asc"
-                    ? setSortedDeals((prev) => [...sortByAsc(deals, data.iter)])
-                    : setSortedDeals((prev) => [
-                          ...sortByDesc(deals, data.iter),
-                      ]);
+            case "profit":
+            case "deposit":
+            case "stress":
+            case "timeInTrade":
+                sortByOrderNumber(data);
                 break;
 
-            case "profit":
-                data.order === "asc"
-                    ? setSortedDeals((prev) => [...sortByAsc(deals, data.iter)])
-                    : setSortedDeals((prev) => [
-                          ...sortByDesc(deals, data.iter),
-                      ]);
+            case "resultId":
+                sortByOrderResult(data);
                 break;
 
             case "rrId":
-                data.order === "asc"
-                    ? setSortedDeals((prev) => [
-                          ...sortByAscRR(deals, data.iter, risksRewards),
-                      ])
-                    : setSortedDeals((prev) => [
-                          ...sortByDescRR(deals, data.iter, risksRewards),
-                      ]);
+                sortByOrderRR(data);
                 break;
 
             case "entryDate":
-                data.order === "asc"
-                    ? setSortedDeals((prev) => [
-                          ...sortByAscDate(deals, data.iter),
-                      ])
-                    : setSortedDeals((prev) => [
-                          ...sortByDescDate(deals, data.iter),
-                      ]);
-                break;
-
             case "exitDate":
-                data.order === "asc"
-                    ? setSortedDeals((prev) => [
-                          ...sortByAscDate(deals, data.iter),
-                      ])
-                    : setSortedDeals((prev) => [
-                          ...sortByDescDate(deals, data.iter),
-                      ]);
-                break;
-
-            case "deposit":
-                data.order === "asc"
-                    ? setSortedDeals((prev) => [...sortByAsc(deals, data.iter)])
-                    : setSortedDeals((prev) => [
-                          ...sortByDesc(deals, data.iter),
-                      ]);
-                break;
-
-            case "progress":
-                data.order === "asc"
-                    ? setSortedDeals((prev) => [
-                          ...sortByAscString(deals, data.iter),
-                      ])
-                    : setSortedDeals((prev) => [
-                          ...sortByDescString(deals, data.iter),
-                      ]);
-                break;
-
-            case "stress":
-                data.order === "asc"
-                    ? setSortedDeals((prev) => [...sortByAsc(deals, data.iter)])
-                    : setSortedDeals((prev) => [
-                          ...sortByDesc(deals, data.iter),
-                      ]);
-                break;
-
-            case "timeInTrade":
-                data.order === "asc"
-                    ? setSortedDeals((prev) => [...sortByAsc(deals, data.iter)])
-                    : setSortedDeals((prev) => [
-                          ...sortByDesc(deals, data.iter),
-                      ]);
+                sortByOrderDate(data);
                 break;
 
             default:
@@ -364,7 +283,7 @@ export default function Table({
 
     const resetSort = () => {
         setIsSortingEnabled(false);
-        setSortedDeals((prev) =>
+        setDeals((prev) =>
             prev.sort((a, b) => {
                 return new Date(a.date) - new Date(b.date);
             })
@@ -385,12 +304,6 @@ export default function Table({
             entries();
         }
     }, [sheetId]);
-
-    useEffect(() => {
-        if (deals) {
-            setSortedDeals(deals);
-        }
-    }, [deals]);
 
     useEffect(() => {
         if (risksRewards) {
@@ -442,7 +355,7 @@ export default function Table({
                 <TableBody
                     userId={userId}
                     sheetId={sheetId}
-                    sortedDeals={sortedDeals}
+                    deals={deals}
                     selectedDeals={selectedDeals}
                     results={results}
                     allRRs={allRRs}
