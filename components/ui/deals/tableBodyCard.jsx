@@ -36,11 +36,10 @@ export default function TableBodyCard({
     allRRs,
     onChangeAllRRs,
     allTags,
-    onChangeAllTags,
+    onUpdateAllTags,
     checkAll,
     columnWidth,
     onCheckDeal,
-    onChangeDeal,
     isPending,
     onUpdateDeal,
 }) {
@@ -55,117 +54,6 @@ export default function TableBodyCard({
 
     const changeExitDate = (date) => {
         setExitDate(date);
-
-        // if (entryDate && exitDate) {
-        //     const startDate = new Date(entryDate).getTime();
-        //     const endDate = new Date(exitDate).getTime();
-        //     const result = endDate - startDate;
-        //     console.log(result);
-        //     console.log(timeScreenshot);
-        //     const isScreenshot = result >= timeScreenshot;
-        //     const time = getTimeInTrade(entryDate, exitDate);
-        //     console.log(deal.id);
-
-        //     if (isScreenshot) {
-        //         startTransition(() => {
-        //             updateEntrie(userId, {
-        //                 id: deal.id,
-        //                 sheetId,
-        //                 take: "Сделай скрин",
-        //             })
-        //                 .then((data) => {
-        //                     if (data.error) {
-        //                         toast.error(data.error);
-        //                     }
-        //                     if (data.success) {
-        //                         setOpen(false);
-        //                         toast.success(data.success);
-        //                         onChangeDeal({
-        //                             id: deal.id,
-        //                             name: "take",
-        //                             value: "Сделай скрин",
-        //                         });
-        //                     }
-        //                 })
-        //                 .catch(() => {
-        //                     toast.error("Что-то пошло не так! Сделай скрин");
-        //                 });
-        //         });
-        //     } else {
-        //         startTransition(() => {
-        //             updateEntrie(userId, { id: deal.id, sheetId, take: "Рано" })
-        //                 .then((data) => {
-        //                     if (data.error) {
-        //                         toast.error(data.error);
-        //                     }
-        //                     if (data.success) {
-        //                         setOpen(false);
-        //                         toast.success(data.success);
-        //                         onChangeDeal({
-        //                             id: deal.id,
-        //                             name: "take",
-        //                             value: "Рано",
-        //                         });
-        //                     }
-        //                 })
-        //                 .catch(() => {
-        //                     toast.error("Что-то пошло не так! Рано");
-        //                 });
-        //         });
-        //     }
-
-        //     if (time) {
-        //         startTransition(() => {
-        //             updateEntrie(userId, {
-        //                 id: deal.id,
-        //                 sheetId,
-        //                 timeInTrade: time,
-        //             })
-        //                 .then((data) => {
-        //                     if (data.error) {
-        //                         toast.error(data.error);
-        //                     }
-        //                     if (data.success) {
-        //                         setOpen(false);
-        //                         toast.success(data.success);
-        //                         onChangeDeal({
-        //                             id: deal.id,
-        //                             name: "timeInTrade",
-        //                             value: time,
-        //                         });
-        //                     }
-        //                 })
-        //                 .catch(() => {
-        //                     toast.error("Что-то пошло не так! time");
-        //                 });
-        //         });
-        //     } else {
-        //         startTransition(() => {
-        //             updateEntrie(userId, {
-        //                 id: deal.id,
-        //                 sheetId,
-        //                 timeInTrade: "",
-        //             })
-        //                 .then((data) => {
-        //                     if (data.error) {
-        //                         toast.error(data.error);
-        //                     }
-        //                     if (data.success) {
-        //                         setOpen(false);
-        //                         toast.success(data.success);
-        //                         onChangeDeal({
-        //                             id: deal.id,
-        //                             name: "timeInTrade",
-        //                             value: "",
-        //                         });
-        //                     }
-        //                 })
-        //                 .catch(() => {
-        //                     toast.error("Что-то пошло не так! no time");
-        //                 });
-        //         });
-        //     }
-        // }
     };
 
     useEffect(() => {
@@ -264,13 +152,12 @@ export default function TableBodyCard({
                 onUpdateDeal={onUpdateDeal}
             />
             <BodyCardDeposit
-                userId={userId}
-                sheetId={sheetId}
                 dealId={deal.id}
                 dealDeposit={deal.deposit}
                 dealHover={hover}
                 columnWidth={columnWidth.column9}
-                onChangeDeal={onChangeDeal}
+                isPending={isPending}
+                onUpdateDeal={onUpdateDeal}
             />
             <BodyCardProgress
                 dealProgress={deal.progress}
@@ -289,7 +176,8 @@ export default function TableBodyCard({
                 disabled={!deal.entryDate}
                 onChangeDate={changeExitDate}
                 columnWidth={columnWidth.column11}
-                onChangeDeal={onChangeDeal}
+                isPending={isPending}
+                onUpdateDeal={onUpdateDeal}
             />
             <BodyCardScreenshot
                 dealId={deal.id}
@@ -309,18 +197,17 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column13}
             />
             <BodyCardStress
-                userId={userId}
-                sheetId={sheetId}
                 dealId={deal.id}
                 dealStress={deal.stress}
                 columnWidth={columnWidth.column14}
-                onChangeDeal={onChangeDeal}
+                isPending={isPending}
+                onUpdateDeal={onUpdateDeal}
             />
             <BodyCardTags
                 userId={userId}
                 dealId={deal.id}
                 allTags={allTags}
-                onChangeAllTags={onChangeAllTags}
+                onUpdateAllTags={onUpdateAllTags}
                 columnWidth={columnWidth.column15}
                 dealHover={hover}
                 selectedDeals={selectedDeals}
@@ -328,12 +215,11 @@ export default function TableBodyCard({
                 getRandomHexColor={getRandomHexColor}
             />
             <BodyCardNotes
-                userId={userId}
-                sheetId={sheetId}
                 dealId={deal.id}
                 dealNotes={deal.notes}
                 columnWidth={columnWidth.column16}
-                onChangeDeal={onChangeDeal}
+                isPending={isPending}
+                onUpdateDeal={onUpdateDeal}
             />
             <BodyCardTimeInTrade
                 timeInTrade={deal.timeInTrade}

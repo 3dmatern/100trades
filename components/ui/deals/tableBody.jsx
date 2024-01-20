@@ -13,15 +13,13 @@ export default function TableBody({
     allRRs,
     onChangeAllRRs,
     allTags,
-    onChangeAllTags,
+    onUpdateAllTags,
     checkAll,
     columnWidth,
     onCheckDeal,
-    onChangeDeal,
     isPending,
     onUpdateDeal,
 }) {
-    console.log(isPending);
     // console.log(sortedDeals);
     return sortedDeals && sortedDeals.length >= 0 ? (
         sortedDeals?.map((deal, index) => (
@@ -36,11 +34,10 @@ export default function TableBody({
                 allRRs={allRRs}
                 onChangeAllRRs={onChangeAllRRs}
                 allTags={allTags}
-                onChangeAllTags={onChangeAllTags}
+                onUpdateAllTags={onUpdateAllTags}
                 checkAll={checkAll}
                 columnWidth={columnWidth}
                 onCheckDeal={onCheckDeal}
-                onChangeDeal={onChangeDeal}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
             />

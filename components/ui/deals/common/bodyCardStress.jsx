@@ -1,21 +1,15 @@
 "use client";
 
-import React, { useEffect, useState, useTransition } from "react";
-import { toast } from "sonner";
-
-import { updateEntrie } from "@/actions/entrie";
+import React, { useState } from "react";
 
 export default function BodyCardStress({
-    userId,
-    sheetId,
     dealId,
     dealStress,
     columnWidth,
-    onChangeDeal,
+    isPending,
+    onUpdateDeal,
 }) {
-    const [isPending, startTransition] = useTransition();
     const [hoveredRating, setHoveredRating] = useState(0);
-    const [stress, setStress] = useState(0);
 
     const handleMouseOver = (hoveredValue) => {
         setHoveredRating(hoveredValue);
@@ -24,33 +18,6 @@ export default function BodyCardStress({
     const handleMouseLeave = () => {
         setHoveredRating(0);
     };
-
-    const handleClick = (selectedValue) => {
-        setStress(selectedValue);
-        startTransition(() => {
-            updateEntrie(userId, { id: dealId, sheetId, stress: selectedValue })
-                .then((data) => {
-                    if (data.error) {
-                        toast.error(data.error);
-                    }
-                    if (data.success) {
-                        toast.success(data.success);
-                        onChangeDeal({
-                            id: dealId,
-                            name: "stress",
-                            value: selectedValue,
-                        });
-                    }
-                })
-                .catch(() => toast.error("Что-то пошло не так!"));
-        });
-    };
-
-    useEffect(() => {
-        if (dealStress) {
-            setStress(dealStress);
-        }
-    }, [dealStress]);
 
     return (
         <div className="table-cell align-middle h-full">
@@ -65,12 +32,19 @@ export default function BodyCardStress({
                             onMouseOver={() => handleMouseOver(value)}
                             onMouseLeave={handleMouseLeave}
                             onClick={() =>
-                                isPending ? {} : handleClick(value)
+                                isPending &&
+                                isPending["stress"] &&
+                                dealId === isPending.id
+                                    ? {}
+                                    : onUpdateDeal({
+                                          id: dealId,
+                                          stress: value,
+                                      })
                             }
                             className={`block size-2.5 rounded-full cursor-pointer ${
                                 value <= hoveredRating
                                     ? "bg-red-400"
-                                    : value <= stress
+                                    : value <= dealStress
                                     ? "bg-red-600"
                                     : "bg-slate-200"
                             }`}

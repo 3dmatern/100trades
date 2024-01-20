@@ -1,27 +1,23 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useTransition } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
 
 import { EntrieSchema } from "@/schemas";
-import { updateEntrie } from "@/actions/entrie";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { formatPrice } from "@/utils/formattedNumber";
 
 export default function BodyCardDeposit({
-    userId,
-    sheetId,
     dealId,
     dealDeposit,
     dealHover,
     columnWidth,
-    onChangeDeal,
+    isPending,
+    onUpdateDeal,
 }) {
     const cellRef = useRef(null);
-    const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
     const [deposit, setDeposit] = useState("");
 
@@ -29,7 +25,6 @@ export default function BodyCardDeposit({
         resolver: zodResolver(EntrieSchema),
         defaultValues: {
             id: dealId,
-            sheetId,
             deposit: dealDeposit || undefined,
         },
     });
@@ -43,24 +38,7 @@ export default function BodyCardDeposit({
             form.reset();
             return;
         }
-        startTransition(() => {
-            updateEntrie(userId, values)
-                .then((data) => {
-                    if (data.error) {
-                        toast.error(data.error);
-                    }
-                    if (data.success) {
-                        setOpen(false);
-                        toast.success(data.success);
-                        onChangeDeal({
-                            id: dealId,
-                            name: "deposit",
-                            value: values.deposit,
-                        });
-                    }
-                })
-                .catch(() => toast.error("Что-то пошло не так!"));
-        });
+        onUpdateDeal(values);
     };
 
     const updateDeposit = () => {
@@ -126,7 +104,11 @@ export default function BodyCardDeposit({
                                                 min={0}
                                                 onFocus={() => setOpen(true)}
                                                 onBlur={updateDeposit}
-                                                disabled={isPending}
+                                                disabled={
+                                                    isPending &&
+                                                    isPending["deposit"] &&
+                                                    dealId === isPending.id
+                                                }
                                                 className={`w-full h-7 px-0 pl-1 border-none text-xs outline-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
                                                     dealHover
                                                         ? "bg-slate-50"

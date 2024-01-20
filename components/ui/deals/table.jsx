@@ -87,21 +87,12 @@ export default function Table({
     const [selectedDeals, setSelectedDeals] = useState([]);
     const [isSortingEnabled, setIsSortingEnabled] = useState(false);
 
-    const handleChangeDeal = ({ id, name, value }) => {
-        setDeals((prev) =>
-            prev.map((p) => (p.id === id ? { ...p, [name]: value } : p))
-        );
-        setSelectedDeals((prev) =>
-            prev.map((p) => (p.id === id ? { ...p, [name]: value } : p))
-        );
-    };
-
     const changeAllRRs = (rr) => {
         setAllRRs((prev) => [...prev, rr]);
     };
 
-    const changeAllTags = (tag) => {
-        setAllTags((prev) => [...prev, tag]);
+    const handleUpdateAllTags = (tags) => {
+        setAllTags([...tags]);
     };
 
     const handleCheckAll = ({ target }) => {
@@ -345,11 +336,9 @@ export default function Table({
 
             case "timeInTrade":
                 data.order === "asc"
-                    ? setSortedDeals((prev) => [
-                          ...sortByAscString(deals, data.iter),
-                      ])
+                    ? setSortedDeals((prev) => [...sortByAsc(deals, data.iter)])
                     : setSortedDeals((prev) => [
-                          ...sortByDescString(deals, data.iter),
+                          ...sortByDesc(deals, data.iter),
                       ]);
                 break;
 
@@ -444,11 +433,10 @@ export default function Table({
                     allRRs={allRRs}
                     onChangeAllRRs={changeAllRRs}
                     allTags={allTags}
-                    onChangeAllTags={changeAllTags}
+                    onUpdateAllTags={handleUpdateAllTags}
                     checkAll={checkAll}
                     columnWidth={columnWidth}
                     onCheckDeal={handleCheckDeal}
-                    onChangeDeal={handleChangeDeal}
                     isPending={isPending}
                     onUpdateDeal={handleUpdateDeal}
                 />

@@ -19,7 +19,7 @@ export function getTimeInTrade(start, end) {
     //     (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
     // );
 
-    return `${hours} ч.`;
+    return hours;
 }
 
 export function dealDateWithTime(date) {

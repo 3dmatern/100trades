@@ -1,18 +1,18 @@
 "use server";
 
-import { unstable_noStore as noStore, revalidatePath } from "next/cache";
+import { unstable_noStore as noStore } from "next/cache";
 
 import { db } from "@/lib/db";
 import { TagSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
-import { getAllTag } from "@/data/tag";
+import { getAllTag, getTagByValue } from "@/data/tag";
 
-export const createTag = async ({ userId, values }) => {
+export const createTag = async (userId, values) => {
     noStore();
     const validatedFields = TagSchema.safeParse(values);
     if (!validatedFields.success) {
         return {
-            error: "Введите значение!",
+            error: "Введите значение! createTag",
         };
     }
     const { label, value } = validatedFields.data;
@@ -24,6 +24,14 @@ export const createTag = async ({ userId, values }) => {
         };
     }
 
+    const existingTag = await getTagByValue(value);
+    if (existingTag) {
+        return {
+            newTag: existingTag,
+            success: "Тег успешно создан!",
+        };
+    }
+
     try {
         const newTag = await db.tag.create({
             data: {
@@ -31,8 +39,6 @@ export const createTag = async ({ userId, values }) => {
                 value,
             },
         });
-
-        // revalidatePath("/sheets");
 
         return {
             newTag,
@@ -50,8 +56,6 @@ export const getTags = async () => {
     noStore();
     try {
         const tags = await getAllTag();
-
-        // revalidatePath("/sheets");
 
         return tags;
     } catch (error) {

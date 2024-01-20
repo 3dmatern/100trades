@@ -3,21 +3,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
+import { BeatLoader } from "react-spinners";
 
 import { Button } from "@/components/ui/button";
-import { createTag } from "@/actions/tag";
+import { createTag, getTags } from "@/actions/tag";
 import {
     createEntrieTag,
     getEntrieTags,
     removeEntrieTag,
 } from "@/actions/entrieTag";
-import { BeatLoader } from "react-spinners";
 
 export default function BodyCardTags({
     userId,
     dealId,
     allTags,
-    onChangeAllTags,
+    onUpdateAllTags,
     columnWidth,
     dealHover,
     selectedDeals,
@@ -45,34 +45,32 @@ export default function BodyCardTags({
         setOpen(false);
         setActive(false);
         setTag("");
-
         let selectTag = tag;
+        let updTags = await getTags();
 
         if (!selectTag.id) {
-            const { newTag, success, error } = await createTag({
-                userId,
-                values: tag,
-            });
+            const { newTag, success, error } = await createTag(userId, tag);
             if (error) {
                 toast.error(error);
                 return;
             } else {
                 toast.success(success);
                 selectTag = newTag;
-                onChangeAllTags(selectTag);
+                updTags = await getTags();
+                onUpdateAllTags(allTags);
             }
         }
-        setCurrentTags((prev) => [...prev, selectTag]);
 
-        const { newEntrieTag, success, error } = await createEntrieTag({
-            userId,
-            values: { entrieId: dealId, tagId: selectTag.id },
+        const { success, error } = await createEntrieTag(userId, {
+            entrieId: dealId,
+            tagId: selectTag.id,
         });
         if (error) {
             toast.error(error);
         }
         if (success) {
             toast.success(success);
+            getEntrieTagsData(updTags, dealId);
         }
     };
 
@@ -80,19 +78,31 @@ export default function BodyCardTags({
         e.stopPropagation();
         setOpen(false);
         setActive(false);
-        setCurrentTags((prev) => prev.filter((tag) => tag.id !== tagId));
 
-        await removeEntrieTag({
-            userId,
-            entrieTag: { entrieId: dealId, tagId },
-        }).then((data) => {
-            if (data.error) {
-                toast.error(data.error);
+        await removeEntrieTag(userId, { entrieId: dealId, tagId }).then(
+            (data) => {
+                if (data.error) {
+                    toast.error(data.error);
+                }
+                if (data.success) {
+                    toast.success(data.success);
+                    setCurrentTags((prev) =>
+                        prev.filter((tag) => tag.id !== tagId)
+                    );
+                }
             }
-            if (data.success) {
-                toast.success(data.success);
-            }
-        });
+        );
+    };
+
+    const getEntrieTagsData = async (tags, dealId) => {
+        const entrieTagsData = await getEntrieTags(dealId);
+        if (entrieTagsData) {
+            setCurrentTags(
+                tags.filter((tag) =>
+                    entrieTagsData.entrieTags.some((et) => tag.id === et.tagId)
+                )
+            );
+        }
     };
 
     useEffect(() => {
@@ -102,22 +112,9 @@ export default function BodyCardTags({
     }, [allTags]);
 
     useEffect(() => {
-        const getData = async () => {
-            const entrieTagsData = await getEntrieTags(dealId);
-            if (entrieTagsData.error) {
-                toast.error(entrieTagsData.error);
-                return;
-            } else {
-                setCurrentTags(
-                    allTags.filter((tag) =>
-                        entrieTagsData.entrieTags.some(
-                            (et) => tag.id === et.tagId
-                        )
-                    )
-                );
-            }
-        };
-        getData();
+        if ((allTags, dealId)) {
+            getEntrieTagsData(allTags, dealId);
+        }
     }, [allTags, dealId]);
 
     useEffect(() => {

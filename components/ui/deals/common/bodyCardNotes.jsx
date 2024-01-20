@@ -1,20 +1,15 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useTransition } from "react";
-import { toast } from "sonner";
-
-import { updateEntrie } from "@/actions/entrie";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function BodyCardNotes({
-    userId,
-    sheetId,
     dealId,
     dealNotes,
     columnWidth,
-    onChangeDeal,
+    isPending,
+    onUpdateDeal,
 }) {
     const textRef = useRef(null);
-    const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
     const [notes, setNotes] = useState("");
 
@@ -23,29 +18,11 @@ export default function BodyCardNotes({
     };
 
     const updateNote = async () => {
-        startTransition(() => {
-            if ((!dealNotes && !notes) || dealNotes === notes) {
-                setOpen(false);
-                return;
-            }
-            updateEntrie(userId, { id: dealId, sheetId, notes: notes })
-                .then((data) => {
-                    if (data.error) {
-                        toast.error(data.error);
-                        setOpen(true);
-                    }
-                    if (data.success) {
-                        toast.success(data.success);
-                        setOpen(false);
-                        onChangeDeal({
-                            id: dealId,
-                            name: "notes",
-                            value: notes,
-                        });
-                    }
-                })
-                .catch(() => toast.error("Что-то пошло не так!"));
-        });
+        if ((!dealNotes && !notes) || dealNotes === notes) {
+            setOpen(false);
+            return;
+        }
+        onUpdateDeal({ id: dealId, notes: notes });
     };
 
     useEffect(() => {
@@ -80,7 +57,10 @@ export default function BodyCardNotes({
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className="flex items-center justify-start h-full px-2 relative border-r"
             >
-                {open && !isPending ? (
+                {open &&
+                (!isPending ||
+                    (Object.keys(isPending)[1] === "notes" &&
+                        isPending.id !== dealId)) ? (
                     <textarea
                         type="text"
                         name="notes"

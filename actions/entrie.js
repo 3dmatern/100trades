@@ -7,6 +7,9 @@ import { EntrieSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
 import { getSheetById } from "@/data/sheet";
 import { getEntrieById, getEntriesBySheetId } from "@/data/entrie";
+import { getTimeInTrade } from "@/utils/formatedDate";
+
+const timeScreenshot = 172800000; // 2 дня
 
 export const createEntrie = async ({ userId, sheetId }) => {
     noStore();
@@ -73,7 +76,7 @@ export const updateEntrie = async (userId, values) => {
         };
     }
 
-    const {
+    let {
         id,
         sheetId,
         name,
@@ -94,6 +97,31 @@ export const updateEntrie = async (userId, values) => {
         rrId,
         entrieTag,
     } = validatedFields.data;
+
+    const existingEntrie = await getEntrieById(id);
+    if (!existingEntrie) {
+        return {
+            error: "Несанкционированный доступ!",
+        };
+    }
+
+    if (existingEntrie.entryDate && exitDate) {
+        const startDate = new Date(existingEntrie.entryDate).getTime();
+        const endDate = new Date(exitDate).getTime();
+        const result = endDate - startDate;
+        const isScreenshot = result >= timeScreenshot;
+        const time = getTimeInTrade(existingEntrie.entryDate, exitDate);
+
+        if (isScreenshot) {
+            take = "Сделай скрин";
+        } else {
+            take = "Рано";
+        }
+
+        if (time) {
+            timeInTrade = `${time}`;
+        }
+    }
 
     const existingSheet = await getSheetById(sheetId);
     if (!existingSheet) {

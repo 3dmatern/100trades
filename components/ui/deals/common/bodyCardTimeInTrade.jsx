@@ -8,7 +8,7 @@ export default function BodyCardTimeInTrade({ timeInTrade, columnWidth }) {
                 className="flex items-center justify-center h-full px-2 border-r text-xs overflow-hidden"
             >
                 <span className="whitespace-nowrap text-ellipsis">
-                    {timeInTrade}
+                    {timeInTrade && timeInTrade + "ч."}
                 </span>
             </div>
         </div>

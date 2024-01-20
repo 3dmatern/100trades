@@ -12,12 +12,12 @@ import {
     getEntrieTagsByEntrieId,
 } from "@/data/entrieTag";
 
-export const createEntrieTag = async ({ userId, values }) => {
+export const createEntrieTag = async (userId, values) => {
     noStore();
     const validatedFields = EntrieTagSchema.safeParse(values);
     if (!validatedFields.success) {
         return {
-            error: "Введите значение!",
+            error: "Введите значение! createEntrieTag",
         };
     }
     const { entrieId, tagId } = validatedFields.data;
@@ -44,15 +44,11 @@ export const createEntrieTag = async ({ userId, values }) => {
     }
 
     try {
-        const newEntrieTag = await db.entrieTag.create({
-            data: {
-                entrieId,
-                tagId,
-            },
+        await db.entrieTag.create({
+            data: { entrieId, tagId },
         });
 
         return {
-            newEntrieTag,
             success: "Тег успешно добавлен!",
         };
     } catch (error) {
@@ -68,8 +64,6 @@ export const getEntrieTags = async (entrieId) => {
     try {
         const entrieTags = await getEntrieTagsByEntrieId(entrieId);
 
-        // revalidatePath("/sheets");
-
         return { entrieTags };
     } catch (error) {
         console.error("Error receiving entrieTags: ", error);
@@ -79,7 +73,7 @@ export const getEntrieTags = async (entrieId) => {
     }
 };
 
-export const removeEntrieTag = async ({ userId, entrieTag }) => {
+export const removeEntrieTag = async (userId, entrieTag) => {
     noStore();
 
     const existingEntrieTag = await getEntrieTagByEntrieIdTagId(entrieTag);

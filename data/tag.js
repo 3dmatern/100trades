@@ -26,3 +26,18 @@ export const getTagById = async (id) => {
         return null;
     }
 };
+
+export const getTagByValue = async (value) => {
+    noStore();
+    try {
+        const tag = await db.tag.findUnique({
+            where: {
+                value,
+            },
+        });
+
+        return tag;
+    } catch (error) {
+        return null;
+    }
+};

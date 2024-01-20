@@ -103,8 +103,6 @@ export default function BodyCardScreenshot({
         };
     }, []);
 
-    // console.log(isPending && isPending[inputName] && isPending.id === dealId);
-
     return (
         <div className="table-cell align-middle h-full">
             <div
@@ -193,7 +191,7 @@ export default function BodyCardScreenshot({
                     isPending.id === dealId ? null : (
                         <div
                             onClick={(e) => handleRemove(e, dealImageSrc)}
-                            className="w-max absolute top-0.5 right-0.5 p-0.5 bg-gray-300 hover:bg-gray-500 rounded-full cursor-pointer z-10 hover:scale-110"
+                            className="w-max absolute top-0.5 right-0.5 p-0.5 z-[0] bg-gray-300 hover:bg-gray-500 rounded-full cursor-pointer hover:scale-110"
                         >
                             <Image
                                 src="/remove.svg"
