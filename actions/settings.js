@@ -6,6 +6,7 @@ import { update } from "@/auth";
 import { db } from "@/lib/db";
 import { getUserById } from "@/data/user";
 import { currentUser } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 
 export const settings = async (values) => {
     const user = await currentUser();
@@ -48,6 +49,8 @@ export const settings = async (values) => {
             lastname: updatedUser.lastname,
         },
     });
+
+    revalidatePath("/profile");
 
     return { success: "Настройки сохранены!" };
 };

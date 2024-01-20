@@ -1,6 +1,6 @@
 "use server";
 
-import { unstable_noStore as noStore } from "next/cache";
+import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 
 import { db } from "@/lib/db";
 import { SheetCreateSchema, SheetUpdateSchema } from "@/schemas";
@@ -141,6 +141,8 @@ export const removeSheet = async (sheetId, userId) => {
                 id: existingSheet.id,
             },
         });
+
+        revalidatePath("/sheets");
 
         return {
             success: "Лист успешно удален!",

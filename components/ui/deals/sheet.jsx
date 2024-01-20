@@ -106,7 +106,7 @@ export default function Sheet({
             onClick={() => router.push(`/sheets/${sheet.id}`)}
             className={cn(
                 `flex items-center justify-center gap-1 w-max h-9 px-2 relative hover:bg-gray-100 rounded-t-lg cursor-pointer ${
-                    sheet.id === selectSheet ? "pr-4" : ""
+                    sheet.id === selectSheet ? "pr-6" : ""
                 }`,
                 className
             )}
@@ -151,7 +151,7 @@ export default function Sheet({
                             <button
                                 type="button"
                                 onClick={(e) => handleRemoveSheet(e, sheet.id)}
-                                className="absolute top-1 right-1 cursor-pointer hover:scale-110"
+                                className="absolute top-1 right-1.5 cursor-pointer hover:scale-110"
                             >
                                 <Image
                                     src="/removeSheet.svg"
@@ -164,7 +164,7 @@ export default function Sheet({
                             <button
                                 type="button"
                                 onClick={() => setOpen(!open)}
-                                className="absolute bottom-1 right-1 cursor-pointer hover:scale-110"
+                                className="absolute bottom-1 right-1.5 cursor-pointer hover:scale-110"
                             >
                                 <Image
                                     src="/pencil.svg"
