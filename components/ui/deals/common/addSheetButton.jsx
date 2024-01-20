@@ -22,11 +22,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-export default function AddSheetButton({ className, classNameBtn, userId }) {
+export default function AddSheetButton({
+    className,
+    classNameBtn,
+    userId,
+    onOpenForm,
+}) {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const [open, setOpen] = useState(false);
     const [newSheet, setNewSheet] = useState(null);
+
+    const handleOpenForm = () => {
+        setOpen(true);
+        onOpenForm(true);
+    };
 
     const handleClose = () => {
         form.reset();
@@ -89,7 +99,7 @@ export default function AddSheetButton({ className, classNameBtn, userId }) {
                         {isPending ? (
                             <BeatLoader size={10} />
                         ) : (
-                            <div className="space-y-4">
+                            <div className="space-y-4 pr-3">
                                 <FormField
                                     control={form.control}
                                     name="name"
@@ -113,13 +123,13 @@ export default function AddSheetButton({ className, classNameBtn, userId }) {
                         {!isPending && (
                             <div
                                 onClick={handleClose}
-                                className="absolute -top-2 -right-2 cursor-pointer"
+                                className="absolute top-1/2 -translate-y-1/2 right-1 cursor-pointer"
                             >
                                 <Image
                                     src="/removeSheet.svg"
                                     alt="close"
-                                    width={16}
-                                    height={16}
+                                    width={14}
+                                    height={14}
                                 />
                             </div>
                         )}
@@ -128,7 +138,7 @@ export default function AddSheetButton({ className, classNameBtn, userId }) {
             )}
             <Button
                 type="button"
-                onClick={() => setOpen(true)}
+                onClick={handleOpenForm}
                 className={cn(
                     "flex items-center justify-center size-8 p-1 rounded-sm bg-slate-100 hover:bg-slate-200",
                     classNameBtn

@@ -20,7 +20,7 @@ export default async function SheetPage({ params }) {
     const tagsData = await getTags();
 
     return (
-        <main className="mx-auto p-5 overflow-x-auto">
+        <main className="mx-auto p-4 overflow-x-auto">
             <Sheets
                 className="mt-8 h-full"
                 userId={user.id}

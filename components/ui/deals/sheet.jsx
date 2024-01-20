@@ -19,6 +19,7 @@ export default function Sheet({
     selectSheet,
     sheet,
     userId,
+    onAddSheetRef,
     onUpdateSheet,
     onRemoveSheet,
 }) {
@@ -37,10 +38,10 @@ export default function Sheet({
         },
     });
 
-    const handleRemoveSheet = async (e, sheetId) => {
+    const handleRemoveSheet = (e, sheetId) => {
         e.stopPropagation();
         setIsPendingRemove(true);
-        await onRemoveSheet(sheetId);
+        onRemoveSheet(sheetId);
         setIsPendingRemove(false);
     };
 
@@ -89,12 +90,24 @@ export default function Sheet({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [form, open]);
 
+    useEffect(() => {
+        const list = sheetRef.current;
+        if (sheet && list) {
+            const offsetLeft = list.offsetLeft;
+            onAddSheetRef((prev) => [...prev, { id: sheet.id, offsetLeft }]);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sheet, sheetRef]);
+
     return (
         <div
             ref={sheetRef}
+            id={sheet.id}
             onClick={() => router.push(`/sheets/${sheet.id}`)}
             className={cn(
-                "flex items-center justify-center gap-1 w-max h-9 px-2 relative hover:bg-gray-100 rounded-t-lg cursor-pointer",
+                `flex items-center justify-center gap-1 w-max h-9 px-2 relative hover:bg-gray-100 rounded-t-lg cursor-pointer ${
+                    sheet.id === selectSheet ? "pr-4" : ""
+                }`,
                 className
             )}
         >
@@ -132,34 +145,36 @@ export default function Sheet({
                     ) : (
                         <span>{sheet.name}</span>
                     )}
-                    {sheet.id === selectSheet ? (
-                        <button
-                            type="button"
-                            onClick={() => setOpen(!open)}
-                            className="cursor-pointer"
-                        >
-                            <Image
-                                src="/pencil.svg"
-                                alt="edit"
-                                width={13}
-                                height={13}
-                                className="pointer-events-none"
-                            />
-                        </button>
-                    ) : (
-                        <button
-                            type="button"
-                            onClick={(e) => handleRemoveSheet(e, sheet.id)}
-                            className="cursor-pointer hover:scale-110"
-                        >
-                            <Image
-                                src="/removeSheet.svg"
-                                alt="remove"
-                                width={13}
-                                height={13}
-                                className="pointer-events-none"
-                            />
-                        </button>
+
+                    {sheet.id === selectSheet && (
+                        <>
+                            <button
+                                type="button"
+                                onClick={(e) => handleRemoveSheet(e, sheet.id)}
+                                className="absolute top-1 right-1 cursor-pointer hover:scale-110"
+                            >
+                                <Image
+                                    src="/removeSheet.svg"
+                                    alt="remove"
+                                    width={10}
+                                    height={10}
+                                    className="pointer-events-none"
+                                />
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setOpen(!open)}
+                                className="absolute bottom-1 right-1 cursor-pointer hover:scale-110"
+                            >
+                                <Image
+                                    src="/pencil.svg"
+                                    alt="edit"
+                                    width={10}
+                                    height={10}
+                                    className="pointer-events-none"
+                                />
+                            </button>
+                        </>
                     )}
                 </>
             )}

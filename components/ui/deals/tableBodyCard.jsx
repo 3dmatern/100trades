@@ -22,9 +22,6 @@ import BodyCardTags from "@/components/ui/deals/common/bodyCardTags";
 import BodyCardNotes from "@/components/ui/deals/common/bodyCardNotes";
 import BodyCardTakeScreenshot from "@/components/ui/deals/common/bodyCardTakeScreenshot";
 import BodyCardTimeInTrade from "@/components/ui/deals/common/bodyCardTimeInTrade";
-import { updateEntrie } from "@/actions/entrie";
-
-const timeScreenshot = 172800000; // 2 дня
 
 export default function TableBodyCard({
     userId,

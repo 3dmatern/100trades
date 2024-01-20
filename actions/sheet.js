@@ -1,6 +1,6 @@
 "use server";
 
-import { unstable_noStore as noStore, revalidatePath } from "next/cache";
+import { unstable_noStore as noStore } from "next/cache";
 
 import { db } from "@/lib/db";
 import { SheetCreateSchema, SheetUpdateSchema } from "@/schemas";
@@ -118,7 +118,7 @@ export const updateSheet = async (values) => {
     }
 };
 
-export const removeSheet = async ({ sheetId, userId }) => {
+export const removeSheet = async (sheetId, userId) => {
     noStore();
 
     const existingSheet = await getSheetById(sheetId);
