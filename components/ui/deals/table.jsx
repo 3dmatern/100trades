@@ -143,7 +143,6 @@ export default function Table({
                 toast.success(data.success);
 
                 const { payload } = data;
-                console.log(payload);
 
                 setDeals((prev) => {
                     const updatedDeals = [...prev];

@@ -48,7 +48,6 @@ export default function BodyCardRisksRewards({
                         return;
                     }
                     if (data.success) {
-                        console.log(data.newRR);
                         toast.success(data.success);
                         onChangeAllRRs(data.newRR);
                         setCurrentRR(data.newRR);
