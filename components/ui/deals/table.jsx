@@ -168,7 +168,11 @@ export default function Table({
                     toast,
                     setDeals
                 );
-            } else if (values.id === firstDeal.id && values.deposit !== "") {
+            } else if (
+                values.id === firstDeal.id &&
+                values.deposit &&
+                values.deposit !== ""
+            ) {
                 await updateEveryonesProgress(
                     deals,
                     progress,
@@ -179,11 +183,17 @@ export default function Table({
                     toast,
                     setDeals
                 );
-            } else if (!values.deposit) {
-                values.progress = "";
+            } else {
+                const findDealProgress = deals.find(
+                    (d) => d.id === values.id
+                ).progress;
+                values.progress = !findDealProgress ? "" : findDealProgress;
             }
 
-            const data = await updateEntrie(userId, { ...values, sheetId });
+            const data = await updateEntrie(userId, {
+                ...values,
+                sheetId,
+            });
 
             if (data.error) {
                 toast.error(data.error);
