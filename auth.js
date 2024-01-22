@@ -65,7 +65,6 @@ export const {
             // Проверяем, истек ли токен
             const isTokenExpired = token.exp <= currentTimeInSeconds;
             if (isTokenExpired) {
-                console.log("Токен истек");
                 return null;
             }
 
