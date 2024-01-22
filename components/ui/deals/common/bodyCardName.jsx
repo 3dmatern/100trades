@@ -33,7 +33,6 @@ export default function BodyCardName({
     });
 
     const onSubmit = (values) => {
-        console.log(values);
         if (!values.name && !dealName) {
             setOpen(false);
             form.reset();
