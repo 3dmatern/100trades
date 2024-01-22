@@ -148,63 +148,69 @@ export default function BodyCardTags({
             <div
                 onClick={() => setActive(true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
-                className={`flex justify-start gap-1 w-full text-xs ${
-                    selectedDeals?.includes(dealId) || dealHover
-                        ? "bg-slate-50"
-                        : "bg-white"
-                } ${
-                    active
-                        ? "items-start flex-wrap h-16 overflow-y-auto absolute top-0 left-0 z-[1] p-1 border border-blue-800"
-                        : "items-center h-full border-r px-2 overflow-hidden"
-                }`}
+                className="flex items-center justify-start h-full"
             >
-                {!currentTags ? (
-                    <BeatLoader size={7} className="mx-auto" />
-                ) : (
-                    currentTags.map((t) => (
-                        <span
-                            key={t.label}
-                            style={{
-                                color: determineTextColor(t.value),
-                                backgroundColor: t.value,
-                            }}
-                            className="flex items-center gap-1 rounded-xl px-2 py-px"
-                        >
-                            <span className="whitespace-nowrap text-ellipsis">
-                                {t.label}
+                <div
+                    className={`flex justify-start gap-1 w-full text-xs ${
+                        selectedDeals?.includes(dealId) || dealHover
+                            ? "bg-slate-50"
+                            : "bg-white"
+                    } ${
+                        active
+                            ? "items-start flex-wrap h-16 overflow-y-auto absolute top-0 left-0 z-[1] p-1 border border-blue-800"
+                            : "items-center h-full border-r px-2 overflow-hidden"
+                    }`}
+                >
+                    {!currentTags ? (
+                        <BeatLoader size={7} className="mx-auto" />
+                    ) : (
+                        currentTags.map((t) => (
+                            <span
+                                key={t.label}
+                                style={{
+                                    color: determineTextColor(t.value),
+                                    backgroundColor: t.value,
+                                }}
+                                className="flex items-center gap-1 rounded-xl px-2 py-px"
+                            >
+                                <span className="whitespace-nowrap text-ellipsis">
+                                    {t.label}
+                                </span>
+                                {active && (
+                                    <button
+                                        type="button"
+                                        onClick={(e) =>
+                                            handleRemoveTag(e, t.id)
+                                        }
+                                        className="p-0.5 cursor-pointer"
+                                    >
+                                        <Image
+                                            src="/remove.svg"
+                                            alt="remove"
+                                            width={10}
+                                            height={10}
+                                        />
+                                    </button>
+                                )}
                             </span>
-                            {active && (
-                                <button
-                                    type="button"
-                                    onClick={(e) => handleRemoveTag(e, t.id)}
-                                    className="p-0.5 cursor-pointer"
-                                >
-                                    <Image
-                                        src="/remove.svg"
-                                        alt="remove"
-                                        width={10}
-                                        height={10}
-                                    />
-                                </button>
-                            )}
-                        </span>
-                    ))
-                )}
+                        ))
+                    )}
 
-                {active && (
-                    <Button
-                        type="button"
-                        onClick={() => setOpen(!open)}
-                        className="flex items-center justify-center size-4 p-0.5 rounded-sm bg-slate-200 hover:bg-slate-300"
-                    >
-                        <Image
-                            src="/plus-lg.svg"
-                            alt="plus"
-                            width={10}
-                            height={10}
-                        />
-                    </Button>
-                )}
+                    {active && (
+                        <Button
+                            type="button"
+                            onClick={() => setOpen(!open)}
+                            className="flex items-center justify-center size-4 p-0.5 rounded-sm bg-slate-200 hover:bg-slate-300"
+                        >
+                            <Image
+                                src="/plus-lg.svg"
+                                alt="plus"
+                                width={10}
+                                height={10}
+                            />
+                        </Button>
+                    )}
+                </div>
             </div>
 
             {open && (

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BeatLoader } from "react-spinners";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,7 +25,7 @@ export default function Sheet({
 }) {
     const sheetRef = useRef(null);
     const router = useRouter();
-    const [isPending, startTransition] = useTransition();
+    const [isPending, setIsPending] = useState(false);
     const [isPendingRemove, setIsPendingRemove] = useState(false);
     const [open, setOpen] = useState(false);
 
@@ -45,52 +45,37 @@ export default function Sheet({
         setIsPendingRemove(false);
     };
 
-    const onSubmit = (values) => {
+    const onSubmit = async (values) => {
         if (!values.name || values.name === sheet.name) {
             setOpen(false);
             form.reset();
             return;
         }
-        startTransition(() => {
-            updateSheet(values)
-                .then((data) => {
-                    if (data.error) {
-                        setOpen(true);
-                        toast.error(data.error);
-                    }
-                    if (data.success) {
-                        setOpen(false);
-                        onUpdateSheet({
-                            sheetId: values.id,
-                            updName: values.name,
-                        });
-                        toast.success(data.success);
-                        form.setValue("name", "");
-                    }
-                })
-                .catch(() =>
-                    toast.error("Что-то пошло не так при обновлении листа!")
-                );
-        });
+        try {
+            setIsPending(true);
+            const data = await updateSheet(values);
+
+            if (data.error) {
+                toast.error(data.error);
+            } else if (data.success) {
+                const { payload, success } = data;
+                toast.success(success);
+                onUpdateSheet({
+                    sheetId: values.id,
+                    updName: values.name,
+                });
+                setOpen(false);
+            }
+        } catch (error) {
+            toast.error("Что-то пошло не так при обновлении листа!");
+        }
+        setIsPending(false);
     };
 
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if (
-                sheetRef.current &&
-                !sheetRef.current.contains(e.target) &&
-                open
-            ) {
-                form.handleSubmit(onSubmit(form.getValues()));
-            }
-        };
-
-        document.addEventListener("click", handleClickOutside);
-        return () => {
-            document.removeEventListener("click", handleClickOutside);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [form, open]);
+    const handleUpdateSheet = async () => {
+        await onSubmit(form.getValues());
+        setOpen(false);
+    };
 
     useEffect(() => {
         const list = sheetRef.current;
@@ -119,7 +104,13 @@ export default function Sheet({
                 <>
                     {open ? (
                         <Form {...form}>
-                            <form className="flex items-center justify-center h-9 px-2 relative bg-gray-200 rounded-t-lg">
+                            <form
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    handleUpdateSheet();
+                                }}
+                                className="flex items-center justify-center h-9 px-2 relative bg-gray-200 rounded-t-lg"
+                            >
                                 {isPending ? (
                                     <BeatLoader size={10} />
                                 ) : (
@@ -132,6 +123,9 @@ export default function Sheet({
                                                     <FormControl>
                                                         <Input
                                                             {...field}
+                                                            onBlur={
+                                                                handleUpdateSheet
+                                                            }
                                                             disabled={isPending}
                                                             placeholder="Лист 1"
                                                             className="bg-white h-8 max-w-24"
@@ -150,19 +144,23 @@ export default function Sheet({
 
                     {sheet.id === selectSheet && (
                         <>
-                            <button
-                                type="button"
-                                onClick={(e) => handleRemoveSheet(e, sheet.id)}
-                                className="absolute top-1 right-1.5 cursor-pointer hover:scale-110"
-                            >
-                                <Image
-                                    src="/removeSheet.svg"
-                                    alt="remove"
-                                    width={10}
-                                    height={10}
-                                    className="pointer-events-none"
-                                />
-                            </button>
+                            {!open && (
+                                <button
+                                    type="button"
+                                    onClick={(e) =>
+                                        handleRemoveSheet(e, sheet.id)
+                                    }
+                                    className="absolute top-1 right-1.5 cursor-pointer hover:scale-110"
+                                >
+                                    <Image
+                                        src="/removeSheet.svg"
+                                        alt="remove"
+                                        width={10}
+                                        height={10}
+                                        className="pointer-events-none"
+                                    />
+                                </button>
+                            )}
                             <button
                                 type="button"
                                 onClick={() => setOpen(!open)}

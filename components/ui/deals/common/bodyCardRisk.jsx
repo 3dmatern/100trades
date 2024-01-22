@@ -53,7 +53,12 @@ export default function BodyCardRisk({
             >
                 <span className="absolute top-auto right-2">%</span>
                 <Form {...form}>
-                    <form>
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            updateRisk();
+                        }}
+                    >
                         <FormField
                             control={form.control}
                             name="risk"

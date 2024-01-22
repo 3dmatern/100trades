@@ -90,7 +90,12 @@ export default function BodyCardDeposit({
                 <span>₽</span>
                 {open ? (
                     <Form {...form}>
-                        <form>
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                updateDeposit();
+                            }}
+                        >
                             <FormField
                                 control={form.control}
                                 name="deposit"

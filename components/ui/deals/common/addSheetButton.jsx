@@ -35,7 +35,9 @@ export default function AddSheetButton({
 
     const handleOpenForm = () => {
         setOpen(true);
-        onOpenForm(true);
+        if (onOpenForm) {
+            onOpenForm(true);
+        }
     };
 
     const handleClose = () => {
@@ -93,6 +95,10 @@ export default function AddSheetButton({
             {(open || isPending) && (
                 <Form {...form}>
                     <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            onCreateSheet();
+                        }}
                         className={cn(
                             "flex items-center justify-center h-9 px-2 relative bg-gray-200 rounded-t-lg",
                             className

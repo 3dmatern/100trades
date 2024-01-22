@@ -32,9 +32,19 @@ export default function Sheets({
     const [tags, setTags] = useState([]);
 
     const handleUpdateSheet = async ({ sheetId, updName }) => {
-        setSheets((prev) =>
-            prev.map((p) => p.id === sheetId && { ...p, name: updName })
-        );
+        setSheets((prev) => {
+            const updatedSheets = [...prev];
+            const findIndex = updatedSheets.findIndex((s) => s.id === sheetId);
+
+            if (findIndex !== -1) {
+                updatedSheets[findIndex] = {
+                    ...updatedSheets[findIndex],
+                    name: updName,
+                };
+            }
+
+            return updatedSheets;
+        });
     };
 
     const handleRemoveSheet = async (sheetId) => {

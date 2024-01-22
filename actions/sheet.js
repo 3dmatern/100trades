@@ -69,6 +69,21 @@ export const getSheets = async (userId) => {
     }
 };
 
+export const getSheet = async (sheetId) => {
+    noStore();
+
+    try {
+        const sheet = getSheetById(sheetId);
+
+        return sheet;
+    } catch (error) {
+        console.error("Error receiving sheets: ", error);
+        return {
+            error: "Ошибка получения листа!",
+        };
+    }
+};
+
 export const updateSheet = async (values) => {
     noStore();
     const validatedFields = SheetUpdateSchema.safeParse(values);
@@ -98,7 +113,7 @@ export const updateSheet = async (values) => {
     }
 
     try {
-        await db.sheet.update({
+        const updSheet = await db.sheet.update({
             where: {
                 id: existingSheet.id,
             },
@@ -108,6 +123,7 @@ export const updateSheet = async (values) => {
         });
 
         return {
+            payload: updSheet,
             success: "Лист успешно обновлен!",
         };
     } catch (error) {

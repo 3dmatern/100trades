@@ -87,7 +87,12 @@ export default function BodyCardPose({
                 <span>₽</span>
                 {open ? (
                     <Form {...form}>
-                        <form>
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                updatePose();
+                            }}
+                        >
                             <FormField
                                 control={form.control}
                                 name="pose"

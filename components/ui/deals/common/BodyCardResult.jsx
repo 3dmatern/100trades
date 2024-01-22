@@ -84,28 +84,26 @@ export default function BodyCardResult({
                 </button>
 
                 {open && (
-                    <div className="absolute left-0 top-8 z-10 w-max rounded-md py-2 bg-white border border-gray-300">
-                        <ul>
-                            {results
-                                ?.filter((r) => resultId !== r.id)
-                                .map((res) => (
-                                    <li
-                                        key={res.label}
-                                        onClick={() => handleSelectResult(res)}
-                                        className="flex items-center justify-start h-8 px-2 hover:bg-slate-200 cursor-pointer"
+                    <ul className="w-full absolute left-0 top-8 z-[1] rounded-md py-2 bg-white border border-gray-300">
+                        {results
+                            ?.filter((r) => resultId !== r.id)
+                            .map((res) => (
+                                <li
+                                    key={res.label}
+                                    onClick={() => handleSelectResult(res)}
+                                    className="flex items-center justify-start h-8 px-2 hover:bg-slate-200 cursor-pointer"
+                                >
+                                    <span
+                                        style={{
+                                            backgroundColor: res.value,
+                                        }}
+                                        className="inline-block py-1 px-2 rounded-xl text-xs uppercase"
                                     >
-                                        <span
-                                            style={{
-                                                backgroundColor: res.value,
-                                            }}
-                                            className="inline-block py-1 px-2 rounded-xl text-xs uppercase"
-                                        >
-                                            {res.label}
-                                        </span>
-                                    </li>
-                                ))}
-                        </ul>
-                    </div>
+                                        {res.label}
+                                    </span>
+                                </li>
+                            ))}
+                    </ul>
                 )}
             </div>
         </div>

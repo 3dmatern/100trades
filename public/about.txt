@@ -1,6 +1,6 @@
-This favicon was generated using the following graphics from Twitter Twemoji:
+This favicon was generated using the following font:
 
-- Graphics Title: 1f439.svg
-- Graphics Author: Copyright 2020 Twitter, Inc and other contributors (https://github.com/twitter/twemoji)
-- Graphics Source: https://github.com/twitter/twemoji/blob/master/assets/svg/1f439.svg
-- Graphics License: CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+- Font Title: Macondo Swash Caps
+- Font Author: Copyright (c) 1997 - 2011, John Vargas Beltran. (www.johnvargasbeltran.com|john.vargasbeltran@gmail.com), with Reserved Font Name "Macondo"
+- Font Source: http://fonts.gstatic.com/s/macondoswashcaps/v24/6NUL8EaAJgGKZA7lpt941Z9s6ZYgDq6Oekoa_mm5bA.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))

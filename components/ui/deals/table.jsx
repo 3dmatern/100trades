@@ -206,7 +206,6 @@ export default function Table({
                 });
             }
         } catch (error) {
-            console.error(error);
             toast.error("Ошибка обновления сделки!");
         }
 
