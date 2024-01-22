@@ -71,7 +71,9 @@ export default function AddSheetButton({
                         setNewSheet(data.newSheet);
                     }
                 })
-                .catch(() => toast.error("Что-то пошло не так!"));
+                .catch(() =>
+                    toast.error("Что-то пошло не так при создании листа!")
+                );
         });
     };
 

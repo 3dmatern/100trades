@@ -68,7 +68,9 @@ export default function Sheet({
                         form.setValue("name", "");
                     }
                 })
-                .catch(() => toast.error("Что-то пошло не так!"));
+                .catch(() =>
+                    toast.error("Что-то пошло не так при обновлении листа!")
+                );
         });
     };
 

@@ -49,7 +49,7 @@ export default function Sheets({
                 }
             })
             .catch(() => {
-                toast.error("Что-то пошло не так!");
+                toast.error("Что-то пошло не так при удалении листа!");
             });
     };
 

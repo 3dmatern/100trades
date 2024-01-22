@@ -207,7 +207,7 @@ export default function Table({
             }
         } catch (error) {
             console.error(error);
-            toast.error("Ошибка обновления сделки!  table");
+            toast.error("Ошибка обновления сделки!");
         }
 
         setIsPending(undefined);
