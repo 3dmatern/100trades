@@ -72,10 +72,7 @@ export default function SettingsPage() {
                 <CardContent>
                     <Form {...form}>
                         <form
-                            onSubmit={(e) => {
-                                e.preventDefault();
-                                form.handleSubmit(onSubmit);
-                            }}
+                            onSubmit={form.handleSubmit(onSubmit)}
                             className="space-y-6"
                         >
                             <div className="space-y-4">
