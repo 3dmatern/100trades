@@ -1,64 +1,27 @@
 "use server";
 
-import fs from "fs";
-import path from "path";
+import axios from "axios";
 
-export const uploadFile = (data) => {
+const IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL;
+
+export const uploadFile = async (base64String, fileName) => {
     try {
-        const maxSize = 5 * 1024 * 1024; // 5MB
+        const chunkSize = 1024 * 512; // размер части (в байтах)
+        let uploadUrl = "";
 
-        const { base64String, fileName } = data;
+        for (let i = 0; i < base64String.length; i += chunkSize) {
+            const chunk = base64String.slice(i, i + chunkSize);
+            const response = await axios.post(`${IMAGE_URL}/upload`, {
+                base64String: chunk,
+                fileName,
+            });
 
-        if (!fileName || !base64String) {
-            return { error: "Выберите изображение!" };
+            if (response.data.success && response.data.newFileName) {
+                uploadUrl = response.data.newFileName;
+            }
         }
 
-        // Извлекаем тип изображения из base64 строки
-        const matches = base64String.match(
-            /^data:image\/([A-Za-z-+/]+);base64,(.+)$/
-        );
-
-        if (!matches || matches.length !== 3) {
-            return { error: "Выберите изображение!" };
-        }
-
-        const imageType = matches[1];
-        const imageData = matches[2];
-
-        // Проверяем, является ли тип файла изображением
-        const allowedImageTypes = ["jpeg", "jpg", "png", "gif"];
-        if (!allowedImageTypes.includes(imageType.toLowerCase())) {
-            return { error: "Выберите изображение!" };
-        }
-
-        // Преобразовываем base64 в буфер
-        const buffer = Buffer.from(imageData, "base64");
-
-        if (buffer.length > maxSize) {
-            return {
-                error: "Выберите изображение размером меньше 5 мегабайт!",
-            };
-        }
-
-        // Директория, куда будут сохраняться изображения
-        const uploadDir = path.join(process.cwd(), "public");
-
-        // Конкотинируем имя и формат
-        const newFileName = fileName + "." + imageType;
-
-        // Полный путь к файлу
-        const filePath = path.join(uploadDir, newFileName);
-
-        // Проверяем существование файла с таким именем
-        if (fs.existsSync(filePath)) {
-            // Если файл существует, удаляем его перед заменой
-            fs.unlinkSync(filePath);
-        }
-
-        // Сохраняем изображение на сервер
-        fs.writeFileSync(filePath, buffer);
-
-        return newFileName;
+        return uploadUrl;
     } catch (error) {
         console.error("Error uploading file: ", error);
         return {
@@ -67,19 +30,13 @@ export const uploadFile = (data) => {
     }
 };
 
-export const deleteFile = (fileName) => {
-    const filePathToDelete = path.join(process.cwd(), "public/", fileName);
-
-    // Проверяем, существует ли файл перед уделением
-    if (!fs.existsSync(filePathToDelete)) {
-        return {
-            error: "Несанкционированный доступ!",
-        };
-    }
-
+export const deleteFile = async (fileName) => {
     try {
-        fs.unlinkSync(filePathToDelete);
-        return { success: "Файл успешно удален!" };
+        const res = await axios.delete(`${IMAGE_URL}/${fileName}`);
+
+        return {
+            success: res.message,
+        };
     } catch (error) {
         console.error(`Error deleting file: ${fileName}`, error);
         return "Ошибка при удалении файла!";

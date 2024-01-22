@@ -8,11 +8,7 @@ import { toast } from "sonner";
 import InputUploadImg from "@/components/ui/inputUploadImg";
 import { uploadFile, deleteFile } from "@/actions/files";
 
-const imageLoader = ({ src, width, quality }) => {
-    return `${process.env.NEXT_PUBLIC_APP_URL}/${src}?w=${width}&q=${
-        quality || 75
-    }`;
-};
+const IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL;
 
 export default function BodyCardScreenshot({
     dealId,
@@ -33,14 +29,12 @@ export default function BodyCardScreenshot({
     const handleChange = (base64String) => {
         const fileName = `${dealId}_${Date.now()}_${inputName}`;
         startTransaction(() => {
-            uploadFile({ base64String, fileName }).then((data) => {
+            uploadFile(base64String, fileName).then((data) => {
                 if (data.error) {
                     toast.error(data.error);
                     return;
                 }
-                const src = data;
-
-                onUpdateDeal({ id: dealId, [inputName]: src });
+                onUpdateDeal({ id: dealId, [inputName]: data });
             });
         });
     };
@@ -119,8 +113,7 @@ export default function BodyCardScreenshot({
                     <BeatLoader size={8} />
                 ) : dealImageSrc && !openImage ? (
                     <Image
-                        loader={imageLoader}
-                        src={dealImageSrc}
+                        src={IMAGE_URL + "/" + dealImageSrc}
                         alt={imageAlt}
                         width={width}
                         height={height}
@@ -154,7 +147,7 @@ export default function BodyCardScreenshot({
                         </p>
 
                         <img
-                            src={`/${dealImageSrc}`}
+                            src={IMAGE_URL + "/" + dealImageSrc}
                             alt={imageAlt}
                             style={{ maxWidth: "80%", width: "auto" }}
                             className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
