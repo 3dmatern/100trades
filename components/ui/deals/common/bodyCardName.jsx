@@ -65,7 +65,7 @@ export default function BodyCardName({
     }, []);
 
     return (
-        <div className="table-cell align-middle h-full sticky left-0 z-[1]">
+        <div className="table-cell align-middle h-full sticky left-0 z-[2]">
             <div
                 ref={cellRef}
                 onClick={() => setOpen(true)}

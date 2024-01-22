@@ -140,7 +140,7 @@ export default function BodyCardRisksRewards({
                 </button>
 
                 {active && (
-                    <div className="absolute left-0 top-8 z-10 w-max rounded-md py-2 bg-white border border-gray-300">
+                    <div className="absolute left-0 top-8 z-[1] w-max rounded-md py-2 bg-white border border-gray-300">
                         <input
                             type="text"
                             name="rr"

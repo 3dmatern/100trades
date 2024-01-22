@@ -16,7 +16,6 @@ export default function BodyCardDate({
     minDate,
     maxDate,
     disabled,
-    onChangeDate,
     columnWidth,
     isPending,
     onUpdateDeal,
@@ -48,7 +47,6 @@ export default function BodyCardDate({
         } else {
             setDate("");
         }
-        onChangeDate(newDate);
         form.handleSubmit(onSubmit(form.getValues()));
         setOpen(false);
     };

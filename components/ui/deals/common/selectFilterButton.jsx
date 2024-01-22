@@ -17,6 +17,7 @@ export default function SelectFilterButton({
     onSort,
     className,
     classNameContent,
+    classNameList,
     styleBtn,
 }) {
     const filterRef = useRef(null);
@@ -111,9 +112,12 @@ export default function SelectFilterButton({
                 {isSort && (
                     <ul
                         ref={listRef}
-                        className={`${
-                            open ? "block" : "hidden"
-                        } absolute left-0 top-8 z-50 w-max max-h-64 p-2 text-sm bg-white border border-slate-300 rounded-md`}
+                        className={cn(
+                            `${
+                                open ? "block" : "hidden"
+                            } absolute left-0 top-8 z-[1] w-max max-h-64 p-2 text-sm bg-white border border-slate-300 rounded-md`,
+                            classNameList
+                        )}
                     >
                         <li>
                             <button

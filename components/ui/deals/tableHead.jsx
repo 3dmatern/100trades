@@ -37,6 +37,7 @@ export default function TableHead({
                     onSort={onSort}
                     className="sticky left-0 z-[2]"
                     classNameContent="pl-8 pr-2 bg-gray-50 border-l"
+                    classNameList="z-[2]"
                     styleBtn={{ width: "100%" }}
                 >
                     <CheckboxOrNumber
@@ -58,6 +59,7 @@ export default function TableHead({
                     initWidth={columnWidth[`column${index + 2}`]}
                     onResize={onResize}
                     onSort={onSort}
+                    classNameList="z-[1]"
                     styleBtn={
                         item.up
                             ? {

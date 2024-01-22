@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useEffect, useState, useTransition } from "react";
-import { toast } from "sonner";
+import React, { useState } from "react";
 
 import { determineTextColor } from "@/utils/determinateTextColor";
 import { getRandomHexColor } from "@/utils/getRandomHexColor";
-import { dealLimitionDateWithTime, getTimeInTrade } from "@/utils/formatedDate";
+import { dealLimitionDateWithTime } from "@/utils/formatedDate";
 
 import BodyCardName from "@/components/ui/deals/common/bodyCardName";
 import BodyCardResult from "@/components/ui/deals/common/BodyCardResult";
@@ -40,25 +39,7 @@ export default function TableBodyCard({
     isPending,
     onUpdateDeal,
 }) {
-    // const [isPending, startTransition] = useTransition();
     const [hover, setHover] = useState(false);
-    const [entryDate, setEntryDate] = useState("");
-    const [exitDate, setExitDate] = useState("");
-
-    const changeEntryDate = (date) => {
-        setEntryDate(date);
-    };
-
-    const changeExitDate = (date) => {
-        setExitDate(date);
-    };
-
-    useEffect(() => {
-        if (deal) {
-            setEntryDate(deal.entryDate);
-            setExitDate(deal.exitDate);
-        }
-    }, [deal]);
 
     return (
         <div
@@ -130,7 +111,6 @@ export default function TableBodyCard({
                 dealId={deal.id}
                 inputName="entryDate"
                 dealDate={deal.entryDate}
-                onChangeDate={changeEntryDate}
                 columnWidth={columnWidth.column7}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
@@ -170,7 +150,6 @@ export default function TableBodyCard({
                 }
                 maxDate={dealLimitionDateWithTime(new Date())}
                 disabled={!deal.entryDate}
-                onChangeDate={changeExitDate}
                 columnWidth={columnWidth.column11}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
