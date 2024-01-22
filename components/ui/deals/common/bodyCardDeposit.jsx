@@ -44,9 +44,8 @@ export default function BodyCardDeposit({
     const updateDeposit = () => {
         form.handleSubmit(onSubmit(form.getValues()));
         const formattedPrice = formatPrice(form.getValues("deposit"));
-        if (formattedPrice !== "NaN") {
-            setDeposit(formattedPrice);
-        }
+
+        setDeposit(formattedPrice);
         setOpen(false);
     };
 

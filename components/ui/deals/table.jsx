@@ -136,6 +136,31 @@ export default function Table({
         setIsPending((prev) => values);
 
         try {
+            const firstDeal = deals.reduce((minDeal, currentDeal) => {
+                if (
+                    !minDeal ||
+                    new Date(currentDeal.date) < new Date(minDeal.date)
+                ) {
+                    return currentDeal;
+                }
+                return minDeal;
+            }, null);
+
+            if (
+                values.deposit &&
+                firstDeal &&
+                firstDeal.deposit &&
+                values.id !== firstDeal.id
+            ) {
+                const progress = (
+                    ((values.deposit - firstDeal.deposit) / firstDeal.deposit) *
+                    100
+                ).toFixed(2);
+                values.progress = progress;
+            } else if (!values.deposit) {
+                values.progress = "0.00";
+            }
+
             const data = await updateEntrie(userId, { ...values, sheetId });
             if (data.error) {
                 toast.error(data.error);
