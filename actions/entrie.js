@@ -149,7 +149,7 @@ export const updateEntrie = async (userId, values) => {
                 entryDate: entryDate === "" ? null : entryDate || undefined,
                 imageStart: imageStart === "" ? null : imageStart || undefined,
                 deposit: deposit === "" ? null : deposit || undefined,
-                progress: progress || undefined,
+                progress: progress === "" ? null : progress || undefined,
                 exitDate: exitDate === "" ? null : exitDate || undefined,
                 imageEnd: imageEnd === "" ? null : imageEnd || undefined,
                 take: take || undefined,

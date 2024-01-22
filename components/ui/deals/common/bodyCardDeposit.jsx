@@ -32,7 +32,8 @@ export default function BodyCardDeposit({
     const onSubmit = (values) => {
         if (
             (!values.deposit && !dealDeposit) ||
-            values.deposit === dealDeposit
+            values.deposit === dealDeposit ||
+            parseFloat(values.deposit) === 0
         ) {
             setOpen(false);
             form.reset();

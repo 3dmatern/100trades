@@ -26,6 +26,11 @@ import {
     sortByDescResult,
     sortByDescString,
 } from "@/utils/sortBy";
+import {
+    progress,
+    resetEveryonesProgress,
+    updateEveryonesProgress,
+} from "@/utils/operationsWithProgress";
 
 const initHeaders = [
     { dbName: "name", name: "Тикер", up: false, w: "112px" },
@@ -152,16 +157,34 @@ export default function Table({
                 firstDeal.deposit &&
                 values.id !== firstDeal.id
             ) {
-                const progress = (
-                    ((values.deposit - firstDeal.deposit) / firstDeal.deposit) *
-                    100
-                ).toFixed(2);
-                values.progress = progress;
+                values.progress = progress(values.deposit, firstDeal.deposit);
+            } else if (values.id === firstDeal.id && values.deposit === "") {
+                await resetEveryonesProgress(
+                    deals,
+                    values,
+                    updateEntrie,
+                    userId,
+                    sheetId,
+                    toast,
+                    setDeals
+                );
+            } else if (values.id === firstDeal.id && values.deposit !== "") {
+                await updateEveryonesProgress(
+                    deals,
+                    progress,
+                    values,
+                    updateEntrie,
+                    userId,
+                    sheetId,
+                    toast,
+                    setDeals
+                );
             } else if (!values.deposit) {
-                values.progress = "0.00";
+                values.progress = "";
             }
 
             const data = await updateEntrie(userId, { ...values, sheetId });
+
             if (data.error) {
                 toast.error(data.error);
             } else if (data.success) {
@@ -183,7 +206,8 @@ export default function Table({
                 });
             }
         } catch (error) {
-            toast.error("Ошибка обновления сделки!");
+            console.error(error);
+            toast.error("Ошибка обновления сделки!  table");
         }
 
         setIsPending(undefined);
