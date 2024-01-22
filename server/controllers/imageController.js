@@ -1,52 +1,46 @@
 const fs = require("fs");
 const path = require("path");
-const { appendFileAsync } = require("../utils/fileUtils.js");
-
-const maxSize = 5 * 1024 * 1024; // 5MB
+const sizeOf = require("image-size");
 
 exports.uploadImage = async (req, res) => {
     try {
-        const { base64String, fileName } = req.body;
+        const imageBuffer = req.file.buffer;
+        const fileName = req.body.fileName;
 
-        if (!fileName || !base64String) {
-            return res.status(400).json({ error: "Выберите изображение!" });
+        if (!imageBuffer || !fileName) {
+            return res
+                .status(400)
+                .json({ error: "Выберите изображение! server 12" });
         }
 
-        const matches = base64String.match(
-            /^data:image\/([A-Za-z-+/]+);base64,(.+)$/
-        );
+        const dimensions = sizeOf(imageBuffer);
+        const format = dimensions.type;
 
-        if (!matches || matches.length !== 3) {
-            return res.status(400).json({ error: "Выберите изображение!" });
-        }
+        const allowedImageTypes = ["jpeg", "jpg", "png", "gif", "webp"];
 
-        const imageType = matches[1];
-        const imageData = matches[2];
-
-        const allowedImageTypes = ["jpeg", "jpg", "png", "gif"];
-
-        if (!allowedImageTypes.includes(imageType.toLowerCase())) {
-            return res.status(400).json({ error: "Выберите изображение!" });
-        }
-
-        const buffer = Buffer.from(imageData, "base64");
-        if (buffer.length > maxSize) {
-            return res.status(400).json({
-                error: "Выберите изображение размером меньше 5 мегабайт!",
-            });
+        if (!allowedImageTypes.includes(format.toLowerCase())) {
+            return res
+                .status(400)
+                .json({ error: "Выберите изображение! server 29" });
         }
 
         const rootDir = path.join(__dirname, "../");
         const uploadDir = path.join(rootDir, "images");
-        const newFileName = fileName + "." + imageType;
+        const newFileName = fileName + "." + format;
+
         const filePath = path.join(uploadDir, newFileName);
+
+        // Убедимся, что директория для сохранения файлов существует
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
 
         if (fs.existsSync(filePath)) {
             fs.unlinkSync(filePath);
         }
 
-        // Асинхронная запись данных в файл
-        await appendFileAsync(filePath, buffer);
+        // Сохраняем файл
+        fs.writeFileSync(filePath, req.file.buffer);
 
         // Логгирование успешной загрузки
         console.log(`Successful upload: ${req.method} ${req.url}`);

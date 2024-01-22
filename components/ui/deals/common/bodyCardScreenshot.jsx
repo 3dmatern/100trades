@@ -26,10 +26,11 @@ export default function BodyCardScreenshot({
     const [active, setActive] = useState(false);
     const [openImage, setOpenImage] = useState(false);
 
-    const handleChange = (base64String) => {
+    const handleChange = (formData) => {
         const fileName = `${dealId}_${Date.now()}_${inputName}`;
+        formData.append("fileName", fileName);
         startTransaction(() => {
-            uploadFile(base64String, fileName).then((data) => {
+            uploadFile(formData).then((data) => {
                 if (data.error) {
                     toast.error(data.error);
                     return;

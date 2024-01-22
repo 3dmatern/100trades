@@ -4,15 +4,9 @@ import Image from "next/image";
 
 export default function InputUploadImg({ name, onImageChange, width, height }) {
     const handleImageUpload = (file) => {
-        const reader = new FileReader();
-
-        reader.onloadend = () => {
-            onImageChange(reader.result);
-        };
-
-        if (file) {
-            reader.readAsDataURL(file);
-        }
+        const formData = new FormData();
+        formData.append("image", file);
+        onImageChange(formData);
     };
 
     const handleDragOver = (e) => {
