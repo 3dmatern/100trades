@@ -29,6 +29,7 @@ export function CardWrapper({
                 </CardFooter>
             )}
             <CardFooter>
+                <BackButton href={"/"} label="На главную" />
                 <BackButton href={backButtonHref} label={backButtonLabel} />
             </CardFooter>
         </Card>

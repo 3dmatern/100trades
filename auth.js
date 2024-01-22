@@ -60,6 +60,15 @@ export const {
             if (!existingUser) return null;
             if (!existingUser.emailVerified) return null;
 
+            // Получаем текущее время в секундах
+            const currentTimeInSeconds = Math.floor(Date.now() / 1000);
+            // Проверяем, истек ли токен
+            const isTokenExpired = token.exp <= currentTimeInSeconds;
+            if (isTokenExpired) {
+                console.log("Токен истек");
+                return null;
+            }
+
             token.firstname = existingUser.firstname;
             token.lastname = existingUser.lastname;
             token.email = existingUser.email;
