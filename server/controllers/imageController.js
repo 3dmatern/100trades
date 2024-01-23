@@ -8,9 +8,7 @@ exports.uploadImage = async (req, res) => {
         const fileName = req.body.fileName;
 
         if (!imageBuffer || !fileName) {
-            return res
-                .status(400)
-                .json({ error: "Выберите изображение! server 12" });
+            return res.status(400).json({ error: "Выберите изображение!" });
         }
 
         const dimensions = sizeOf(imageBuffer);
@@ -19,9 +17,7 @@ exports.uploadImage = async (req, res) => {
         const allowedImageTypes = ["jpeg", "jpg", "png", "gif", "webp"];
 
         if (!allowedImageTypes.includes(format.toLowerCase())) {
-            return res
-                .status(400)
-                .json({ error: "Выберите изображение! server 29" });
+            return res.status(400).json({ error: "Выберите изображение!" });
         }
 
         const rootDir = path.join(__dirname, "../");
