@@ -1,4 +1,5 @@
 export default function BodyCardProgress({ dealProgress, columnWidth }) {
+    console.log(dealProgress);
     return (
         <div className="table-cell align-middle h-full">
             <div
@@ -9,7 +10,7 @@ export default function BodyCardProgress({ dealProgress, columnWidth }) {
                     className={`${
                         dealProgress > 0
                             ? "text-emerald-500"
-                            : !dealProgress
+                            : !dealProgress || parseFloat(dealProgress) === 0
                             ? ""
                             : "text-red-600"
                     } overflow-hidden whitespace-nowrap text-ellipsis`}
