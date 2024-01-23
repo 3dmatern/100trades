@@ -4,6 +4,7 @@ import { ResetSchema } from "@/schemas";
 import { getUserByEmail } from "@/data/user";
 import { generatePasswordResetToken } from "@/lib/tokens";
 import { sendPasswordResetEmail } from "@/lib/mail";
+import { sendPasswordResetEmailSMTP } from "@/lib/mailRUSMTP";
 
 export const reset = async (values) => {
     const validatedFields = ResetSchema.safeParse(values);
@@ -26,7 +27,7 @@ export const reset = async (values) => {
 
     const passwordResetToken = await generatePasswordResetToken(email);
 
-    await sendPasswordResetEmail(
+    await sendPasswordResetEmailSMTP(
         passwordResetToken.email,
         passwordResetToken.token
     );

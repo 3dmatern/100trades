@@ -8,6 +8,7 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { getUserByEmail } from "@/data/user";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/mail";
+import { sendVerificationEmailSMTP } from "@/lib/mailRUSMTP";
 
 export const login = async (values, callbackUrl) => {
     const validatedFields = LoginSchema.safeParse(values);
@@ -31,7 +32,7 @@ export const login = async (values, callbackUrl) => {
             existingUser.email
         );
 
-        await sendVerificationEmail(
+        await sendVerificationEmailSMTP(
             verificationToken.email,
             verificationToken.token
         );

@@ -8,6 +8,7 @@ import { RegisterSchema } from "@/schemas";
 import { getUserByEmail } from "@/data/user";
 import { generateVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/mail";
+import { sendVerificationEmailSMTP } from "@/lib/mailRUSMTP";
 
 export const register = async (values) => {
     const validatedFields = RegisterSchema.safeParse(values);
@@ -40,7 +41,7 @@ export const register = async (values) => {
 
     const verificationToken = await generateVerificationToken(email);
 
-    await sendVerificationEmail(
+    await sendVerificationEmailSMTP(
         verificationToken.email,
         verificationToken.token,
         password
