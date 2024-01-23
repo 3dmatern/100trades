@@ -113,11 +113,9 @@ export default function BodyCardScreenshot({
                 {isPending ? (
                     <BeatLoader size={8} />
                 ) : dealImageSrc && !openImage ? (
-                    <Image
+                    <img
                         src={IMAGE_URL + "/" + dealImageSrc}
                         alt={imageAlt}
-                        width={width}
-                        height={height}
                         style={{ width, height }}
                         onClick={handleClick}
                         className="hover:scale-125 cursor-pointer"
