@@ -1,5 +1,4 @@
 export default function BodyCardProgress({ dealProgress, columnWidth }) {
-    console.log(dealProgress);
     return (
         <div className="table-cell align-middle h-full">
             <div
