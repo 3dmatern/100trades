@@ -7,8 +7,7 @@ import { signIn } from "@/auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { getUserByEmail } from "@/data/user";
 import { generateVerificationToken } from "@/lib/tokens";
-import { sendVerificationEmail } from "@/lib/mail";
-import { sendVerificationEmailSMTP } from "@/lib/mailRUSMTP";
+import { sendVerificationBegetSMTP } from "@/lib/mailBegetSMTP";
 
 export const login = async (values, callbackUrl) => {
     const validatedFields = LoginSchema.safeParse(values);
@@ -32,14 +31,12 @@ export const login = async (values, callbackUrl) => {
             existingUser.email
         );
 
-        await sendVerificationEmailSMTP(
+        const response = await sendVerificationBegetSMTP(
             verificationToken.email,
             verificationToken.token
         );
 
-        return {
-            success: "Письмо с активацией отправлено на почту!",
-        };
+        return response;
     }
 
     try {

@@ -3,8 +3,7 @@
 import { ResetSchema } from "@/schemas";
 import { getUserByEmail } from "@/data/user";
 import { generatePasswordResetToken } from "@/lib/tokens";
-import { sendPasswordResetEmail } from "@/lib/mail";
-import { sendPasswordResetEmailSMTP } from "@/lib/mailRUSMTP";
+import { sendPasswordResetBegetSMTP } from "@/lib/mailBegetSMTP";
 
 export const reset = async (values) => {
     const validatedFields = ResetSchema.safeParse(values);
@@ -27,10 +26,16 @@ export const reset = async (values) => {
 
     const passwordResetToken = await generatePasswordResetToken(email);
 
-    await sendPasswordResetEmailSMTP(
+    const response = await sendPasswordResetBegetSMTP(
         passwordResetToken.email,
         passwordResetToken.token
     );
 
-    return { success: "Письмо для сброса отправлено на почту!" };
+    if (response) {
+        return response;
+    }
+
+    return {
+        error: "Что-то пошло не так!",
+    };
 };

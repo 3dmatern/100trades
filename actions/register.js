@@ -7,8 +7,7 @@ import bcrypt from "bcryptjs";
 import { RegisterSchema } from "@/schemas";
 import { getUserByEmail } from "@/data/user";
 import { generateVerificationToken } from "@/lib/tokens";
-import { sendVerificationEmail } from "@/lib/mail";
-import { sendVerificationEmailSMTP } from "@/lib/mailRUSMTP";
+import { sendVerificationBegetSMTP } from "@/lib/mailBegetSMTP";
 
 export const register = async (values) => {
     const validatedFields = RegisterSchema.safeParse(values);
@@ -41,11 +40,17 @@ export const register = async (values) => {
 
     const verificationToken = await generateVerificationToken(email);
 
-    await sendVerificationEmailSMTP(
+    const response = await sendVerificationBegetSMTP(
         verificationToken.email,
         verificationToken.token,
         password
     );
 
-    return { success: "Письмо с активацией отправлено на почту!" };
+    if (response) {
+        return response;
+    }
+
+    return {
+        error: "Что-то пошло не так!",
+    };
 };
