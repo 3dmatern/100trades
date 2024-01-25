@@ -139,6 +139,7 @@ export default function Table({
 
     const handleUpdateDeal = async (values) => {
         setIsPending((prev) => values);
+        const dealIndex = deals.findIndex((d) => d.id === values.id);
 
         try {
             const firstDeal = deals.reduce((minDeal, currentDeal) => {
@@ -183,7 +184,13 @@ export default function Table({
                     toast,
                     setDeals
                 );
-            } else {
+            } else if (
+                dealIndex !== -1 &&
+                !Object.keys(values).includes("deposit")
+            ) {
+                const findDealProgress = deals[dealIndex].progress;
+                values.progress = findDealProgress ? findDealProgress : "";
+            } else if (values.deposit === "") {
                 values.progress = "";
             }
 
