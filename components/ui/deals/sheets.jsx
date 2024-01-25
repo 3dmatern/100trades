@@ -164,12 +164,10 @@ export default function Sheets({
         }
     }, [sheetId, containerRef, sheetRefs]);
 
-    console.log(sheetsData);
     useEffect(() => {
         if (sheetsData && sheetsData.length === 0) {
             router.push("/sheets");
         } else if (sheetId && sheetsData && sheetsData.length > 0) {
-            console.log(sheetsData);
             const sheet = sheetsData.find((s) => s.id === sheetId);
             if (!sheet) {
                 router.push(`/sheets/${sheetsData[0].id}`);
