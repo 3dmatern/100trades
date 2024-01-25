@@ -55,7 +55,13 @@ export default function Sheets({
                 }
                 if (data.success) {
                     toast.success(data.success);
-                    setSheets((prev) => prev.filter((p) => p.id !== sheetId));
+                    setSheets((prev) => {
+                        const sheets = prev.filter((p) => p.id !== sheetId);
+                        if (sheets.length === 0) {
+                            router.push("/sheets");
+                            return;
+                        }
+                    });
                 }
             })
             .catch(() => {
