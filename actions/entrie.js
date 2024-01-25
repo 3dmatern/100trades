@@ -8,6 +8,7 @@ import { getUserById } from "@/data/user";
 import { getSheetById } from "@/data/sheet";
 import { getEntrieById, getEntriesBySheetId } from "@/data/entrie";
 import { getTimeInTrade } from "@/utils/formatedDate";
+import { deleteFile } from "./files";
 
 const timeScreenshot = 172800000; // 2 дня
 
@@ -200,9 +201,20 @@ export const removeEntrie = async ({ userId, sheetId, entrieId }) => {
     }
 
     try {
-        const { id } = await db.entrie.delete({
+        const { id, imageStart, imageEnd } = await db.entrie.delete({
             where: { id: existingEntrie.id },
         });
+
+        if (imageStart) {
+            console.log("Пытался удалить ", imageStart);
+            deleteFile(imageStart);
+            console.log("Удалил ", imageStart);
+        }
+        if (imageEnd) {
+            console.log("Пытался удалить ", imageEnd);
+            deleteFile(imageEnd);
+            console.log("Удалил ", imageEnd);
+        }
 
         return {
             id,

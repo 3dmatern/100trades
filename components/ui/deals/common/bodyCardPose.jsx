@@ -102,7 +102,7 @@ export default function BodyCardPose({
                                             <Input
                                                 {...field}
                                                 type="number"
-                                                step={0.01}
+                                                step={1}
                                                 min={0}
                                                 disabled={
                                                     isPending &&

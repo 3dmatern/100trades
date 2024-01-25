@@ -6,6 +6,8 @@ import { db } from "@/lib/db";
 import { SheetCreateSchema, SheetUpdateSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
 import { getSheetById, getSheetsByUserId } from "@/data/sheet";
+import { getEntriesBySheetId } from "@/data/entrie";
+import { deleteFile } from "./files";
 
 export const createSheet = async (values) => {
     noStore();
@@ -156,6 +158,8 @@ export const removeSheet = async (sheetId, userId) => {
     }
 
     try {
+        const entries = await getEntriesBySheetId(existingSheet.id);
+
         await db.sheet.delete({
             where: {
                 id: existingSheet.id,
@@ -163,6 +167,19 @@ export const removeSheet = async (sheetId, userId) => {
         });
 
         revalidatePath("/sheets");
+
+        for (const e of entries) {
+            if (e.imageStart) {
+                console.log("Пытался удалить ", e.imageStart);
+                deleteFile(e.imageStart);
+                console.log("Удалил ", e.imageStart);
+            }
+            if (e.imageEnd) {
+                console.log("Пытался удалить ", e.imageEnd);
+                deleteFile(e.imageEnd);
+                console.log("Удалил ", e.imageEnd);
+            }
+        }
 
         return {
             success: "Лист успешно удален!",
