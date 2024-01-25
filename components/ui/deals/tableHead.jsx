@@ -35,7 +35,7 @@ export default function TableHead({
                     initWidth={columnWidth.column1}
                     onResize={onResize}
                     onSort={onSort}
-                    className="sticky left-0 z-[2]"
+                    className="sticky left-0 z-[3]"
                     classNameContent="pl-8 pr-2 bg-gray-50 border-l"
                     classNameList="z-[2]"
                     styleBtn={{ width: "100%" }}
