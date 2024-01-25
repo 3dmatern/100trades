@@ -55,13 +55,7 @@ export default function Sheets({
                 }
                 if (data.success) {
                     toast.success(data.success);
-                    setSheets((prev) => {
-                        const sheets = prev.filter((p) => p.id !== sheetId);
-                        if (sheets.length === 0) {
-                            router.push("/sheets");
-                            return;
-                        }
-                    });
+                    setSheets((prev) => prev.filter((p) => p.id !== sheetId));
                 }
             })
             .catch(() => {
@@ -170,8 +164,12 @@ export default function Sheets({
         }
     }, [sheetId, containerRef, sheetRefs]);
 
+    console.log(sheetsData);
     useEffect(() => {
-        if (sheetId && sheetsData && sheetsData.length > 0) {
+        if (sheetsData && sheetsData.length === 0) {
+            router.push("/sheets");
+        } else if (sheetId && sheetsData && sheetsData.length > 0) {
+            console.log(sheetsData);
             const sheet = sheetsData.find((s) => s.id === sheetId);
             if (!sheet) {
                 router.push(`/sheets/${sheetsData[0].id}`);
