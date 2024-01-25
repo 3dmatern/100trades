@@ -48,7 +48,7 @@ export function RegisterForm() {
     return (
         <CardWrapper
             headerLabel="Создать аккаунт"
-            backButtonLabel="Уже есть аккаунта?"
+            backButtonLabel="Уже есть аккаунт?"
             backButtonHref="/auth/login"
         >
             <Form {...form}>
