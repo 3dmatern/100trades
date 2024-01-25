@@ -35,6 +35,8 @@ export const createSheet = async (values) => {
             },
         });
 
+        revalidatePath("/sheets");
+
         return {
             newSheet,
             success: "Лист успешно создан",
@@ -121,6 +123,8 @@ export const updateSheet = async (values) => {
                 name,
             },
         });
+
+        revalidatePath(`/sheets/${existingSheet.id}`);
 
         return {
             payload: updSheet,
