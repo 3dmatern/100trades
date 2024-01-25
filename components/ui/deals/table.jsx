@@ -184,10 +184,7 @@ export default function Table({
                     setDeals
                 );
             } else {
-                const findDealProgress = deals.find(
-                    (d) => d.id === values.id
-                ).progress;
-                values.progress = !findDealProgress ? "" : findDealProgress;
+                values.progress = "";
             }
 
             const data = await updateEntrie(userId, {
