@@ -1,8 +1,8 @@
 export default function manifest() {
     return {
-        name: "Журнал сделок трейдинга Homa-Trading",
-        short_name: "Журнал сделок",
-        description: "Журнал сделок трейдинга Homa-Trading для трейдеров",
+        name: "Журнал Cделок трейдинга Homa-Trading",
+        short_name: "Журнал Cделок",
+        description: "Журнал Cделок трейдинга Homa-Trading для трейдеров",
         start_url: "/",
         display: "standalone",
         background_color: "#fff",

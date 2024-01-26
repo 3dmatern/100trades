@@ -8,10 +8,11 @@ import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["cyrillic"] });
 
 export const metadata = {
-    title: "Журнал сделок",
-    description: "Журнал сделок трейдинга Homa-Trading",
-    other: {
-        "yandex-verification": "2b4255513bea4b51",
+    title: "Журнал Cделок",
+    description: "Журнал Cделок трейдинга Homa-Trading",
+    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL),
+    alternates: {
+        canonical: "/",
     },
 };
 

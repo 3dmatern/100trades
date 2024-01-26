@@ -1,7 +1,7 @@
 import { RegisterForm } from "@/components/auth/registerForm";
 
 export const metadata = {
-    title: "Регистрация | Журнал сделок",
+    title: "Регистрация | Журнал Cделок",
     description: "Страница регистрации журнала сделок Homa-Trading",
 };
 

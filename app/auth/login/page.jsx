@@ -1,7 +1,7 @@
 import { LoginForm } from "@/components/auth/loginForm";
 
 export const metadata = {
-    title: "Авторизация | Журнал сделок",
+    title: "Авторизация | Журнал Cделок",
     description: "Страница авторизации журнала сделок Homa-Trading",
 };
 
