@@ -401,7 +401,7 @@ export default function Table({
         <div
             ref={tableRef}
             style={{ height: `calc(100vh - ${heightTop}px)` }}
-            className="relative overflow-x-auto no-scrollbar"
+            className="relative overflow-x-auto"
         >
             <div className="table w-max border-collapse">
                 <TableHead
