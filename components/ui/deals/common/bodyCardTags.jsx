@@ -57,7 +57,7 @@ export default function BodyCardTags({
                 toast.success(success);
                 selectTag = newTag;
                 updTags = await getTags();
-                onUpdateAllTags(allTags);
+                onUpdateAllTags(updTags);
             }
         }
 
