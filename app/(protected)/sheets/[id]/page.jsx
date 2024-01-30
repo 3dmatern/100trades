@@ -28,7 +28,7 @@ export default async function SheetPage({ params, searchParams }) {
     const tagsData = await getTags();
 
     return (
-        <main className="mx-auto p-4 overflow-x-auto">
+        <main className="mx-auto p-4 overflow-x-scroll">
             <Sheets
                 className="mt-8 h-full"
                 userId={user.id}
