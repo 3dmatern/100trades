@@ -49,7 +49,10 @@ export default function BodyCardTags({
         let updTags = await getTags();
 
         if (!selectTag.id) {
-            const { newTag, success, error } = await createTag(userId, tag);
+            const { newTag, success, error } = await createTag({
+                ...tag,
+                userId,
+            });
             if (error) {
                 toast.error(error);
                 return;

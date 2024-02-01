@@ -12,6 +12,21 @@ export const getAllTag = async () => {
     }
 };
 
+export const getTagByUserId = async (userId) => {
+    noStore();
+    try {
+        const tags = await db.tag.findMany({
+            where: {
+                userId,
+            },
+        });
+
+        return tags;
+    } catch (error) {
+        return null;
+    }
+};
+
 export const getTagById = async (id) => {
     noStore();
     try {

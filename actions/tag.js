@@ -5,9 +5,9 @@ import { unstable_noStore as noStore } from "next/cache";
 import { db } from "@/lib/db";
 import { TagSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
-import { getAllTag, getTagByValue } from "@/data/tag";
+import { getTagByUserId, getTagByValue } from "@/data/tag";
 
-export const createTag = async (userId, values) => {
+export const createTag = async (values) => {
     noStore();
     const validatedFields = TagSchema.safeParse(values);
     if (!validatedFields.success) {
@@ -15,7 +15,7 @@ export const createTag = async (userId, values) => {
             error: "Введите значение! createTag",
         };
     }
-    const { label, value } = validatedFields.data;
+    const { userId, label, value } = validatedFields.data;
 
     const existingUser = await getUserById(userId);
     if (!existingUser) {
@@ -35,6 +35,7 @@ export const createTag = async (userId, values) => {
     try {
         const newTag = await db.tag.create({
             data: {
+                userId,
                 label,
                 value,
             },
@@ -52,10 +53,18 @@ export const createTag = async (userId, values) => {
     }
 };
 
-export const getTags = async () => {
+export const getTags = async (userId) => {
     noStore();
+
+    const existingUser = await getUserById(userId);
+    if (!existingUser) {
+        return {
+            error: "Несанкционированный доступ!",
+        };
+    }
+
     try {
-        const tags = await getAllTag();
+        const tags = await getTagByUserId(existingUser.id);
 
         return tags;
     } catch (error) {

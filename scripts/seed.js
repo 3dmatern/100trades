@@ -1,8 +1,23 @@
 const { PrismaClient } = require("@prisma/client");
+const bcrypt = require("bcryptjs");
 
 const prisma = new PrismaClient();
 
 async function main() {
+    const hashedPassword = await bcrypt.hash("", 10);
+    const users = [
+        {
+            email: "",
+            password: hashedPassword,
+            emailVerified: new Date(),
+        },
+        {
+            email: "",
+            password: hashedPassword,
+            emailVerified: new Date(),
+        },
+    ];
+
     const results = [
         {
             label: "win",
@@ -32,6 +47,15 @@ async function main() {
         });
         console.log("Добавлен: ", res);
     }
+
+    for (const user of users) {
+        const us = await prisma.user.create({
+            data: user,
+        });
+        console.log("Добавлен: ", us);
+    }
+
+    console.log("Всё добавил :)");
 }
 
 main()

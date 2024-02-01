@@ -2,6 +2,7 @@ import z from "zod";
 
 export const EntrieTagSchema = z
     .object({
+        userId: z.string(),
         entrieId: z.string(),
         tagId: z.string(),
     })

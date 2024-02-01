@@ -23,6 +23,7 @@ model User {
   role          UserRole  @default(USER)
   accounts      Account[]
   sheets        Sheet[]
+  tags          Tag[]
 }
 
 model Account {
@@ -71,9 +72,12 @@ model RiskReward {
 
 model Tag {
   id                 String  @id @default(cuid())
+  userId             String
   label              String
   value              String
   entrieTag          EntrieTag[]
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model Entrie {
