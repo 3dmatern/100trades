@@ -125,8 +125,13 @@ export const updateEntrie = async (userId, values) => {
         };
     }
 
-    if (existingEntrie.entryDate && exitDate) {
-        const passedDays = areTwoWorkdaysPassed(exitDate);
+    if (
+        (existingEntrie.entryDate && exitDate) ||
+        (existingEntrie.entryDate && existingEntrie.exitDate && !imageEnd)
+    ) {
+        const passedDays = areTwoWorkdaysPassed(
+            exitDate || existingEntrie.exitDate
+        );
         const isPassedTwoDays = passedDays >= daysToPass;
         const time = areWorkhoursPassed(existingEntrie.entryDate, exitDate);
 
@@ -172,7 +177,7 @@ export const updateEntrie = async (userId, values) => {
                 progress: progress === "" ? null : progress || undefined,
                 exitDate: exitDate === "" ? null : exitDate || undefined,
                 imageEnd: imageEnd === "" ? null : imageEnd || undefined,
-                take: take || undefined,
+                take: take === "" ? null : take || undefined,
                 stress: stress || undefined,
                 notes: notes === "" ? null : notes || undefined,
                 timeInTrade:

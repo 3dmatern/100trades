@@ -148,7 +148,11 @@ export default function BodyCardScreenshot({
                         <img
                             src={IMAGE_URL + "/" + dealImageSrc}
                             alt={imageAlt}
-                            style={{ maxWidth: "80%", width: "auto" }}
+                            style={{
+                                maxWidth: "100%",
+                                width: "auto",
+                                height: "80%",
+                            }}
                             className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
                         />
 
