@@ -20,7 +20,7 @@ export const createTag = async (values) => {
     const existingUser = await getUserById(userId);
     if (!existingUser) {
         return {
-            error: "Несанкционированный доступ!",
+            error: "Несанкционированный доступ! Tag existingUser",
         };
     }
 

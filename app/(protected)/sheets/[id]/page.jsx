@@ -25,7 +25,7 @@ export default async function SheetPage({ params, searchParams }) {
     const sheetsData = await getSheets(user.id);
     const resultsData = await getResults();
     const risksRewarsData = await getRisksRewards();
-    const tagsData = await getTags();
+    const tagsData = await getTags(user.id);
 
     return (
         <main className="mx-auto p-4 overflow-x-scroll">

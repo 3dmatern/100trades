@@ -2,7 +2,6 @@ import z from "zod";
 
 export const EntrieTagSchema = z
     .object({
-        userId: z.string(),
         entrieId: z.string(),
         tagId: z.string(),
     })
@@ -22,6 +21,7 @@ export const EntrieTagSchema = z
     });
 
 export const TagSchema = z.object({
+    userId: z.string(),
     label: z.string(),
     value: z.string(),
 });
