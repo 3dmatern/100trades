@@ -114,6 +114,7 @@ export default function TableBodyCard({
                 maxDate={dealLimitionDateWithTime(new Date())}
                 columnWidth={columnWidth.column7}
                 isPending={isPending}
+                disabled={deal.exitDate}
                 onUpdateDeal={onUpdateDeal}
             />
             <BodyCardScreenshot

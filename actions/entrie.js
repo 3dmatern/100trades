@@ -127,7 +127,7 @@ export const updateEntrie = async (userId, values) => {
 
     if (
         (existingEntrie.entryDate && exitDate) ||
-        (existingEntrie.entryDate && existingEntrie.exitDate && !imageEnd)
+        (existingEntrie.entryDate && existingEntrie.exitDate && imageEnd === "")
     ) {
         const passedDays = areTwoWorkdaysPassed(
             exitDate || existingEntrie.exitDate
@@ -144,7 +144,7 @@ export const updateEntrie = async (userId, values) => {
         if (time) {
             timeInTrade = `${time}`;
         }
-    } else if (existingEntrie.entryDate && !exitDate) {
+    } else if (existingEntrie.exitDate && exitDate === "") {
         timeInTrade = "";
     }
 

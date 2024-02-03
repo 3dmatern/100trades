@@ -15,9 +15,9 @@ export default function BodyCardDate({
     dealDate,
     minDate,
     maxDate,
-    disabled,
     columnWidth,
     isPending,
+    disabled,
     onUpdateDeal,
 }) {
     const cellRef = useRef(null);
