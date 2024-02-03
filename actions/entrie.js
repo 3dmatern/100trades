@@ -7,10 +7,11 @@ import { EntrieSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
 import { getSheetById } from "@/data/sheet";
 import { getEntrieById, getEntriesBySheetId } from "@/data/entrie";
-import { getTimeInTrade } from "@/utils/formatedDate";
 import { deleteFile } from "./files";
+import { areTwoWorkdaysPassed } from "@/utils/areTwoWorkdaysPassed";
+import { areWorkhoursPassed } from "@/utils/areWorkhoursPassed";
 
-const timeScreenshot = 172800000; // 2 дня
+const daysToPass = 2;
 
 export const createEntrie = async ({ userId, sheetId }) => {
     noStore();
@@ -57,7 +58,25 @@ export const getEntries = async (sheetId) => {
     }
 
     try {
-        const entries = getEntriesBySheetId(existingSheet.id);
+        const entries = await getEntriesBySheetId(existingSheet.id);
+
+        for (const entrie of entries) {
+            if (
+                entrie &&
+                entrie.entryDate &&
+                entrie.exitDate &&
+                !entrie.imageEnd
+            ) {
+                const passedDays = areTwoWorkdaysPassed(entrie.exitDate);
+                const isPassedTwoDays = passedDays >= daysToPass;
+
+                if (isPassedTwoDays) {
+                    entrie.take = "Сделай скрин";
+                } else {
+                    entrie.take = "Рано";
+                }
+            }
+        }
 
         return entries;
     } catch (error) {
@@ -107,13 +126,11 @@ export const updateEntrie = async (userId, values) => {
     }
 
     if (existingEntrie.entryDate && exitDate) {
-        const startDate = new Date(existingEntrie.entryDate).getTime();
-        const endDate = new Date(exitDate).getTime();
-        const result = endDate - startDate;
-        const isScreenshot = result >= timeScreenshot;
-        const time = getTimeInTrade(existingEntrie.entryDate, exitDate);
+        const passedDays = areTwoWorkdaysPassed(exitDate);
+        const isPassedTwoDays = passedDays >= daysToPass;
+        const time = areWorkhoursPassed(existingEntrie.entryDate, exitDate);
 
-        if (isScreenshot) {
+        if (isPassedTwoDays) {
             take = "Сделай скрин";
         } else {
             take = "Рано";
@@ -122,6 +139,8 @@ export const updateEntrie = async (userId, values) => {
         if (time) {
             timeInTrade = `${time}`;
         }
+    } else if (existingEntrie.entryDate && !exitDate) {
+        timeInTrade = "";
     }
 
     const existingSheet = await getSheetById(sheetId);
@@ -156,7 +175,8 @@ export const updateEntrie = async (userId, values) => {
                 take: take || undefined,
                 stress: stress || undefined,
                 notes: notes === "" ? null : notes || undefined,
-                timeInTrade: timeInTrade || undefined,
+                timeInTrade:
+                    timeInTrade === "" ? null : timeInTrade || undefined,
                 resultId: resultId || undefined,
                 rrId: rrId || undefined,
                 entrieTag: entrieTag || undefined,

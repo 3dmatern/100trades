@@ -111,6 +111,7 @@ export default function TableBodyCard({
                 dealId={deal.id}
                 inputName="entryDate"
                 dealDate={deal.entryDate}
+                maxDate={dealLimitionDateWithTime(new Date())}
                 columnWidth={columnWidth.column7}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
