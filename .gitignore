@@ -18,8 +18,8 @@
 .env
 guide.mp4
 todo.txt
-server/node_modules
 scripts/seed.js
+server/node_modules
 
 # misc
 .DS_Store
