@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import {
@@ -13,7 +12,6 @@ import {
 
 import TableBody from "@/components/ui/deals/tableBody";
 import TableHead from "@/components/ui/deals/tableHead";
-import { Button } from "@/components/ui/button";
 import {
     sortByAsc,
     sortByAscDate,
@@ -31,6 +29,7 @@ import {
     resetEveryonesProgress,
     updateEveryonesProgress,
 } from "@/utils/operationsWithProgress";
+import AddTableRow from "./addTableRow";
 
 const initHeaders = [
     { dbName: "name", name: "Тикер", up: false, w: "112px" },
@@ -347,7 +346,7 @@ export default function Table({
         }
     };
 
-    const resetSort = () => {
+    const handleResetSort = () => {
         setIsSortingEnabled(false);
         setDeals((prev) =>
             prev.sort((a, b) => {
@@ -411,65 +410,14 @@ export default function Table({
                     onUpdateDeal={handleUpdateDeal}
                 />
 
-                <div className="flex items-center h-8 relative border-r border-b border-slate-300 bg-white hover:bg-slate-50">
-                    <div className="table-cell align-middle h-full sticky left-0 z-[1] bg-white">
-                        <div
-                            style={{
-                                width: columnWidth.column1,
-                                minWidth: "64px",
-                            }}
-                            className="flex items-center h-full border-l border-r border-slate-300 bg-inherit hover:bg-inherit"
-                        >
-                            <Button
-                                type="button"
-                                onClick={handleCreateDeal}
-                                className="flex items-center justify-center size-7 p-1 rounded-sm bg-slate-50 hover:bg-slate-200"
-                            >
-                                <Image
-                                    src="/plus-lg.svg"
-                                    alt="plus"
-                                    width={16}
-                                    height={16}
-                                />
-                            </Button>
-                        </div>
-
-                        {selectedDeals.length > 0 && (
-                            <Button
-                                type="button"
-                                onClick={handleRmoveDeal}
-                                style={{
-                                    left: isSortingEnabled
-                                        ? `${
-                                              parseInt(columnWidth.column1) +
-                                              120
-                                          }px`
-                                        : `${
-                                              parseInt(columnWidth.column1) - 70
-                                          }px`,
-                                }}
-                                className="w-max h-7 absolute top-1/2 -translate-y-1/2 bg-red-700 hover:bg-red-600 ml-20 text-sm"
-                            >
-                                Удалить выбранные сделки
-                            </Button>
-                        )}
-
-                        {isSortingEnabled && (
-                            <Button
-                                type="button"
-                                onClick={resetSort}
-                                style={{
-                                    left: `${
-                                        parseInt(columnWidth.column1) - 70
-                                    }px`,
-                                }}
-                                className="w-max h-7 absolute top-1/2 -translate-y-1/2 bg-blue-500 hover:bg-blue-300 ml-20 text-sm"
-                            >
-                                Сбросить сортировку
-                            </Button>
-                        )}
-                    </div>
-                </div>
+                <AddTableRow
+                    columnWidth={columnWidth}
+                    onCreateDeal={handleCreateDeal}
+                    selectedDeals={selectedDeals}
+                    onRmoveDeal={handleRmoveDeal}
+                    isSortingEnabled={isSortingEnabled}
+                    onResetSort={handleResetSort}
+                />
             </div>
         </div>
     );
