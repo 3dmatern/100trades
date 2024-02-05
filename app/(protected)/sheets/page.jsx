@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { currentUser } from "@/lib/auth";
 import { getSheets } from "@/actions/sheet";
-import AddSheetButton from "@/components/deals/common/addSheetButton";
+import SheetAddButton from "@/components/sheet/sheetAddButton";
 
 export default async function SheetsPage() {
     const user = await currentUser();
@@ -25,7 +25,7 @@ export default async function SheetsPage() {
                         </Link>
                     ))}
 
-                <AddSheetButton
+                <SheetAddButton
                     className="w-max h-10 py-2 px-3 bg-gray-200 hover:bg-gray-100 rounded-sm"
                     classNameBtn="size-10"
                     userId={user.id}
