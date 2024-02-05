@@ -96,23 +96,31 @@ export default function Table({
         setAllTags([...tags]);
     };
 
-    const handleCheckAll = ({ target }) => {
-        if (target.name === "checkAll") {
-            setCheckAll((prev) => {
-                !prev
-                    ? setSelectedDeals(deals.map((deal) => deal.id))
-                    : setSelectedDeals([]);
-                return !prev;
-            });
-        }
+    const handleCheckAll = () => {
+        setCheckAll((prev) => {
+            !prev
+                ? setSelectedDeals(deals.map((deal) => deal.id))
+                : setSelectedDeals([]);
+            return !prev;
+        });
     };
 
     const handleCheckDeal = ({ target }) => {
-        setSelectedDeals((prev) =>
-            !prev.includes(target.value)
-                ? [...prev, target.value]
-                : prev.filter((item) => item !== target.value)
-        );
+        setSelectedDeals((prev) => {
+            let prevCopy = prev.slice();
+
+            if (prevCopy.includes(target.value)) {
+                prevCopy = prevCopy.filter((item) => item !== target.value);
+            } else {
+                prevCopy = [...prevCopy, target.value];
+            }
+
+            if (prevCopy.length === 0) {
+                setCheckAll(false);
+            }
+
+            return prevCopy;
+        });
     };
 
     const handleResize = (column, newWidth) => {
@@ -397,7 +405,6 @@ export default function Table({
                     onChangeAllRRs={changeAllRRs}
                     allTags={allTags}
                     onUpdateAllTags={handleUpdateAllTags}
-                    checkAll={checkAll}
                     columnWidth={columnWidth}
                     onCheckDeal={handleCheckDeal}
                     isPending={isPending}

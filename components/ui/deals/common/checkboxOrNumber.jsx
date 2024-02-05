@@ -9,7 +9,6 @@ export default function CheckboxOrNumber({
     name,
     value,
     checked,
-    checkAll,
     onChange,
 }) {
     const [move, setMove] = useState(false);
@@ -23,14 +22,14 @@ export default function CheckboxOrNumber({
                 className
             )}
         >
-            {number && !move && !checkAll && !checked ? (
+            {number && !move && !checked ? (
                 <p className="text-xs">{number}</p>
             ) : (
                 <input
                     type="checkbox"
                     name={name}
                     value={value}
-                    checked={checkAll ? true : checked}
+                    checked={checked}
                     onChange={onChange}
                     className="cursor-pointer"
                 />

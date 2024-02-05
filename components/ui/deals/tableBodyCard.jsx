@@ -33,7 +33,6 @@ export default function TableBodyCard({
     onChangeAllRRs,
     allTags,
     onUpdateAllTags,
-    checkAll,
     columnWidth,
     onCheckDeal,
     isPending,
@@ -56,7 +55,6 @@ export default function TableBodyCard({
                 dealId={deal.id}
                 dealName={deal.name}
                 selectedDeals={selectedDeals}
-                checkAll={checkAll}
                 dealHover={hover}
                 columnWidth={columnWidth.column1}
                 onCheckDeal={onCheckDeal}

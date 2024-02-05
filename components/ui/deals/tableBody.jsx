@@ -14,7 +14,6 @@ export default function TableBody({
     onChangeAllRRs,
     allTags,
     onUpdateAllTags,
-    checkAll,
     columnWidth,
     onCheckDeal,
     isPending,
@@ -34,7 +33,6 @@ export default function TableBody({
                 onChangeAllRRs={onChangeAllRRs}
                 allTags={allTags}
                 onUpdateAllTags={onUpdateAllTags}
-                checkAll={checkAll}
                 columnWidth={columnWidth}
                 onCheckDeal={onCheckDeal}
                 isPending={isPending}

@@ -14,7 +14,6 @@ export default function BodyCardName({
     dealId,
     dealName,
     selectedDeals,
-    checkAll,
     dealHover,
     columnWidth,
     onCheckDeal,
@@ -85,7 +84,6 @@ export default function BodyCardName({
                     name="deals"
                     value={dealId}
                     checked={selectedDeals?.includes(dealId)}
-                    checkAll={checkAll}
                     onChange={onCheckDeal}
                     className="size-7 absolute top-1/2 left-[2px] -translate-y-1/2"
                 />
