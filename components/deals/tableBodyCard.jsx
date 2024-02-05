@@ -6,21 +6,21 @@ import { determineTextColor } from "@/utils/determinateTextColor";
 import { getRandomHexColor } from "@/utils/getRandomHexColor";
 import { dealLimitionDateWithTime } from "@/utils/formatedDate";
 
-import BodyCardName from "@/components/ui/deals/common/bodyCardName";
-import BodyCardResult from "@/components/ui/deals/common/BodyCardResult";
-import BodyCardPose from "@/components/ui/deals/common/bodyCardPose";
-import BodyCardRisk from "@/components/ui/deals/common/bodyCardRisk";
-import BodyCardProfit from "@/components/ui/deals/common/bodyCardProfit";
-import BodyCardRisksRewards from "@/components/ui/deals/common/bodyCardRisksRewards";
-import BodyCardDate from "@/components/ui/deals/common/bodyCardDate";
-import BodyCardScreenshot from "@/components/ui/deals/common/bodyCardScreenshot";
-import BodyCardDeposit from "@/components/ui/deals/common/bodyCardDeposit";
-import BodyCardProgress from "@/components/ui/deals/common/bodyCardProgress";
-import BodyCardStress from "@/components/ui/deals/common/bodyCardStress";
-import BodyCardTags from "@/components/ui/deals/common/bodyCardTags";
-import BodyCardNotes from "@/components/ui/deals/common/bodyCardNotes";
-import BodyCardTakeScreenshot from "@/components/ui/deals/common/bodyCardTakeScreenshot";
-import BodyCardTimeInTrade from "@/components/ui/deals/common/bodyCardTimeInTrade";
+import BodyCardName from "@/components/deals/common/bodyCardName";
+import BodyCardResult from "@/components/deals/common/BodyCardResult";
+import BodyCardPose from "@/components/deals/common/bodyCardPose";
+import BodyCardRisk from "@/components/deals/common/bodyCardRisk";
+import BodyCardProfit from "@/components/deals/common/bodyCardProfit";
+import BodyCardRisksRewards from "@/components/deals/common/bodyCardRisksRewards";
+import BodyCardDate from "@/components/deals/common/bodyCardDate";
+import BodyCardScreenshot from "@/components/deals/common/bodyCardScreenshot";
+import BodyCardDeposit from "@/components/deals/common/bodyCardDeposit";
+import BodyCardProgress from "@/components/deals/common/bodyCardProgress";
+import BodyCardStress from "@/components/deals/common/bodyCardStress";
+import BodyCardTags from "@/components/deals/common/bodyCardTags";
+import BodyCardNotes from "@/components/deals/common/bodyCardNotes";
+import BodyCardTakeScreenshot from "@/components/deals/common/bodyCardTakeScreenshot";
+import BodyCardTimeInTrade from "@/components/deals/common/bodyCardTimeInTrade";
 
 export default function TableBodyCard({
     userId,

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { currentUser } from "@/lib/auth";
 import { getSheets } from "@/actions/sheet";
-import AddSheetButton from "@/components/ui/deals/common/addSheetButton";
+import AddSheetButton from "@/components/deals/common/addSheetButton";
 
 export default async function SheetsPage() {
     const user = await currentUser();

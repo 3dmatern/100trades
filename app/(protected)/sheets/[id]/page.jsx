@@ -4,7 +4,7 @@ import { getSheet, getSheets } from "@/actions/sheet";
 import { getResults } from "@/actions/result";
 import { getTags } from "@/actions/tag";
 import { getRisksRewards } from "@/actions/riskReward";
-import Table from "@/components/ui/deals/table";
+import Table from "@/components/deals/table";
 
 export async function generateMetadata({ params }) {
     // прочитать параметры маршрута

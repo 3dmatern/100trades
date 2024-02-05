@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { EntrieSchema } from "@/schemas";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import CheckboxOrNumber from "@/components/ui/deals/common/checkboxOrNumber";
+import CheckboxOrNumber from "@/components/deals/common/checkboxOrNumber";
 
 export default function BodyCardName({
     index,

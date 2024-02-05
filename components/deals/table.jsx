@@ -10,8 +10,8 @@ import {
     updateEntrie,
 } from "@/actions/entrie";
 
-import TableBody from "@/components/ui/deals/tableBody";
-import TableHead from "@/components/ui/deals/tableHead";
+import TableBody from "@/components/deals/tableBody";
+import TableHead from "@/components/deals/tableHead";
 import {
     sortByAsc,
     sortByAscDate,

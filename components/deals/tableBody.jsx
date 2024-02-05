@@ -2,7 +2,7 @@
 
 import { BeatLoader } from "react-spinners";
 
-import TableBodyCard from "@/components/ui/deals/tableBodyCard";
+import TableBodyCard from "@/components/deals/tableBodyCard";
 
 export default function TableBody({
     userId,

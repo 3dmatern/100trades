@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 import Sheet from "@/components/sheet/sheet";
-import AddSheetButton from "../ui/deals/common/addSheetButton";
+import SheetAddButton from "@/components/sheet/sheetAddButton";
 import { removeSheet } from "@/actions/sheet";
 import { Button } from "@/components/ui/button";
 
@@ -163,7 +163,7 @@ export default function Sheets({ userId, sheetsData, sheetId }) {
                                 }
                             />
                         ))}
-                    <AddSheetButton
+                    <SheetAddButton
                         userId={userId}
                         onOpenForm={setIsOpenForm}
                     />

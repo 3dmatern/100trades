@@ -12,8 +12,8 @@ import {
     DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import SheetForm from "./sheetForm";
-import SheetPublishedForm from "@/components/ui/sheet";
+import SheetForm from "@/components/sheet/sheetForm";
+import SheetPublishedForm from "@/components/sheet/sheetPublishedForm";
 
 export default function SettingsSheet({
     sheet,
