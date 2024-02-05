@@ -75,11 +75,12 @@ const initColumnWidth = {
 export default function Table({
     userId,
     sheetId,
-    results,
-    risksRewards,
-    tags,
+    resultsData,
+    risksRewarsData,
+    tagsData,
 }) {
     const [deals, setDeals] = useState([]);
+    const [results, setResults] = useState([]);
     const [allTags, setAllTags] = useState([]);
     const [allRRs, setAllRRs] = useState([]);
     const [isPending, setIsPending] = useState(undefined);
@@ -372,16 +373,34 @@ export default function Table({
     }, [sheetId]);
 
     useEffect(() => {
-        if (risksRewards) {
-            setAllRRs(risksRewards);
+        if (resultsData) {
+            if (resultsData.error) {
+                toast.error(resultsData.error);
+                return;
+            }
+            setResults(resultsData);
         }
-    }, [risksRewards]);
+    }, [resultsData]);
 
     useEffect(() => {
-        if (tags) {
-            setAllTags(tags);
+        if (risksRewarsData) {
+            if (risksRewarsData.error) {
+                toast.error(risksRewarsData.error);
+                return;
+            }
+            setAllRRs(risksRewarsData);
         }
-    }, [tags]);
+    }, [risksRewarsData]);
+
+    useEffect(() => {
+        if (tagsData) {
+            if (tagsData.error) {
+                toast.error(tagsData.error);
+                return;
+            }
+            setAllTags(tagsData);
+        }
+    }, [tagsData]);
 
     return (
         <div className="flex-1 h-full relative overflow-x-auto">

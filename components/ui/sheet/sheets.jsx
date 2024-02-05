@@ -3,23 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
 
-import Sheet from "@/components/ui/deals/sheet";
-import Table from "@/components/ui/deals/table";
-import AddSheetButton from "./common/addSheetButton";
+import Sheet from "@/components/ui/sheet/sheet";
+import AddSheetButton from "../deals/common/addSheetButton";
 import { removeSheet } from "@/actions/sheet";
 import { Button } from "@/components/ui/button";
 
-export default function Sheets({
-    className,
-    userId,
-    sheetsData,
-    sheetId,
-    resultsData,
-    risksRewarsData,
-    tagsData,
-}) {
+export default function Sheets({ userId, sheetsData, sheetId }) {
     const containerRef = useRef(null);
     const contentRef = useRef(null);
     const router = useRouter();
@@ -27,9 +17,6 @@ export default function Sheets({
     const [isOverflowed, setIsOverflowed] = useState(false);
     const [isOpenForm, setIsOpenForm] = useState(false);
     const [sheets, setSheets] = useState([]);
-    const [results, setResults] = useState([]);
-    const [risksRewards, setRisksRewards] = useState([]);
-    const [tags, setTags] = useState([]);
 
     const handleUpdateSheet = async ({ sheetId, updName }) => {
         setSheets((prev) => {
@@ -74,36 +61,6 @@ export default function Sheets({
             behavior: "smooth",
         });
     };
-
-    useEffect(() => {
-        if (resultsData) {
-            if (resultsData.error) {
-                toast.error(resultsData.error);
-                return;
-            }
-            setResults(resultsData);
-        }
-    }, [resultsData]);
-
-    useEffect(() => {
-        if (risksRewarsData) {
-            if (risksRewarsData.error) {
-                toast.error(risksRewarsData.error);
-                return;
-            }
-            setRisksRewards(risksRewarsData);
-        }
-    }, [risksRewarsData]);
-
-    useEffect(() => {
-        if (tagsData) {
-            if (tagsData.error) {
-                toast.error(tagsData.error);
-                return;
-            }
-            setTags(tagsData);
-        }
-    }, [tagsData]);
 
     useEffect(() => {
         if (sheetsData) {
@@ -177,76 +134,60 @@ export default function Sheets({
     }, [sheetId, sheetsData]);
 
     return (
-        <main
-            style={{ height: `calc(100vh - 104px)` }}
-            className={cn(
-                `flex flex-col mx-auto mt-8 p-4 pb-0 relative overflow-x-hidden`,
-                className
-            )}
-        >
-            <div className="relative">
+        <div className="relative">
+            <div
+                ref={containerRef}
+                style={{
+                    padding: isOverflowed ? "0px 40px" : "0",
+                }}
+                className={`relative overflow-x-auto no-scrollbar mx-auto`}
+            >
                 <div
-                    ref={containerRef}
-                    style={{
-                        padding: isOverflowed ? "0px 40px" : "0",
-                    }}
-                    className={`relative overflow-x-auto no-scrollbar mx-auto`}
+                    ref={contentRef}
+                    className={`flex items-center justify-start gap-1 w-max h-9 whitespace-nowrap transition-all duration-300 ease-in-out`}
                 >
-                    <div
-                        ref={contentRef}
-                        className={`flex items-center justify-start gap-1 w-max h-9 whitespace-nowrap transition-all duration-300 ease-in-out`}
-                    >
-                        {sheets.length > 0 &&
-                            sheets?.map((sheet) => (
-                                <Sheet
-                                    key={sheet.id}
-                                    selectSheet={sheetId}
-                                    sheet={sheet}
-                                    userId={userId}
-                                    onAddSheetRef={setSheetRefs}
-                                    onUpdateSheet={handleUpdateSheet}
-                                    onRemoveSheet={handleRemoveSheet}
-                                    className={
-                                        sheetId === sheet.id
-                                            ? "bg-gray-100"
-                                            : "bg-gray-200"
-                                    }
-                                />
-                            ))}
-                        <AddSheetButton
-                            userId={userId}
-                            onOpenForm={setIsOpenForm}
-                        />
-                    </div>
+                    {sheets.length > 0 &&
+                        sheets?.map((sheet) => (
+                            <Sheet
+                                key={sheet.id}
+                                selectSheet={sheetId}
+                                sheet={sheet}
+                                userId={userId}
+                                onAddSheetRef={setSheetRefs}
+                                onUpdateSheet={handleUpdateSheet}
+                                onRemoveSheet={handleRemoveSheet}
+                                className={
+                                    sheetId === sheet.id
+                                        ? "bg-gray-200"
+                                        : "bg-gray-100"
+                                }
+                            />
+                        ))}
+                    <AddSheetButton
+                        userId={userId}
+                        onOpenForm={setIsOpenForm}
+                    />
                 </div>
-
-                {isOverflowed && (
-                    <>
-                        <Button
-                            type="button"
-                            className="flex items-center justify-center size-9 absolute left-0 top-1/2 transform -translate-y-1/2 z-[3] bg-gray-300"
-                            onClick={() => handleScroll("left")}
-                        >
-                            ←
-                        </Button>
-                        <Button
-                            type="button"
-                            className="flex items-center justify-center size-9 absolute right-0 top-1/2 transform -translate-y-1/2 z-[3] bg-gray-300"
-                            onClick={() => handleScroll("right")}
-                        >
-                            →
-                        </Button>
-                    </>
-                )}
             </div>
 
-            <Table
-                userId={userId}
-                sheetId={sheetId}
-                results={results}
-                risksRewards={risksRewards}
-                tags={tags}
-            />
-        </main>
+            {isOverflowed && (
+                <>
+                    <Button
+                        type="button"
+                        className="flex items-center justify-center size-9 absolute left-0 top-1/2 transform -translate-y-1/2 z-[3] bg-gray-300"
+                        onClick={() => handleScroll("left")}
+                    >
+                        ←
+                    </Button>
+                    <Button
+                        type="button"
+                        className="flex items-center justify-center size-9 absolute right-0 top-1/2 transform -translate-y-1/2 z-[3] bg-gray-300"
+                        onClick={() => handleScroll("right")}
+                    >
+                        →
+                    </Button>
+                </>
+            )}
+        </div>
     );
 }

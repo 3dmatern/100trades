@@ -1,9 +1,10 @@
-import Sheets from "@/components/ui/deals/sheets";
+import Sheets from "@/components/ui/sheet/sheets";
 import { currentUser } from "@/lib/auth";
 import { getSheet, getSheets } from "@/actions/sheet";
 import { getResults } from "@/actions/result";
 import { getTags } from "@/actions/tag";
 import { getRisksRewards } from "@/actions/riskReward";
+import Table from "@/components/ui/deals/table";
 
 export async function generateMetadata({ params }) {
     // прочитать параметры маршрута
@@ -28,13 +29,19 @@ export default async function SheetPage({ params, searchParams }) {
     const tagsData = await getTags(user.id);
 
     return (
-        <Sheets
-            userId={user.id}
-            sheetsData={sheetsData}
-            sheetId={id}
-            resultsData={resultsData}
-            risksRewarsData={risksRewarsData}
-            tagsData={tagsData}
-        />
+        <main
+            style={{ height: `calc(100vh - 104px)` }}
+            className="flex flex-col mx-auto mt-8 p-4 pb-0 relative overflow-x-hidden"
+        >
+            <Sheets userId={user.id} sheetsData={sheetsData} sheetId={id} />
+
+            <Table
+                userId={user.id}
+                sheetId={id}
+                resultsData={resultsData}
+                risksRewarsData={risksRewarsData}
+                tagsData={tagsData}
+            />
+        </main>
     );
 }
