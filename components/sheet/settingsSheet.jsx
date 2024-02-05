@@ -31,7 +31,7 @@ export default function SettingsSheet({
                     height={16}
                 />
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="lg:max-w-lg max-w-sm">
                 <DialogHeader>
                     <DialogTitle>Настройки листа</DialogTitle>
                 </DialogHeader>
@@ -51,7 +51,7 @@ export default function SettingsSheet({
                     </Button>
                 </DialogClose>
 
-                <SheetPublishedForm sheet={sheet} />
+                <SheetPublishedForm sheetId={sheet.id} />
             </DialogContent>
         </Dialog>
     );

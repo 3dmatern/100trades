@@ -136,6 +136,15 @@ export const SheetRemoveSchema = z
         return true;
     });
 
+export const SheetPublishedSchema = z.object({
+    sheetId: z.string().refine((value) => value.length > 0, {
+        message: "Выберите лист.",
+    }),
+    items: z.array(z.string()).refine((value) => value.some((item) => item), {
+        message: "Вам необходимо выбрать хотя бы один столбец.",
+    }),
+});
+
 export const SettingsSchema = z
     .object({
         firstname: z.optional(z.string()),
