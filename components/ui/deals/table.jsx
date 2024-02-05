@@ -30,6 +30,7 @@ import {
     updateEveryonesProgress,
 } from "@/utils/operationsWithProgress";
 import AddTableRow from "./addTableRow";
+import TableInfo from "./tableInfo";
 
 const initHeaders = [
     { dbName: "name", name: "Тикер", up: false, w: "112px" },
@@ -383,8 +384,13 @@ export default function Table({
     }, [tags]);
 
     return (
-        <div className="flex-1 h-full relative overflow-x-auto">
+        <div className="flex-1 h-full pt-8 relative overflow-x-auto">
             <div className="table w-max h-full border-collapse">
+                <TableInfo
+                    columnWidth={columnWidth}
+                    deals={deals}
+                    results={results}
+                />
                 <TableHead
                     initHeaders={initHeaders}
                     checkAll={checkAll}
