@@ -1,3 +1,3 @@
 export default function SheetPublishedForm() {
-    return <div>sheetPublishedForm</div>;
+    return <div className="mx-auto">sheetPublishedForm</div>;
 }

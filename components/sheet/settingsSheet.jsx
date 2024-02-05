@@ -41,20 +41,17 @@ export default function SettingsSheet({
                     userId={userId}
                     onUpdateSheet={onUpdateSheet}
                 />
+                <DialogClose asChild className="mx-auto">
+                    <Button
+                        type="button"
+                        onClick={(e) => onRemoveSheet(e, sheet.id)}
+                        className="h-8"
+                    >
+                        Удалить лист
+                    </Button>
+                </DialogClose>
 
-                <SheetPublishedForm />
-
-                <DialogFooter className="mx-auto">
-                    <DialogClose asChild>
-                        <Button
-                            type="button"
-                            onClick={(e) => onRemoveSheet(e, sheet.id)}
-                            className="h-8"
-                        >
-                            Удалить лист
-                        </Button>
-                    </DialogClose>
-                </DialogFooter>
+                <SheetPublishedForm sheet={sheet} />
             </DialogContent>
         </Dialog>
     );
