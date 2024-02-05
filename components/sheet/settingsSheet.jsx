@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+
 import {
     Dialog,
     DialogContent,
@@ -12,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import SheetForm from "./sheetForm";
+import SheetPublishedForm from "@/components/ui/sheet";
 
 export default function SettingsSheet({
     sheet,
@@ -39,6 +41,8 @@ export default function SettingsSheet({
                     userId={userId}
                     onUpdateSheet={onUpdateSheet}
                 />
+
+                <SheetPublishedForm />
 
                 <DialogFooter className="mx-auto">
                     <DialogClose asChild>

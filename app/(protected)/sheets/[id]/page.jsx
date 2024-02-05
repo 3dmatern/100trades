@@ -1,4 +1,4 @@
-import Sheets from "@/components/ui/sheet/sheets";
+import Sheets from "@/components/sheet/sheets";
 import { currentUser } from "@/lib/auth";
 import { getSheet, getSheets } from "@/actions/sheet";
 import { getResults } from "@/actions/result";
