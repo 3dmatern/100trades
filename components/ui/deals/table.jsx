@@ -384,7 +384,7 @@ export default function Table({
     }, [tags]);
 
     return (
-        <div className="flex-1 h-full pt-8 relative overflow-x-auto">
+        <div className="flex-1 h-full relative overflow-x-auto">
             <div className="table w-max h-full border-collapse">
                 <TableInfo
                     columnWidth={columnWidth}

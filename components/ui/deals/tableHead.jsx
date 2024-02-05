@@ -24,7 +24,7 @@ export default function TableHead({
     };
 
     return (
-        <div className="flex items-center h-8 border-t border-b border-slate-300 bg-gray-50">
+        <div className="flex items-center h-8 sticky left-0 top-8 z-[3] border-t border-b border-slate-300 bg-gray-50">
             {initHeaders.slice(0, 1).map((item) => (
                 <SelectFilterButton
                     key={item.name}

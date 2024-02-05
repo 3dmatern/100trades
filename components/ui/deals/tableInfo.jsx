@@ -52,7 +52,7 @@ export default function TableInfo({ columnWidth, deals, results }) {
     }, [deals, results]);
 
     return (
-        <div className="flex items-center justify-center h-8 absolute left-0 top-0 z-[4] bg-gray-200">
+        <div className="flex items-center justify-center h-8 sticky left-0 top-0 z-[4] bg-gray-200">
             <Cell columnWidth={columnWidth.column1}></Cell>
             <Cell columnWidth={columnWidth.column2}>
                 <span className=" overflow-hidden whitespace-nowrap text-ellipsis">
@@ -70,7 +70,9 @@ export default function TableInfo({ columnWidth, deals, results }) {
             </Cell>
             <Cell columnWidth={columnWidth.column3}></Cell>
             <Cell columnWidth={columnWidth.column4}>
-                <span className="text-red-600">{portfolioRisk} ₽</span>
+                <span className={portfolioRisk > 0 ? "text-red-600" : ""}>
+                    {portfolioRisk} ₽
+                </span>
             </Cell>
             <Cell columnWidth={columnWidth.column5}></Cell>
             <Cell columnWidth={columnWidth.column6}></Cell>
