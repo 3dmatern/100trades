@@ -79,9 +79,6 @@ export default function Table({
     risksRewards,
     tags,
 }) {
-    const tableRef = useRef(null);
-    const [heightTop, setHeightTop] = useState(0);
-
     const [deals, setDeals] = useState([]);
     const [allTags, setAllTags] = useState([]);
     const [allRRs, setAllRRs] = useState([]);
@@ -378,32 +375,9 @@ export default function Table({
         }
     }, [tags]);
 
-    useEffect(() => {
-        const calculateDistance = () => {
-            if (tableRef.current) {
-                const { top } = tableRef.current.getBoundingClientRect();
-                setHeightTop(top);
-            }
-        };
-        calculateDistance();
-
-        const handleResizeScreen = () => {
-            calculateDistance();
-        };
-
-        window.addEventListener("resize", handleResizeScreen);
-        return () => {
-            window.removeEventListener("resize", handleResizeScreen);
-        };
-    }, [tableRef]);
-
     return (
-        <div
-            ref={tableRef}
-            style={{ height: `calc(100vh - ${heightTop}px)` }}
-            className="relative overflow-x-auto"
-        >
-            <div className="table w-max border-collapse">
+        <div className="flex-1 h-full relative overflow-x-auto">
+            <div className="table w-max h-full border-collapse">
                 <TableHead
                     initHeaders={initHeaders}
                     checkAll={checkAll}

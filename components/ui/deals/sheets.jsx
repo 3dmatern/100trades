@@ -177,7 +177,13 @@ export default function Sheets({
     }, [sheetId, sheetsData]);
 
     return (
-        <div className={cn("relative", className)}>
+        <main
+            style={{ height: `calc(100vh - 104px)` }}
+            className={cn(
+                `flex flex-col mx-auto mt-8 p-4 pb-0 relative overflow-x-hidden`,
+                className
+            )}
+        >
             <div className="relative">
                 <div
                     ref={containerRef}
@@ -241,6 +247,6 @@ export default function Sheets({
                 risksRewards={risksRewards}
                 tags={tags}
             />
-        </div>
+        </main>
     );
 }

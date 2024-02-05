@@ -28,16 +28,13 @@ export default async function SheetPage({ params, searchParams }) {
     const tagsData = await getTags(user.id);
 
     return (
-        <main className="mx-auto p-4 overflow-x-scroll">
-            <Sheets
-                className="mt-8 h-full"
-                userId={user.id}
-                sheetsData={sheetsData}
-                sheetId={id}
-                resultsData={resultsData}
-                risksRewarsData={risksRewarsData}
-                tagsData={tagsData}
-            />
-        </main>
+        <Sheets
+            userId={user.id}
+            sheetsData={sheetsData}
+            sheetId={id}
+            resultsData={resultsData}
+            risksRewarsData={risksRewarsData}
+            tagsData={tagsData}
+        />
     );
 }
