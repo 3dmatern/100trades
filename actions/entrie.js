@@ -147,7 +147,7 @@ export const updateEntrie = async (userId, values) => {
         timeInTrade = "";
         take = "Рано";
     }
-    console.log(typeof exitDate);
+
     const existingSheet = await getSheetById(sheetId);
     if (!existingSheet) {
         return {
