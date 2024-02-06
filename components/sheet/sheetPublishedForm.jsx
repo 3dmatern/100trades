@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -14,6 +17,12 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { SheetPublishedSchema } from "@/schemas";
+import {
+    createSheetPublished,
+    deleteSheetPublished,
+    getSheetPublishedBySheetId,
+} from "@/actions/sheetPublished";
+import Link from "next/link";
 
 const items = [
     { id: "name", label: "Тикер" },
@@ -36,6 +45,9 @@ const items = [
 ];
 
 export default function SheetPublishedForm({ userId, sheetId }) {
+    const [isPublished, setIsPublished] = useState(false);
+    const [sheetPublishedId, setSheetPublishedId] = useState("");
+
     const form = useForm({
         resolver: zodResolver(SheetPublishedSchema),
         defaultValues: {
@@ -63,21 +75,73 @@ export default function SheetPublishedForm({ userId, sheetId }) {
         },
     });
 
-    const onSubmit = async (data) => {
-        // try {
-        //     const data = {};
-        //     if (data.error) {
-        //         toast.error(data.error);
-        //     } else if (data.success) {
-        //         toast.success(data.success);
-        //     }
-        // } catch (error) {
-        //     console.error(error.message);
-        //     toast.error("Что-то пошло не так при обновлении листа!");
-        // }
+    const onSubmit = async (values) => {
+        try {
+            const data = await createSheetPublished(values);
+            if (data.error) {
+                toast.error(data.error);
+            } else if (data.success) {
+                const { newSheetPublished, success } = data;
+                toast.success(success);
+                setSheetPublishedId(newSheetPublished.id);
+                setIsPublished(true);
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.error("Что-то пошло не так при публикации листа!");
+        }
     };
 
-    return (
+    const handleDelete = async () => {
+        try {
+            const data = await deleteSheetPublished(sheetPublishedId, userId);
+            if (data.error) {
+                toast.error(data.error);
+            } else if (data.success) {
+                toast.success(data.success);
+                setSheetPublishedId("");
+                setIsPublished(false);
+            }
+        } catch (error) {
+            console.error(error.message);
+            toast.error(
+                "Что-то пошло не так при удалении листа из публикации!"
+            );
+        }
+    };
+
+    useEffect(() => {
+        const sheetPublished = async () => {
+            const data = await getSheetPublishedBySheetId(sheetId);
+            if (data) {
+                if (data?.error) {
+                    setIsPublished(false);
+                } else {
+                    setSheetPublishedId(data.id);
+                    setIsPublished(true);
+                }
+            }
+        };
+
+        sheetPublished();
+    }, [sheetId]);
+
+    return isPublished ? (
+        <>
+            <Link
+                href={`${process.env.NEXT_PUBLIC_APP_URL}/published/${sheetPublishedId}`}
+                className="flex items-center justify-center w-max h-8 mx-auto px-3 border border-gray-400 rounded-lg text-sm"
+            >{`${process.env.NEXT_PUBLIC_APP_URL}/published/${sheetPublishedId}`}</Link>
+
+            <Button
+                type="button"
+                onClick={handleDelete}
+                className="w-max mx-auto h-8"
+            >
+                Удалить из публикации
+            </Button>
+        </>
+    ) : (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -143,7 +207,10 @@ export default function SheetPublishedForm({ userId, sheetId }) {
                         </>
                     )}
                 />
-                <Button type="submit">Опубликовать</Button>
+
+                <Button type="submit" className="h-8">
+                    Опубликовать
+                </Button>
             </form>
         </Form>
     );

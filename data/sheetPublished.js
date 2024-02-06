@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 
-export const getSheetPublishedBySheetId = async (sheetPublishedId) => {
+export const getSheetPublishedById = async (sheetPublishedId) => {
     try {
         const sheetPublished = await db.sheetPublished.findUnique({
             where: { id: sheetPublishedId },

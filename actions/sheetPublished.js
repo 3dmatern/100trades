@@ -3,7 +3,7 @@
 import { db } from "@/lib/db";
 import { getEntriesBySheetIdByFields } from "@/data/entrie";
 import { getSheetById, getSheetNameById } from "@/data/sheet";
-import { getSheetPublishedBySheetId } from "@/data/sheetPublished";
+import { getSheetPublishedById } from "@/data/sheetPublished";
 import { getUserById, getUserNickById } from "@/data/user";
 
 export const createSheetPublished = async ({ userId, sheetId, items }) => {
@@ -21,12 +21,17 @@ export const createSheetPublished = async ({ userId, sheetId, items }) => {
         };
     }
 
+    const itemsObject = items.reduce((acc, field) => {
+        acc[field] = field;
+        return acc;
+    }, {});
+
     try {
         const newSheetPublished = await db.sheetPublished.create({
             data: {
                 userId: existingUser.id,
                 sheetId: existingSheet.id,
-                ...items,
+                ...itemsObject,
             },
         });
 
@@ -35,7 +40,7 @@ export const createSheetPublished = async ({ userId, sheetId, items }) => {
             success: "Лист успешно опубликован.",
         };
     } catch (error) {
-        console.log("Error creating sheetPublished: ", error);
+        console.error("Error creating sheetPublished: ", error);
         return {
             error: "Ошибка публикации листа.",
         };
@@ -43,7 +48,7 @@ export const createSheetPublished = async ({ userId, sheetId, items }) => {
 };
 
 export const getSheetPublished = async (sheetPublishedId) => {
-    const existingSheetPublished = await getSheetPublishedBySheetId(
+    const existingSheetPublished = await getSheetPublishedById(
         sheetPublishedId
     );
     if (!existingSheetPublished) {
@@ -71,6 +76,48 @@ export const getSheetPublished = async (sheetPublishedId) => {
     }
 };
 
-export const updateSheetPublished = async (payload) => {};
+export const getSheetPublishedBySheetId = async (sheetId) => {
+    try {
+        const sheetPublished = await db.sheetPublished.findUnique({
+            where: { sheetId },
+        });
 
-export const deleteSheetPublished = async (id) => {};
+        return sheetPublished;
+    } catch (error) {
+        console.error("Error receiving sheetPublished status: ", error);
+        return {
+            error: "Ошибка получения статуса листа!",
+        };
+    }
+};
+
+export const deleteSheetPublished = async (id, userId) => {
+    const existingSheetPublished = await getSheetPublishedById(id);
+    if (!existingSheetPublished) {
+        return {
+            error: "Несанкционированный доступ!",
+        };
+    }
+
+    const existingUser = await getUserById(userId);
+    if (!existingUser || existingSheetPublished.userId !== existingUser.id) {
+        return {
+            error: "Несанкционированный доступ!",
+        };
+    }
+
+    try {
+        await db.sheetPublished.delete({
+            where: { id: existingSheetPublished.id },
+        });
+
+        return {
+            success: "Лист успешно удален из публикации!",
+        };
+    } catch (error) {
+        console.error("Error deleting sheetPublished: ", error);
+        return {
+            error: "Ошибка удаления листа из публикации!",
+        };
+    }
+};
