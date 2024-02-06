@@ -5,6 +5,7 @@ import { getEntriesBySheetIdByFields } from "@/data/entrie";
 import { getSheetById, getSheetNameById } from "@/data/sheet";
 import { getSheetPublishedById } from "@/data/sheetPublished";
 import { getUserById, getUserNickById } from "@/data/user";
+import { getTagByUserId } from "@/data/tag";
 
 export const createSheetPublished = async ({ userId, sheetId, items }) => {
     const existingUser = await getUserById(userId);
@@ -57,14 +58,17 @@ export const getSheetPublished = async (sheetPublishedId) => {
         };
     }
 
-    const { id, userId, sheetId, ...rest } = existingSheetPublished;
+    const { id, userId, sheetId, date, ...rest } = existingSheetPublished;
+
     try {
         const userNick = await getUserNickById(userId);
+        const tagsUser = await getTagByUserId(userId);
         const sheetName = await getSheetNameById(sheetId);
         const entrieFields = await getEntriesBySheetIdByFields(sheetId, rest);
 
         return {
             userNick,
+            tagsUser,
             sheetName,
             deals: entrieFields,
         };

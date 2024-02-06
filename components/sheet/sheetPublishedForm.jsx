@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -22,7 +23,8 @@ import {
     deleteSheetPublished,
     getSheetPublishedBySheetId,
 } from "@/actions/sheetPublished";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import CopyableLink from "../copyableLink";
 
 const items = [
     { id: "name", label: "Тикер" },
@@ -45,6 +47,7 @@ const items = [
 ];
 
 export default function SheetPublishedForm({ userId, sheetId }) {
+    const router = useRouter();
     const [isPublished, setIsPublished] = useState(false);
     const [sheetPublishedId, setSheetPublishedId] = useState("");
 
@@ -128,10 +131,9 @@ export default function SheetPublishedForm({ userId, sheetId }) {
 
     return isPublished ? (
         <>
-            <Link
-                href={`${process.env.NEXT_PUBLIC_APP_URL}/published/${sheetPublishedId}`}
-                className="flex items-center justify-center w-max h-8 mx-auto px-3 border border-gray-400 rounded-lg text-sm"
-            >{`${process.env.NEXT_PUBLIC_APP_URL}/published/${sheetPublishedId}`}</Link>
+            <CopyableLink
+                linkToCopy={`${process.env.NEXT_PUBLIC_APP_URL}/published?id=${sheetPublishedId}`}
+            />
 
             <Button
                 type="button"

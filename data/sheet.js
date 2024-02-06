@@ -40,11 +40,11 @@ export const getSheetNameById = async (sheetId) => {
                 id: sheetId,
             },
             select: {
-                name,
+                name: true,
             },
         });
 
-        return sheetName;
+        return sheetName.name;
     } catch (error) {
         return null;
     }

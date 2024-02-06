@@ -1,8 +1,8 @@
+import { initHeaders } from "@/app/api/initData";
 import CheckboxOrNumber from "@/components/deals/common/checkboxOrNumber";
 import SelectFilterButton from "@/components/deals/common/selectFilterButton";
 
 export default function TableHead({
-    initHeaders,
     checkAll,
     columnWidth,
     onResize,

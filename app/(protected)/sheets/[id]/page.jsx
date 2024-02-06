@@ -5,6 +5,7 @@ import { getResults } from "@/actions/result";
 import { getTags } from "@/actions/tag";
 import { getRisksRewards } from "@/actions/riskReward";
 import Table from "@/components/deals/table";
+import SheetWrapper from "@/components/sheet/sheetWrapper";
 
 export async function generateMetadata({ params }) {
     // прочитать параметры маршрута
@@ -29,10 +30,7 @@ export default async function SheetPage({ params, searchParams }) {
     const tagsData = await getTags(user.id);
 
     return (
-        <main
-            style={{ height: `calc(100vh - 104px)` }}
-            className="flex flex-col mx-auto mt-8 p-4 pb-0 relative overflow-x-hidden"
-        >
+        <SheetWrapper>
             <Sheets userId={user.id} sheetsData={sheetsData} sheetId={id} />
 
             <Table
@@ -42,6 +40,6 @@ export default async function SheetPage({ params, searchParams }) {
                 risksRewarsData={risksRewarsData}
                 tagsData={tagsData}
             />
-        </main>
+        </SheetWrapper>
     );
 }
