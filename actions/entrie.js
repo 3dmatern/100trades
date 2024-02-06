@@ -11,7 +11,7 @@ import { deleteFile } from "./files";
 import { areTwoWorkdaysPassed } from "@/utils/areTwoWorkdaysPassed";
 import { areWorkhoursPassed } from "@/utils/areWorkhoursPassed";
 
-const daysToPass = 2;
+const daysToPass = 172800000;
 
 export const createEntrie = async ({ userId, sheetId }) => {
     noStore();
@@ -145,8 +145,9 @@ export const updateEntrie = async (userId, values) => {
         }
     } else if (existingEntrie.exitDate && exitDate === "") {
         timeInTrade = "";
+        take = "Рано";
     }
-
+    console.log(typeof exitDate);
     const existingSheet = await getSheetById(sheetId);
     if (!existingSheet) {
         return {

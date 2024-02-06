@@ -1,25 +1,23 @@
 export function areTwoWorkdaysPassed(endDate) {
-    const millisecondsInDay = 86400000;
+    // Создаем объект даты с указанным временем завершения сделки и часовым поясом пользователя
+    const completionDate = new Date(endDate);
+    completionDate.setTime(
+        completionDate.getTime() +
+            completionDate.getTimezoneOffset() * 60 * 1000
+    );
+    completionDate.toLocaleString("ru-RU", { timeZone: "Europe/Moscow" });
 
-    // Установка даты начала и конца с учетом времени
-    const start = new Date(endDate);
-    const end = new Date();
+    // Получаем текущую дату и время в часовом поясе пользователя
+    const currentDate = new Date();
+    currentDate.toLocaleString("ru-RU", { timeZone: "Europe/Moscow" });
 
-    // Рассчитываем разницу в днях
-    const daysDiff = Math.floor((end - start) / millisecondsInDay);
-
-    // Переменная для подсчета прошедших рабочих дней
-    let workdaysPassed = 0;
-
-    // Итерируемся по дням между start и end
-    for (let i = 0; i <= daysDiff; i++) {
-        const currentDate = new Date(start.getTime() + i * millisecondsInDay);
-
-        // Проверка, не попадает ли текущий день на выходной (суббота или воскресенье)
-        if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6) {
-            workdaysPassed++;
-        }
+    // Исключаем выходные дни
+    while (currentDate.getDay() === 0 || currentDate.getDay() === 6) {
+        currentDate.setDate(currentDate.getDate() - 1);
     }
 
-    return workdaysPassed;
+    // Вычисляем разницу в миллисекундах
+    const elapsedTime = currentDate - completionDate;
+
+    return elapsedTime;
 }
