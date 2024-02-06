@@ -16,7 +16,7 @@ import {
     sortByDescResult,
     sortByDescString,
 } from "@/utils/sortBy";
-import TableInfo from "./tablePublishedInfo";
+import TablePublishedInfo from "@/components/dealsPublished/tablePublishedInfo";
 import { initColumnWidth } from "@/app/api/initData";
 
 export default function TablePublished({
@@ -118,7 +118,7 @@ export default function TablePublished({
     return (
         <div className="flex-1 h-full relative overflow-x-auto">
             <div className="table mx-auto w-max h-full border-collapse">
-                <TableInfo
+                <TablePublishedInfo
                     columnWidth={columnWidth}
                     deals={deals}
                     results={results}

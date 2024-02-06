@@ -29,8 +29,8 @@ import {
     resetEveryonesProgress,
     updateEveryonesProgress,
 } from "@/utils/operationsWithProgress";
-import AddTableRow from "./addTableRow";
-import TableInfo from "./tableInfo";
+import AddTableRow from "@/components/deals/addTableRow";
+import TableInfo from "@/components/deals/tableInfo";
 import { initColumnWidth } from "@/app/api/initData";
 
 export default function Table({

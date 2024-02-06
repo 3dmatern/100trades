@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 
-import Cell from "./common/cell";
+import Cell from "@/components/dealsPublished/common/cell";
 
-export default function TableInfo({ columnWidth, deals, results }) {
+export default function TablePublishedInfo({ columnWidth, deals, results }) {
     const [quantityWin, setQuantityWin] = useState(0);
     const [quantityLoss, setQuantityLoss] = useState(0);
     const [quantityNoLoss, setQuantityNoLoss] = useState(0);
