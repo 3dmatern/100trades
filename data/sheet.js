@@ -31,3 +31,21 @@ export const getSheetById = async (sheetId) => {
         return null;
     }
 };
+
+export const getSheetNameById = async (sheetId) => {
+    noStore();
+    try {
+        const sheetName = await db.sheet.findUnique({
+            where: {
+                id: sheetId,
+            },
+            select: {
+                name,
+            },
+        });
+
+        return sheetName;
+    } catch (error) {
+        return null;
+    }
+};

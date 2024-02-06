@@ -27,3 +27,21 @@ export const getUserById = async (id) => {
         return null;
     }
 };
+
+export const getUserNickById = async (id) => {
+    try {
+        const user = await db.user.findUnique({
+            where: {
+                id,
+            },
+            select: {
+                firstname,
+                lastname,
+            },
+        });
+
+        return user;
+    } catch (error) {
+        return null;
+    }
+};

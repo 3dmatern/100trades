@@ -16,14 +16,13 @@ const daysToPass = 2;
 export const createEntrie = async ({ userId, sheetId }) => {
     noStore();
     const existingUser = await getUserById(userId);
-
     if (!existingUser) {
         return {
             error: "Несанкционированный доступ!",
         };
     }
-    const existingSheet = await getSheetById(sheetId);
 
+    const existingSheet = await getSheetById(sheetId);
     if (!existingSheet || existingSheet.userId !== existingUser.id) {
         return {
             error: "Несанкционированный доступ!",

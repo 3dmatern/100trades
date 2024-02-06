@@ -17,6 +17,28 @@ export const getEntriesBySheetId = async (sheetId) => {
     }
 };
 
+export const getEntriesBySheetIdByFields = async (sheetId, fields) => {
+    noStore();
+    try {
+        const entries = await db.entrie.findMany({
+            where: { sheetId },
+            orderBy: {
+                date: "asc",
+            },
+            select: {
+                ...fields.reduce((acc, field) => {
+                    acc[field] = true;
+                    return acc;
+                }, {}),
+            },
+        });
+
+        return entries;
+    } catch (error) {
+        return null;
+    }
+};
+
 export const getEntrieById = async (entrieId) => {
     noStore();
     try {

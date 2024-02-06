@@ -63,7 +63,7 @@ export default function SheetPublishedForm({ userId, sheetId }) {
         },
     });
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         // try {
         //     const data = {};
         //     if (data.error) {
