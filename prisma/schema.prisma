@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL")
+  url      = env("POSTGRES_PRISMA_URL")
 }
 
 enum UserRole {
@@ -13,103 +13,132 @@ enum UserRole {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  firstname     String?
-  lastname      String?
-  email         String    @unique
-  emailVerified DateTime?
-  password      String?
-  role          UserRole  @default(USER)
-  sheets        Sheet[]
-  tags          Tag[]
+  id             String           @id @default(cuid())
+  firstname      String?
+  lastname       String?
+  email          String           @unique
+  emailVerified  DateTime?
+  password       String?
+  role           UserRole         @default(USER)
+  sheets         Sheet[]
+  tags           Tag[]
+  sheetPublished SheetPublished[]
 }
 
 model Sheet {
-  id                 String  @id @default(cuid())
-  userId             String
-  name               String
-  date               DateTime @default(dbgenerated("now()"))
-  entries            Entrie[]
-  
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id      String   @id @default(cuid())
+  userId  String
+  name    String
+  date    DateTime @default(dbgenerated("now()"))
+  entries Entrie[]
+
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  sheetPublished SheetPublished?
+}
+
+model SheetPublished {
+  id          String   @id @default(cuid())
+  userId      String
+  sheetId     String   @unique
+  name        String?
+  pose        String?
+  risk        String?
+  profit      String?
+  entryDate   String?
+  imageStart  String?
+  deposit     String?
+  progress    String?
+  exitDate    String?
+  imageEnd    String?
+  take        String?
+  stress      String?
+  notes       String?
+  timeInTrade String?
+  resultId    String?
+  rrId        String?
+  entrieTag   String?
+  date        DateTime @default(dbgenerated("now()"))
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  sheet Sheet @relation(fields: [sheetId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model Result {
-  id                 String  @id @default(cuid())
-  label              String
-  value              String
-  type               Int
-  entries            Entrie[]
+  id      String   @id @default(cuid())
+  label   String
+  value   String
+  type    Int
+  entries Entrie[]
 }
 
 model RiskReward {
-  id                 String  @id @default(cuid())
-  label              String
-  value              String
-  entries            Entrie[]
+  id      String   @id @default(cuid())
+  label   String
+  value   String
+  entries Entrie[]
 }
 
 model Tag {
-  id                 String  @id @default(cuid())
-  userId             String
-  label              String
-  value              String
-  entrieTag          EntrieTag[]
-  
+  id        String      @id @default(cuid())
+  userId    String
+  label     String
+  value     String
+  entrieTag EntrieTag[]
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model Entrie {
-  id                 String  @id @default(cuid())
-  name               String?
-  pose               String?
-  risk               String?
-  profit             String?
-  entryDate          String?
-  imageStart         String?
-  deposit            String?
-  progress           String?
-  exitDate           String?
-  imageEnd           String?
-  take               String?
-  stress             Int?
-  notes              String?
-  timeInTrade        String?
-  sheetId            String
-  resultId           String?
-  rrId               String?
-  date               DateTime @default(dbgenerated("now()"))
-  entrieTag          EntrieTag[]
+  id          String      @id @default(cuid())
+  name        String?
+  pose        String?
+  risk        String?
+  profit      String?
+  entryDate   String?
+  imageStart  String?
+  deposit     String?
+  progress    String?
+  exitDate    String?
+  imageEnd    String?
+  take        String?
+  stress      Int?
+  notes       String?
+  timeInTrade String?
+  sheetId     String
+  resultId    String?
+  rrId        String?
+  date        DateTime    @default(dbgenerated("now()"))
+  entrieTag   EntrieTag[]
 
-  sheet Sheet @relation(fields: [sheetId], references: [id], onDelete: Cascade)
-  results Result? @relation(fields: [resultId], references: [id])
+  sheet        Sheet       @relation(fields: [sheetId], references: [id], onDelete: Cascade)
+  results      Result?     @relation(fields: [resultId], references: [id])
   risksRewards RiskReward? @relation(fields: [rrId], references: [id])
 }
 
 model EntrieTag {
-  id                 String @id @default(cuid())
-  entrieId           String
-  tagId              String
-  date               DateTime @default(dbgenerated("now()"))
+  id       String   @id @default(cuid())
+  entrieId String
+  tagId    String
+  date     DateTime @default(dbgenerated("now()"))
 
   entries Entrie @relation(fields: [entrieId], references: [id], onDelete: Cascade)
-  tags Tag @relation(fields: [tagId], references: [id])
+  tags    Tag    @relation(fields: [tagId], references: [id])
 }
 
 model VerificationToken {
-  id  String @id @default(cuid())
-  email String
-  token String @unique
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
   expires DateTime
 
   @@unique([email, token])
 }
 
 model PasswordResetToken {
-  id String @id @default(cuid())
-  email String
-  token String @unique
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
   expires DateTime
-  
+
   @@unique([email, token])
 }

@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { BeatLoader } from "react-spinners";
-import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import SettingsSheet from "./settingsSheet";
+
+import { cn } from "@/lib/utils";
+import SettingsSheet from "@/components/sheet/settingsSheet";
 
 export default function Sheet({
     className,

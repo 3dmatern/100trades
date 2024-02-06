@@ -35,10 +35,11 @@ const items = [
     { id: "timeInTrade", label: "Время в сделке" },
 ];
 
-export default function SheetPublishedForm({ sheetId }) {
+export default function SheetPublishedForm({ userId, sheetId }) {
     const form = useForm({
         resolver: zodResolver(SheetPublishedSchema),
         defaultValues: {
+            userId,
             sheetId,
             items: [
                 "name",
@@ -137,8 +138,8 @@ export default function SheetPublishedForm({ sheetId }) {
                                         }}
                                     />
                                 ))}
-                                <FormMessage />
                             </FormItem>
+                            <FormMessage className="text-center" />
                         </>
                     )}
                 />

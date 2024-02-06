@@ -9,7 +9,6 @@ import {
     DialogTitle,
     DialogTrigger,
     DialogClose,
-    DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import SheetForm from "@/components/sheet/sheetForm";
@@ -51,7 +50,7 @@ export default function SettingsSheet({
                     </Button>
                 </DialogClose>
 
-                <SheetPublishedForm sheetId={sheet.id} />
+                <SheetPublishedForm userId={userId} sheetId={sheet.id} />
             </DialogContent>
         </Dialog>
     );

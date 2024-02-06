@@ -137,6 +137,9 @@ export const SheetRemoveSchema = z
     });
 
 export const SheetPublishedSchema = z.object({
+    userId: z.string().refine((value) => value.length > 0, {
+        message: "Выберите пользователя.",
+    }),
     sheetId: z.string().refine((value) => value.length > 0, {
         message: "Выберите лист.",
     }),
