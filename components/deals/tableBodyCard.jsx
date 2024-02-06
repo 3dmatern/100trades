@@ -7,7 +7,7 @@ import { getRandomHexColor } from "@/utils/getRandomHexColor";
 import { dealLimitionDateWithTime } from "@/utils/formatedDate";
 
 import BodyCardName from "@/components/deals/common/bodyCardName";
-import BodyCardResult from "@/components/deals/common/bodyCardResult";
+import BodyCardResult from "./common/bodyCardResult";
 import BodyCardPose from "@/components/deals/common/bodyCardPose";
 import BodyCardRisk from "@/components/deals/common/bodyCardRisk";
 import BodyCardProfit from "@/components/deals/common/bodyCardProfit";
