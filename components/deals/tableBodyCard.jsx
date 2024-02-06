@@ -7,7 +7,6 @@ import { getRandomHexColor } from "@/utils/getRandomHexColor";
 import { dealLimitionDateWithTime } from "@/utils/formatedDate";
 
 import BodyCardName from "@/components/deals/common/bodyCardName";
-import BodyCardResult from "./common/bodyCardResult";
 import BodyCardPose from "@/components/deals/common/bodyCardPose";
 import BodyCardRisk from "@/components/deals/common/bodyCardRisk";
 import BodyCardProfit from "@/components/deals/common/bodyCardProfit";
@@ -21,6 +20,7 @@ import BodyCardTags from "@/components/deals/common/bodyCardTags";
 import BodyCardNotes from "@/components/deals/common/bodyCardNotes";
 import BodyCardTakeScreenshot from "@/components/deals/common/bodyCardTakeScreenshot";
 import BodyCardTimeInTrade from "@/components/deals/common/bodyCardTimeInTrade";
+import BodyCardResult from "@/components/deals/common/bodyCardResult";
 
 export default function TableBodyCard({
     userId,
