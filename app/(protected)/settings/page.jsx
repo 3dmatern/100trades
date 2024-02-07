@@ -84,6 +84,7 @@ export default function SettingsPage() {
                                             <FormControl>
                                                 <Input
                                                     {...field}
+                                                    type="text"
                                                     disabled={isPending}
                                                     placeholder="bestTrader"
                                                     autocomplete="off"
