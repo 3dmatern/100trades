@@ -106,6 +106,7 @@ export default function SettingsPage() {
                                                     type="password"
                                                     disabled={isPending}
                                                     placeholder="******"
+                                                    autocomplete="off"
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -126,6 +127,7 @@ export default function SettingsPage() {
                                                     type="password"
                                                     disabled={isPending}
                                                     placeholder="******"
+                                                    autocomplete="off"
                                                 />
                                             </FormControl>
                                             <FormMessage />
