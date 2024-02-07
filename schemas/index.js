@@ -144,7 +144,7 @@ export const SheetPublishedSchema = z.object({
         message: "Выберите лист.",
     }),
     items: z.array(z.string()).refine((value) => value.some((item) => item), {
-        message: "Вам необходимо выбрать хотя бы один столбец.",
+        message: "Вам необходимо выбрать хотя бы одно поле.",
     }),
 });
 
