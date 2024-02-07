@@ -86,6 +86,7 @@ export default function SettingsPage() {
                                                     {...field}
                                                     disabled={isPending}
                                                     placeholder="bestTrader"
+                                                    autocomplete="off"
                                                 />
                                             </FormControl>
                                             <FormMessage />
