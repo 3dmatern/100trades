@@ -9,7 +9,7 @@ export default function BodyCardTimeInTradePublished({
                 className="flex items-center justify-center h-full px-2 border-r text-xs overflow-hidden"
             >
                 <span className="whitespace-nowrap text-ellipsis">
-                    {timeInTrade && timeInTrade + "ч."}
+                    {timeInTrade && timeInTrade}
                 </span>
             </div>
         </div>

@@ -1,26 +1,32 @@
 export function areWorkhoursPassed(startDate, endDate) {
-    const millisecondsInHour = 3600000;
+    const millisecondsInMinute = 60000;
 
     // Установка даты начала и конца с учетом времени
     const start = new Date(startDate);
     const end = new Date(endDate);
 
-    // Рассчитываем разницу в часах
-    const hoursDiff = (end - start) / millisecondsInHour;
+    // Рассчитываем разницу в миллисекундах
+    const timeDiff = end - start;
 
-    // Переменная для подсчета прошедших рабочих часов
+    // Переменные для подсчета прошедших рабочих часов и минут
     let workHoursPassed = 0;
+    let workMinutesPassed = 0;
 
-    // Итерируемся по часам между start и end
-    for (let i = 0; i < hoursDiff; i++) {
-        const currentHour = new Date(start.getTime() + i * millisecondsInHour);
+    // Итерируемся по минутам между start и end
+    for (let i = 0; i < timeDiff / millisecondsInMinute; i++) {
+        const currentMinute = new Date(
+            start.getTime() + i * millisecondsInMinute
+        );
 
-        // Проверка, не попадает ли текущий час на выходной (суббота или воскресенье)
-        if (currentHour.getDay() !== 0 && currentHour.getDay() !== 6) {
-            workHoursPassed++;
+        // Проверка, не попадает ли текущая минута на выходной (суббота или воскресенье)
+        if (currentMinute.getDay() !== 0 && currentMinute.getDay() !== 6) {
+            workMinutesPassed++;
         }
     }
 
-    // Возвращаем количество прошедших рабочих часов
-    return workHoursPassed;
+    // Добавляем прошедшие минуты к часам
+    workHoursPassed += Math.floor(workMinutesPassed / 60);
+
+    // Возвращаем объект с количеством прошедших рабочих часов и минут
+    return `${workHoursPassed}ч. ${workMinutesPassed % 60}мин.`;
 }
