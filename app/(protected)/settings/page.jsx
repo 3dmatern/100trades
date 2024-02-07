@@ -36,6 +36,7 @@ export default function SettingsPage() {
         defaultValues: {
             firstname: user.firstname || undefined,
             lastname: user.lastname || undefined,
+            nickname: user.nickname || undefined,
             password: undefined,
             newPassword: undefined,
         },
@@ -75,6 +76,25 @@ export default function SettingsPage() {
                             onSubmit={form.handleSubmit(onSubmit)}
                             className="space-y-6"
                         >
+                            <div className="space-y-4">
+                                <FormField
+                                    control={form.control}
+                                    name="nickname"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Псевдоним</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    disabled={isPending}
+                                                    placeholder="bestTrader"
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
                             <div className="space-y-4">
                                 <FormField
                                     control={form.control}

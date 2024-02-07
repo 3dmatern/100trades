@@ -10,13 +10,11 @@ import { revalidatePath } from "next/cache";
 
 export const settings = async (values) => {
     const user = await currentUser();
-
     if (!user) {
         return { error: "Несанкционированный доступ!" };
     }
 
     const dbUser = await getUserById(user.id);
-
     if (!dbUser) {
         return { error: "Несанкционированный доступ!" };
     }
@@ -47,6 +45,7 @@ export const settings = async (values) => {
         user: {
             firstname: updatedUser.firstname,
             lastname: updatedUser.lastname,
+            nickname: updatedUser.nickname,
         },
     });
 
