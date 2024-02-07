@@ -43,8 +43,6 @@ export const settings = async (values) => {
 
     update({
         user: {
-            firstname: updatedUser.firstname,
-            lastname: updatedUser.lastname,
             nickname: updatedUser.nickname,
         },
     });

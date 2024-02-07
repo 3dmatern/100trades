@@ -34,8 +34,6 @@ export default function SettingsPage() {
     const form = useForm({
         resolver: zodResolver(SettingsSchema),
         defaultValues: {
-            firstname: user.firstname || undefined,
-            lastname: user.lastname || undefined,
             nickname: user.nickname || undefined,
             password: undefined,
             newPassword: undefined,
@@ -88,44 +86,6 @@ export default function SettingsPage() {
                                                     {...field}
                                                     disabled={isPending}
                                                     placeholder="bestTrader"
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-                            <div className="space-y-4">
-                                <FormField
-                                    control={form.control}
-                                    name="firstname"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Имя</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    {...field}
-                                                    disabled={isPending}
-                                                    placeholder="Джон"
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-                            <div className="space-y-4">
-                                <FormField
-                                    control={form.control}
-                                    name="lastname"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Фамилия</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    {...field}
-                                                    disabled={isPending}
-                                                    placeholder="Доу"
                                                 />
                                             </FormControl>
                                             <FormMessage />

@@ -150,8 +150,6 @@ export const SheetPublishedSchema = z.object({
 
 export const SettingsSchema = z
     .object({
-        firstname: z.optional(z.string()),
-        lastname: z.optional(z.string()),
         nickname: z.optional(z.string()),
         password: z.optional(z.string().min(6)),
         newPassword: z.optional(z.string().min(6)),
