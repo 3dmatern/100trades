@@ -37,12 +37,28 @@ export default function TableInfo({ columnWidth, deals, results }) {
             });
 
             const total = quantityWin + quantityLoss;
-            const resultPercentWin = Math.floor((quantityWin / total) * 100);
-            const resultPercentLoss = Math.ceil((quantityLoss / total) * 100);
+            if (quantityWin > 0) {
+                const resultPercentWin = Math.floor(
+                    (quantityWin / total) * 100
+                );
+                setPercentWin(resultPercentWin);
+            } else {
+                setPercentWin(0);
+            }
+            if (quantityLoss > 0) {
+                const resultPercentLoss = Math.ceil(
+                    (quantityLoss / total) * 100
+                );
+                setPercentLoss(resultPercentLoss);
+            } else {
+                setPercentLoss(0);
+            }
 
-            setPercentWin(resultPercentWin);
-            setPercentLoss(resultPercentLoss);
             setPortfolioRisk(riskSum);
+        } else {
+            setPercentWin(0);
+            setPercentLoss(0);
+            setPortfolioRisk(0);
         }
     }, [deals, results]);
 
