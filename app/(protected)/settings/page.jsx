@@ -87,7 +87,6 @@ export default function SettingsPage() {
                                                     type="text"
                                                     disabled={isPending}
                                                     placeholder="bestTrader"
-                                                    autocomplete="off"
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -108,7 +107,7 @@ export default function SettingsPage() {
                                                     type="password"
                                                     disabled={isPending}
                                                     placeholder="******"
-                                                    autocomplete="off"
+                                                    autocomplete="new-password"
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -129,7 +128,7 @@ export default function SettingsPage() {
                                                     type="password"
                                                     disabled={isPending}
                                                     placeholder="******"
-                                                    autocomplete="off"
+                                                    autocomplete="new-password"
                                                 />
                                             </FormControl>
                                             <FormMessage />
