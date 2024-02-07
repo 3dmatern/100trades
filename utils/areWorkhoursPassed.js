@@ -28,5 +28,5 @@ export function areWorkhoursPassed(startDate, endDate) {
     workHoursPassed += Math.floor(workMinutesPassed / 60);
 
     // Возвращаем объект с количеством прошедших рабочих часов и минут
-    return `${workHoursPassed}ч. ${workMinutesPassed % 60}мин.`;
+    return `${workHoursPassed} ч. ${workMinutesPassed % 60} мин.`;
 }
