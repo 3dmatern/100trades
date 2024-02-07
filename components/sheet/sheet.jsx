@@ -22,9 +22,14 @@ export default function Sheet({
 
     const handleRemoveSheet = (e, sheetId) => {
         e.stopPropagation();
-        setIsPendingRemove(true);
-        onRemoveSheet(sheetId);
-        setIsPendingRemove(false);
+        const isComfirmed = window.confirm(
+            "Вы уверены, что хотите удалить этот ресурс?"
+        );
+        if (isComfirmed) {
+            setIsPendingRemove(true);
+            onRemoveSheet(sheetId);
+            setIsPendingRemove(false);
+        }
     };
 
     useEffect(() => {
