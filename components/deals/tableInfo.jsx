@@ -3,20 +3,17 @@
 import { useEffect, useState } from "react";
 
 import Cell from "./common/cell";
+import { formatPrice } from "@/utils/formattedNumber";
 
 export default function TableInfo({ columnWidth, deals, results }) {
-    const [quantityWin, setQuantityWin] = useState(0);
-    const [quantityLoss, setQuantityLoss] = useState(0);
-    const [quantityNoLoss, setQuantityNoLoss] = useState(0);
-    const [quantityActive, setQuantityActive] = useState(0);
+    const [percentWin, setPercentWin] = useState(0);
+    const [percentLoss, setPercentLoss] = useState(0);
     const [portfolioRisk, setPortfolioRisk] = useState(0);
 
     useEffect(() => {
         if (deals && results && deals.length > 0) {
-            let win = 0;
-            let loss = 0;
-            let noLoss = 0;
-            let active = 0;
+            let quantityWin = 0;
+            let quantityLoss = 0;
             let riskSum = 0;
 
             deals.forEach((d) => {
@@ -24,17 +21,13 @@ export default function TableInfo({ columnWidth, deals, results }) {
                     if (r.id === d.resultId) {
                         switch (r.type) {
                             case 1:
-                                win++;
+                                quantityWin++;
                                 break;
                             case 2:
-                                loss++;
-                                break;
-                            case 3:
-                                noLoss++;
+                                quantityLoss++;
                                 break;
                             case 4:
-                                active++;
-                                riskSum = riskSum + +d.pose * +d.risk;
+                                riskSum = riskSum + (+d.pose / 100) * +d.risk;
                                 break;
                             default:
                                 break;
@@ -43,10 +36,12 @@ export default function TableInfo({ columnWidth, deals, results }) {
                 });
             });
 
-            setQuantityWin(win);
-            setQuantityLoss(loss);
-            setQuantityNoLoss(noLoss);
-            setQuantityActive(active);
+            const total = quantityWin + quantityLoss;
+            const resultPercentWin = Math.floor((quantityWin / total) * 100);
+            const resultPercentLoss = Math.ceil((quantityLoss / total) * 100);
+
+            setPercentWin(resultPercentWin);
+            setPercentLoss(resultPercentLoss);
             setPortfolioRisk(riskSum);
         }
     }, [deals, results]);
@@ -56,22 +51,13 @@ export default function TableInfo({ columnWidth, deals, results }) {
             <Cell columnWidth={columnWidth.column1}></Cell>
             <Cell columnWidth={columnWidth.column2}>
                 <span className=" overflow-hidden whitespace-nowrap text-ellipsis">
-                    W: {quantityWin}
-                </span>
-                <span className=" overflow-hidden whitespace-nowrap text-ellipsis">
-                    L: {quantityLoss}
-                </span>
-                <span className=" overflow-hidden whitespace-nowrap text-ellipsis">
-                    БУ: {quantityNoLoss}
-                </span>
-                <span className=" overflow-hidden whitespace-nowrap text-ellipsis">
-                    A: {quantityActive}
+                    W:L(%) = {percentWin}:{percentLoss}
                 </span>
             </Cell>
             <Cell columnWidth={columnWidth.column3}></Cell>
             <Cell columnWidth={columnWidth.column4}>
                 <span className={portfolioRisk > 0 ? "text-red-600" : ""}>
-                    {portfolioRisk} ₽
+                    ₽ {formatPrice(portfolioRisk)}
                 </span>
             </Cell>
             <Cell columnWidth={columnWidth.column5}></Cell>
