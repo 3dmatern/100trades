@@ -53,9 +53,7 @@ export const getSheetPublished = async (sheetPublishedId) => {
         sheetPublishedId
     );
     if (!existingSheetPublished) {
-        return {
-            error: "Несанкционированный доступ!",
-        };
+        return null;
     }
 
     const { id, userId, sheetId, date, ...rest } = existingSheetPublished;

@@ -1,5 +1,4 @@
 import { BackButton } from "@/components/auth/backButton";
-import Link from "next/link";
 
 export default function NotFound() {
     return (

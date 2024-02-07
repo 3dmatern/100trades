@@ -1,16 +1,22 @@
+import Link from "next/link";
+
 import { getResults } from "@/actions/result";
 import { getRisksRewards } from "@/actions/riskReward";
 import { getSheetPublished } from "@/actions/sheetPublished";
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import TablePublished from "@/components/dealsPublished/tablePublished";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import NotFound from "../not-found";
 
 export default async function PublishedPage({ searchParams }) {
     const { id } = searchParams;
     const sheetPublished = await getSheetPublished(id);
     const resultsData = await getResults();
     const risksRewardsData = await getRisksRewards();
+
+    if (!sheetPublished) {
+        return <NotFound />;
+    }
 
     return (
         <>

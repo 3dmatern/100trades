@@ -35,12 +35,11 @@ export const getUserNickById = async (id) => {
                 id,
             },
             select: {
-                firstname: true,
-                lastname: true,
+                nickname: true,
             },
         });
 
-        return user.firstname + " " + user.lastname;
+        return user.nickname;
     } catch (error) {
         return null;
     }
