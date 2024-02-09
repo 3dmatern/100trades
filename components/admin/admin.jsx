@@ -23,7 +23,7 @@ export function Admin({
                 sheets={sheets}
                 isSelectUserId={isSelectUserId}
                 onSelectSheet={onSelectSheet}
-                className="w-60"
+                className="w-64"
             />
         </div>
     );
