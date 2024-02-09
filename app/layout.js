@@ -27,6 +27,7 @@ export default async function RootLayout({ children }) {
                     {children}
                     <a
                         href="https://winloss.ru"
+                        target="_blank"
                         className="block py-1 text-center text-slate-500 text-sm absolute bottom-0 left-1/2 -translate-x-1/2"
                     >
                         © Школа Трейдинга Хомяка-Спекулянта, winloss.ru
