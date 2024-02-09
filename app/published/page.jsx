@@ -6,7 +6,12 @@ import { getSheetPublished } from "@/actions/sheetPublished";
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import TablePublished from "@/components/dealsPublished/tablePublished";
 import { Button } from "@/components/ui/button";
-import NotFound from "../not-found";
+import NotFound from "@/app/not-found";
+
+export const metadata = {
+    title: "Журнал Сделок / Новые 50 сделок / Хомяк-Спекулянт",
+    description: "Журнал Cделок трейдинга Homa-Trading",
+};
 
 export default async function PublishedPage({ searchParams }) {
     const { id } = searchParams;
