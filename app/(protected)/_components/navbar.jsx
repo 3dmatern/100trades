@@ -5,9 +5,11 @@ import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@/components/auth/userButton";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 export default function Navbar() {
     const pathname = usePathname();
+    const user = useCurrentUser();
     return (
         <nav className="flex items-center justify-between w-full mb-8 p-4 bg-secondary shadow-sm">
             <Link href="/">
@@ -35,6 +37,15 @@ export default function Navbar() {
                 >
                     <Link href="/settings">Настройки профиля</Link>
                 </Button>
+                {user?.role === "ADMIN" && (
+                    <Button
+                        asChild
+                        variant={pathname === "/admin" ? "default" : "outline"}
+                        className="md:block hidden"
+                    >
+                        <Link href="/admin">Админка</Link>
+                    </Button>
+                )}
             </div>
 
             <UserButton />

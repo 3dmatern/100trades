@@ -1,9 +1,14 @@
 "use client";
 
 import { FaUser } from "react-icons/fa";
-import { FaceIcon, GearIcon, ExitIcon } from "@radix-ui/react-icons";
+import {
+    FaceIcon,
+    GearIcon,
+    ExitIcon,
+    RocketIcon,
+} from "@radix-ui/react-icons";
 
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 import {
     DropdownMenu,
@@ -21,7 +26,7 @@ export function UserButton() {
         <DropdownMenu>
             <DropdownMenuTrigger>
                 <Avatar>
-                    <AvatarImage src={user.image || ""} />
+                    <AvatarImage src={user?.image || ""} />
                     <AvatarFallback className="bg-sky-500">
                         <FaUser className="text-white" />
                     </AvatarFallback>
@@ -38,6 +43,13 @@ export function UserButton() {
                         <GearIcon className="w-4 h-4 mr-2" /> Настройки
                     </DropdownMenuItem>
                 </Link>
+                {user?.role === "ADMIN" && (
+                    <Link href="/admin" className="block md:hidden">
+                        <DropdownMenuItem>
+                            <RocketIcon className="w-4 h-4 mr-2" /> Админка
+                        </DropdownMenuItem>
+                    </Link>
+                )}
                 <LogoutButton>
                     <DropdownMenuItem>
                         <ExitIcon className="w-4 h-4 mr-2" /> Выйти

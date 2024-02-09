@@ -1,7 +1,7 @@
 "use client";
 
 import { FormError } from "@/components/formError";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 export function RoleGate({ children, allowedRole }) {
     const { role } = useCurrentUser();

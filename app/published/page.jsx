@@ -47,7 +47,7 @@ export default async function PublishedPage({ searchParams }) {
                     </span>
                 </span>
             </div>
-            <SheetWrapper>
+            <SheetWrapper className="h-[calc(100vh-132px)]">
                 <TablePublished
                     dealsData={sheetPublished?.deals}
                     results={resultsData}

@@ -19,6 +19,7 @@ export default function BodyCardName({
     onCheckDeal,
     isPending,
     onUpdateDeal,
+    isAdmin,
 }) {
     const cellRef = useRef(null);
     const [open, setOpen] = useState(false);
@@ -70,7 +71,7 @@ export default function BodyCardName({
                 onClick={() => setOpen(true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className={`flex items-center h-full pl-7 pr-2 ${
-                    open
+                    open && !isAdmin
                         ? "border border-blue-800"
                         : "border-l border-r border-slate-300"
                 } ${
@@ -85,10 +86,11 @@ export default function BodyCardName({
                     value={dealId}
                     checked={selectedDeals?.includes(dealId)}
                     onChange={onCheckDeal}
+                    isAdmin={isAdmin}
                     className="size-7 absolute top-1/2 left-[2px] -translate-y-1/2"
                 />
 
-                {open ? (
+                {open && !isAdmin ? (
                     <Form {...form}>
                         <form
                             onSubmit={(e) => {

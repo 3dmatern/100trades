@@ -30,7 +30,7 @@ export default async function SheetPage({ params, searchParams }) {
     const tagsData = await getTags(user.id);
 
     return (
-        <SheetWrapper>
+        <SheetWrapper className="md:h-[calc(100vh-132px)] h-[calc(100vh-172px)]">
             <Sheets userId={user.id} sheetsData={sheetsData} sheetId={id} />
 
             <Table

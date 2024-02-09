@@ -8,6 +8,7 @@ export default function BodyCardNotes({
     columnWidth,
     isPending,
     onUpdateDeal,
+    isAdmin,
 }) {
     const textRef = useRef(null);
     const [open, setOpen] = useState(false);
@@ -58,6 +59,7 @@ export default function BodyCardNotes({
                 className="flex items-center justify-start h-full px-2 relative border-r"
             >
                 {open &&
+                !isAdmin &&
                 (!isPending ||
                     (Object.keys(isPending)[1] === "notes" &&
                         isPending.id !== dealId)) ? (

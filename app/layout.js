@@ -4,8 +4,9 @@ import "./globals.css";
 
 import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
 
-const inter = Inter({ subsets: ["cyrillic"] });
+const inter = Inter({ subsets: ["cyrillic", "latin"] });
 
 export const metadata = {
     title: "Журнал Cделок",
@@ -21,9 +22,15 @@ export default async function RootLayout({ children }) {
     return (
         <SessionProvider session={session}>
             <html lang="ru">
-                <body className={inter.className}>
+                <body className={cn("min-w-96", inter.className)}>
                     <Toaster />
                     {children}
+                    <a
+                        href="https://winloss.ru"
+                        className="block py-1 text-center text-slate-500 text-sm absolute bottom-0 left-1/2 -translate-x-1/2"
+                    >
+                        © Школа Трейдинга Хомяка-Спекулянта, winloss.ru
+                    </a>
                 </body>
             </html>
         </SessionProvider>

@@ -16,6 +16,7 @@ export default function BodyCardRisksRewards({
     columnWidth,
     determineTextColor,
     onUpdateDeal,
+    isAdmin,
 }) {
     const listRef = useRef(null);
     const [isPending, startTransaction] = useTransition();
@@ -103,7 +104,7 @@ export default function BodyCardRisksRewards({
                 onClick={() => setActive(true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className={`flex items-center h-full px-2 relative text-xs ${
-                    active ? "border border-blue-800" : "border-r"
+                    active && !isAdmin ? "border border-blue-800" : "border-r"
                 }`}
             >
                 <button
@@ -127,19 +128,21 @@ export default function BodyCardRisksRewards({
                         {currentRR?.label}
                     </span>
 
-                    <Image
-                        src="/arrow-down.svg"
-                        alt="arrow"
-                        width={10}
-                        height={10}
-                        style={{
-                            rotate: open ? "180deg" : "0deg",
-                            transition: "all .3s",
-                        }}
-                    />
+                    {!isAdmin && (
+                        <Image
+                            src="/arrow-down.svg"
+                            alt="arrow"
+                            width={10}
+                            height={10}
+                            style={{
+                                rotate: open ? "180deg" : "0deg",
+                                transition: "all .3s",
+                            }}
+                        />
+                    )}
                 </button>
 
-                {active && (
+                {active && !isAdmin && (
                     <div className="absolute left-0 top-8 z-[1] w-max rounded-md py-2 bg-white border border-gray-300">
                         <input
                             type="text"

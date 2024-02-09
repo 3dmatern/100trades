@@ -11,7 +11,7 @@ export default async function ProfilePage() {
     const user = await currentUser();
 
     return (
-        <main className="w-full h-full md:flex items-start justify-center gap-8 mt-8">
+        <main className="w-full md:flex items-start justify-center gap-8 mt-8">
             <UserInfo label="Профиль" user={user} />
         </main>
     );

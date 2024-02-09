@@ -5,16 +5,18 @@ import { BeatLoader } from "react-spinners";
 import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
+
 import SettingsSheet from "@/components/sheet/settingsSheet";
 
 export default function Sheet({
-    className,
     selectSheet,
     sheet,
     userId,
     onAddSheetRef,
     onUpdateSheet,
     onRemoveSheet,
+    isAdmin,
+    className,
 }) {
     const sheetRef = useRef(null);
     const router = useRouter();
@@ -56,7 +58,7 @@ export default function Sheet({
             ) : (
                 <>
                     <span>{sheet.name}</span>
-                    {sheet.id === selectSheet && (
+                    {!isAdmin && sheet.id === selectSheet && (
                         <SettingsSheet
                             sheet={sheet}
                             userId={userId}

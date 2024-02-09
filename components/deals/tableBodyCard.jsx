@@ -37,6 +37,7 @@ export default function TableBodyCard({
     onCheckDeal,
     isPending,
     onUpdateDeal,
+    isAdmin,
 }) {
     const [hover, setHover] = useState(false);
 
@@ -60,6 +61,7 @@ export default function TableBodyCard({
                 onCheckDeal={onCheckDeal}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
+                isAdmin={isAdmin}
             />
             <BodyCardResult
                 dealId={deal.id}
@@ -68,6 +70,7 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column2}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
+                isAdmin={isAdmin}
             />
             <BodyCardPose
                 dealId={deal.id}
@@ -76,6 +79,7 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column3}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
+                isAdmin={isAdmin}
             />
             <BodyCardRisk
                 dealId={deal.id}
@@ -85,6 +89,7 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column4}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
+                isAdmin={isAdmin}
             />
             <BodyCardProfit
                 dealId={deal.id}
@@ -94,6 +99,7 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column5}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
+                isAdmin={isAdmin}
             />
             <BodyCardRisksRewards
                 userId={userId}
@@ -104,6 +110,7 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column6}
                 determineTextColor={determineTextColor}
                 onUpdateDeal={onUpdateDeal}
+                isAdmin={isAdmin}
             />
             <BodyCardDate
                 dealId={deal.id}
@@ -114,6 +121,7 @@ export default function TableBodyCard({
                 isPending={isPending}
                 disabled={deal.exitDate}
                 onUpdateDeal={onUpdateDeal}
+                isAdmin={isAdmin}
             />
             <BodyCardScreenshot
                 dealId={deal.id}
@@ -126,6 +134,7 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column8}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
+                isAdmin={isAdmin}
             />
             <BodyCardDeposit
                 dealId={deal.id}
@@ -134,6 +143,7 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column9}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
+                isAdmin={isAdmin}
             />
             <BodyCardProgress
                 dealProgress={deal.progress}
@@ -153,6 +163,7 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column11}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
+                isAdmin={isAdmin}
             />
             <BodyCardScreenshot
                 dealId={deal.id}
@@ -165,6 +176,7 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column12}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
+                isAdmin={isAdmin}
             />
             <BodyCardTakeScreenshot
                 takeScreenshot={deal.take}
@@ -177,6 +189,7 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column14}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
+                isAdmin={isAdmin}
             />
             <BodyCardTags
                 userId={userId}
@@ -188,6 +201,7 @@ export default function TableBodyCard({
                 selectedDeals={selectedDeals}
                 determineTextColor={determineTextColor}
                 getRandomHexColor={getRandomHexColor}
+                isAdmin={isAdmin}
             />
             <BodyCardNotes
                 dealId={deal.id}
@@ -195,10 +209,12 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column16}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
+                isAdmin={isAdmin}
             />
             <BodyCardTimeInTrade
                 timeInTrade={deal.timeInTrade}
                 columnWidth={columnWidth.column17}
+                isAdmin={isAdmin}
             />
         </div>
     );

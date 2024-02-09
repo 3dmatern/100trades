@@ -10,6 +10,7 @@ export default function BodyCardResult({
     columnWidth,
     isPending,
     onUpdateDeal,
+    isAdmin,
 }) {
     const listRef = useRef(null);
     const [open, setOpen] = useState(false);
@@ -71,19 +72,21 @@ export default function BodyCardResult({
                     ) : (
                         <span />
                     )}
-                    <Image
-                        src="/arrow-down.svg"
-                        alt="arrow"
-                        width={10}
-                        height={10}
-                        style={{
-                            rotate: open ? "180deg" : "0deg",
-                            transition: "all .3s",
-                        }}
-                    />
+                    {!isAdmin && (
+                        <Image
+                            src="/arrow-down.svg"
+                            alt="arrow"
+                            width={10}
+                            height={10}
+                            style={{
+                                rotate: open ? "180deg" : "0deg",
+                                transition: "all .3s",
+                            }}
+                        />
+                    )}
                 </button>
 
-                {open && (
+                {open && !isAdmin && (
                     <ul className="w-full absolute left-0 top-8 z-[1] rounded-md py-2 bg-white border border-gray-300">
                         {results
                             ?.filter((r) => resultId !== r.id)

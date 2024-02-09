@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 
 import { determineTextColor } from "@/utils/determinateTextColor";
-import { getRandomHexColor } from "@/utils/getRandomHexColor";
 import { dealLimitionDateWithTime } from "@/utils/formatedDate";
 
 import BodyCardNamePublished from "@/components/dealsPublished/common/bodyCardNamePublished";

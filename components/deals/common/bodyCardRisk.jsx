@@ -16,6 +16,7 @@ export default function BodyCardRisk({
     columnWidth,
     isPending,
     onUpdateDeal,
+    isAdmin,
 }) {
     const [open, setOpen] = useState(false);
 
@@ -49,47 +50,53 @@ export default function BodyCardRisk({
                     selectedDeals?.includes(dealId) || dealHover
                         ? "bg-slate-50"
                         : "bg-white"
-                } ${open ? "border border-blue-800" : "border-r"}`}
+                } ${open && !isAdmin ? "border border-blue-800" : "border-r"}`}
             >
                 <span className="absolute top-auto right-2">%</span>
-                <Form {...form}>
-                    <form
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            updateRisk();
-                        }}
-                    >
-                        <FormField
-                            control={form.control}
-                            name="risk"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            type="number"
-                                            step="0.10"
-                                            max={100.0}
-                                            min={0.0}
-                                            disabled={
-                                                isPending &&
-                                                isPending["risk"] &&
-                                                dealId === isPending.id
-                                            }
-                                            onFocus={() => setOpen(true)}
-                                            onBlur={updateRisk}
-                                            className={`w-full h-7 pr-4 text-xs border-none text-start outline-none shadow-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
-                                                dealHover
-                                                    ? "bg-slate-50"
-                                                    : "bg-white"
-                                            }`}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                    </form>
-                </Form>
+                {!isAdmin ? (
+                    <Form {...form}>
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                updateRisk();
+                            }}
+                        >
+                            <FormField
+                                control={form.control}
+                                name="risk"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                                type="number"
+                                                step="0.10"
+                                                max={100.0}
+                                                min={0.0}
+                                                disabled={
+                                                    isPending &&
+                                                    isPending["risk"] &&
+                                                    dealId === isPending.id
+                                                }
+                                                onFocus={() => setOpen(true)}
+                                                onBlur={updateRisk}
+                                                className={`w-full h-7 pr-4 text-xs border-none text-start outline-none shadow-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
+                                                    dealHover
+                                                        ? "bg-slate-50"
+                                                        : "bg-white"
+                                                }`}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        </form>
+                    </Form>
+                ) : (
+                    <span className="text-start overflow-hidden whitespace-nowrap text-ellipsis">
+                        {dealRisk}
+                    </span>
+                )}
             </div>
         </div>
     );

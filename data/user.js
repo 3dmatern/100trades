@@ -1,5 +1,15 @@
 import { db } from "@/lib/db";
 
+export const getAllUsers = async () => {
+    try {
+        const users = await db.user.findMany();
+
+        return users;
+    } catch (error) {
+        return null;
+    }
+};
+
 export const getUserByEmail = async (email) => {
     try {
         const user = await db.user.findUnique({

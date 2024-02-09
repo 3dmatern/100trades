@@ -9,7 +9,12 @@ import SheetAddButton from "@/components/sheet/sheetAddButton";
 import { removeSheet } from "@/actions/sheet";
 import { Button } from "@/components/ui/button";
 
-export default function Sheets({ userId, sheetsData, sheetId }) {
+export default function Sheets({
+    userId,
+    sheetsData,
+    sheetId,
+    isAdmin = false,
+}) {
     const containerRef = useRef(null);
     const contentRef = useRef(null);
     const router = useRouter();
@@ -156,6 +161,7 @@ export default function Sheets({ userId, sheetsData, sheetId }) {
                                 onAddSheetRef={setSheetRefs}
                                 onUpdateSheet={handleUpdateSheet}
                                 onRemoveSheet={handleRemoveSheet}
+                                isAdmin={isAdmin}
                                 className={
                                     sheetId === sheet.id
                                         ? "bg-gray-200"
@@ -163,10 +169,12 @@ export default function Sheets({ userId, sheetsData, sheetId }) {
                                 }
                             />
                         ))}
-                    <SheetAddButton
-                        userId={userId}
-                        onOpenForm={setIsOpenForm}
-                    />
+                    {!isAdmin && (
+                        <SheetAddButton
+                            userId={userId}
+                            onOpenForm={setIsOpenForm}
+                        />
+                    )}
                 </div>
             </div>
 

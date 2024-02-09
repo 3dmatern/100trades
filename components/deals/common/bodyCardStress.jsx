@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 
 export default function BodyCardStress({
@@ -8,6 +9,7 @@ export default function BodyCardStress({
     columnWidth,
     isPending,
     onUpdateDeal,
+    isAdmin,
 }) {
     const [hoveredRating, setHoveredRating] = useState(0);
 
@@ -29,25 +31,27 @@ export default function BodyCardStress({
                     {[1, 2, 3, 4, 5].map((value) => (
                         <span
                             key={value}
-                            onMouseOver={() => handleMouseOver(value)}
-                            onMouseLeave={handleMouseLeave}
+                            onMouseOver={() =>
+                                isAdmin ? null : handleMouseOver(value)
+                            }
+                            onMouseLeave={isAdmin ? null : handleMouseLeave}
                             onClick={() =>
-                                isPending &&
-                                isPending["stress"] &&
-                                dealId === isPending.id
-                                    ? {}
+                                isAdmin ||
+                                (isPending &&
+                                    isPending["stress"] &&
+                                    dealId === isPending.id)
+                                    ? null
                                     : onUpdateDeal({
                                           id: dealId,
                                           stress: value,
                                       })
                             }
-                            className={`block size-2.5 rounded-full cursor-pointer ${
-                                value <= hoveredRating
-                                    ? "bg-red-400"
-                                    : value <= dealStress
-                                    ? "bg-red-600"
-                                    : "bg-slate-200"
-                            }`}
+                            className={cn(
+                                "block size-2.5 rounded-full bg-slate-200",
+                                (value <= hoveredRating && "bg-red-400") ||
+                                    (value <= dealStress && "bg-red-600"),
+                                !isAdmin && "cursor-pointer"
+                            )}
                         />
                     ))}
                 </div>

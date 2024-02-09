@@ -8,6 +8,7 @@ export default function TableHead({
     onResize,
     onCheckAll,
     onSort,
+    isAdmin = false,
 }) {
     const filteredDBName = (dbName) => {
         switch (dbName) {
@@ -44,6 +45,7 @@ export default function TableHead({
                         name="checkAll"
                         checked={checkAll}
                         onChange={onCheckAll}
+                        isAdmin={isAdmin}
                         className="size-7 absolute top-1/2 left-[2px] -translate-y-1/2 bg-gray-50"
                     />
                 </SelectFilterButton>

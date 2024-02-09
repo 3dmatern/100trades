@@ -20,6 +20,7 @@ export default function BodyCardScreenshot({
     height,
     columnWidth,
     onUpdateDeal,
+    isAdmin,
 }) {
     const cellRef = useRef(null);
     const [isPending, startTransaction] = useTransition();
@@ -107,7 +108,7 @@ export default function BodyCardScreenshot({
                 onClick={() => setActive(true)}
                 style={{ width: columnWidth, minWidth: "64px", height: "32px" }}
                 className={`flex items-center justify-center h-full relative text-xs ${
-                    active ? "border border-blue-800" : "border-r"
+                    active && !isAdmin ? "border border-blue-800" : "border-r"
                 }`}
             >
                 {isPending ? (
@@ -164,7 +165,7 @@ export default function BodyCardScreenshot({
                             Удалить скриншот
                         </button>
                     </div>
-                ) : active ? (
+                ) : active && !isAdmin ? (
                     <InputUploadImg
                         name={inputName}
                         width={width}

@@ -19,7 +19,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { useCurrentUser } from "@/hooks/use-current-user";
 import { FormSuccess } from "@/components/formSuccess";
 import { FormError } from "@/components/formError";
 
@@ -61,7 +61,7 @@ export default function SettingsPage() {
     }
 
     return (
-        <main className="w-full h-full md:flex items-start justify-center gap-8 mt-8">
+        <main className="w-full md:flex items-start justify-center gap-8 mt-8">
             <Card className="max-w-[600px] w-full">
                 <CardHeader>
                     <p className="text-2xl font-semibold text-center">
@@ -107,7 +107,7 @@ export default function SettingsPage() {
                                                     type="password"
                                                     disabled={isPending}
                                                     placeholder="******"
-                                                    autocomplete="new-password"
+                                                    autoComplete="new-password"
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -128,7 +128,7 @@ export default function SettingsPage() {
                                                     type="password"
                                                     disabled={isPending}
                                                     placeholder="******"
-                                                    autocomplete="new-password"
+                                                    autoComplete="new-password"
                                                 />
                                             </FormControl>
                                             <FormMessage />

@@ -4,12 +4,13 @@ import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 
 export default function CheckboxOrNumber({
-    className,
     number,
     name,
     value,
     checked,
     onChange,
+    isAdmin,
+    className,
 }) {
     const [move, setMove] = useState(false);
 
@@ -18,11 +19,12 @@ export default function CheckboxOrNumber({
             onMouseEnter={() => setMove(true)}
             onMouseLeave={() => setMove(false)}
             className={cn(
-                "flex items-center justify-center size-8 hover:bg-slate-100",
+                "flex items-center justify-center size-8",
+                !isAdmin && "hover:bg-slate-100",
                 className
             )}
         >
-            {number && !move && !checked ? (
+            {(number && !move && !checked) || isAdmin ? (
                 <p className="text-xs">{number}</p>
             ) : (
                 <input

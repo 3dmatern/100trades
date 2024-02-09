@@ -39,6 +39,7 @@ export default function Table({
     resultsData,
     risksRewarsData,
     tagsData,
+    isAdmin = false,
 }) {
     const [deals, setDeals] = useState([]);
     const [results, setResults] = useState([]);
@@ -377,6 +378,7 @@ export default function Table({
                     onResize={handleResize}
                     onCheckAll={handleCheckAll}
                     onSort={handleSort}
+                    isAdmin={isAdmin}
                 />
 
                 <TableBody
@@ -393,16 +395,19 @@ export default function Table({
                     onCheckDeal={handleCheckDeal}
                     isPending={isPending}
                     onUpdateDeal={handleUpdateDeal}
+                    isAdmin={isAdmin}
                 />
 
-                <AddTableRow
-                    columnWidth={columnWidth}
-                    onCreateDeal={handleCreateDeal}
-                    selectedDeals={selectedDeals}
-                    onRmoveDeal={handleRmoveDeal}
-                    isSortingEnabled={isSortingEnabled}
-                    onResetSort={handleResetSort}
-                />
+                {!isAdmin && (
+                    <AddTableRow
+                        columnWidth={columnWidth}
+                        onCreateDeal={handleCreateDeal}
+                        selectedDeals={selectedDeals}
+                        onRmoveDeal={handleRmoveDeal}
+                        isSortingEnabled={isSortingEnabled}
+                        onResetSort={handleResetSort}
+                    />
+                )}
             </div>
         </div>
     );

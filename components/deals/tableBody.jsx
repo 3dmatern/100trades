@@ -18,6 +18,7 @@ export default function TableBody({
     onCheckDeal,
     isPending,
     onUpdateDeal,
+    isAdmin,
 }) {
     return deals && deals.length >= 0 ? (
         deals?.map((deal, index) => (
@@ -37,6 +38,7 @@ export default function TableBody({
                 onCheckDeal={onCheckDeal}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
+                isAdmin={isAdmin}
             />
         ))
     ) : (
