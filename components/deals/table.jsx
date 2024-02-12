@@ -104,8 +104,6 @@ export default function Table({
             sheetId,
             entryDate:
                 values?.entryDate || dealLimitionDateWithTime(Date.now()),
-            take: "Рано",
-            resultId: values?.resultId || "cls5v07we0003vgq419wuga0g",
         };
 
         await createEntrie(userId, payload).then((data) => {

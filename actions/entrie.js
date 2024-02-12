@@ -15,7 +15,6 @@ const daysToPass = 172800000;
 
 export const createEntrie = async (userId, values) => {
     noStore();
-
     let { sheetId } = values;
 
     const existingUser = await getUserById(userId);
@@ -34,7 +33,12 @@ export const createEntrie = async (userId, values) => {
 
     try {
         const newEntrie = await db.entrie.create({
-            data: { ...values, sheetId: existingSheet.id },
+            data: {
+                resultId: "cls5v07we0003vgq419wuga0g",
+                ...values,
+                sheetId: existingSheet.id,
+                take: "Рано",
+            },
         });
 
         return {
