@@ -16,7 +16,7 @@ export function AdminSelectUser({ users, onSelectUser, className }) {
             <SelectContent>
                 {users.map((u) => (
                     <SelectItem key={u.id} value={u.id}>
-                        {u.nickname}
+                        {u.nickname || u.email}
                     </SelectItem>
                 ))}
             </SelectContent>
