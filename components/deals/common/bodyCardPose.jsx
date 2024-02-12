@@ -33,10 +33,10 @@ export default function BodyCardPose({
     const onSubmit = (values) => {
         if ((!values.pose && !dealPose) || values.pose === dealPose) {
             setOpen(false);
-            form.reset();
             return;
         }
         onUpdateDeal(values);
+        form.reset();
     };
 
     const updatePose = async () => {

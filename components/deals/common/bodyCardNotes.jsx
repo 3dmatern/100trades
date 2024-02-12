@@ -20,26 +20,27 @@ export default function BodyCardNotes({
 
     const updateNote = async () => {
         if ((!dealNotes && !notes) || dealNotes === notes) {
-            setOpen(false);
+            setOpen((prev) => false);
             return;
         }
         onUpdateDeal({ id: dealId, notes: notes });
+        setNotes("");
     };
 
     useEffect(() => {
         if (dealNotes) {
-            setNotes(dealNotes);
+            setNotes((prev) => dealNotes);
         }
     }, [dealNotes]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (textRef.current && !textRef.current.contains(e.target)) {
-                setOpen(false);
+                setOpen((prev) => false);
             }
         };
         const handleScroll = () => {
-            setOpen(false);
+            setOpen((prev) => false);
         };
 
         document.addEventListener("click", handleClickOutside);
@@ -54,7 +55,7 @@ export default function BodyCardNotes({
         <div className="table-cell align-middle h-full">
             <div
                 ref={textRef}
-                onClick={() => setOpen(true)}
+                onClick={() => setOpen((prev) => true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className="flex items-center justify-start h-full px-2 relative border-r"
             >
@@ -75,7 +76,7 @@ export default function BodyCardNotes({
                     />
                 ) : (
                     <span
-                        onClick={() => setOpen(true)}
+                        onClick={() => setOpen((prev) => true)}
                         className="text-xs whitespace-nowrap text-ellipsis overflow-hidden pointer-events-none"
                     >
                         {notes}

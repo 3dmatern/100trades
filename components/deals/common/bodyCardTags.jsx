@@ -23,6 +23,7 @@ export default function BodyCardTags({
     selectedDeals,
     determineTextColor,
     getRandomHexColor,
+    onUpdateDeal,
     isAdmin,
 }) {
     const listRef = useRef(null);
@@ -35,19 +36,20 @@ export default function BodyCardTags({
 
     const handleItemSearch = ({ target }) => {
         if (target.name === "tag") {
-            setTag(target.value);
-            setFilteredTags(
+            setTag((prev) => target.value);
+            setFilteredTags((prev) =>
                 allTags.filter((tag) => tag.label.includes(target.value))
             );
         }
     };
 
     const handleSelectTag = async (tag) => {
-        setOpen(false);
-        setActive(false);
-        setTag("");
+        setOpen((prev) => false);
+        setActive((prev) => false);
+        setTag((prev) => "");
         let selectTag = tag;
         let updTags = allTags;
+        let newDealId = "";
 
         if (!selectTag.id) {
             const { newTag, success, error } = await createTag({
@@ -66,8 +68,12 @@ export default function BodyCardTags({
             }
         }
 
+        if (!dealId) {
+            newDealId = await onUpdateDeal();
+        }
+
         const { success, error } = await createEntrieTag(userId, {
-            entrieId: dealId,
+            entrieId: dealId || newDealId,
             tagId: selectTag.id,
         });
         if (error) {
@@ -81,8 +87,8 @@ export default function BodyCardTags({
 
     const handleRemoveTag = async (e, tagId) => {
         e.stopPropagation();
-        setOpen(false);
-        setActive(false);
+        setOpen((prev) => false);
+        setActive((prev) => false);
 
         await removeEntrieTag(userId, { entrieId: dealId, tagId }).then(
             (data) => {
@@ -100,44 +106,54 @@ export default function BodyCardTags({
     };
 
     const getEntrieTagsData = async (tags, dealId) => {
-        const entrieTagsData = await getEntrieTags(dealId);
-        if (entrieTagsData) {
-            setCurrentTags(
-                tags.filter((tag) =>
-                    entrieTagsData.entrieTags.some((et) => tag.id === et.tagId)
-                )
-            );
+        if (dealId) {
+            const entrieTagsData = await getEntrieTags(dealId);
+            if (entrieTagsData.error) {
+                toast.error(entrieTagsData.error);
+            } else {
+                setCurrentTags((prev) =>
+                    tags.filter((tag) =>
+                        entrieTagsData.entrieTags.some(
+                            (et) => tag.id === et.tagId
+                        )
+                    )
+                );
+            }
+        } else {
+            setCurrentTags((prev) => []);
         }
     };
 
     useEffect(() => {
         if (allTags) {
-            setFilteredTags(allTags);
+            setFilteredTags((prev) => allTags);
         }
     }, [allTags]);
 
     useEffect(() => {
         if ((allTags, dealId)) {
             getEntrieTagsData(allTags, dealId);
+        } else {
+            setCurrentTags((prev) => []);
         }
     }, [allTags, dealId]);
 
     useEffect(() => {
         if (open) {
-            setTagBgColor(getRandomHexColor());
+            setTagBgColor((prev) => getRandomHexColor());
         }
     }, [getRandomHexColor, open]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (listRef.current && !listRef.current.contains(e.target)) {
-                setOpen(false);
-                setActive(false);
+                setOpen((prev) => false);
+                setActive((prev) => false);
             }
         };
         const handleScroll = () => {
-            setOpen(false);
-            setActive(false);
+            setOpen((prev) => false);
+            setActive((prev) => false);
         };
 
         document.addEventListener("click", handleClickOutside);
@@ -151,7 +167,7 @@ export default function BodyCardTags({
     return (
         <div ref={listRef} className="table-cell relative h-full">
             <div
-                onClick={() => setActive(true)}
+                onClick={() => setActive((prev) => true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className="flex items-center justify-start h-full"
             >
@@ -204,7 +220,7 @@ export default function BodyCardTags({
                     {active && !isAdmin && (
                         <Button
                             type="button"
-                            onClick={() => setOpen(!open)}
+                            onClick={() => setOpen((prev) => !prev)}
                             className="flex items-center justify-center size-4 p-0.5 rounded-sm bg-slate-200 hover:bg-slate-300"
                         >
                             <Image

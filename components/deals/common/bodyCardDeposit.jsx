@@ -37,10 +37,10 @@ export default function BodyCardDeposit({
             parseFloat(values.deposit) === 0
         ) {
             setOpen(false);
-            form.reset();
             return;
         }
         onUpdateDeal(values);
+        form.reset();
     };
 
     const updateDeposit = () => {

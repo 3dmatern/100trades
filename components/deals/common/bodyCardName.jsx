@@ -20,7 +20,6 @@ export default function BodyCardName({
     isPending,
     onUpdateDeal,
     isAdmin,
-    isFocus,
 }) {
     const cellRef = useRef(null);
     const inputRef = useRef(null);
@@ -37,7 +36,6 @@ export default function BodyCardName({
     const onSubmit = (values) => {
         if (!values.name && !dealName) {
             setOpen(false);
-            form.reset();
             return;
         }
         onUpdateDeal(values);
@@ -45,15 +43,9 @@ export default function BodyCardName({
 
     const updateName = async () => {
         form.handleSubmit(onSubmit(form.getValues()));
+        form.reset();
         setOpen(false);
     };
-
-    useEffect(() => {
-        if (isFocus) {
-            setOpen((prev) => true);
-            inputRef.current.focus();
-        }
-    }, [isFocus]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -80,7 +72,7 @@ export default function BodyCardName({
                 onClick={() => setOpen(true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className={`flex items-center h-full pl-7 pr-2 ${
-                    (open && !isAdmin) || isFocus
+                    open && !isAdmin
                         ? "border border-blue-800"
                         : "border-l border-r border-slate-300"
                 } ${
@@ -99,7 +91,7 @@ export default function BodyCardName({
                     className="size-7 absolute top-1/2 left-[2px] -translate-y-1/2"
                 />
 
-                {(open && !isAdmin) || isFocus ? (
+                {open && !isAdmin ? (
                     <Form {...form}>
                         <form
                             onSubmit={(e) => {

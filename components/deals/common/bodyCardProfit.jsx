@@ -30,16 +30,18 @@ export default function BodyCardProfit({
 
     const onSubmit = (values) => {
         if (values.profit === dealProfit) {
-            setOpen(false);
-            form.reset();
+            setOpen((prev) => false);
             return;
         }
         onUpdateDeal(values);
+        form.reset();
     };
 
     const updateProfit = async () => {
         form.handleSubmit(onSubmit(form.getValues()));
-        setOpen(false);
+        form.setValue("id", "");
+        form.setValue("profit", "");
+        setOpen((prev) => false);
     };
 
     return (

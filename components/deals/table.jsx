@@ -45,7 +45,6 @@ export default function Table({
 }) {
     const { longShorts } = useLongShort();
     const [deals, setDeals] = useState([]);
-    const [newDealId, setNewDealId] = useState(undefined);
     const [results, setResults] = useState([]);
     const [allTags, setAllTags] = useState([]);
     const [allRRs, setAllRRs] = useState([]);
@@ -97,24 +96,31 @@ export default function Table({
         }));
     };
 
-    const handleCreateDeal = async () => {
-        const values = {
+    const handleCreateDeal = async (values) => {
+        let newDealId = "";
+        delete values?.id;
+        const payload = {
+            ...values,
             sheetId,
-            entryDate: dealLimitionDateWithTime(Date.now()),
+            entryDate:
+                values?.entryDate || dealLimitionDateWithTime(Date.now()),
             take: "Рано",
-            resultId: "cls5v07we0003vgq419wuga0g",
+            resultId: values?.resultId || "cls5v07we0003vgq419wuga0g",
         };
-        await createEntrie(userId, values).then((data) => {
+
+        await createEntrie(userId, payload).then((data) => {
             if (data.error) {
                 toast.error(data.error);
             }
             if (data.success) {
                 const { success, newEntrie } = data;
-                setNewDealId(newEntrie.id);
+                newDealId = newEntrie.id;
                 setDeals((prev) => [...prev, newEntrie]);
                 toast.success(success);
             }
         });
+
+        return newDealId;
     };
 
     const handleUpdateDeal = async (values) => {
@@ -397,7 +403,6 @@ export default function Table({
                     userId={userId}
                     sheetId={sheetId}
                     deals={deals}
-                    newDealId={newDealId}
                     selectedDeals={selectedDeals}
                     results={results}
                     longShorts={longShorts}
@@ -408,14 +413,13 @@ export default function Table({
                     columnWidth={columnWidth}
                     onCheckDeal={handleCheckDeal}
                     isPending={isPending}
+                    onCreateDeal={handleCreateDeal}
                     onUpdateDeal={handleUpdateDeal}
                     isAdmin={isAdmin}
                 />
 
                 {!isAdmin && (
                     <AddTableRow
-                        columnWidth={columnWidth}
-                        onCreateDeal={handleCreateDeal}
                         selectedDeals={selectedDeals}
                         onRmoveDeal={handleRmoveDeal}
                         isSortingEnabled={isSortingEnabled}

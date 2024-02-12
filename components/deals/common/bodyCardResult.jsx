@@ -17,24 +17,25 @@ export default function BodyCardResult({
     const [result, setResult] = useState(undefined);
 
     const handleSelectResult = (res) => {
-        setResult(res);
+        setResult((prev) => res);
         onUpdateDeal({ id: dealId, resultId: res.id });
+        setResult((prev) => undefined);
     };
 
     useEffect(() => {
         if (resultId && results) {
-            setResult(results.find((item) => item.id === resultId));
+            setResult((prev) => results.find((item) => item.id === resultId));
         }
     }, [resultId, results]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (listRef.current && !listRef.current.contains(e.target)) {
-                setOpen(false);
+                setOpen((prev) => false);
             }
         };
         const handleScroll = () => {
-            setOpen(false);
+            setOpen((prev) => false);
         };
 
         document.addEventListener("click", handleClickOutside);
@@ -49,7 +50,7 @@ export default function BodyCardResult({
         <div className="table-cell align-middle h-full">
             <div
                 ref={listRef}
-                onClick={() => setOpen(!open)}
+                onClick={() => setOpen((prev) => !prev)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className="flex items-center h-full px-2 relative border-r border-slate-300"
             >

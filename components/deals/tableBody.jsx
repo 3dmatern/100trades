@@ -8,7 +8,6 @@ export default function TableBody({
     userId,
     sheetId,
     deals,
-    newDealId,
     selectedDeals,
     results,
     longShorts,
@@ -19,6 +18,7 @@ export default function TableBody({
     columnWidth,
     onCheckDeal,
     isPending,
+    onCreateDeal,
     onUpdateDeal,
     isAdmin,
 }) {
@@ -31,7 +31,6 @@ export default function TableBody({
                     sheetId={sheetId}
                     index={index}
                     deal={deal}
-                    newDealId={newDealId}
                     selectedDeals={selectedDeals}
                     results={results}
                     longShorts={longShorts}
@@ -46,6 +45,22 @@ export default function TableBody({
                     isAdmin={isAdmin}
                 />
             ))}
+
+            <TableBodyCard
+                userId={userId}
+                sheetId={sheetId}
+                index={deals.length}
+                results={results}
+                longShorts={longShorts}
+                allRRs={allRRs}
+                onChangeAllRRs={onChangeAllRRs}
+                allTags={allTags}
+                onUpdateAllTags={onUpdateAllTags}
+                columnWidth={columnWidth}
+                onCheckDeal={onCheckDeal}
+                onUpdateDeal={onCreateDeal}
+                isAdmin={isAdmin}
+            />
         </>
     ) : (
         <div

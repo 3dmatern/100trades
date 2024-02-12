@@ -19,24 +19,25 @@ export default function BodyCardLongShort({
     const [longShort, setLongShort] = useState(undefined);
 
     const handleSelectResult = (ls) => {
-        setLongShort(ls);
+        setLongShort((prev) => ls);
         onUpdateDeal({ id: dealId, lsId: ls.id });
+        setLongShort((prev) => undefined);
     };
 
     useEffect(() => {
         if (lsId && longShorts) {
-            setLongShort(longShorts.find((item) => item.id === lsId));
+            setLongShort((prev) => longShorts.find((item) => item.id === lsId));
         }
     }, [lsId, longShorts]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (listRef.current && !listRef.current.contains(e.target)) {
-                setOpen(false);
+                setOpen((prev) => false);
             }
         };
         const handleScroll = () => {
-            setOpen(false);
+            setOpen((prev) => false);
         };
 
         document.addEventListener("click", handleClickOutside);
@@ -51,7 +52,7 @@ export default function BodyCardLongShort({
         <div className="table-cell align-middle h-full">
             <div
                 ref={listRef}
-                onClick={() => setOpen(!open)}
+                onClick={() => setOpen((prev) => !prev)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className="flex items-center h-full px-2 relative border-r border-slate-300"
             >

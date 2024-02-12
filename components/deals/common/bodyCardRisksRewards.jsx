@@ -28,15 +28,15 @@ export default function BodyCardRisksRewards({
     const [rr, setRR] = useState("");
 
     const handleChange = (value) => {
-        setRR(value);
-        setFilterRRs(allRRs.filter((r) => r.label.includes(value)));
+        setRR((prev) => value);
+        setFilterRRs((prev) => allRRs.filter((r) => r.label.includes(value)));
     };
 
     const handleSelectRR = async (e, selectRR) => {
         e.stopPropagation();
-        setRR("");
-        setActive(false);
-        setOpen(false);
+        setRR((prev) => "");
+        setActive((prev) => false);
+        setOpen((prev) => false);
 
         if (!selectRR.id) {
             startTransaction(() => {
@@ -51,15 +51,17 @@ export default function BodyCardRisksRewards({
                     if (data.success) {
                         toast.success(data.success);
                         onChangeAllRRs(data.newRR);
-                        setCurrentRR(data.newRR);
+                        setCurrentRR((prev) => data.newRR);
                         onUpdateDeal({ id: dealId, rrId: data.newRR.id });
+                        setCurrentRR((prev) => undefined);
                         return;
                     }
                 });
             });
         } else {
-            setCurrentRR(selectRR);
+            setCurrentRR((prev) => selectRR);
             onUpdateDeal({ id: dealId, rrId: selectRR.id });
+            setCurrentRR((prev) => undefined);
         }
     };
 
@@ -71,22 +73,24 @@ export default function BodyCardRisksRewards({
 
     useEffect(() => {
         if (allRRs) {
-            setFilterRRs(allRRs);
+            setFilterRRs((prev) => allRRs);
             const color = getRandomHexColor();
-            setLPBgColor(!allRRs.some((l) => l.value === color) && color);
+            setLPBgColor(
+                (prev) => !allRRs.some((l) => l.value === color) && color
+            );
         }
     }, [allRRs]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (listRef.current && !listRef.current.contains(e.target)) {
-                setActive(false);
-                setOpen(false);
+                setActive((prev) => false);
+                setOpen((prev) => false);
             }
         };
         const handleScroll = () => {
-            setActive(false);
-            setOpen(false);
+            setActive((prev) => false);
+            setOpen((prev) => false);
         };
 
         document.addEventListener("click", handleClickOutside);

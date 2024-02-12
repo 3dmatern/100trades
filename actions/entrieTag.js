@@ -17,7 +17,7 @@ export const createEntrieTag = async (userId, values) => {
     const validatedFields = EntrieTagSchema.safeParse(values);
     if (!validatedFields.success) {
         return {
-            error: "Введите значение!",
+            error: "Введите значение или создайте запись!",
         };
     }
     const { entrieId, tagId } = validatedFields.data;

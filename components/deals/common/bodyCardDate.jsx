@@ -23,40 +23,32 @@ export default function BodyCardDate({
 }) {
     const cellRef = useRef(null);
     const [open, setOpen] = useState(false);
-    const [date, setDate] = useState(false);
 
     const form = useForm({
         resolver: zodResolver(EntrieSchema),
         defaultValues: {
             id: dealId,
-            [inputName]: dealDate || undefined,
+            [inputName]: dealDate,
         },
     });
+
     const onSubmit = (values) => {
         if (values[inputName] === dealDate) {
             setOpen(false);
-            form.reset();
             return;
         }
         onUpdateDeal(values);
     };
 
     const updateDate = () => {
-        const newDate = form.getValues(inputName);
-        console.log(newDate);
-        if (newDate) {
-            setDate(dealDateWithTime(newDate));
-        } else {
-            setDate("");
-        }
         form.handleSubmit(onSubmit(form.getValues()));
+        form.reset();
         setOpen(false);
     };
 
     useEffect(() => {
         if (dealDate) {
             form.setValue(inputName, dealDate);
-            setDate(dealDateWithTime(dealDate));
         }
     }, [dealDate, form, inputName]);
 
@@ -129,7 +121,7 @@ export default function BodyCardDate({
                     </Form>
                 ) : (
                     <span className="overflow-hidden whitespace-nowrap text-ellipsis pointer-events-none">
-                        {date}
+                        {dealDate && dealDateWithTime(dealDate)}
                     </span>
                 )}
             </div>

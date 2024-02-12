@@ -30,16 +30,18 @@ export default function BodyCardRisk({
 
     const onSubmit = (values) => {
         if (values.risk === dealRisk) {
-            setOpen(false);
-            form.reset();
+            setOpen((prev) => false);
             return;
         }
         onUpdateDeal(values);
+        form.reset();
     };
 
     const updateRisk = async () => {
         form.handleSubmit(onSubmit(form.getValues()));
-        setOpen(false);
+        form.setValue("id", "");
+        form.setValue("risk", "");
+        setOpen((prev) => false);
     };
 
     return (
@@ -78,7 +80,9 @@ export default function BodyCardRisk({
                                                     isPending["risk"] &&
                                                     dealId === isPending.id
                                                 }
-                                                onFocus={() => setOpen(true)}
+                                                onFocus={() =>
+                                                    setOpen((prev) => true)
+                                                }
                                                 onBlur={updateRisk}
                                                 className={`w-full h-7 pr-4 text-xs border-none text-start outline-none shadow-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
                                                     dealHover
