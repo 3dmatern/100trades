@@ -43,6 +43,7 @@ export default function BodyCardDate({
 
     const updateDate = () => {
         const newDate = form.getValues(inputName);
+        console.log(newDate);
         if (newDate) {
             setDate(dealDateWithTime(newDate));
         } else {

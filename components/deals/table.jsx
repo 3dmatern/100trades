@@ -33,6 +33,7 @@ import AddTableRow from "@/components/deals/addTableRow";
 import TableInfo from "@/components/deals/tableInfo";
 import { COLUMN_WIDTH } from "@/components/constants";
 import { useLongShort } from "@/hooks/use-long-short";
+import { dealLimitionDateWithTime } from "@/utils/formatedDate";
 
 export default function Table({
     userId,
@@ -44,6 +45,7 @@ export default function Table({
 }) {
     const { longShorts } = useLongShort();
     const [deals, setDeals] = useState([]);
+    const [newDealId, setNewDealId] = useState(undefined);
     const [results, setResults] = useState([]);
     const [allTags, setAllTags] = useState([]);
     const [allRRs, setAllRRs] = useState([]);
@@ -96,19 +98,26 @@ export default function Table({
     };
 
     const handleCreateDeal = async () => {
-        await createEntrie({ userId, sheetId }).then((data) => {
+        const values = {
+            sheetId,
+            entryDate: dealLimitionDateWithTime(Date.now()),
+            take: "Рано",
+            resultId: "cls5v07we0003vgq419wuga0g",
+        };
+        await createEntrie(userId, values).then((data) => {
             if (data.error) {
                 toast.error(data.error);
             }
             if (data.success) {
-                setDeals((prev) => [...prev, data.newEntrie]);
-                toast.success(data.success);
+                const { success, newEntrie } = data;
+                setNewDealId(newEntrie.id);
+                setDeals((prev) => [...prev, newEntrie]);
+                toast.success(success);
             }
         });
     };
 
     const handleUpdateDeal = async (values) => {
-        console.log(values);
         setIsPending((prev) => values);
         const dealIndex = deals.findIndex((d) => d.id === values.id);
 
@@ -388,6 +397,7 @@ export default function Table({
                     userId={userId}
                     sheetId={sheetId}
                     deals={deals}
+                    newDealId={newDealId}
                     selectedDeals={selectedDeals}
                     results={results}
                     longShorts={longShorts}

@@ -20,8 +20,10 @@ export default function BodyCardName({
     isPending,
     onUpdateDeal,
     isAdmin,
+    isFocus,
 }) {
     const cellRef = useRef(null);
+    const inputRef = useRef(null);
     const [open, setOpen] = useState(false);
 
     const form = useForm({
@@ -45,6 +47,13 @@ export default function BodyCardName({
         form.handleSubmit(onSubmit(form.getValues()));
         setOpen(false);
     };
+
+    useEffect(() => {
+        if (isFocus) {
+            setOpen((prev) => true);
+            inputRef.current.focus();
+        }
+    }, [isFocus]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -71,7 +80,7 @@ export default function BodyCardName({
                 onClick={() => setOpen(true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className={`flex items-center h-full pl-7 pr-2 ${
-                    open && !isAdmin
+                    (open && !isAdmin) || isFocus
                         ? "border border-blue-800"
                         : "border-l border-r border-slate-300"
                 } ${
@@ -90,7 +99,7 @@ export default function BodyCardName({
                     className="size-7 absolute top-1/2 left-[2px] -translate-y-1/2"
                 />
 
-                {open && !isAdmin ? (
+                {(open && !isAdmin) || isFocus ? (
                     <Form {...form}>
                         <form
                             onSubmit={(e) => {
@@ -103,7 +112,7 @@ export default function BodyCardName({
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem className="space-y-0">
-                                        <FormControl>
+                                        <FormControl ref={inputRef}>
                                             <Input
                                                 {...field}
                                                 disabled={

@@ -28,6 +28,7 @@ export default function TableBodyCard({
     sheetId,
     index,
     deal,
+    newDealId,
     selectedDeals,
     results,
     longShorts,
@@ -63,6 +64,7 @@ export default function TableBodyCard({
                 onCheckDeal={onCheckDeal}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
+                isFocus={newDealId === deal.id}
                 isAdmin={isAdmin}
             />
             <BodyCardResult

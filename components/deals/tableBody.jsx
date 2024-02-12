@@ -8,6 +8,7 @@ export default function TableBody({
     userId,
     sheetId,
     deals,
+    newDealId,
     selectedDeals,
     results,
     longShorts,
@@ -22,27 +23,30 @@ export default function TableBody({
     isAdmin,
 }) {
     return deals && deals.length >= 0 ? (
-        deals?.map((deal, index) => (
-            <TableBodyCard
-                key={deal.id}
-                userId={userId}
-                sheetId={sheetId}
-                index={index}
-                deal={deal}
-                selectedDeals={selectedDeals}
-                results={results}
-                longShorts={longShorts}
-                allRRs={allRRs}
-                onChangeAllRRs={onChangeAllRRs}
-                allTags={allTags}
-                onUpdateAllTags={onUpdateAllTags}
-                columnWidth={columnWidth}
-                onCheckDeal={onCheckDeal}
-                isPending={isPending}
-                onUpdateDeal={onUpdateDeal}
-                isAdmin={isAdmin}
-            />
-        ))
+        <>
+            {deals?.map((deal, index) => (
+                <TableBodyCard
+                    key={deal.id}
+                    userId={userId}
+                    sheetId={sheetId}
+                    index={index}
+                    deal={deal}
+                    newDealId={newDealId}
+                    selectedDeals={selectedDeals}
+                    results={results}
+                    longShorts={longShorts}
+                    allRRs={allRRs}
+                    onChangeAllRRs={onChangeAllRRs}
+                    allTags={allTags}
+                    onUpdateAllTags={onUpdateAllTags}
+                    columnWidth={columnWidth}
+                    onCheckDeal={onCheckDeal}
+                    isPending={isPending}
+                    onUpdateDeal={onUpdateDeal}
+                    isAdmin={isAdmin}
+                />
+            ))}
+        </>
     ) : (
         <div
             className={`flex items-center justify-center h-8 border-l border-r border-b border-slate-300 bg-white`}

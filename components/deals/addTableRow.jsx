@@ -14,6 +14,7 @@ export default function AddTableRow({
         <div className="flex items-center h-8 relative border-r border-b border-slate-300 bg-white hover:bg-slate-50">
             <div className="table-cell align-middle h-full sticky left-0 z-[1] bg-white">
                 <div
+                    onClick={onCreateDeal}
                     style={{
                         width: columnWidth.column1,
                         minWidth: "64px",
@@ -22,7 +23,6 @@ export default function AddTableRow({
                 >
                     <Button
                         type="button"
-                        onClick={onCreateDeal}
                         className="flex items-center justify-center size-7 p-1 rounded-sm bg-slate-50 hover:bg-slate-200"
                     >
                         <Image

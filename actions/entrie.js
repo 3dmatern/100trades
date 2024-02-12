@@ -13,8 +13,11 @@ import { areWorkhoursPassed } from "@/utils/areWorkhoursPassed";
 
 const daysToPass = 172800000;
 
-export const createEntrie = async ({ userId, sheetId }) => {
+export const createEntrie = async (userId, values) => {
     noStore();
+
+    let { sheetId, entryDate, take, resultId } = values;
+
     const existingUser = await getUserById(userId);
     if (!existingUser) {
         return {
@@ -31,7 +34,7 @@ export const createEntrie = async ({ userId, sheetId }) => {
 
     try {
         const newEntrie = await db.entrie.create({
-            data: { sheetId: existingSheet.id, take: "Рано" },
+            data: { sheetId: existingSheet.id, entryDate, take, resultId },
         });
 
         return {
