@@ -16,12 +16,12 @@ import {
     sortByAsc,
     sortByAscDate,
     sortByAscRR,
-    sortByAscResult,
+    sortByAscSelect,
     sortByAscString,
     sortByDesc,
     sortByDescDate,
     sortByDescRR,
-    sortByDescResult,
+    sortByDescSelect,
     sortByDescString,
 } from "@/utils/sortBy";
 import {
@@ -267,12 +267,20 @@ export default function Table({
             );
         };
 
-        const sortByOrderResult = ({ iter, order }) => {
-            setDeals((prev) =>
-                order === "asc"
-                    ? [...sortByAscResult(prev, iter, results)]
-                    : [...sortByDescResult(prev, iter, results)]
-            );
+        const sortByOrderSelect = ({ iter, order }) => {
+            if (iter === "resultId") {
+                setDeals((prev) =>
+                    order === "asc"
+                        ? [...sortByAscSelect(prev, iter, results)]
+                        : [...sortByDescSelect(prev, iter, results)]
+                );
+            } else {
+                setDeals((prev) =>
+                    order === "asc"
+                        ? [...sortByAscSelect(prev, iter, longShorts)]
+                        : [...sortByDescSelect(prev, iter, longShorts)]
+                );
+            }
         };
 
         const sortByOrderRR = ({ iter, order }) => {
@@ -309,7 +317,8 @@ export default function Table({
                 break;
 
             case "resultId":
-                sortByOrderResult(data);
+            case "lsId":
+                sortByOrderSelect(data);
                 break;
 
             case "rrId":

@@ -8,12 +8,12 @@ import {
     sortByAsc,
     sortByAscDate,
     sortByAscRR,
-    sortByAscResult,
+    sortByAscSelect,
     sortByAscString,
     sortByDesc,
     sortByDescDate,
     sortByDescRR,
-    sortByDescResult,
+    sortByDescSelect,
     sortByDescString,
 } from "@/utils/sortBy";
 import TablePublishedInfo from "@/components/dealsPublished/tablePublishedInfo";
@@ -57,8 +57,8 @@ export default function TablePublished({
         const sortByOrderResult = ({ iter, order }) => {
             setDeals((prev) =>
                 order === "asc"
-                    ? [...sortByAscResult(prev, iter, results)]
-                    : [...sortByDescResult(prev, iter, results)]
+                    ? [...sortByAscSelect(prev, iter, results)]
+                    : [...sortByDescSelect(prev, iter, results)]
             );
         };
 

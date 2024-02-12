@@ -34,49 +34,53 @@ export function sortByDescString(data, nameColumn) {
     return result;
 }
 
-export function sortByAscResult(data, nameColumn, results) {
-    let fixData = data.map(
-        (d) =>
-            results.some((r) => r.id === d.resultId) && {
-                ...d,
-                resultId: results.find((r) => r.id === d.resultId).type,
-            }
+export function sortByAscSelect(data, nameColumn, array) {
+    let fixData = data.map((d) =>
+        array.some((r) => r.id === d[nameColumn])
+            ? {
+                  ...d,
+                  [nameColumn]: array.find((r) => r.id === d[nameColumn]).type,
+              }
+            : d
     );
 
     const result = fixData.sort((a, b) => {
         return a[nameColumn] - b[nameColumn];
     });
 
-    fixData = result.map(
-        (d) =>
-            results.some((r) => r.type === d.resultId) && {
-                ...d,
-                resultId: results.find((r) => r.type === d.resultId).id,
-            }
+    fixData = result.map((d) =>
+        array.some((r) => r.type === d[nameColumn])
+            ? {
+                  ...d,
+                  [nameColumn]: array.find((r) => r.type === d[nameColumn]).id,
+              }
+            : d
     );
 
     return fixData;
 }
 
-export function sortByDescResult(data, nameColumn, results) {
-    let fixData = data.map(
-        (d) =>
-            results.some((r) => r.id === d.resultId) && {
-                ...d,
-                resultId: results.find((r) => r.id === d.resultId).type,
-            }
+export function sortByDescSelect(data, nameColumn, array) {
+    let fixData = data.map((d) =>
+        array.some((r) => r.id === d[nameColumn])
+            ? {
+                  ...d,
+                  [nameColumn]: array.find((r) => r.id === d[nameColumn]).type,
+              }
+            : d
     );
 
     const result = fixData.sort((a, b) => {
         return b[nameColumn] - a[nameColumn];
     });
 
-    fixData = result.map(
-        (d) =>
-            results.some((r) => r.type === d.resultId) && {
-                ...d,
-                resultId: results.find((r) => r.type === d.resultId).id,
-            }
+    fixData = result.map((d) =>
+        array.some((r) => r.type === d[nameColumn])
+            ? {
+                  ...d,
+                  [nameColumn]: array.find((r) => r.type === d[nameColumn]).id,
+              }
+            : d
     );
 
     return fixData;

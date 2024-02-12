@@ -34,7 +34,6 @@ export const createEntrie = async (userId, values) => {
     try {
         const newEntrie = await db.entrie.create({
             data: {
-                // resultId: "cls5v07we0003vgq419wuga0g",
                 resultId: "cls66pl7b00031ipjxa72nxyz",
                 ...values,
                 sheetId: existingSheet.id,

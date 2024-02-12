@@ -45,10 +45,12 @@ async function main() {
         {
             label: "long",
             value: "#99BC85",
+            type: 1,
         },
         {
             label: "short",
             value: "#FF8080",
+            type: 2,
         },
     ];
 
