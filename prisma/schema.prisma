@@ -70,6 +70,14 @@ model Result {
   entries Entrie[]
 }
 
+model LongShort {
+  id      String   @id @default(cuid())
+  label   String
+  value   String
+  type    Int
+  entries Entrie[]
+}
+
 model RiskReward {
   id      String   @id @default(cuid())
   label   String
@@ -105,12 +113,14 @@ model Entrie {
   timeInTrade String?
   sheetId     String
   resultId    String?
+  lsId        String?
   rrId        String?
   date        DateTime    @default(dbgenerated("now()"))
   entrieTag   EntrieTag[]
 
   sheet        Sheet       @relation(fields: [sheetId], references: [id], onDelete: Cascade)
   results      Result?     @relation(fields: [resultId], references: [id])
+  longShort    LongShort?  @relation(fields: [lsId], references: [id])
   risksRewards RiskReward? @relation(fields: [rrId], references: [id])
 }
 

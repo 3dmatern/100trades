@@ -41,6 +41,19 @@ async function main() {
         },
     ];
 
+    const longShort = [
+        {
+            label: "long",
+            value: "#99BC85",
+            type: 1,
+        },
+        {
+            label: "short",
+            value: "#FF8080",
+            type: 2,
+        },
+    ];
+
     for (const result of results) {
         const res = await prisma.result.create({
             data: result,
@@ -53,6 +66,13 @@ async function main() {
             data: user,
         });
         console.log("Добавлен: ", us);
+    }
+
+    for (const item of longShort) {
+        const result = await prisma.longShort.create({
+            data: item,
+        });
+        console.log("Добавлен: ", result);
     }
 
     console.log("Всё добавил :)");
