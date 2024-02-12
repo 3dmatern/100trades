@@ -1,6 +1,7 @@
-export const initHeaders = [
+export const HEADERS_COLUMN = [
     { dbName: "name", name: "Тикер", up: false, w: "112px" },
     { dbName: "resultId", name: "Win-Loss", up: true, w: "96px" },
+    { dbName: "lsId", name: "Long-Short", up: true, w: "96px" },
     { dbName: "pose", name: "Поза", up: false, w: "96px" },
     { dbName: "risk", name: "Риск", up: false, w: "70px" },
     { dbName: "profit", name: "Профит", up: false, w: "80px" },
@@ -18,22 +19,23 @@ export const initHeaders = [
     { dbName: "timeInTrade", name: "Время в сделке", up: true, w: "128px" },
 ];
 
-export const initColumnWidth = {
+export const COLUMN_WIDTH = {
     column1: "112px",
     column2: "105px",
     column3: "96px",
-    column4: "70px",
-    column5: "80px",
+    column4: "96px",
+    column5: "70px",
     column6: "80px",
-    column7: "144px",
-    column8: "96px",
-    column9: "112px",
+    column7: "80px",
+    column8: "144px",
+    column9: "96px",
     column10: "112px",
-    column11: "144px",
-    column12: "96px",
-    column13: "112px",
-    column14: "96px",
-    column15: "288px",
-    column16: "176px",
-    column17: "128px",
+    column11: "112px",
+    column12: "144px",
+    column13: "96px",
+    column14: "112px",
+    column15: "96px",
+    column16: "288px",
+    column17: "176px",
+    column18: "128px",
 };

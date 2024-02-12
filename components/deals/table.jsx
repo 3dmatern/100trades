@@ -31,7 +31,8 @@ import {
 } from "@/utils/operationsWithProgress";
 import AddTableRow from "@/components/deals/addTableRow";
 import TableInfo from "@/components/deals/tableInfo";
-import { initColumnWidth } from "@/app/api/initData";
+import { COLUMN_WIDTH } from "@/components/constants";
+import { useLongShort } from "@/hooks/use-long-short";
 
 export default function Table({
     userId,
@@ -41,13 +42,14 @@ export default function Table({
     tagsData,
     isAdmin = false,
 }) {
+    const { longShorts } = useLongShort();
     const [deals, setDeals] = useState([]);
     const [results, setResults] = useState([]);
     const [allTags, setAllTags] = useState([]);
     const [allRRs, setAllRRs] = useState([]);
     const [isPending, setIsPending] = useState(undefined);
     const [checkAll, setCheckAll] = useState(false);
-    const [columnWidth, setColumnWidth] = useState(initColumnWidth);
+    const [columnWidth, setColumnWidth] = useState(COLUMN_WIDTH);
     const [selectedDeals, setSelectedDeals] = useState([]);
     const [isSortingEnabled, setIsSortingEnabled] = useState(false);
 
@@ -106,6 +108,7 @@ export default function Table({
     };
 
     const handleUpdateDeal = async (values) => {
+        console.log(values);
         setIsPending((prev) => values);
         const dealIndex = deals.findIndex((d) => d.id === values.id);
 
@@ -387,6 +390,7 @@ export default function Table({
                     deals={deals}
                     selectedDeals={selectedDeals}
                     results={results}
+                    longShorts={longShorts}
                     allRRs={allRRs}
                     onChangeAllRRs={changeAllRRs}
                     allTags={allTags}

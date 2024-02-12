@@ -113,6 +113,7 @@ export const updateEntrie = async (userId, values) => {
         notes,
         timeInTrade,
         resultId,
+        lsId,
         rrId,
         entrieTag,
     } = validatedFields.data;
@@ -183,6 +184,7 @@ export const updateEntrie = async (userId, values) => {
                 timeInTrade:
                     timeInTrade === "" ? null : timeInTrade || undefined,
                 resultId: resultId || undefined,
+                lsId: lsId || undefined,
                 rrId: rrId || undefined,
                 entrieTag: entrieTag || undefined,
             },

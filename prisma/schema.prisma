@@ -54,6 +54,7 @@ model SheetPublished {
   notes       String?
   timeInTrade String?
   resultId    String?
+  lsId        String?
   rrId        String?
   entrieTag   String?
   date        DateTime @default(dbgenerated("now()"))

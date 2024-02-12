@@ -50,6 +50,7 @@ export const EntrieSchema = z
         notes: z.optional(z.string()),
         timeInTrade: z.optional(z.string()),
         resultId: z.optional(z.string()),
+        lsId: z.optional(z.string()),
         rrId: z.optional(z.string()),
         entrieTag: z.optional(z.array()),
     })

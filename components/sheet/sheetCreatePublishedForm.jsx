@@ -50,6 +50,7 @@ export default function SheetCreatePublishedForm({
                 "notes",
                 "timeInTrade",
                 "resultId",
+                "lsId",
                 "rrId",
                 "entrieTag",
             ],

@@ -20,11 +20,13 @@ import BodyCardTagsPublished from "@/components/dealsPublished/common/bodyCardTa
 import BodyCardNotesPublished from "@/components/dealsPublished/common/bodyCardNotesPublished";
 import BodyCardTakeScreenshotPublished from "@/components/dealsPublished/common/bodyCardTakeScreenshotPublished";
 import BodyCardTimeInTradePublished from "@/components/dealsPublished/common/bodyCardTimeInTradePublished";
+import BodyCardLongShortPublished from "./common/bodyCardLongShortPublished";
 
 export default function TableBodyCard({
     index,
     deal,
     results,
+    longShorts,
     allRRs,
     allTags,
     entrieTag,
@@ -56,36 +58,43 @@ export default function TableBodyCard({
                     columnWidth={columnWidth.column2}
                 />
             )}
+            {deal.lsId !== undefined && (
+                <BodyCardLongShortPublished
+                    lsId={deal.lsId}
+                    longShorts={longShorts}
+                    columnWidth={columnWidth.column3}
+                />
+            )}
             {deal.pose !== undefined && (
                 <BodyCardPosePublished
                     dealPose={deal.pose}
-                    columnWidth={columnWidth.column3}
+                    columnWidth={columnWidth.column4}
                 />
             )}
             {deal.risk !== undefined && (
                 <BodyCardRiskPublished
                     dealRisk={deal.risk}
-                    columnWidth={columnWidth.column4}
+                    columnWidth={columnWidth.column5}
                 />
             )}
             {deal.profit !== undefined && (
                 <BodyCardProfitPublished
                     dealProfit={deal.profit}
-                    columnWidth={columnWidth.column5}
+                    columnWidth={columnWidth.column6}
                 />
             )}
             {deal.rrId !== undefined && (
                 <BodyCardRisksRewardsPublished
                     rrId={deal.rrId}
                     allRRs={allRRs}
-                    columnWidth={columnWidth.column6}
+                    columnWidth={columnWidth.column7}
                     determineTextColor={determineTextColor}
                 />
             )}
             {deal.entryDate !== undefined && (
                 <BodyCardDatePublished
                     dealDate={deal.entryDate}
-                    columnWidth={columnWidth.column7}
+                    columnWidth={columnWidth.column8}
                 />
             )}
             {deal.imageStart !== undefined && (
@@ -95,19 +104,19 @@ export default function TableBodyCard({
                     imageAlt="screenshot start"
                     width={49}
                     height={25}
-                    columnWidth={columnWidth.column8}
+                    columnWidth={columnWidth.column9}
                 />
             )}
             {deal.deposit !== undefined && (
                 <BodyCardDepositPublished
                     dealDeposit={deal.deposit}
-                    columnWidth={columnWidth.column9}
+                    columnWidth={columnWidth.column10}
                 />
             )}
             {deal.progress !== undefined && (
                 <BodyCardProgressPublished
                     dealProgress={deal.progress}
-                    columnWidth={columnWidth.column10}
+                    columnWidth={columnWidth.column11}
                 />
             )}
             {deal.exitDate !== undefined && (
@@ -121,7 +130,7 @@ export default function TableBodyCard({
                     }
                     maxDate={dealLimitionDateWithTime(new Date())}
                     disabled={!deal.entryDate}
-                    columnWidth={columnWidth.column11}
+                    columnWidth={columnWidth.column12}
                 />
             )}
             {deal.imageEnd !== undefined && (
@@ -133,20 +142,20 @@ export default function TableBodyCard({
                     imageAlt="screenshot end"
                     width={49}
                     height={25}
-                    columnWidth={columnWidth.column12}
+                    columnWidth={columnWidth.column13}
                 />
             )}
             {deal.take !== undefined && (
                 <BodyCardTakeScreenshotPublished
                     takeScreenshot={deal.take}
                     dealImageEndSrc={deal.imageEnd}
-                    columnWidth={columnWidth.column13}
+                    columnWidth={columnWidth.column14}
                 />
             )}
             {deal.stress !== undefined && (
                 <BodyCardStressPublished
                     dealStress={deal.stress}
-                    columnWidth={columnWidth.column14}
+                    columnWidth={columnWidth.column15}
                 />
             )}
             {deal.entrieTag !== undefined && (
@@ -154,7 +163,7 @@ export default function TableBodyCard({
                     dealId={deal.id}
                     allTags={allTags}
                     entrieTag={entrieTag}
-                    columnWidth={columnWidth.column15}
+                    columnWidth={columnWidth.column16}
                     dealHover={hover}
                     determineTextColor={determineTextColor}
                 />
@@ -162,13 +171,13 @@ export default function TableBodyCard({
             {deal.notes !== undefined && (
                 <BodyCardNotesPublished
                     dealNotes={deal.notes}
-                    columnWidth={columnWidth.column16}
+                    columnWidth={columnWidth.column17}
                 />
             )}
             {deal.timeInTrade !== undefined && (
                 <BodyCardTimeInTradePublished
                     timeInTrade={deal.timeInTrade}
-                    columnWidth={columnWidth.column17}
+                    columnWidth={columnWidth.column18}
                 />
             )}
         </div>

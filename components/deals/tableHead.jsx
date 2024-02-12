@@ -1,4 +1,4 @@
-import { initHeaders } from "@/app/api/initData";
+import { HEADERS_COLUMN } from "@/components/constants";
 import CheckboxOrNumber from "@/components/deals/common/checkboxOrNumber";
 import SelectFilterButton from "@/components/deals/common/selectFilterButton";
 
@@ -26,7 +26,7 @@ export default function TableHead({
 
     return (
         <div className="flex items-center h-8 sticky left-0 top-8 z-[3] border-t border-b border-slate-300 bg-gray-50">
-            {initHeaders.slice(0, 1).map((item) => (
+            {HEADERS_COLUMN.slice(0, 1).map((item) => (
                 <SelectFilterButton
                     key={item.name}
                     name={item.name}
@@ -51,7 +51,7 @@ export default function TableHead({
                 </SelectFilterButton>
             ))}
 
-            {initHeaders.slice(1).map((item, index) => (
+            {HEADERS_COLUMN.slice(1).map((item, index) => (
                 <SelectFilterButton
                     key={item.name}
                     name={item.name}

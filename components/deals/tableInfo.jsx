@@ -71,12 +71,12 @@ export default function TableInfo({ columnWidth, deals, results }) {
                 </span>
             </Cell>
             <Cell columnWidth={columnWidth.column3}></Cell>
-            <Cell columnWidth={columnWidth.column4}>
+            <Cell columnWidth={columnWidth.column4}></Cell>
+            <Cell columnWidth={columnWidth.column5}>
                 <span className={portfolioRisk > 0 ? "text-red-600" : ""}>
                     ₽ {formatPrice(portfolioRisk)}
                 </span>
             </Cell>
-            <Cell columnWidth={columnWidth.column5}></Cell>
             <Cell columnWidth={columnWidth.column6}></Cell>
             <Cell columnWidth={columnWidth.column7}></Cell>
             <Cell columnWidth={columnWidth.column8}></Cell>
@@ -89,6 +89,7 @@ export default function TableInfo({ columnWidth, deals, results }) {
             <Cell columnWidth={columnWidth.column15}></Cell>
             <Cell columnWidth={columnWidth.column16}></Cell>
             <Cell columnWidth={columnWidth.column17}></Cell>
+            <Cell columnWidth={columnWidth.column18}></Cell>
         </div>
     );
 }

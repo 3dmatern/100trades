@@ -7,6 +7,7 @@ import TablePublishedBodyCard from "@/components/dealsPublished/tablePublishedBo
 export default function TableBody({
     deals,
     results,
+    longShorts,
     allRRs,
     allTags,
     columnWidth,
@@ -18,6 +19,7 @@ export default function TableBody({
                 index={index}
                 deal={deal}
                 results={results}
+                longShorts={longShorts}
                 allRRs={allRRs}
                 allTags={allTags}
                 entrieTag={deal.entrieTag}

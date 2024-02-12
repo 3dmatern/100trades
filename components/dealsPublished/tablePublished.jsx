@@ -17,7 +17,8 @@ import {
     sortByDescString,
 } from "@/utils/sortBy";
 import TablePublishedInfo from "@/components/dealsPublished/tablePublishedInfo";
-import { initColumnWidth } from "@/app/api/initData";
+import { COLUMN_WIDTH } from "@/components/constants";
+import { useLongShort } from "@/hooks/use-long-short";
 
 export default function TablePublished({
     dealsData,
@@ -25,8 +26,9 @@ export default function TablePublished({
     allRRs,
     allTags,
 }) {
-    const [deals, setDeals] = useState(initColumnWidth);
-    const [columnWidth, setColumnWidth] = useState(initColumnWidth);
+    const { longShorts } = useLongShort();
+    const [deals, setDeals] = useState(COLUMN_WIDTH);
+    const [columnWidth, setColumnWidth] = useState(COLUMN_WIDTH);
 
     const handleResize = (column, newWidth) => {
         setColumnWidth((prevWidths) => ({
@@ -132,6 +134,7 @@ export default function TablePublished({
                 <TablePublishedBody
                     deals={deals}
                     results={results}
+                    longShorts={longShorts}
                     allRRs={allRRs}
                     allTags={allTags}
                     columnWidth={columnWidth}

@@ -10,6 +10,7 @@ export default function TableBody({
     deals,
     selectedDeals,
     results,
+    longShorts,
     allRRs,
     onChangeAllRRs,
     allTags,
@@ -30,6 +31,7 @@ export default function TableBody({
                 deal={deal}
                 selectedDeals={selectedDeals}
                 results={results}
+                longShorts={longShorts}
                 allRRs={allRRs}
                 onChangeAllRRs={onChangeAllRRs}
                 allTags={allTags}
