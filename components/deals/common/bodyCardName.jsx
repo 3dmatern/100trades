@@ -81,15 +81,17 @@ export default function BodyCardName({
                         : "bg-white"
                 }`}
             >
-                <CheckboxOrNumber
-                    number={index + 1}
-                    name="deals"
-                    value={dealId}
-                    checked={selectedDeals?.includes(dealId)}
-                    onChange={onCheckDeal}
-                    isAdmin={isAdmin}
-                    className="size-7 absolute top-1/2 left-[2px] -translate-y-1/2"
-                />
+                {dealId && (
+                    <CheckboxOrNumber
+                        number={index + 1}
+                        name="deals"
+                        value={dealId}
+                        checked={selectedDeals?.includes(dealId)}
+                        onChange={onCheckDeal}
+                        isAdmin={isAdmin}
+                        className="size-7 absolute top-1/2 left-[2px] -translate-y-1/2"
+                    />
+                )}
 
                 {open && !isAdmin ? (
                     <Form {...form}>
