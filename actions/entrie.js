@@ -16,7 +16,7 @@ const daysToPass = 172800000;
 export const createEntrie = async (userId, values) => {
     noStore();
 
-    let { sheetId, entryDate, take, resultId } = values;
+    let { sheetId } = values;
 
     const existingUser = await getUserById(userId);
     if (!existingUser) {
