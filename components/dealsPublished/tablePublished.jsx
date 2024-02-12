@@ -54,12 +54,20 @@ export default function TablePublished({
             );
         };
 
-        const sortByOrderResult = ({ iter, order }) => {
-            setDeals((prev) =>
-                order === "asc"
-                    ? [...sortByAscSelect(prev, iter, results)]
-                    : [...sortByDescSelect(prev, iter, results)]
-            );
+        const sortByOrderSelect = ({ iter, order }) => {
+            if (iter === "resultId") {
+                setDeals((prev) =>
+                    order === "asc"
+                        ? [...sortByAscSelect(prev, iter, results)]
+                        : [...sortByDescSelect(prev, iter, results)]
+                );
+            } else {
+                setDeals((prev) =>
+                    order === "asc"
+                        ? [...sortByAscSelect(prev, iter, longShorts)]
+                        : [...sortByDescSelect(prev, iter, longShorts)]
+                );
+            }
         };
 
         const sortByOrderRR = ({ iter, order }) => {
@@ -96,7 +104,8 @@ export default function TablePublished({
                 break;
 
             case "resultId":
-                sortByOrderResult(data);
+            case "lsId":
+                sortByOrderSelect(data);
                 break;
 
             case "rrId":
