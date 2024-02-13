@@ -25,6 +25,7 @@ export default async function RootLayout({ children }) {
                 <body className={cn("min-w-96", inter.className)}>
                     <Toaster />
                     {children}
+                    <div id="modals" />
                     <a
                         href="https://winloss.ru"
                         target="_blank"

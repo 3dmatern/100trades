@@ -29,7 +29,7 @@ export default function BodyCardRisksRewards({
 
     const handleChange = (value) => {
         setRR((prev) => value);
-        setFilterRRs((prev) => allRRs.filter((r) => r.label.includes(value)));
+        setFilterRRs((prev) => allRRs?.filter((r) => r.label.includes(value)));
     };
 
     const handleSelectRR = async (e, selectRR) => {
@@ -67,12 +67,12 @@ export default function BodyCardRisksRewards({
 
     useEffect(() => {
         if (rrId && allRRs) {
-            setCurrentRR(allRRs.find((item) => item.id === rrId));
+            setCurrentRR(allRRs?.find((item) => item.id === rrId));
         }
     }, [allRRs, rrId]);
 
     useEffect(() => {
-        if (allRRs) {
+        if (allRRs.length >= 0) {
             setFilterRRs((prev) => allRRs);
             const color = getRandomHexColor();
             setLPBgColor(

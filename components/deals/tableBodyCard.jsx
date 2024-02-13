@@ -39,6 +39,7 @@ export default function TableBodyCard({
     onCheckDeal,
     isPending,
     onUpdateDeal,
+    onClickDealImg,
     isAdmin,
 }) {
     const [hover, setHover] = useState(false);
@@ -135,8 +136,7 @@ export default function TableBodyCard({
                 isAdmin={isAdmin}
             />
             <BodyCardScreenshot
-                dealId={deal?.id}
-                dealName={deal?.name}
+                deal={deal}
                 inputName="imageStart"
                 dealImageSrc={deal?.imageStart}
                 imageAlt="screenshot start"
@@ -145,6 +145,7 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column9}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
+                onClickDealImg={onClickDealImg}
                 isAdmin={isAdmin}
             />
             <BodyCardDeposit
@@ -177,8 +178,7 @@ export default function TableBodyCard({
                 isAdmin={isAdmin}
             />
             <BodyCardScreenshot
-                dealId={deal?.id}
-                dealName={deal?.name}
+                deal={deal}
                 inputName="imageEnd"
                 dealImageSrc={deal?.imageEnd}
                 imageAlt="screenshot end"
@@ -187,6 +187,7 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column13}
                 isPending={isPending}
                 onUpdateDeal={onUpdateDeal}
+                onClickDealImg={onClickDealImg}
                 isAdmin={isAdmin}
             />
             <BodyCardTakeScreenshot

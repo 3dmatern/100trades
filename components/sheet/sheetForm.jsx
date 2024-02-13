@@ -40,8 +40,8 @@ export default function SheetForm({ sheet, userId, onUpdateSheet }) {
                 const { payload, success } = data;
                 toast.success(success);
                 onUpdateSheet({
-                    sheetId: values.id,
-                    updName: values.name,
+                    sheetId: payload.id,
+                    updName: payload.name,
                 });
             }
         } catch (error) {

@@ -10,6 +10,8 @@ import {
     updateEntrie,
 } from "@/actions/entrie";
 
+import { TableLayout } from "@/components/ui/table-layout";
+import { TableContainer } from "@/components/ui/table-container";
 import TableBody from "@/components/deals/tableBody";
 import TableHead from "@/components/deals/tableHead";
 import {
@@ -42,6 +44,7 @@ export default function Table({
     risksRewarsData,
     tagsData,
     isAdmin = false,
+    onClickDealImg,
 }) {
     const { longShorts } = useLongShort();
     const [deals, setDeals] = useState([]);
@@ -390,8 +393,8 @@ export default function Table({
     }, [tagsData]);
 
     return (
-        <div className="flex-1 h-full relative overflow-x-auto">
-            <div className="table w-max h-full border-collapse">
+        <TableLayout>
+            <TableContainer>
                 <TableInfo
                     columnWidth={columnWidth}
                     deals={deals}
@@ -422,6 +425,7 @@ export default function Table({
                     isPending={isPending}
                     onCreateDeal={handleCreateDeal}
                     onUpdateDeal={handleUpdateDeal}
+                    onClickDealImg={onClickDealImg}
                     isAdmin={isAdmin}
                 />
 
@@ -433,7 +437,7 @@ export default function Table({
                         onResetSort={handleResetSort}
                     />
                 )}
-            </div>
-        </div>
+            </TableContainer>
+        </TableLayout>
     );
 }

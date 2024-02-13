@@ -1,5 +1,3 @@
-"use client";
-
 import { BeatLoader } from "react-spinners";
 
 import TableBodyCard from "@/components/deals/tableBodyCard";
@@ -20,6 +18,7 @@ export default function TableBody({
     isPending,
     onCreateDeal,
     onUpdateDeal,
+    onClickDealImg,
     isAdmin,
 }) {
     return deals && deals.length >= 0 ? (
@@ -42,10 +41,10 @@ export default function TableBody({
                     onCheckDeal={onCheckDeal}
                     isPending={isPending}
                     onUpdateDeal={onUpdateDeal}
+                    onClickDealImg={onClickDealImg}
                     isAdmin={isAdmin}
                 />
             ))}
-
             <TableBodyCard
                 userId={userId}
                 sheetId={sheetId}

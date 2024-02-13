@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 
+import { TableLayout } from "@/components/ui/table-layout";
+import { TableContainer } from "@/components/ui/table-container";
 import TablePublishedHead from "@/components/dealsPublished/tablePublishedHead";
 import TablePublishedBody from "@/components/dealsPublished/tablePublishedBody";
 import {
@@ -127,8 +129,8 @@ export default function TablePublished({
     }, [dealsData]);
 
     return (
-        <div className="flex-1 h-full relative overflow-x-auto">
-            <div className="table mx-auto w-max h-full border-collapse">
+        <TableLayout>
+            <TableContainer>
                 <TablePublishedInfo
                     columnWidth={columnWidth}
                     deals={deals}
@@ -148,7 +150,7 @@ export default function TablePublished({
                     allTags={allTags}
                     columnWidth={columnWidth}
                 />
-            </div>
-        </div>
+            </TableContainer>
+        </TableLayout>
     );
 }

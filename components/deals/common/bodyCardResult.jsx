@@ -23,7 +23,7 @@ export default function BodyCardResult({
     };
 
     useEffect(() => {
-        if (resultId && results) {
+        if (resultId && results.length > 0) {
             setResult((prev) => results.find((item) => item.id === resultId));
         }
     }, [resultId, results]);

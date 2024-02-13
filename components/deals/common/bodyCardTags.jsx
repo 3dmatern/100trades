@@ -112,7 +112,7 @@ export default function BodyCardTags({
                 toast.error(entrieTagsData.error);
             } else {
                 setCurrentTags((prev) =>
-                    tags.filter((tag) =>
+                    tags?.filter((tag) =>
                         entrieTagsData.entrieTags.some(
                             (et) => tag.id === et.tagId
                         )

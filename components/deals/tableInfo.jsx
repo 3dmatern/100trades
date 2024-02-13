@@ -11,7 +11,7 @@ export default function TableInfo({ columnWidth, deals, results }) {
     const [portfolioRisk, setPortfolioRisk] = useState(0);
 
     useEffect(() => {
-        if (deals && results && deals.length > 0) {
+        if (results.length > 0 && deals.length > 0) {
             let quantityWin = 0;
             let quantityLoss = 0;
             let riskSum = 0;
