@@ -25,7 +25,7 @@ export async function resetEveryonesProgress(
             } else if (data.success) {
                 const { payload } = data;
                 setData((prev) => {
-                    const updArray = [...prev];
+                    const updArray = prev.slice();
                     const findIndex = updArray.findIndex(
                         (d) => d.id === payload.id
                     );
@@ -64,7 +64,7 @@ export async function updateEveryonesProgress(
                 const { payload } = data;
 
                 setData((prev) => {
-                    const updArray = [...prev];
+                    const updArray = prev.slice();
                     const findIndex = updArray.findIndex(
                         (d) => d.id === payload.id
                     );

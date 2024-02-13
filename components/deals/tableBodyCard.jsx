@@ -38,9 +38,10 @@ export default function TableBodyCard({
     columnWidth,
     onCheckDeal,
     isPending,
-    onUpdateDeal,
+    onActionDeal,
     onClickDealImg,
     isAdmin,
+    isModal,
 }) {
     const [hover, setHover] = useState(false);
 
@@ -63,8 +64,9 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column1}
                 onCheckDeal={onCheckDeal}
                 isPending={isPending}
-                onUpdateDeal={onUpdateDeal}
+                onActionDeal={onActionDeal}
                 isAdmin={isAdmin}
+                isModal={isModal}
             />
             <BodyCardResult
                 dealId={deal?.id}
@@ -72,7 +74,7 @@ export default function TableBodyCard({
                 results={results}
                 columnWidth={columnWidth.column2}
                 isPending={isPending}
-                onUpdateDeal={onUpdateDeal}
+                onActionDeal={onActionDeal}
                 isAdmin={isAdmin}
             />
             <BodyCardLongShort
@@ -81,7 +83,7 @@ export default function TableBodyCard({
                 longShorts={longShorts}
                 columnWidth={columnWidth.column3}
                 isPending={isPending}
-                onUpdateDeal={onUpdateDeal}
+                onActionDeal={onActionDeal}
                 isAdmin={isAdmin}
             />
             <BodyCardPose
@@ -90,7 +92,7 @@ export default function TableBodyCard({
                 dealHover={hover}
                 columnWidth={columnWidth.column4}
                 isPending={isPending}
-                onUpdateDeal={onUpdateDeal}
+                onActionDeal={onActionDeal}
                 isAdmin={isAdmin}
             />
             <BodyCardRisk
@@ -100,7 +102,7 @@ export default function TableBodyCard({
                 selectedDeals={selectedDeals}
                 columnWidth={columnWidth.column5}
                 isPending={isPending}
-                onUpdateDeal={onUpdateDeal}
+                onActionDeal={onActionDeal}
                 isAdmin={isAdmin}
             />
             <BodyCardProfit
@@ -110,7 +112,7 @@ export default function TableBodyCard({
                 selectedDeals={selectedDeals}
                 columnWidth={columnWidth.column6}
                 isPending={isPending}
-                onUpdateDeal={onUpdateDeal}
+                onActionDeal={onActionDeal}
                 isAdmin={isAdmin}
             />
             <BodyCardRisksRewards
@@ -121,7 +123,7 @@ export default function TableBodyCard({
                 onChangeAllRRs={onChangeAllRRs}
                 columnWidth={columnWidth.column7}
                 determineTextColor={determineTextColor}
-                onUpdateDeal={onUpdateDeal}
+                onActionDeal={onActionDeal}
                 isAdmin={isAdmin}
             />
             <BodyCardDate
@@ -132,29 +134,31 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column8}
                 isPending={isPending}
                 disabled={deal?.exitDate}
-                onUpdateDeal={onUpdateDeal}
+                onActionDeal={onActionDeal}
                 isAdmin={isAdmin}
             />
-            <BodyCardScreenshot
-                deal={deal}
-                inputName="imageStart"
-                dealImageSrc={deal?.imageStart}
-                imageAlt="screenshot start"
-                width={49}
-                height={25}
-                columnWidth={columnWidth.column9}
-                isPending={isPending}
-                onUpdateDeal={onUpdateDeal}
-                onClickDealImg={onClickDealImg}
-                isAdmin={isAdmin}
-            />
+            {!isModal && (
+                <BodyCardScreenshot
+                    deal={deal}
+                    inputName="imageStart"
+                    dealImageSrc={deal?.imageStart}
+                    imageAlt="screenshot start"
+                    width={49}
+                    height={25}
+                    columnWidth={columnWidth.column9}
+                    isPending={isPending}
+                    onActionDeal={onActionDeal}
+                    onClickDealImg={onClickDealImg}
+                    isAdmin={isAdmin}
+                />
+            )}
             <BodyCardDeposit
                 dealId={deal?.id}
                 dealDeposit={deal?.deposit}
                 dealHover={hover}
                 columnWidth={columnWidth.column10}
                 isPending={isPending}
-                onUpdateDeal={onUpdateDeal}
+                onActionDeal={onActionDeal}
                 isAdmin={isAdmin}
             />
             <BodyCardProgress
@@ -162,7 +166,6 @@ export default function TableBodyCard({
                 columnWidth={columnWidth.column11}
             />
             <BodyCardDate
-                userId={userId}
                 sheetId={sheetId}
                 dealId={deal?.id}
                 inputName="exitDate"
@@ -174,22 +177,24 @@ export default function TableBodyCard({
                 disabled={!deal?.entryDate}
                 columnWidth={columnWidth.column12}
                 isPending={isPending}
-                onUpdateDeal={onUpdateDeal}
+                onActionDeal={onActionDeal}
                 isAdmin={isAdmin}
             />
-            <BodyCardScreenshot
-                deal={deal}
-                inputName="imageEnd"
-                dealImageSrc={deal?.imageEnd}
-                imageAlt="screenshot end"
-                width={49}
-                height={25}
-                columnWidth={columnWidth.column13}
-                isPending={isPending}
-                onUpdateDeal={onUpdateDeal}
-                onClickDealImg={onClickDealImg}
-                isAdmin={isAdmin}
-            />
+            {!isModal && (
+                <BodyCardScreenshot
+                    deal={deal}
+                    inputName="imageEnd"
+                    dealImageSrc={deal?.imageEnd}
+                    imageAlt="screenshot end"
+                    width={49}
+                    height={25}
+                    columnWidth={columnWidth.column13}
+                    isPending={isPending}
+                    onActionDeal={onActionDeal}
+                    onClickDealImg={onClickDealImg}
+                    isAdmin={isAdmin}
+                />
+            )}
             <BodyCardTakeScreenshot
                 takeScreenshot={deal?.take}
                 dealImageEndSrc={deal?.imageEnd}
@@ -200,7 +205,7 @@ export default function TableBodyCard({
                 dealStress={deal?.stress}
                 columnWidth={columnWidth.column15}
                 isPending={isPending}
-                onUpdateDeal={onUpdateDeal}
+                onActionDeal={onActionDeal}
                 isAdmin={isAdmin}
             />
             <BodyCardTags
@@ -213,7 +218,7 @@ export default function TableBodyCard({
                 selectedDeals={selectedDeals}
                 determineTextColor={determineTextColor}
                 getRandomHexColor={getRandomHexColor}
-                onUpdateDeal={onUpdateDeal}
+                onActionDeal={onActionDeal}
                 isAdmin={isAdmin}
             />
             <BodyCardNotes
@@ -221,7 +226,7 @@ export default function TableBodyCard({
                 dealNotes={deal?.notes}
                 columnWidth={columnWidth.column17}
                 isPending={isPending}
-                onUpdateDeal={onUpdateDeal}
+                onActionDeal={onActionDeal}
                 isAdmin={isAdmin}
             />
             <BodyCardTimeInTrade

@@ -8,7 +8,7 @@ export default function BodyCardStress({
     dealStress,
     columnWidth,
     isPending,
-    onUpdateDeal,
+    onActionDeal,
     isAdmin,
 }) {
     const [hoveredRating, setHoveredRating] = useState(0);
@@ -41,7 +41,7 @@ export default function BodyCardStress({
                                     isPending["stress"] &&
                                     dealId === isPending.id)
                                     ? null
-                                    : onUpdateDeal({
+                                    : onActionDeal({
                                           id: dealId,
                                           stress: value,
                                       })

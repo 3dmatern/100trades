@@ -11,7 +11,7 @@ export default function BodyCardLongShort({
     longShorts,
     columnWidth,
     isPending,
-    onUpdateDeal,
+    onActionDeal,
     isAdmin,
 }) {
     const listRef = useRef(null);
@@ -20,7 +20,7 @@ export default function BodyCardLongShort({
 
     const handleSelectResult = (ls) => {
         setLongShort((prev) => ls);
-        onUpdateDeal({ id: dealId, lsId: ls.id });
+        onActionDeal({ id: dealId, lsId: ls.id });
         setLongShort((prev) => undefined);
     };
 

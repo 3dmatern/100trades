@@ -54,7 +54,6 @@ export const createEntrie = async (userId, values) => {
 };
 
 export const getEntries = async (sheetId) => {
-    noStore();
     const existingSheet = await getSheetById(sheetId);
 
     if (!existingSheet) {

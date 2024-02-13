@@ -20,6 +20,7 @@ export default function TableBody({
     onUpdateDeal,
     onClickDealImg,
     isAdmin,
+    isModal,
 }) {
     return deals && deals.length >= 0 ? (
         <>
@@ -40,26 +41,28 @@ export default function TableBody({
                     columnWidth={columnWidth}
                     onCheckDeal={onCheckDeal}
                     isPending={isPending}
-                    onUpdateDeal={onUpdateDeal}
+                    onActionDeal={onUpdateDeal}
                     onClickDealImg={onClickDealImg}
                     isAdmin={isAdmin}
+                    isModal={isModal}
                 />
             ))}
-            <TableBodyCard
-                userId={userId}
-                sheetId={sheetId}
-                index={deals.length}
-                results={results}
-                longShorts={longShorts}
-                allRRs={allRRs}
-                onChangeAllRRs={onChangeAllRRs}
-                allTags={allTags}
-                onUpdateAllTags={onUpdateAllTags}
-                columnWidth={columnWidth}
-                onCheckDeal={onCheckDeal}
-                onUpdateDeal={onCreateDeal}
-                isAdmin={isAdmin}
-            />
+            {!isModal && !isAdmin && (
+                <TableBodyCard
+                    userId={userId}
+                    sheetId={sheetId}
+                    index={deals.length}
+                    results={results}
+                    longShorts={longShorts}
+                    allRRs={allRRs}
+                    onChangeAllRRs={onChangeAllRRs}
+                    allTags={allTags}
+                    onUpdateAllTags={onUpdateAllTags}
+                    columnWidth={columnWidth}
+                    onCheckDeal={onCheckDeal}
+                    onActionDeal={onCreateDeal}
+                />
+            )}
         </>
     ) : (
         <div

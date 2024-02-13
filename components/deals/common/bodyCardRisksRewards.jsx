@@ -15,7 +15,7 @@ export default function BodyCardRisksRewards({
     onChangeAllRRs,
     columnWidth,
     determineTextColor,
-    onUpdateDeal,
+    onActionDeal,
     isAdmin,
 }) {
     const listRef = useRef(null);
@@ -52,7 +52,10 @@ export default function BodyCardRisksRewards({
                         toast.success(data.success);
                         onChangeAllRRs(data.newRR);
                         setCurrentRR((prev) => data.newRR);
-                        onUpdateDeal({ id: dealId, rrId: data.newRR.id });
+                        onActionDeal({
+                            id: dealId,
+                            rrId: data.newRR.id,
+                        });
                         setCurrentRR((prev) => undefined);
                         return;
                     }
@@ -60,7 +63,7 @@ export default function BodyCardRisksRewards({
             });
         } else {
             setCurrentRR((prev) => selectRR);
-            onUpdateDeal({ id: dealId, rrId: selectRR.id });
+            onActionDeal({ id: dealId, rrId: selectRR.id });
             setCurrentRR((prev) => undefined);
         }
     };

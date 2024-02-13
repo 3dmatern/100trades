@@ -22,7 +22,7 @@ export function DealScreenshotModal({
             width="full"
             isOpen={isOpen}
             onClose={onClose}
-            className="py-5 z-10 overflow-hidden"
+            className="py-5 z-10 overflow-y-auto"
         >
             <UiModal.Header className="text-white">{deal?.name}</UiModal.Header>
             <UiModal.Body className="max-h-[80%] mx-auto px-10">
@@ -64,7 +64,7 @@ export function DealScreenshotModal({
                     <CarouselNext />
                 </Carousel>
             </UiModal.Body>
-            <UiModal.Footer>
+            <UiModal.Footer className="flex-col">
                 <button
                     type="button"
                     onClick={() =>
@@ -74,7 +74,7 @@ export function DealScreenshotModal({
                             fileName: deal?.[currentScreen],
                         })
                     }
-                    className="w-max py-1 px-2 absolute bottom-10 left-1/2 -translate-x-1/2 bg-red-700 hover:bg-red-500 rounded-md text-white"
+                    className="w-max mx-auto py-1 px-2 h-8 bg-red-700 hover:bg-red-500 rounded-md text-white"
                 >
                     Удалить скриншот
                 </button>

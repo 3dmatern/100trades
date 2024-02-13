@@ -8,12 +8,15 @@ import { useSheets } from "@/hooks/use-sheets";
 import { useResults } from "@/hooks/use-results";
 import { useRisksRewards } from "@/hooks/use-risks-rewards";
 import { useTags } from "@/hooks/use-tags";
+import { useDeals } from "@/hooks/use-deals";
+
+import { deleteFile } from "@/actions/files";
 
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Sheets from "@/components/sheet/sheets";
 import Table from "@/components/deals/table";
-import { deleteFile } from "@/actions/files";
 import { DealScreenshotModal } from "@/components/ui/deal-screenshot-modal";
+import { useLongShort } from "@/hooks/use-long-short";
 
 export default function SheetPage({ params }) {
     const { id } = params;
@@ -21,7 +24,22 @@ export default function SheetPage({ params }) {
     const user = useCurrentUser();
     const { sheets, handleSheetUpdate, handleRemoveSheet } = useSheets(user.id);
     const { results } = useResults();
+    const { longShorts } = useLongShort();
     const { risksRewards } = useRisksRewards();
+    const {
+        deals,
+        selectedDeals,
+        checkAll,
+        isSortingEnabled,
+        isPending,
+        onCreateDeal,
+        onUpdateDeal,
+        onRemoveDeal,
+        onCheckAll,
+        onCheckDeal,
+        onSort,
+        onResetSort,
+    } = useDeals(user.id, id, results, longShorts, risksRewards);
     const { tags } = useTags(user.id);
     const [currentDealOptions, setCurrentDealOptions] = useState(undefined);
 
@@ -35,8 +53,11 @@ export default function SheetPage({ params }) {
         }));
     };
 
-    const handleRemoveImg = (payload) => {
-        onUpdateDeal({ id: payload.dealId, [payload.inputName]: "" });
+    const handleRemoveImg = async (payload) => {
+        onUpdateDeal(user.id, {
+            id: payload.dealId,
+            [payload.inputName]: "",
+        });
 
         deleteFile(payload.fileName).then((data) => {
             if (data.error) {
@@ -45,7 +66,6 @@ export default function SheetPage({ params }) {
             }
             if (data.success) {
                 toast.success(data.success);
-                setOpenImage(false);
             }
         });
 
@@ -58,7 +78,6 @@ export default function SheetPage({ params }) {
 
     useEffect(() => {
         if (sheets && sheets.length === 0) {
-            console.log("page");
             router.push("/sheets");
         }
     }, [router, sheets]);
@@ -88,8 +107,21 @@ export default function SheetPage({ params }) {
 
             <Table
                 userId={user.id}
+                deals={deals}
                 sheetId={id}
+                selectedDeals={selectedDeals}
+                checkAll={checkAll}
+                isSortingEnabled={isSortingEnabled}
+                isPending={isPending}
+                onCreateDeal={onCreateDeal}
+                onUpdateDeal={onUpdateDeal}
+                onRemoveDeal={onRemoveDeal}
+                onCheckAll={onCheckAll}
+                onCheckDeal={onCheckDeal}
+                onSort={onSort}
+                onResetSort={onResetSort}
                 resultsData={results}
+                longShorts={longShorts}
                 risksRewarsData={risksRewards}
                 tagsData={tags}
                 onClickDealImg={handleClickDealImg}
@@ -101,6 +133,31 @@ export default function SheetPage({ params }) {
                 currentScreen={currentDealOptions?.inputName}
                 onRemove={handleRemoveImg}
                 onClose={handleCloseModal}
+                table={
+                    <Table
+                        userId={user.id}
+                        deals={deals}
+                        sheetId={id}
+                        selectedDeals={selectedDeals}
+                        checkAll={checkAll}
+                        isSortingEnabled={isSortingEnabled}
+                        isPending={isPending}
+                        onCreateDeal={onCreateDeal}
+                        onUpdateDeal={onUpdateDeal}
+                        onRemoveDeal={onRemoveDeal}
+                        onCheckAll={onCheckAll}
+                        onCheckDeal={onCheckDeal}
+                        onSort={onSort}
+                        onResetSort={onResetSort}
+                        resultsData={results}
+                        longShorts={longShorts}
+                        risksRewarsData={risksRewards}
+                        tagsData={tags}
+                        onClickDealImg={handleClickDealImg}
+                        isModal={true}
+                        deal={currentDealOptions?.deal}
+                    />
+                }
             />
         </SheetWrapper>
     );

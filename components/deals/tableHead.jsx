@@ -1,6 +1,7 @@
 import { HEADERS_COLUMN } from "@/components/constants";
 import CheckboxOrNumber from "@/components/deals/common/checkboxOrNumber";
 import SelectFilterButton from "@/components/deals/common/selectFilterButton";
+import { cn } from "@/lib/utils";
 
 export default function TableHead({
     checkAll,
@@ -8,7 +9,9 @@ export default function TableHead({
     onResize,
     onCheckAll,
     onSort,
-    isAdmin = false,
+    className,
+    isAdmin,
+    isModal,
 }) {
     const filteredDBName = (dbName) => {
         switch (dbName) {
@@ -25,7 +28,13 @@ export default function TableHead({
     };
 
     return (
-        <div className="flex items-center h-8 sticky left-0 top-8 z-[3] border-t border-b border-slate-300 bg-gray-50">
+        <div
+            className={cn(
+                "flex items-center h-8 sticky left-0 top-8 z-[3]",
+                "border-t border-b border-slate-300 bg-gray-50",
+                className
+            )}
+        >
             {HEADERS_COLUMN.slice(0, 1).map((item) => (
                 <SelectFilterButton
                     key={item.name}
@@ -46,32 +55,37 @@ export default function TableHead({
                         checked={checkAll}
                         onChange={onCheckAll}
                         isAdmin={isAdmin}
+                        isModal={isModal}
                         className="size-7 absolute top-1/2 left-[2px] -translate-y-1/2 bg-gray-50"
                     />
                 </SelectFilterButton>
             ))}
 
-            {HEADERS_COLUMN.slice(1).map((item, index) => (
-                <SelectFilterButton
-                    key={item.name}
-                    name={item.name}
-                    dbName={item.dbName}
-                    isSort={filteredDBName(item.dbName)}
-                    nameColumn={`column${index + 2}`}
-                    initWidth={columnWidth[`column${index + 2}`]}
-                    onResize={onResize}
-                    onSort={onSort}
-                    classNameList="z-[1]"
-                    styleBtn={
-                        item.up
-                            ? {
-                                  textTransform: "uppercase",
-                                  width: "100%",
-                              }
-                            : { width: "100%" }
-                    }
-                />
-            ))}
+            {HEADERS_COLUMN.slice(1).map((item, index) =>
+                isModal &&
+                (item.dbName === "imageStart" ||
+                    item.dbName === "imageEnd") ? null : (
+                    <SelectFilterButton
+                        key={item.name}
+                        name={item.name}
+                        dbName={item.dbName}
+                        isSort={filteredDBName(item.dbName)}
+                        nameColumn={`column${index + 2}`}
+                        initWidth={columnWidth[`column${index + 2}`]}
+                        onResize={onResize}
+                        onSort={onSort}
+                        classNameList="z-[1]"
+                        styleBtn={
+                            item.up
+                                ? {
+                                      textTransform: "uppercase",
+                                      width: "100%",
+                                  }
+                                : { width: "100%" }
+                        }
+                    />
+                )
+            )}
         </div>
     );
 }

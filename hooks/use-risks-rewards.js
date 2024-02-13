@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { getResults } from "@/actions/result";
+import { getRisksRewards } from "@/actions/riskReward";
 
 export function useRisksRewards() {
     const [risksRewards, setRisksRewards] = useState([]);
 
     useEffect(() => {
         const getData = async () => {
-            const rrData = await getResults();
+            const rrData = await getRisksRewards();
             if (rrData && rrData.error) {
                 toast.error(rrData.error);
             } else {

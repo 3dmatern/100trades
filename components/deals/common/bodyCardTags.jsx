@@ -23,7 +23,7 @@ export default function BodyCardTags({
     selectedDeals,
     determineTextColor,
     getRandomHexColor,
-    onUpdateDeal,
+    onActionDeal,
     isAdmin,
 }) {
     const listRef = useRef(null);
@@ -69,7 +69,7 @@ export default function BodyCardTags({
         }
 
         if (!dealId) {
-            newDealId = await onUpdateDeal();
+            newDealId = await onActionDeal();
         }
 
         const { success, error } = await createEntrieTag(userId, {

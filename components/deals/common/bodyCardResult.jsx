@@ -9,7 +9,7 @@ export default function BodyCardResult({
     results,
     columnWidth,
     isPending,
-    onUpdateDeal,
+    onActionDeal,
     isAdmin,
 }) {
     const listRef = useRef(null);
@@ -18,7 +18,7 @@ export default function BodyCardResult({
 
     const handleSelectResult = (res) => {
         setResult((prev) => res);
-        onUpdateDeal({ id: dealId, resultId: res.id });
+        onActionDeal({ id: dealId, resultId: res.id });
         setResult((prev) => undefined);
     };
 

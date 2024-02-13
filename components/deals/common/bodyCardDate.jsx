@@ -18,7 +18,7 @@ export default function BodyCardDate({
     columnWidth,
     isPending,
     disabled,
-    onUpdateDeal,
+    onActionDeal,
     isAdmin,
 }) {
     const cellRef = useRef(null);
@@ -37,7 +37,7 @@ export default function BodyCardDate({
             setOpen(false);
             return;
         }
-        onUpdateDeal(values);
+        onActionDeal(values);
     };
 
     const updateDate = () => {

@@ -11,6 +11,7 @@ import CheckboxOrNumber from "@/components/deals/common/checkboxOrNumber";
 
 export default function BodyCardName({
     index,
+
     dealId,
     dealName,
     selectedDeals,
@@ -18,8 +19,9 @@ export default function BodyCardName({
     columnWidth,
     onCheckDeal,
     isPending,
-    onUpdateDeal,
+    onActionDeal,
     isAdmin,
+    isModal,
 }) {
     const cellRef = useRef(null);
     const inputRef = useRef(null);
@@ -38,7 +40,7 @@ export default function BodyCardName({
             setOpen(false);
             return;
         }
-        onUpdateDeal(values);
+        onActionDeal(values);
     };
 
     const updateName = async () => {
@@ -89,6 +91,7 @@ export default function BodyCardName({
                         checked={selectedDeals?.includes(dealId)}
                         onChange={onCheckDeal}
                         isAdmin={isAdmin}
+                        isModal={isModal}
                         className="size-7 absolute top-1/2 left-[2px] -translate-y-1/2"
                     />
                 )}
@@ -114,16 +117,20 @@ export default function BodyCardName({
                                                     isPending["name"] &&
                                                     dealId === isPending.id
                                                 }
-                                                placeholder="AAAA"
+                                                placeholder="тикер"
                                                 onFocus={() => setOpen(true)}
                                                 onBlur={updateName}
-                                                className={`h-7 p-0 pl-1 text-xs border-none outline-none shadow-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
-                                                    selectedDeals?.includes(
-                                                        dealId
-                                                    ) || dealHover
-                                                        ? "bg-slate-50"
-                                                        : "bg-white"
-                                                }`}
+                                                className={`
+                                                    h-7 p-0 pl-1 text-xs border-none outline-none shadow-none 
+                                                    focus-visible:ring-0 overflow-hidden 
+                                                    whitespace-nowrap uppercase text-ellipsis 
+                                                    ${
+                                                        selectedDeals?.includes(
+                                                            dealId
+                                                        ) || dealHover
+                                                            ? "bg-slate-50"
+                                                            : "bg-white"
+                                                    }`}
                                             />
                                         </FormControl>
                                     </FormItem>
@@ -135,9 +142,9 @@ export default function BodyCardName({
                     <span
                         className={`flex items-center justify-start h-7 p-0 pl-1 text-xs ${
                             !dealName && "text-gray-500"
-                        } overflow-hidden whitespace-nowrap text-ellipsis pointer-events-none`}
+                        } overflow-hidden whitespace-nowrap uppercase text-ellipsis pointer-events-none`}
                     >
-                        {dealName || "AAAA"}
+                        {dealName || "тикер"}
                     </span>
                 )}
             </div>

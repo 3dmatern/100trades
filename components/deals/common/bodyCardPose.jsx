@@ -15,7 +15,7 @@ export default function BodyCardPose({
     dealHover,
     columnWidth,
     isPending,
-    onUpdateDeal,
+    onActionDeal,
     isAdmin,
 }) {
     const cellRef = useRef(null);
@@ -35,7 +35,7 @@ export default function BodyCardPose({
             setOpen(false);
             return;
         }
-        onUpdateDeal(values);
+        onActionDeal(values);
         form.reset();
     };
 

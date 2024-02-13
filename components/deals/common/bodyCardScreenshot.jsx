@@ -18,7 +18,7 @@ export default function BodyCardScreenshot({
     width,
     height,
     columnWidth,
-    onUpdateDeal,
+    onActionDeal,
     onClickDealImg,
     isAdmin,
 }) {
@@ -35,7 +35,7 @@ export default function BodyCardScreenshot({
                     toast.error(data.error);
                     return;
                 }
-                onUpdateDeal({ id: deal?.id, [inputName]: data });
+                onActionDeal({ id: deal?.id, [inputName]: data });
             });
         });
     };
@@ -64,6 +64,46 @@ export default function BodyCardScreenshot({
         };
     }, []);
 
+    const getContents = (isPending, dealImageSrc, active, isAdmin) => {
+        if (isPending) {
+            return <BeatLoader size={8} />;
+        }
+        if (dealImageSrc) {
+            return (
+                <img
+                    src={IMAGE_URL + "/" + dealImageSrc}
+                    alt={imageAlt}
+                    style={{ width, height }}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onClickDealImg({ deal, inputName });
+                    }}
+                    className="hover:scale-125 cursor-pointer"
+                />
+            );
+        }
+        if (!dealImageSrc && active && !isAdmin) {
+            return (
+                <InputUploadImg
+                    name={inputName}
+                    width={width}
+                    height={height}
+                    onImageChange={handleChange}
+                />
+            );
+        }
+
+        return (
+            <Image
+                src="/dropbox.svg"
+                alt="dropbox"
+                width={16}
+                height={16}
+                className="pointer-events-none"
+            />
+        );
+    };
+
     return (
         <div className="table-cell align-middle h-full">
             <div
@@ -74,35 +114,7 @@ export default function BodyCardScreenshot({
                     active && !isAdmin ? "border border-blue-800" : "border-r"
                 }`}
             >
-                {isPending ? (
-                    <BeatLoader size={8} />
-                ) : dealImageSrc ? (
-                    <img
-                        src={IMAGE_URL + "/" + dealImageSrc}
-                        alt={imageAlt}
-                        style={{ width, height }}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            onClickDealImg({ deal, inputName });
-                        }}
-                        className="hover:scale-125 cursor-pointer"
-                    />
-                ) : active && !isAdmin ? (
-                    <InputUploadImg
-                        name={inputName}
-                        width={width}
-                        height={height}
-                        onImageChange={handleChange}
-                    />
-                ) : (
-                    <Image
-                        src="/dropbox.svg"
-                        alt="dropbox"
-                        width={16}
-                        height={16}
-                        className="pointer-events-none"
-                    />
-                )}
+                {getContents(isPending, dealImageSrc, active, isAdmin)}
             </div>
         </div>
     );

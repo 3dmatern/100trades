@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -15,9 +15,10 @@ export default function BodyCardRisk({
     selectedDeals,
     columnWidth,
     isPending,
-    onUpdateDeal,
+    onActionDeal,
     isAdmin,
 }) {
+    const cellRef = useRef(null);
     const [open, setOpen] = useState(false);
 
     const form = useForm({
@@ -28,25 +29,49 @@ export default function BodyCardRisk({
         },
     });
 
+    const handleOpen = () => {
+        setOpen((prev) => true);
+        form.setValue("id", dealId);
+        form.setValue("risk", dealRisk);
+    };
+
     const onSubmit = (values) => {
-        if (values.risk === dealRisk) {
+        if ((!values.risk && !dealRisk) || values.risk === dealRisk) {
             setOpen((prev) => false);
             return;
         }
-        onUpdateDeal(values);
-        form.reset();
+        onActionDeal(values);
     };
 
     const updateRisk = async () => {
         form.handleSubmit(onSubmit(form.getValues()));
-        form.setValue("id", "");
-        form.setValue("risk", "");
+        form.reset({ id: "", risk: "" });
         setOpen((prev) => false);
     };
+
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (cellRef.current && !cellRef.current.contains(e.target)) {
+                setOpen(false);
+            }
+        };
+        const handleScroll = () => {
+            setOpen(false);
+        };
+
+        document.addEventListener("click", handleClickOutside);
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
 
     return (
         <div className="table-cell align-middle h-full">
             <div
+                ref={cellRef}
+                onClick={handleOpen}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className={`flex items-center w-full h-full relative text-xs ${
                     selectedDeals?.includes(dealId) || dealHover
@@ -55,7 +80,7 @@ export default function BodyCardRisk({
                 } ${open && !isAdmin ? "border border-blue-800" : "border-r"}`}
             >
                 <span className="absolute top-auto right-2">%</span>
-                {!isAdmin ? (
+                {open && !isAdmin ? (
                     <Form {...form}>
                         <form
                             onSubmit={(e) => {
@@ -80,9 +105,6 @@ export default function BodyCardRisk({
                                                     isPending["risk"] &&
                                                     dealId === isPending.id
                                                 }
-                                                onFocus={() =>
-                                                    setOpen((prev) => true)
-                                                }
                                                 onBlur={updateRisk}
                                                 className={`w-full h-7 pr-4 text-xs border-none text-start outline-none shadow-none focus-visible:ring-0 overflow-hidden whitespace-nowrap text-ellipsis ${
                                                     dealHover
@@ -97,7 +119,7 @@ export default function BodyCardRisk({
                         </form>
                     </Form>
                 ) : (
-                    <span className="text-start overflow-hidden whitespace-nowrap text-ellipsis">
+                    <span className="w-full pl-2 px-5 text-start overflow-hidden whitespace-nowrap text-ellipsis pointer-events-none">
                         {dealRisk}
                     </span>
                 )}

@@ -7,7 +7,7 @@ export default function BodyCardNotes({
     dealNotes,
     columnWidth,
     isPending,
-    onUpdateDeal,
+    onActionDeal,
     isAdmin,
 }) {
     const textRef = useRef(null);
@@ -23,7 +23,7 @@ export default function BodyCardNotes({
             setOpen((prev) => false);
             return;
         }
-        onUpdateDeal({ id: dealId, notes: notes });
+        onActionDeal({ id: dealId, notes: notes });
         setNotes("");
     };
 

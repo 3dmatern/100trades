@@ -10,6 +10,7 @@ export default function CheckboxOrNumber({
     checked,
     onChange,
     isAdmin,
+    isModal,
     className,
 }) {
     const [move, setMove] = useState(false);
@@ -24,7 +25,7 @@ export default function CheckboxOrNumber({
                 className
             )}
         >
-            {(number && !move && !checked) || isAdmin ? (
+            {(number && !move && !checked) || isAdmin || isModal ? (
                 <p className="text-xs">{number}</p>
             ) : (
                 <input

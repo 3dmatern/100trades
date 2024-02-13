@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 
-export default function AddTableRow({
+export default function ActionTableRow({
     selectedDeals,
-    onRmoveDeal,
+    onRemoveDeal,
     isSortingEnabled,
     onResetSort,
 }) {
@@ -12,7 +12,7 @@ export default function AddTableRow({
                 {selectedDeals.length > 0 && (
                     <Button
                         type="button"
-                        onClick={onRmoveDeal}
+                        onClick={onRemoveDeal}
                         className="w-max h-7 bg-red-700 hover:bg-red-600 ml-5 text-sm"
                     >
                         Удалить выбранные сделки
