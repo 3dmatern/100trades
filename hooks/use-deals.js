@@ -26,7 +26,13 @@ import {
     sortByDescString,
 } from "@/utils/sortBy";
 
-export function useDeals(userId, sheetId, results, longShorts, risksRewards) {
+export function useDeals({
+    userId,
+    sheetId,
+    results,
+    longShorts,
+    risksRewards,
+}) {
     const [deals, setDeals] = useState([]);
     const [isPending, setIsPending] = useState(undefined);
     const [selectedDeals, setSelectedDeals] = useState([]);

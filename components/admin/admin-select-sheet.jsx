@@ -19,7 +19,7 @@ export function AdminSelectSheet({
                 <SelectValue placeholder="Выбрать журнал пользователя" />
             </SelectTrigger>
             <SelectContent>
-                {sheets.map((sheet) => (
+                {sheets?.map((sheet) => (
                     <SelectItem key={sheet.id} value={sheet.id}>
                         {sheet.name}
                     </SelectItem>

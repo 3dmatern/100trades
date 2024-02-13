@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useSheets } from "@/hooks/use-sheets";
 import { useResults } from "@/hooks/use-results";
+import { useLongShort } from "@/hooks/use-long-short";
 import { useRisksRewards } from "@/hooks/use-risks-rewards";
 import { useTags } from "@/hooks/use-tags";
 import { useDeals } from "@/hooks/use-deals";
@@ -16,7 +17,6 @@ import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Sheets from "@/components/sheet/sheets";
 import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/ui/deal-screenshot-modal";
-import { useLongShort } from "@/hooks/use-long-short";
 
 export default function SheetPage({ params }) {
     const { id } = params;
@@ -39,7 +39,13 @@ export default function SheetPage({ params }) {
         onCheckDeal,
         onSort,
         onResetSort,
-    } = useDeals(user.id, id, results, longShorts, risksRewards);
+    } = useDeals({
+        userId: user.id,
+        sheetId: id,
+        results,
+        longShorts,
+        risksRewards,
+    });
     const { tags } = useTags(user.id);
     const [currentDealOptions, setCurrentDealOptions] = useState(undefined);
 
