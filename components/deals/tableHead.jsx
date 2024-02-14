@@ -1,7 +1,8 @@
+import { cn } from "@/lib/utils";
+
 import { HEADERS_COLUMN } from "@/components/constants";
 import CheckboxOrNumber from "@/components/deals/common/checkboxOrNumber";
 import SelectFilterButton from "@/components/deals/common/selectFilterButton";
-import { cn } from "@/lib/utils";
 
 export default function TableHead({
     checkAll,
@@ -12,6 +13,8 @@ export default function TableHead({
     className,
     isAdmin,
     isModal,
+    deal,
+    isPublished,
 }) {
     const filteredDBName = (dbName) => {
         switch (dbName) {
@@ -27,6 +30,110 @@ export default function TableHead({
         }
     };
 
+    const getContent = ({ isModal, isPublished, deal }) => {
+        if (isModal && isPublished) {
+            return HEADERS_COLUMN.slice(1).map(
+                (item, index) =>
+                    deal?.[item.dbName] !== undefined &&
+                    item.dbName !== "imageStart" &&
+                    item.dbName !== "imageEnd" && (
+                        <SelectFilterButton
+                            key={item.name}
+                            name={item.name}
+                            dbName={item.dbName}
+                            isSort={filteredDBName(item.dbName)}
+                            nameColumn={`column${index + 2}`}
+                            initWidth={columnWidth[`column${index + 2}`]}
+                            onResize={onResize}
+                            onSort={onSort}
+                            classNameList="z-[1]"
+                            styleBtn={
+                                item.up
+                                    ? {
+                                          textTransform: "uppercase",
+                                          width: "100%",
+                                      }
+                                    : { width: "100%" }
+                            }
+                        />
+                    )
+            );
+        } else if (isModal) {
+            return HEADERS_COLUMN.slice(1).map(
+                (item, index) =>
+                    item.dbName !== "imageStart" &&
+                    item.dbName !== "imageEnd" && (
+                        <SelectFilterButton
+                            key={item.name}
+                            name={item.name}
+                            dbName={item.dbName}
+                            isSort={filteredDBName(item.dbName)}
+                            nameColumn={`column${index + 2}`}
+                            initWidth={columnWidth[`column${index + 2}`]}
+                            onResize={onResize}
+                            onSort={onSort}
+                            classNameList="z-[1]"
+                            styleBtn={
+                                item.up
+                                    ? {
+                                          textTransform: "uppercase",
+                                          width: "100%",
+                                      }
+                                    : { width: "100%" }
+                            }
+                        />
+                    )
+            );
+        } else if (isPublished) {
+            return HEADERS_COLUMN.slice(1).map(
+                (item, index) =>
+                    deal?.[item.dbName] !== undefined && (
+                        <SelectFilterButton
+                            key={item.name}
+                            name={item.name}
+                            dbName={item.dbName}
+                            isSort={filteredDBName(item.dbName)}
+                            nameColumn={`column${index + 2}`}
+                            initWidth={columnWidth[`column${index + 2}`]}
+                            onResize={onResize}
+                            onSort={onSort}
+                            classNameList="z-[1]"
+                            styleBtn={
+                                item.up
+                                    ? {
+                                          textTransform: "uppercase",
+                                          width: "100%",
+                                      }
+                                    : { width: "100%" }
+                            }
+                        />
+                    )
+            );
+        } else {
+            return HEADERS_COLUMN.slice(1).map((item, index) => (
+                <SelectFilterButton
+                    key={item.name}
+                    name={item.name}
+                    dbName={item.dbName}
+                    isSort={filteredDBName(item.dbName)}
+                    nameColumn={`column${index + 2}`}
+                    initWidth={columnWidth[`column${index + 2}`]}
+                    onResize={onResize}
+                    onSort={onSort}
+                    classNameList="z-[1]"
+                    styleBtn={
+                        item.up
+                            ? {
+                                  textTransform: "uppercase",
+                                  width: "100%",
+                              }
+                            : { width: "100%" }
+                    }
+                />
+            ));
+        }
+    };
+
     return (
         <div
             className={cn(
@@ -35,57 +142,36 @@ export default function TableHead({
                 className
             )}
         >
-            {HEADERS_COLUMN.slice(0, 1).map((item) => (
-                <SelectFilterButton
-                    key={item.name}
-                    name={item.name}
-                    dbName={item.dbName}
-                    isSort={item.dbName}
-                    nameColumn="column1"
-                    initWidth={columnWidth.column1}
-                    onResize={onResize}
-                    onSort={onSort}
-                    className="sticky left-0 z-[3]"
-                    classNameContent="pl-8 pr-2 bg-gray-50 border-l"
-                    classNameList="z-[2]"
-                    styleBtn={{ width: "100%" }}
-                >
-                    <CheckboxOrNumber
-                        name="checkAll"
-                        checked={checkAll}
-                        onChange={onCheckAll}
-                        isAdmin={isAdmin}
-                        isModal={isModal}
-                        className="size-7 absolute top-1/2 left-[2px] -translate-y-1/2 bg-gray-50"
-                    />
-                </SelectFilterButton>
-            ))}
-
-            {HEADERS_COLUMN.slice(1).map((item, index) =>
-                isModal &&
-                (item.dbName === "imageStart" ||
-                    item.dbName === "imageEnd") ? null : (
+            {HEADERS_COLUMN.slice(0, 1).map((item) =>
+                isPublished && deal?.[item.dbName] === undefined ? null : (
                     <SelectFilterButton
                         key={item.name}
                         name={item.name}
                         dbName={item.dbName}
-                        isSort={filteredDBName(item.dbName)}
-                        nameColumn={`column${index + 2}`}
-                        initWidth={columnWidth[`column${index + 2}`]}
+                        isSort={item.dbName}
+                        nameColumn="column1"
+                        initWidth={columnWidth.column1}
                         onResize={onResize}
                         onSort={onSort}
-                        classNameList="z-[1]"
-                        styleBtn={
-                            item.up
-                                ? {
-                                      textTransform: "uppercase",
-                                      width: "100%",
-                                  }
-                                : { width: "100%" }
-                        }
-                    />
+                        className="sticky left-0 z-[3]"
+                        classNameContent="pl-8 pr-2 bg-gray-50 border-l"
+                        classNameList="z-[2]"
+                        styleBtn={{ width: "100%" }}
+                    >
+                        <CheckboxOrNumber
+                            name="checkAll"
+                            checked={checkAll}
+                            onChange={onCheckAll}
+                            isAdmin={isAdmin}
+                            isModal={isModal}
+                            isPublished={isPublished}
+                            className="size-7 absolute top-1/2 left-[2px] -translate-y-1/2 bg-gray-50"
+                        />
+                    </SelectFilterButton>
                 )
             )}
+
+            {getContent({ isModal, isPublished, deal })}
         </div>
     );
 }

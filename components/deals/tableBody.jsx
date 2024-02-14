@@ -21,6 +21,7 @@ export default function TableBody({
     onClickDealImg,
     isAdmin,
     isModal,
+    isPublished,
 }) {
     return deals && deals.length >= 0 ? (
         <>
@@ -45,9 +46,10 @@ export default function TableBody({
                     onClickDealImg={onClickDealImg}
                     isAdmin={isAdmin}
                     isModal={isModal}
+                    isPublished={isPublished}
                 />
             ))}
-            {!isModal && !isAdmin && (
+            {!isModal && !isAdmin && !isPublished && (
                 <TableBodyCard
                     userId={userId}
                     sheetId={sheetId}
@@ -65,9 +67,7 @@ export default function TableBody({
             )}
         </>
     ) : (
-        <div
-            className={`flex items-center justify-center h-8 border-l border-r border-b border-slate-300 bg-white`}
-        >
+        <div className={`flex items-center justify-center h-8`}>
             <BeatLoader />
         </div>
     );

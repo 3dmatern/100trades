@@ -9,6 +9,7 @@ export default function BodyCardNotes({
     isPending,
     onActionDeal,
     isAdmin,
+    isPublished,
 }) {
     const textRef = useRef(null);
     const [open, setOpen] = useState(false);
@@ -61,6 +62,7 @@ export default function BodyCardNotes({
             >
                 {open &&
                 !isAdmin &&
+                !isPublished &&
                 (!isPending ||
                     (Object.keys(isPending)[1] === "notes" &&
                         isPending.id !== dealId)) ? (

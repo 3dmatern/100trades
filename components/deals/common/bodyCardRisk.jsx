@@ -17,6 +17,7 @@ export default function BodyCardRisk({
     isPending,
     onActionDeal,
     isAdmin,
+    isPublished,
 }) {
     const cellRef = useRef(null);
     const [open, setOpen] = useState(false);
@@ -77,10 +78,14 @@ export default function BodyCardRisk({
                     selectedDeals?.includes(dealId) || dealHover
                         ? "bg-slate-50"
                         : "bg-white"
-                } ${open && !isAdmin ? "border border-blue-800" : "border-r"}`}
+                } ${
+                    open && !isAdmin && !isPublished
+                        ? "border border-blue-800"
+                        : "border-r"
+                }`}
             >
                 <span className="absolute top-auto right-2">%</span>
-                {open && !isAdmin ? (
+                {open && !isAdmin && !isPublished ? (
                     <Form {...form}>
                         <form
                             onSubmit={(e) => {

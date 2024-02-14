@@ -1,27 +1,34 @@
+"use client";
+
 import Link from "next/link";
 
-import { getResults } from "@/actions/result";
-import { getRisksRewards } from "@/actions/riskReward";
-import { getSheetPublished } from "@/actions/sheetPublished";
+import { useSheetPublished } from "@/hooks/use-sheet-published";
+import { useResults } from "@/hooks/use-results";
+import { useLongShort } from "@/hooks/use-long-short";
+import { useRisksRewards } from "@/hooks/use-risks-rewards";
+import { useDealModalCarousel } from "@/hooks/use-deal-modal-carousel";
+import { useSortedDeals } from "@/hooks/use-deals-sorted";
+
 import SheetWrapper from "@/components/sheet/sheetWrapper";
-import TablePublished from "@/components/dealsPublished/tablePublished";
 import { Button } from "@/components/ui/button";
-import NotFound from "@/app/not-found";
+import Table from "@/components/deals/table";
+import { DealScreenshotModal } from "@/components/deal-screenshot-modal";
 
-export const metadata = {
-    title: "Журнал Сделок / Новые 50 сделок / Хомяк-Спекулянт",
-    description: "Журнал Cделок трейдинга Homa-Trading",
-};
-
-export default async function PublishedPage({ searchParams }) {
+export default function PublishedPage({ searchParams }) {
     const { id } = searchParams;
-    const sheetPublished = await getSheetPublished(id);
-    const resultsData = await getResults();
-    const risksRewardsData = await getRisksRewards();
+    const { results } = useResults();
+    const { longShorts } = useLongShort();
+    const { risksRewards } = useRisksRewards();
+    const { onSort, onResetSort } = useSortedDeals(
+        results,
+        longShorts,
+        risksRewards
+    );
+    const { sheetPublished, isSortingEnabled, onSortDeals, onResetSortDeals } =
+        useSheetPublished(id, onSort, onResetSort);
 
-    if (!sheetPublished) {
-        return <NotFound />;
-    }
+    const { currentDealOptions, onClickDealImg, onCloseModal } =
+        useDealModalCarousel();
 
     return (
         <>
@@ -48,11 +55,40 @@ export default async function PublishedPage({ searchParams }) {
                 </span>
             </div>
             <SheetWrapper className="h-[calc(100vh-132px)]">
-                <TablePublished
-                    dealsData={sheetPublished?.deals}
-                    results={resultsData}
+                <Table
+                    deals={sheetPublished?.deals}
+                    isSortingEnabled={isSortingEnabled}
+                    onSort={onSortDeals}
+                    onResetSort={onResetSortDeals}
+                    results={results}
+                    longShorts={longShorts}
+                    allRRs={risksRewards}
                     allTags={sheetPublished?.tagsUser}
-                    allRRs={risksRewardsData}
+                    onClickDealImg={onClickDealImg}
+                    isPublished={true}
+                />
+
+                <DealScreenshotModal
+                    isOpen={currentDealOptions}
+                    deal={currentDealOptions?.deal}
+                    currentScreen={currentDealOptions?.inputName}
+                    onClose={onCloseModal}
+                    isPublished={true}
+                    table={
+                        <Table
+                            deals={sheetPublished?.deals}
+                            isSortingEnabled={isSortingEnabled}
+                            onSort={onSortDeals}
+                            onResetSort={onResetSortDeals}
+                            results={results}
+                            longShorts={longShorts}
+                            allRRs={risksRewards}
+                            allTags={sheetPublished?.tagsUser}
+                            isPublished={true}
+                            isModal={true}
+                            deal={sheetPublished?.deals[0]}
+                        />
+                    }
                 />
             </SheetWrapper>
         </>

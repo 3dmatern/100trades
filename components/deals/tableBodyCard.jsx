@@ -42,6 +42,7 @@ export default function TableBodyCard({
     onClickDealImg,
     isAdmin,
     isModal,
+    isPublished,
 }) {
     const [hover, setHover] = useState(false);
 
@@ -55,185 +56,236 @@ export default function TableBodyCard({
                     : "bg-white"
             }`}
         >
-            <BodyCardName
-                index={index}
-                dealId={deal?.id}
-                dealName={deal?.name}
-                selectedDeals={selectedDeals}
-                dealHover={hover}
-                columnWidth={columnWidth.column1}
-                onCheckDeal={onCheckDeal}
-                isPending={isPending}
-                onActionDeal={onActionDeal}
-                isAdmin={isAdmin}
-                isModal={isModal}
-            />
-            <BodyCardResult
-                dealId={deal?.id}
-                resultId={deal?.resultId}
-                results={results}
-                columnWidth={columnWidth.column2}
-                isPending={isPending}
-                onActionDeal={onActionDeal}
-                isAdmin={isAdmin}
-            />
-            <BodyCardLongShort
-                dealId={deal?.id}
-                lsId={deal?.lsId}
-                longShorts={longShorts}
-                columnWidth={columnWidth.column3}
-                isPending={isPending}
-                onActionDeal={onActionDeal}
-                isAdmin={isAdmin}
-            />
-            <BodyCardPose
-                dealId={deal?.id}
-                dealPose={deal?.pose}
-                dealHover={hover}
-                columnWidth={columnWidth.column4}
-                isPending={isPending}
-                onActionDeal={onActionDeal}
-                isAdmin={isAdmin}
-            />
-            <BodyCardRisk
-                dealId={deal?.id}
-                dealRisk={deal?.risk}
-                dealHover={hover}
-                selectedDeals={selectedDeals}
-                columnWidth={columnWidth.column5}
-                isPending={isPending}
-                onActionDeal={onActionDeal}
-                isAdmin={isAdmin}
-            />
-            <BodyCardProfit
-                dealId={deal?.id}
-                dealProfit={deal?.profit}
-                dealHover={hover}
-                selectedDeals={selectedDeals}
-                columnWidth={columnWidth.column6}
-                isPending={isPending}
-                onActionDeal={onActionDeal}
-                isAdmin={isAdmin}
-            />
-            <BodyCardRisksRewards
-                userId={userId}
-                dealId={deal?.id}
-                rrId={deal?.rrId}
-                allRRs={allRRs}
-                onChangeAllRRs={onChangeAllRRs}
-                columnWidth={columnWidth.column7}
-                determineTextColor={determineTextColor}
-                onActionDeal={onActionDeal}
-                isAdmin={isAdmin}
-            />
-            <BodyCardDate
-                dealId={deal?.id}
-                inputName="entryDate"
-                dealDate={deal?.entryDate}
-                maxDate={dealLimitionDateWithTime(new Date())}
-                columnWidth={columnWidth.column8}
-                isPending={isPending}
-                disabled={deal?.exitDate}
-                onActionDeal={onActionDeal}
-                isAdmin={isAdmin}
-            />
-            {!isModal && (
-                <BodyCardScreenshot
-                    deal={deal}
-                    inputName="imageStart"
-                    dealImageSrc={deal?.imageStart}
-                    imageAlt="screenshot start"
-                    width={49}
-                    height={25}
-                    columnWidth={columnWidth.column9}
+            {isPublished && deal?.name === undefined ? null : (
+                <BodyCardName
+                    index={index}
+                    dealId={deal?.id}
+                    dealName={deal?.name}
+                    selectedDeals={selectedDeals}
+                    dealHover={hover}
+                    columnWidth={columnWidth.column1}
+                    onCheckDeal={onCheckDeal}
                     isPending={isPending}
                     onActionDeal={onActionDeal}
-                    onClickDealImg={onClickDealImg}
                     isAdmin={isAdmin}
+                    isModal={isModal}
+                    isPublished={isPublished}
                 />
             )}
-            <BodyCardDeposit
-                dealId={deal?.id}
-                dealDeposit={deal?.deposit}
-                dealHover={hover}
-                columnWidth={columnWidth.column10}
-                isPending={isPending}
-                onActionDeal={onActionDeal}
-                isAdmin={isAdmin}
-            />
-            <BodyCardProgress
-                dealProgress={deal?.progress}
-                columnWidth={columnWidth.column11}
-            />
-            <BodyCardDate
-                sheetId={sheetId}
-                dealId={deal?.id}
-                inputName="exitDate"
-                dealDate={deal?.exitDate}
-                minDate={
-                    deal?.entryDate && dealLimitionDateWithTime(deal?.entryDate)
-                }
-                maxDate={dealLimitionDateWithTime(new Date())}
-                disabled={!deal?.entryDate}
-                columnWidth={columnWidth.column12}
-                isPending={isPending}
-                onActionDeal={onActionDeal}
-                isAdmin={isAdmin}
-            />
-            {!isModal && (
-                <BodyCardScreenshot
-                    deal={deal}
-                    inputName="imageEnd"
-                    dealImageSrc={deal?.imageEnd}
-                    imageAlt="screenshot end"
-                    width={49}
-                    height={25}
-                    columnWidth={columnWidth.column13}
+            {isPublished && deal?.resultId === undefined ? null : (
+                <BodyCardResult
+                    dealId={deal?.id}
+                    resultId={deal?.resultId}
+                    results={results}
+                    columnWidth={columnWidth.column2}
                     isPending={isPending}
                     onActionDeal={onActionDeal}
-                    onClickDealImg={onClickDealImg}
                     isAdmin={isAdmin}
+                    isPublished={isPublished}
                 />
             )}
-            <BodyCardTakeScreenshot
-                takeScreenshot={deal?.take}
-                dealImageEndSrc={deal?.imageEnd}
-                columnWidth={columnWidth.column14}
-            />
-            <BodyCardStress
-                dealId={deal?.id}
-                dealStress={deal?.stress}
-                columnWidth={columnWidth.column15}
-                isPending={isPending}
-                onActionDeal={onActionDeal}
-                isAdmin={isAdmin}
-            />
-            <BodyCardTags
-                userId={userId}
-                dealId={deal?.id}
-                allTags={allTags}
-                onUpdateAllTags={onUpdateAllTags}
-                columnWidth={columnWidth.column16}
-                dealHover={hover}
-                selectedDeals={selectedDeals}
-                determineTextColor={determineTextColor}
-                getRandomHexColor={getRandomHexColor}
-                onActionDeal={onActionDeal}
-                isAdmin={isAdmin}
-            />
-            <BodyCardNotes
-                dealId={deal?.id}
-                dealNotes={deal?.notes}
-                columnWidth={columnWidth.column17}
-                isPending={isPending}
-                onActionDeal={onActionDeal}
-                isAdmin={isAdmin}
-            />
-            <BodyCardTimeInTrade
-                timeInTrade={deal?.timeInTrade}
-                columnWidth={columnWidth.column18}
-                isAdmin={isAdmin}
-            />
+            {isPublished && deal?.lsId === undefined ? null : (
+                <BodyCardLongShort
+                    dealId={deal?.id}
+                    lsId={deal?.lsId}
+                    longShorts={longShorts}
+                    columnWidth={columnWidth.column3}
+                    isPending={isPending}
+                    onActionDeal={onActionDeal}
+                    isAdmin={isAdmin}
+                    isPublished={isPublished}
+                />
+            )}
+            {isPublished && deal?.pose === undefined ? null : (
+                <BodyCardPose
+                    dealId={deal?.id}
+                    dealPose={deal?.pose}
+                    dealHover={hover}
+                    columnWidth={columnWidth.column4}
+                    isPending={isPending}
+                    onActionDeal={onActionDeal}
+                    isAdmin={isAdmin}
+                    isPublished={isPublished}
+                />
+            )}
+            {isPublished && deal?.risk === undefined ? null : (
+                <BodyCardRisk
+                    dealId={deal?.id}
+                    dealRisk={deal?.risk}
+                    dealHover={hover}
+                    selectedDeals={selectedDeals}
+                    columnWidth={columnWidth.column5}
+                    isPending={isPending}
+                    onActionDeal={onActionDeal}
+                    isAdmin={isAdmin}
+                    isPublished={isPublished}
+                />
+            )}
+            {isPublished && deal?.profit === undefined ? null : (
+                <BodyCardProfit
+                    dealId={deal?.id}
+                    dealProfit={deal?.profit}
+                    dealHover={hover}
+                    selectedDeals={selectedDeals}
+                    columnWidth={columnWidth.column6}
+                    isPending={isPending}
+                    onActionDeal={onActionDeal}
+                    isAdmin={isAdmin}
+                    isPublished={isPublished}
+                />
+            )}
+            {isPublished && deal?.rrId === undefined ? null : (
+                <BodyCardRisksRewards
+                    userId={userId}
+                    dealId={deal?.id}
+                    rrId={deal?.rrId}
+                    allRRs={allRRs}
+                    onChangeAllRRs={onChangeAllRRs}
+                    columnWidth={columnWidth.column7}
+                    determineTextColor={determineTextColor}
+                    onActionDeal={onActionDeal}
+                    isAdmin={isAdmin}
+                    isPublished={isPublished}
+                />
+            )}
+            {isPublished && deal?.entryDate === undefined ? null : (
+                <BodyCardDate
+                    dealId={deal?.id}
+                    inputName="entryDate"
+                    dealDate={deal?.entryDate}
+                    maxDate={dealLimitionDateWithTime(new Date())}
+                    columnWidth={columnWidth.column8}
+                    isPending={isPending}
+                    disabled={deal?.exitDate}
+                    onActionDeal={onActionDeal}
+                    isAdmin={isAdmin}
+                    isPublished={isPublished}
+                />
+            )}
+            {isPublished && deal?.imageStart === undefined
+                ? null
+                : !isModal && (
+                      <BodyCardScreenshot
+                          deal={deal}
+                          inputName="imageStart"
+                          dealImageSrc={deal?.imageStart}
+                          imageAlt="screenshot start"
+                          width={49}
+                          height={25}
+                          columnWidth={columnWidth.column9}
+                          isPending={isPending}
+                          onActionDeal={onActionDeal}
+                          onClickDealImg={onClickDealImg}
+                          isAdmin={isAdmin}
+                          isPublished={isPublished}
+                      />
+                  )}
+            {isPublished && deal?.deposit === undefined ? null : (
+                <BodyCardDeposit
+                    dealId={deal?.id}
+                    dealDeposit={deal?.deposit}
+                    dealHover={hover}
+                    columnWidth={columnWidth.column10}
+                    isPending={isPending}
+                    onActionDeal={onActionDeal}
+                    isAdmin={isAdmin}
+                    isPublished={isPublished}
+                />
+            )}
+            {isPublished && deal?.progress === undefined ? null : (
+                <BodyCardProgress
+                    dealProgress={deal?.progress}
+                    columnWidth={columnWidth.column11}
+                />
+            )}
+            {isPublished && deal?.exitDate === undefined ? null : (
+                <BodyCardDate
+                    sheetId={sheetId}
+                    dealId={deal?.id}
+                    inputName="exitDate"
+                    dealDate={deal?.exitDate}
+                    minDate={
+                        deal?.entryDate &&
+                        dealLimitionDateWithTime(deal?.entryDate)
+                    }
+                    maxDate={dealLimitionDateWithTime(new Date())}
+                    disabled={!deal?.entryDate}
+                    columnWidth={columnWidth.column12}
+                    isPending={isPending}
+                    onActionDeal={onActionDeal}
+                    isAdmin={isAdmin}
+                    isPublished={isPublished}
+                />
+            )}
+            {isPublished && deal?.imageStart === undefined
+                ? null
+                : !isModal && (
+                      <BodyCardScreenshot
+                          deal={deal}
+                          inputName="imageEnd"
+                          dealImageSrc={deal?.imageEnd}
+                          imageAlt="screenshot end"
+                          width={49}
+                          height={25}
+                          columnWidth={columnWidth.column13}
+                          isPending={isPending}
+                          onActionDeal={onActionDeal}
+                          onClickDealImg={onClickDealImg}
+                          isAdmin={isAdmin}
+                          isPublished={isPublished}
+                      />
+                  )}
+            {isPublished && deal?.take === undefined ? null : (
+                <BodyCardTakeScreenshot
+                    takeScreenshot={deal?.take}
+                    dealImageEndSrc={deal?.imageEnd}
+                    columnWidth={columnWidth.column14}
+                />
+            )}
+            {isPublished && deal?.stress === undefined ? null : (
+                <BodyCardStress
+                    dealId={deal?.id}
+                    dealStress={deal?.stress}
+                    columnWidth={columnWidth.column15}
+                    isPending={isPending}
+                    onActionDeal={onActionDeal}
+                    isAdmin={isAdmin}
+                    isPublished={isPublished}
+                />
+            )}
+            {isPublished && deal?.entrieTag === undefined ? null : (
+                <BodyCardTags
+                    userId={userId}
+                    dealId={deal?.id}
+                    allTags={allTags}
+                    onUpdateAllTags={onUpdateAllTags}
+                    columnWidth={columnWidth.column16}
+                    dealHover={hover}
+                    selectedDeals={selectedDeals}
+                    determineTextColor={determineTextColor}
+                    getRandomHexColor={getRandomHexColor}
+                    onActionDeal={onActionDeal}
+                    isAdmin={isAdmin}
+                    isPublished={isPublished}
+                />
+            )}
+            {isPublished && deal?.notes === undefined ? null : (
+                <BodyCardNotes
+                    dealId={deal?.id}
+                    dealNotes={deal?.notes}
+                    columnWidth={columnWidth.column17}
+                    isPending={isPending}
+                    onActionDeal={onActionDeal}
+                    isAdmin={isAdmin}
+                    isPublished={isPublished}
+                />
+            )}
+            {isPublished && deal?.timeInTrade === undefined ? null : (
+                <BodyCardTimeInTrade
+                    timeInTrade={deal?.timeInTrade}
+                    columnWidth={columnWidth.column18}
+                />
+            )}
         </div>
     );
 }

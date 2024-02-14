@@ -21,6 +21,7 @@ export default function BodyCardScreenshot({
     onActionDeal,
     onClickDealImg,
     isAdmin,
+    isPublished,
 }) {
     const cellRef = useRef(null);
     const [isPending, startTransaction] = useTransition();
@@ -64,7 +65,13 @@ export default function BodyCardScreenshot({
         };
     }, []);
 
-    const getContents = (isPending, dealImageSrc, active, isAdmin) => {
+    const getContents = ({
+        isPending,
+        dealImageSrc,
+        active,
+        isAdmin,
+        isPublished,
+    }) => {
         if (isPending) {
             return <BeatLoader size={8} />;
         }
@@ -82,7 +89,7 @@ export default function BodyCardScreenshot({
                 />
             );
         }
-        if (!dealImageSrc && active && !isAdmin) {
+        if (!dealImageSrc && active && !isAdmin && !isPublished) {
             return (
                 <InputUploadImg
                     name={inputName}
@@ -111,10 +118,18 @@ export default function BodyCardScreenshot({
                 onClick={() => setActive(true)}
                 style={{ width: columnWidth, minWidth: "64px", height: "32px" }}
                 className={`flex items-center justify-center h-full relative text-xs ${
-                    active && !isAdmin ? "border border-blue-800" : "border-r"
+                    active && !isAdmin && !isPublished
+                        ? "border border-blue-800"
+                        : "border-r"
                 }`}
             >
-                {getContents(isPending, dealImageSrc, active, isAdmin)}
+                {getContents({
+                    isPending,
+                    dealImageSrc,
+                    active,
+                    isAdmin,
+                    isPublished,
+                })}
             </div>
         </div>
     );

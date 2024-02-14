@@ -17,6 +17,7 @@ export default function BodyCardPose({
     isPending,
     onActionDeal,
     isAdmin,
+    isPublished,
 }) {
     const cellRef = useRef(null);
     const [open, setOpen] = useState(false);
@@ -82,11 +83,13 @@ export default function BodyCardPose({
                 onClick={() => setOpen(true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className={`flex items-center w-full h-full px-2 relative text-xs ${
-                    open && !isAdmin ? "border border-blue-800" : "border-r"
+                    open && !isAdmin && !isPublished
+                        ? "border border-blue-800"
+                        : "border-r"
                 }`}
             >
                 <span>₽</span>
-                {open && !isAdmin ? (
+                {open && !isAdmin && !isPublished ? (
                     <Form {...form}>
                         <form
                             onSubmit={(e) => {

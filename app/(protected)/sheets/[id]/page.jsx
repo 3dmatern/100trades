@@ -10,13 +10,13 @@ import { useLongShort } from "@/hooks/use-long-short";
 import { useRisksRewards } from "@/hooks/use-risks-rewards";
 import { useTags } from "@/hooks/use-tags";
 import { useDeals } from "@/hooks/use-deals";
-
-import { deleteFile } from "@/actions/files";
+import { useDealModalCarousel } from "@/hooks/use-deal-modal-carousel";
 
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Sheets from "@/components/sheet/sheets";
 import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/deal-screenshot-modal";
+import { useSortedDeals } from "@/hooks/use-deals-sorted";
 
 export default function SheetPage({ params }) {
     const { id } = params;
@@ -26,6 +26,11 @@ export default function SheetPage({ params }) {
     const { results } = useResults();
     const { longShorts } = useLongShort();
     const { risksRewards } = useRisksRewards();
+    const { onSort, onResetSort } = useSortedDeals(
+        results,
+        longShorts,
+        risksRewards
+    );
     const {
         deals,
         selectedDeals,
@@ -37,69 +42,26 @@ export default function SheetPage({ params }) {
         onRemoveDeal,
         onCheckAll,
         onCheckDeal,
-        onSort,
-        onResetSort,
+        onSortDeals,
+        onResetSortDeals,
     } = useDeals({
         userId: user.id,
         sheetId: id,
         results,
         longShorts,
         risksRewards,
+        onSort,
+        onResetSort,
     });
     const { tags } = useTags(user.id);
-    const [currentDealOptions, setCurrentDealOptions] = useState(undefined);
-
-    const handleClickDealImg = ({ deal, inputName }) => {
-        setCurrentDealOptions((prev) => ({
-            deal: {
-                ...prev?.deal,
-                ...deal,
-            },
-            inputName,
-        }));
-    };
-
-    const handleRemoveImg = async (payload) => {
-        onUpdateDeal({
-            id: payload.dealId,
-            [payload.inputName]: "",
-        });
-
-        deleteFile(payload.fileName).then((data) => {
-            if (data.error) {
-                toast.error(data.error);
-                return;
-            }
-            if (data.success) {
-                toast.success(data.success);
-            }
-        });
-
-        setCurrentDealOptions((prev) => undefined);
-    };
-
-    const handleCloseModal = () => {
-        setCurrentDealOptions((prev) => undefined);
-    };
+    const { currentDealOptions, onClickDealImg, onRemoveImg, onCloseModal } =
+        useDealModalCarousel(onUpdateDeal);
 
     useEffect(() => {
         if (sheets && sheets.length === 0) {
             router.push("/sheets");
         }
     }, [router, sheets]);
-
-    useEffect(() => {
-        const handleKyeDown = (e) => {
-            if (e.key === "Escape" && currentDealOptions) {
-                setCurrentDealOptions(undefined);
-            }
-        };
-
-        document.addEventListener("keydown", handleKyeDown);
-        return () => {
-            document.removeEventListener("keydown", handleKyeDown);
-        };
-    }, [currentDealOptions]);
 
     return (
         <SheetWrapper className="md:h-[calc(100vh-132px)] h-[calc(100vh-172px)]">
@@ -124,21 +86,21 @@ export default function SheetPage({ params }) {
                 onRemoveDeal={onRemoveDeal}
                 onCheckAll={onCheckAll}
                 onCheckDeal={onCheckDeal}
-                onSort={onSort}
-                onResetSort={onResetSort}
-                resultsData={results}
+                onSort={onSortDeals}
+                onResetSort={onResetSortDeals}
+                results={results}
                 longShorts={longShorts}
                 risksRewarsData={risksRewards}
                 tagsData={tags}
-                onClickDealImg={handleClickDealImg}
+                onClickDealImg={onClickDealImg}
             />
 
             <DealScreenshotModal
                 isOpen={currentDealOptions}
                 deal={currentDealOptions?.deal}
                 currentScreen={currentDealOptions?.inputName}
-                onRemove={handleRemoveImg}
-                onClose={handleCloseModal}
+                onRemove={onRemoveImg}
+                onClose={onCloseModal}
                 table={
                     <Table
                         userId={user.id}
@@ -153,13 +115,13 @@ export default function SheetPage({ params }) {
                         onRemoveDeal={onRemoveDeal}
                         onCheckAll={onCheckAll}
                         onCheckDeal={onCheckDeal}
-                        onSort={onSort}
-                        onResetSort={onResetSort}
+                        onSort={onSortDeals}
+                        onResetSort={onResetSortDeals}
                         resultsData={results}
                         longShorts={longShorts}
                         risksRewarsData={risksRewards}
                         tagsData={tags}
-                        onClickDealImg={handleClickDealImg}
+                        onClickDealImg={onRemoveImg}
                         isModal={true}
                         deal={currentDealOptions?.deal}
                     />

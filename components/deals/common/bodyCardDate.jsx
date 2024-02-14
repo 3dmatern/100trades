@@ -20,6 +20,7 @@ export default function BodyCardDate({
     disabled,
     onActionDeal,
     isAdmin,
+    isPublished,
 }) {
     const cellRef = useRef(null);
     const [open, setOpen] = useState(false);
@@ -77,12 +78,12 @@ export default function BodyCardDate({
                 onClick={() => setOpen(true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className={`flex items-center justify-center h-full text-xs overflow-hidden ${
-                    open && !isAdmin
+                    open && !isAdmin && !isPublished
                         ? "border border-blue-800"
                         : "border-r px-2"
                 }`}
             >
-                {open && !isAdmin ? (
+                {open && !isAdmin && !isPublished ? (
                     <Form {...form}>
                         <form>
                             <FormField

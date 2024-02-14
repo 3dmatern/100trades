@@ -27,6 +27,7 @@ export const getEntriesBySheetIdByFields = async (sheetId, fields) => {
             },
             select: {
                 id: true,
+                date: true,
                 ...Object.values(fields).reduce((acc, field) => {
                     if (field) {
                         acc[field] = true;

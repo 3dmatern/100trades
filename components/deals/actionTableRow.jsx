@@ -9,7 +9,7 @@ export default function ActionTableRow({
     return (
         <div className="flex items-center h-8 relative border-r border-b border-slate-300 bg-white hover:bg-slate-50">
             <div className="table-cell align-middle h-7 sticky left-0 z-[1] border-l bg-white">
-                {selectedDeals.length > 0 && (
+                {selectedDeals?.length > 0 && (
                     <Button
                         type="button"
                         onClick={onRemoveDeal}

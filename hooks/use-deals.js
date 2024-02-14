@@ -13,26 +13,8 @@ import {
     updateEveryonesProgress,
 } from "@/utils/operationsWithProgress";
 import { dealLimitionDateWithTime } from "@/utils/formatedDate";
-import {
-    sortByAsc,
-    sortByAscDate,
-    sortByAscRR,
-    sortByAscSelect,
-    sortByAscString,
-    sortByDesc,
-    sortByDescDate,
-    sortByDescRR,
-    sortByDescSelect,
-    sortByDescString,
-} from "@/utils/sortBy";
 
-export function useDeals({
-    userId,
-    sheetId,
-    results,
-    longShorts,
-    risksRewards,
-}) {
+export function useDeals({ userId, sheetId, onSort, onResetSort }) {
     const [deals, setDeals] = useState([]);
     const [isPending, setIsPending] = useState(undefined);
     const [selectedDeals, setSelectedDeals] = useState([]);
@@ -208,98 +190,18 @@ export function useDeals({
 
     const handleSort = (data) => {
         setIsSortingEnabled(true);
-
-        const sortByOrderString = ({ iter, order }) => {
-            setDeals((prev) =>
-                order === "asc"
-                    ? [...sortByAscString(prev, iter)]
-                    : [...sortByDescString(prev, iter)]
-            );
-        };
-
-        const sortByOrderNumber = ({ iter, order }) => {
-            setDeals((prev) =>
-                order === "asc"
-                    ? [...sortByAsc(prev, iter)]
-                    : [...sortByDesc(prev, iter)]
-            );
-        };
-
-        const sortByOrderSelect = ({ iter, order }) => {
-            if (iter === "resultId") {
-                setDeals((prev) =>
-                    order === "asc"
-                        ? [...sortByAscSelect(prev, iter, results)]
-                        : [...sortByDescSelect(prev, iter, results)]
-                );
-            } else {
-                setDeals((prev) =>
-                    order === "asc"
-                        ? [...sortByAscSelect(prev, iter, longShorts)]
-                        : [...sortByDescSelect(prev, iter, longShorts)]
-                );
-            }
-        };
-
-        const sortByOrderRR = ({ iter, order }) => {
-            setDeals((prev) =>
-                order === "asc"
-                    ? [...sortByAscRR(prev, iter, risksRewards)]
-                    : [...sortByDescRR(prev, iter, risksRewards)]
-            );
-        };
-
-        const sortByOrderDate = ({ iter, order }) => {
-            setDeals((prev) =>
-                order === "asc"
-                    ? [...sortByAscDate(prev, iter)]
-                    : [...sortByDescDate(prev, iter)]
-            );
-        };
-
-        switch (data.iter) {
-            case "name":
-            case "take":
-            case "notes":
-            case "progress":
-                sortByOrderString(data);
-                break;
-
-            case "pose":
-            case "risk":
-            case "profit":
-            case "deposit":
-            case "stress":
-            case "timeInTrade":
-                sortByOrderNumber(data);
-                break;
-
-            case "resultId":
-            case "lsId":
-                sortByOrderSelect(data);
-                break;
-
-            case "rrId":
-                sortByOrderRR(data);
-                break;
-
-            case "entryDate":
-            case "exitDate":
-                sortByOrderDate(data);
-                break;
-
-            default:
-                break;
-        }
+        setDeals((prev) => {
+            const filteredDeals = onSort(prev, data);
+            return filteredDeals;
+        });
     };
 
     const handleResetSort = () => {
         setIsSortingEnabled(false);
-        setDeals((prev) =>
-            prev.slice().sort((a, b) => {
-                return new Date(a.date) - new Date(b.date);
-            })
-        );
+        setDeals((prev) => {
+            const resetDeals = onResetSort(prev);
+            return resetDeals;
+        });
     };
 
     return {
@@ -313,8 +215,8 @@ export function useDeals({
         onRemoveDeal: handleRemoveDeal,
         onCheckAll: handleCheckAll,
         onCheckDeal: handleCheckDeal,
-        onSort: handleSort,
-        onResetSort: handleResetSort,
+        onSortDeals: handleSort,
+        onResetSortDeals: handleResetSort,
     };
 }
 

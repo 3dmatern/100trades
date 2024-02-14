@@ -25,6 +25,7 @@ export default function BodyCardTags({
     getRandomHexColor,
     onActionDeal,
     isAdmin,
+    isPublished,
 }) {
     const listRef = useRef(null);
     const [active, setActive] = useState(false);
@@ -177,7 +178,7 @@ export default function BodyCardTags({
                             ? "bg-slate-50"
                             : "bg-white"
                     } ${
-                        active && !isAdmin
+                        active && !isAdmin && !isPublished
                             ? "items-start flex-wrap h-16 overflow-y-auto absolute top-0 left-0 z-[1] p-1 border border-blue-800"
                             : "items-center h-full border-r px-2 overflow-hidden"
                     }`}
@@ -197,7 +198,7 @@ export default function BodyCardTags({
                                 <span className="whitespace-nowrap text-ellipsis">
                                     {t.label}
                                 </span>
-                                {active && !isAdmin && (
+                                {active && !isAdmin && !isPublished && (
                                     <button
                                         type="button"
                                         onClick={(e) =>
@@ -217,7 +218,7 @@ export default function BodyCardTags({
                         ))
                     )}
 
-                    {active && !isAdmin && (
+                    {active && !isAdmin && !isPublished && (
                         <Button
                             type="button"
                             onClick={() => setOpen((prev) => !prev)}
@@ -234,7 +235,7 @@ export default function BodyCardTags({
                 </div>
             </div>
 
-            {open && !isAdmin && (
+            {open && !isAdmin && !isPublished && (
                 <div
                     style={{ width: columnWidth }}
                     className="absolute top-16 left-0 z-[1] rounded-md py-2 bg-white border border-gray-300"

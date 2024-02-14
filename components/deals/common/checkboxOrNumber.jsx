@@ -11,6 +11,7 @@ export default function CheckboxOrNumber({
     onChange,
     isAdmin,
     isModal,
+    isPublished,
     className,
 }) {
     const [move, setMove] = useState(false);
@@ -21,11 +22,14 @@ export default function CheckboxOrNumber({
             onMouseLeave={() => setMove(false)}
             className={cn(
                 "flex items-center justify-center size-8",
-                !isAdmin && "hover:bg-slate-100",
+                !isAdmin && !isPublished && "hover:bg-slate-100",
                 className
             )}
         >
-            {(number && !move && !checked) || isAdmin || isModal ? (
+            {(number && !move && !checked) ||
+            isAdmin ||
+            isModal ||
+            isPublished ? (
                 <p className="text-xs">{number}</p>
             ) : (
                 <input

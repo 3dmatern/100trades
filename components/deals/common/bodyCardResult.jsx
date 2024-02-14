@@ -11,6 +11,7 @@ export default function BodyCardResult({
     isPending,
     onActionDeal,
     isAdmin,
+    isPublished,
 }) {
     const listRef = useRef(null);
     const [open, setOpen] = useState(false);
@@ -23,7 +24,7 @@ export default function BodyCardResult({
     };
 
     useEffect(() => {
-        if (resultId && results.length > 0) {
+        if (resultId && results?.length > 0) {
             setResult((prev) => results.find((item) => item.id === resultId));
         }
     }, [resultId, results]);
@@ -73,7 +74,7 @@ export default function BodyCardResult({
                     ) : (
                         <span />
                     )}
-                    {!isAdmin && (
+                    {!isAdmin && !isPublished && (
                         <Image
                             src="/arrow-down.svg"
                             alt="arrow"
@@ -87,7 +88,7 @@ export default function BodyCardResult({
                     )}
                 </button>
 
-                {open && !isAdmin && (
+                {open && !isAdmin && !isPublished && (
                     <ul className="w-full absolute left-0 top-8 z-[1] rounded-md py-2 bg-white border border-gray-300">
                         {results
                             ?.filter((r) => resultId !== r.id)

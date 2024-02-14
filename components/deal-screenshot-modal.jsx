@@ -16,9 +16,10 @@ export function DealScreenshotModal({
     isOpen,
     deal,
     currentScreen,
-    table,
     onRemove,
     onClose,
+    isPublished,
+    table,
 }) {
     const [emblaApi, setEmblaApi] = useState();
     const [scrollSnaps, setScrollSnaps] = useState([]);
@@ -103,20 +104,22 @@ export function DealScreenshotModal({
                     </div>
                 </Carousel>
             </UiModal.Body>
-            <UiModal.Footer className="flex-col h-max p-0">
-                <button
-                    type="button"
-                    onClick={() =>
-                        onRemove({
-                            dealId: deal.id,
-                            inputName: currentScreen,
-                            fileName: deal?.[currentScreen],
-                        })
-                    }
-                    className="w-max mx-auto py-1 px-2 h-8 bg-red-700 hover:bg-red-500 rounded-md text-white"
-                >
-                    Удалить скриншот
-                </button>
+            <UiModal.Footer className="flex-col h-max p-0 pb-5">
+                {!isPublished && (
+                    <button
+                        type="button"
+                        onClick={() =>
+                            onRemove({
+                                dealId: deal.id,
+                                inputName: currentScreen,
+                                fileName: deal?.[currentScreen],
+                            })
+                        }
+                        className="w-max mx-auto py-1 px-2 h-8 bg-red-700 hover:bg-red-500 rounded-md text-white"
+                    >
+                        Удалить скриншот
+                    </button>
+                )}
                 {table}
             </UiModal.Footer>
         </UiModal>

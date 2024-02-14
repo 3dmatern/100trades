@@ -13,6 +13,7 @@ export default function BodyCardLongShort({
     isPending,
     onActionDeal,
     isAdmin,
+    isPublished,
 }) {
     const listRef = useRef(null);
     const [open, setOpen] = useState(false);
@@ -79,7 +80,7 @@ export default function BodyCardLongShort({
                     ) : (
                         <span />
                     )}
-                    {!isAdmin && (
+                    {!isAdmin && !isPublished && (
                         <Image
                             src="/arrow-down.svg"
                             alt="arrow"
@@ -93,7 +94,7 @@ export default function BodyCardLongShort({
                     )}
                 </button>
 
-                {open && !isAdmin && (
+                {open && !isAdmin && !isPublished && (
                     <ul className="w-full absolute left-0 top-8 z-[1] rounded-md py-2 bg-white border border-gray-300">
                         {longShorts
                             ?.filter((ls) => lsId !== ls.id)

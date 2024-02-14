@@ -22,6 +22,7 @@ export default function BodyCardName({
     onActionDeal,
     isAdmin,
     isModal,
+    isPublished,
 }) {
     const cellRef = useRef(null);
     const inputRef = useRef(null);
@@ -74,7 +75,7 @@ export default function BodyCardName({
                 onClick={() => setOpen(true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className={`flex items-center h-full pl-7 pr-2 ${
-                    open && !isAdmin
+                    open && !isAdmin && !isPublished
                         ? "border border-blue-800"
                         : "border-l border-r border-slate-300"
                 } ${
@@ -92,11 +93,12 @@ export default function BodyCardName({
                         onChange={onCheckDeal}
                         isAdmin={isAdmin}
                         isModal={isModal}
+                        isPublished={isPublished}
                         className="size-7 absolute top-1/2 left-[2px] -translate-y-1/2"
                     />
                 )}
 
-                {open && !isAdmin ? (
+                {open && !isAdmin && !isPublished ? (
                     <Form {...form}>
                         <form
                             onSubmit={(e) => {

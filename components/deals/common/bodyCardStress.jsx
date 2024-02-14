@@ -10,6 +10,7 @@ export default function BodyCardStress({
     isPending,
     onActionDeal,
     isAdmin,
+    isPublished,
 }) {
     const [hoveredRating, setHoveredRating] = useState(0);
 
@@ -32,11 +33,16 @@ export default function BodyCardStress({
                         <span
                             key={value}
                             onMouseOver={() =>
-                                isAdmin ? null : handleMouseOver(value)
+                                isAdmin || isPublished
+                                    ? null
+                                    : handleMouseOver(value)
                             }
-                            onMouseLeave={isAdmin ? null : handleMouseLeave}
+                            onMouseLeave={
+                                isAdmin || isPublished ? null : handleMouseLeave
+                            }
                             onClick={() =>
                                 isAdmin ||
+                                isPublished ||
                                 (isPending &&
                                     isPending["stress"] &&
                                     dealId === isPending.id)
@@ -50,7 +56,7 @@ export default function BodyCardStress({
                                 "block size-2.5 rounded-full bg-slate-200",
                                 (value <= hoveredRating && "bg-red-400") ||
                                     (value <= dealStress && "bg-red-600"),
-                                !isAdmin && "cursor-pointer"
+                                !isAdmin && !isPublished && "cursor-pointer"
                             )}
                         />
                     ))}

@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { useLongShort } from "@/hooks/use-long-short";
 import { COLUMN_WIDTH } from "@/components/constants";
 
 import { TableLayout } from "@/components/ui/table-layout";
@@ -28,7 +27,7 @@ export default function Table({
     onCheckDeal,
     onSort,
     onResetSort,
-    resultsData,
+    results,
     longShorts,
     risksRewarsData,
     tagsData,
@@ -36,8 +35,8 @@ export default function Table({
     isAdmin = false,
     isModal = false,
     deal,
+    isPublished = false,
 }) {
-    const [results, setResults] = useState([]);
     const [allTags, setAllTags] = useState([]);
     const [allRRs, setAllRRs] = useState([]);
     const [columnWidth, setColumnWidth] = useState(COLUMN_WIDTH);
@@ -56,16 +55,6 @@ export default function Table({
             [column]: newWidth,
         }));
     };
-
-    useEffect(() => {
-        if (resultsData) {
-            if (resultsData.error) {
-                toast.error(resultsData.error);
-                return;
-            }
-            setResults(resultsData);
-        }
-    }, [resultsData]);
 
     useEffect(() => {
         if (risksRewarsData) {
@@ -89,7 +78,9 @@ export default function Table({
 
     return (
         <TableLayout>
-            <TableContainer className={isModal ? "h-[200px]" : null}>
+            <TableContainer
+                className={isModal && !isPublished ? "h-[200px]" : ""}
+            >
                 {!isModal && (
                     <TableInfo
                         columnWidth={columnWidth}
@@ -106,6 +97,8 @@ export default function Table({
                     onSort={onSort}
                     isAdmin={isAdmin}
                     isModal={isModal}
+                    deal={deal}
+                    isPublished={isPublished}
                     className={isModal ? "top-0" : null}
                 />
 
@@ -128,6 +121,7 @@ export default function Table({
                     onClickDealImg={onClickDealImg}
                     isAdmin={isAdmin}
                     isModal={isModal}
+                    isPublished={isPublished}
                 />
 
                 {!isAdmin && !isModal && (
