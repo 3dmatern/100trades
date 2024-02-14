@@ -99,7 +99,7 @@ export default function SheetPage({ params }) {
 
             <DealScreenshotModal
                 isOpen={currentDealOptions}
-                deal={currentDealOptions?.deal}
+                deal={deals?.find((d) => d.id === currentDealOptions?.deal.id)}
                 currentScreen={currentDealOptions?.inputName}
                 onRemove={onRemoveImg}
                 onClose={onCloseModal}
@@ -126,7 +126,9 @@ export default function SheetPage({ params }) {
                         tagsData={tags}
                         onClickDealImg={onRemoveImg}
                         isModal={true}
-                        deal={currentDealOptions?.deal}
+                        deal={deals?.find(
+                            (d) => d.id === currentDealOptions?.deal.id
+                        )}
                     />
                 }
             />

@@ -111,7 +111,7 @@ export default function Table({
                 <TableBody
                     userId={userId}
                     sheetId={sheetId}
-                    deals={isModal && deal ? [deal] : deals}
+                    deals={isModal && deal ? [{ ...deal }] : deals}
                     selectedDeals={selectedDeals}
                     results={results}
                     longShorts={longShorts}
