@@ -89,7 +89,7 @@ export default function Table({
 
     return (
         <TableLayout>
-            <TableContainer>
+            <TableContainer className={isModal ? "h-[200px]" : null}>
                 {!isModal && (
                     <TableInfo
                         columnWidth={columnWidth}

@@ -16,7 +16,7 @@ import { deleteFile } from "@/actions/files";
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Sheets from "@/components/sheet/sheets";
 import Table from "@/components/deals/table";
-import { DealScreenshotModal } from "@/components/ui/deal-screenshot-modal";
+import { DealScreenshotModal } from "@/components/deal-screenshot-modal";
 
 export default function SheetPage({ params }) {
     const { id } = params;
@@ -60,7 +60,7 @@ export default function SheetPage({ params }) {
     };
 
     const handleRemoveImg = async (payload) => {
-        onUpdateDeal(user.id, {
+        onUpdateDeal({
             id: payload.dealId,
             [payload.inputName]: "",
         });
