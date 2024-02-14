@@ -53,12 +53,18 @@ export const createEntrie = async (userId, values) => {
     }
 };
 
-export const getEntries = async (sheetId) => {
+export const getEntries = async (isAdmin, userId, sheetId) => {
     const existingSheet = await getSheetById(sheetId);
 
     if (!existingSheet) {
         return {
             error: "Несанкционированный доступ!",
+        };
+    }
+
+    if (existingSheet.userId !== userId && !isAdmin) {
+        return {
+            redirect: "/sheets",
         };
     }
 

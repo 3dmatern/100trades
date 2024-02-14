@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 import {
     createEntrie,
@@ -14,7 +15,14 @@ import {
 } from "@/utils/operationsWithProgress";
 import { dealLimitionDateWithTime } from "@/utils/formatedDate";
 
-export function useDeals({ userId, sheetId, onSort, onResetSort }) {
+export function useDeals({
+    isAdmin = false,
+    userId,
+    sheetId,
+    onSort,
+    onResetSort,
+}) {
+    const router = useRouter();
     const [deals, setDeals] = useState([]);
     const [dealsInfo, setDealsInfo] = useState([]);
     const [isPending, setIsPending] = useState(undefined);
@@ -25,9 +33,11 @@ export function useDeals({ userId, sheetId, onSort, onResetSort }) {
     useEffect(() => {
         if (sheetId) {
             const getData = async () => {
-                const dealsData = await getEntries(sheetId);
-                if (dealsData && dealsData.error) {
+                const dealsData = await getEntries(isAdmin, userId, sheetId);
+                if (dealsData?.error) {
                     toast.error(dealsData.error);
+                } else if (dealsData?.redirect) {
+                    router.push(dealsData.redirect);
                 } else {
                     setDeals((prev) => dealsData);
                     setDealsInfo((prev) => dealsData);
@@ -38,7 +48,7 @@ export function useDeals({ userId, sheetId, onSort, onResetSort }) {
             setDeals((prev) => []);
             setDealsInfo((prev) => []);
         }
-    }, [sheetId]);
+    }, [sheetId, userId]);
 
     const handleCreateDeal = async (values) => {
         let newDealId = "";
@@ -111,7 +121,7 @@ export function useDeals({ userId, sheetId, onSort, onResetSort }) {
                 const { payload } = data;
 
                 setDeals((prev) => {
-                    const updatedDeals = prev.map((deal) => ({ ...deal }));
+                    const updatedDeals = prev.slice();
 
                     const findIndexDealOfDeals = updatedDeals.findIndex(
                         (d) => d.id === payload.id
@@ -123,7 +133,6 @@ export function useDeals({ userId, sheetId, onSort, onResetSort }) {
                             ...payload,
                         };
                     }
-                    setDealsInfo((prev) => updatedDeals);
                     return updatedDeals;
                 });
             }
@@ -263,33 +272,32 @@ async function modifiedValues({
     ) {
         values.progress = progress(values.deposit, firstDeal.deposit);
     } else if (values.id === firstDeal.id && values.deposit === "") {
-        const updDeals = await resetEveryonesProgress(
+        await resetEveryonesProgress(
             deals,
             values,
             updateEntrie,
             userId,
             sheetId,
-            toast
+            toast,
+            setDeals,
+            setDealsInfo
         );
-        setDeals((prev) => updDeals);
-        setDealsInfo((prev) => updDeals);
     } else if (
         values.id === firstDeal.id &&
         values.deposit &&
         values.deposit !== ""
     ) {
-        const updDeals = await updateEveryonesProgress(
+        await updateEveryonesProgress(
             deals,
             progress,
             values,
             updateEntrie,
             userId,
             sheetId,
-            toast
+            toast,
+            setDeals,
+            setDealsInfo
         );
-
-        setDeals((prev) => updDeals);
-        setDealsInfo((prev) => updDeals);
     } else if (dealIndex !== -1 && !Object.keys(values).includes("deposit")) {
         const findDealProgress = deals[dealIndex].progress;
         values.progress = findDealProgress ? findDealProgress : "";

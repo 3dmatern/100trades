@@ -7,12 +7,15 @@ import { useLongShort } from "@/hooks/use-long-short";
 import { useRisksRewards } from "@/hooks/use-risks-rewards";
 import { useTags } from "@/hooks/use-tags";
 import { useDeals } from "@/hooks/use-deals";
+import { useSortedDeals } from "@/hooks/use-deals-sorted";
+import { useDealModalCarousel } from "@/hooks/use-deal-modal-carousel";
 
 import { useAdminUsersState } from "@/components/admin/use-admin-users-state";
 
 import { Admin } from "@/components/admin";
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Table from "@/components/deals/table";
+import { DealScreenshotModal } from "@/components/deal-screenshot-modal";
 
 export default function AdminPage() {
     const user = useCurrentUser();
@@ -23,13 +26,29 @@ export default function AdminPage() {
     const { longShorts } = useLongShort();
     const { risksRewards } = useRisksRewards();
     const { tags } = useTags(selectUserId);
-    const { deals } = useDeals({
+    const { onSort, onResetSort } = useSortedDeals(
+        results,
+        longShorts,
+        risksRewards
+    );
+    const {
+        deals,
+        dealsInfo,
+        isSortingEnabled,
+        onSortDeals,
+        onResetSortDeals,
+    } = useDeals({
+        isAdmin: true,
         userId: user.id,
         sheetId: selectSheetId,
         results,
         longShorts,
         risksRewards,
+        onSort,
+        onResetSort,
     });
+    const { currentDealOptions, onClickDealImg, onCloseModal } =
+        useDealModalCarousel();
 
     if (users.length === 0) {
         return (
@@ -54,12 +73,43 @@ export default function AdminPage() {
                     <Table
                         userId={user.id}
                         deals={deals}
+                        dealsInfo={dealsInfo}
+                        isSortingEnabled={isSortingEnabled}
                         sheetId={selectSheetId}
-                        resultsData={results}
+                        onSort={onSortDeals}
+                        onResetSort={onResetSortDeals}
+                        results={results}
                         longShorts={longShorts}
                         risksRewarsData={risksRewards}
                         tagsData={tags}
+                        onClickDealImg={onClickDealImg}
                         isAdmin={true}
+                    />
+
+                    <DealScreenshotModal
+                        isOpen={currentDealOptions}
+                        deal={currentDealOptions?.deal}
+                        currentScreen={currentDealOptions?.inputName}
+                        onClose={onCloseModal}
+                        table={
+                            <Table
+                                userId={user.id}
+                                deals={deals}
+                                dealsInfo={dealsInfo}
+                                isSortingEnabled={isSortingEnabled}
+                                sheetId={selectSheetId}
+                                onSort={onSortDeals}
+                                onResetSort={onResetSortDeals}
+                                results={results}
+                                longShorts={longShorts}
+                                risksRewarsData={risksRewards}
+                                tagsData={tags}
+                                onClickDealImg={onClickDealImg}
+                                isAdmin={true}
+                                isModal={true}
+                                deal={currentDealOptions?.deal}
+                            />
+                        }
                     />
                 </SheetWrapper>
             )}

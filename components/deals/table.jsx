@@ -80,7 +80,9 @@ export default function Table({
     return (
         <TableLayout>
             <TableContainer
-                className={isModal && !isPublished ? "h-[200px]" : ""}
+                className={
+                    isModal && !isPublished && !isAdmin ? "h-[200px]" : ""
+                }
             >
                 {!isModal && (
                     <TableInfo

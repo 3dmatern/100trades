@@ -26,6 +26,7 @@ export default function SheetPage({ params }) {
     const { results } = useResults();
     const { longShorts } = useLongShort();
     const { risksRewards } = useRisksRewards();
+    const { tags } = useTags(user.id);
     const { onSort, onResetSort } = useSortedDeals(
         results,
         longShorts,
@@ -54,7 +55,6 @@ export default function SheetPage({ params }) {
         onSort,
         onResetSort,
     });
-    const { tags } = useTags(user.id);
     const { currentDealOptions, onClickDealImg, onRemoveImg, onCloseModal } =
         useDealModalCarousel(onUpdateDeal);
 
@@ -120,7 +120,7 @@ export default function SheetPage({ params }) {
                         onCheckDeal={onCheckDeal}
                         onSort={onSortDeals}
                         onResetSort={onResetSortDeals}
-                        resultsData={results}
+                        results={results}
                         longShorts={longShorts}
                         risksRewarsData={risksRewards}
                         tagsData={tags}
