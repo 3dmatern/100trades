@@ -82,6 +82,7 @@ export default function TableBodyCard({
                     onActionDeal={onActionDeal}
                     isAdmin={isAdmin}
                     isPublished={isPublished}
+                    dealLimitionDateWithTime={dealLimitionDateWithTime}
                 />
             )}
             {isPublished && deal?.lsId === undefined ? null : (

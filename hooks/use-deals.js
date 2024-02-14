@@ -96,6 +96,7 @@ export function useDeals({ userId, sheetId, onSort, onResetSort }) {
                 userId,
                 sheetId,
                 setDeals,
+                setDealsInfo,
             });
             const data = await updateEntrie(userId, {
                 ...fixValues,

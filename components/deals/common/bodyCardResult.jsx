@@ -12,6 +12,7 @@ export default function BodyCardResult({
     onActionDeal,
     isAdmin,
     isPublished,
+    dealLimitionDateWithTime,
 }) {
     const listRef = useRef(null);
     const [open, setOpen] = useState(false);
@@ -19,7 +20,16 @@ export default function BodyCardResult({
 
     const handleSelectResult = (res) => {
         setResult((prev) => res);
-        onActionDeal({ id: dealId, resultId: res.id });
+        if (res.type !== 4) {
+            const currentDate = dealLimitionDateWithTime(Date.now());
+            onActionDeal({
+                id: dealId,
+                resultId: res.id,
+                exitDate: currentDate,
+            });
+        } else {
+            onActionDeal({ id: dealId, resultId: res.id, exitDate: "" });
+        }
         setResult((prev) => undefined);
     };
 
