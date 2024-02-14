@@ -84,7 +84,7 @@ export default function Table({
                     isModal && !isPublished && !isAdmin ? "h-[200px]" : ""
                 }
             >
-                {!isModal && (
+                {!isModal && deals && (
                     <TableInfo
                         columnWidth={columnWidth}
                         dealsInfo={dealsInfo}
@@ -93,18 +93,20 @@ export default function Table({
                     />
                 )}
 
-                <TableHead
-                    checkAll={checkAll}
-                    columnWidth={columnWidth}
-                    onResize={handleResize}
-                    onCheckAll={onCheckAll}
-                    onSort={onSort}
-                    isAdmin={isAdmin}
-                    isModal={isModal}
-                    deal={deal}
-                    isPublished={isPublished}
-                    className={isModal ? "top-0" : null}
-                />
+                {deals && (
+                    <TableHead
+                        checkAll={checkAll}
+                        columnWidth={columnWidth}
+                        onResize={handleResize}
+                        onCheckAll={onCheckAll}
+                        onSort={onSort}
+                        isAdmin={isAdmin}
+                        isModal={isModal}
+                        deal={deal}
+                        isPublished={isPublished}
+                        className={isModal ? "top-0" : null}
+                    />
+                )}
 
                 <TableBody
                     userId={userId}
@@ -128,7 +130,7 @@ export default function Table({
                     isPublished={isPublished}
                 />
 
-                {!isAdmin && !isModal && (
+                {!isAdmin && !isModal && deals && (
                     <ActionTableRow
                         selectedDeals={selectedDeals}
                         isSortingEnabled={isSortingEnabled}

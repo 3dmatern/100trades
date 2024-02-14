@@ -149,7 +149,7 @@ export default function TableInfo({
             )}
             {dealsInfo?.[0]?.progress !== undefined && (
                 <Cell columnWidth={columnWidth.column11}>
-                    {portfolioProgress}%
+                    {portfolioProgress && portfolioProgress + "%"}
                 </Cell>
             )}
             {dealsInfo?.[0]?.exitDate !== undefined && (
@@ -172,7 +172,7 @@ export default function TableInfo({
             )}
             {dealsInfo?.[0]?.timeInTrade !== undefined && (
                 <Cell columnWidth={columnWidth.column18}>
-                    ~ {portfolioAverageTime}
+                    {portfolioAverageTime && "~ " + portfolioAverageTime}
                 </Cell>
             )}
         </div>
