@@ -1,12 +1,13 @@
 "use client";
 
+import { useCallback, useEffect, useState } from "react";
+
 import { UiModal } from "@/components/uikit/ui-modal";
 import {
     Carousel,
     CarouselContent,
     CarouselItem,
 } from "@/components/ui/carousel";
-import { useCallback, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 const IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL;

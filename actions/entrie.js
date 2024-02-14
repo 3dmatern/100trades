@@ -139,7 +139,10 @@ export const updateEntrie = async (userId, values) => {
             exitDate || existingEntrie.exitDate
         );
         const isPassedTwoDays = passedDays >= daysToPass;
-        const time = areWorkhoursPassed(existingEntrie.entryDate, exitDate);
+        const time = areWorkhoursPassed(
+            existingEntrie.entryDate,
+            exitDate || existingEntrie.exitDate
+        );
 
         if (isPassedTwoDays) {
             take = "Сделай скрин";
