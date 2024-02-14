@@ -48,7 +48,7 @@ export function useDeals({
             setDeals((prev) => []);
             setDealsInfo((prev) => []);
         }
-    }, [sheetId, userId]);
+    }, [isAdmin, router, sheetId, userId]);
 
     const handleCreateDeal = async (values) => {
         let newDealId = "";
@@ -133,6 +133,7 @@ export function useDeals({
                             ...payload,
                         };
                     }
+                    setDealsInfo(updatedDeals);
                     return updatedDeals;
                 });
             }
@@ -151,7 +152,6 @@ export function useDeals({
         setDeals((prev) =>
             prev.slice().filter((deal) => !copySelectedDeals.includes(deal.id))
         );
-
         setDealsInfo((prev) =>
             prev.slice().filter((deal) => !copySelectedDeals.includes(deal.id))
         );

@@ -84,6 +84,8 @@ export default function TableInfo({
 
             if (lastProgress) {
                 setPortfolioProgress((prev) => lastProgress);
+            } else {
+                setPortfolioProgress("");
             }
 
             if (totalClosedDeal > 0) {
@@ -93,17 +95,18 @@ export default function TableInfo({
                 quantityMinutes = Math.floor(
                     (quantityMinutes % 60) / totalClosedDeal
                 );
-
-                setPortfolioAverageTime(
-                    (prev) => `${quantityHours} ч. ${quantityMinutes} мин.`
-                );
             }
 
             setPortfolioRisk(riskSum);
+            setPortfolioAverageTime(
+                (prev) => `${quantityHours} ч. ${quantityMinutes} мин.`
+            );
         } else {
             setPercentWin(0);
             setPercentLoss(0);
             setPortfolioRisk(0);
+            setPortfolioProgress("");
+            setPortfolioAverageTime("");
         }
     }, [dealsInfo, results]);
 
@@ -149,7 +152,7 @@ export default function TableInfo({
             )}
             {dealsInfo?.[0]?.progress !== undefined && (
                 <Cell columnWidth={columnWidth.column11}>
-                    {portfolioProgress && portfolioProgress + "%"}
+                    {portfolioProgress || "0.00"}%
                 </Cell>
             )}
             {dealsInfo?.[0]?.exitDate !== undefined && (
@@ -172,7 +175,7 @@ export default function TableInfo({
             )}
             {dealsInfo?.[0]?.timeInTrade !== undefined && (
                 <Cell columnWidth={columnWidth.column18}>
-                    {portfolioAverageTime && "~ " + portfolioAverageTime}
+                    ~ {portfolioAverageTime}
                 </Cell>
             )}
         </div>
