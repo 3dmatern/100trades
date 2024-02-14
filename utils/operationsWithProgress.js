@@ -10,8 +10,7 @@ export async function resetEveryonesProgress(
     onUpdate,
     userId,
     sheetId,
-    toast,
-    setData
+    toast
 ) {
     for (const deal of array) {
         if (deal.id !== values.id && deal.deposit && deal.progress) {
@@ -20,21 +19,21 @@ export async function resetEveryonesProgress(
                 sheetId,
                 progress: "",
             });
+
             if (data.error) {
                 toast.error(data.error);
             } else if (data.success) {
                 const { payload } = data;
-                setData((prev) => {
-                    const updArray = prev.slice();
-                    const findIndex = updArray.findIndex(
-                        (d) => d.id === payload.id
-                    );
+                const updArray = array.slice();
+                const findIndex = updArray.findIndex(
+                    (d) => d.id === payload.id
+                );
 
-                    if (findIndex !== -1) {
-                        updArray[findIndex] = payload;
-                    }
-                    return updArray;
-                });
+                if (findIndex !== -1) {
+                    updArray[findIndex] = payload;
+                }
+
+                return updArray;
             }
         }
     }
@@ -47,8 +46,7 @@ export async function updateEveryonesProgress(
     onUpdate,
     userId,
     sheetId,
-    toast,
-    setData
+    toast
 ) {
     for (const deal of array) {
         if (deal.id !== values.id && deal.deposit) {
@@ -62,18 +60,15 @@ export async function updateEveryonesProgress(
                 toast.error(data.error);
             } else if (data.success) {
                 const { payload } = data;
+                const updArray = array.slice();
+                const findIndex = updArray.findIndex(
+                    (d) => d.id === payload.id
+                );
 
-                setData((prev) => {
-                    const updArray = prev.slice();
-                    const findIndex = updArray.findIndex(
-                        (d) => d.id === payload.id
-                    );
-
-                    if (findIndex !== -1) {
-                        updArray[findIndex] = payload;
-                    }
-                    return updArray;
-                });
+                if (findIndex !== -1) {
+                    updArray[findIndex] = payload;
+                }
+                return updArray;
             }
         }
     }

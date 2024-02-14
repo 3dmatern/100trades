@@ -15,6 +15,7 @@ import TableInfo from "@/components/deals/tableInfo";
 export default function Table({
     userId,
     deals,
+    dealsInfo,
     sheetId,
     selectedDeals,
     checkAll,
@@ -84,8 +85,9 @@ export default function Table({
                 {!isModal && (
                     <TableInfo
                         columnWidth={columnWidth}
-                        deals={deals}
+                        dealsInfo={dealsInfo}
                         results={results}
+                        isPublished={isPublished}
                     />
                 )}
 

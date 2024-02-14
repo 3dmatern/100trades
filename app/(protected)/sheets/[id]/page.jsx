@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { useCurrentUser } from "@/hooks/use-current-user";
@@ -33,6 +33,7 @@ export default function SheetPage({ params }) {
     );
     const {
         deals,
+        dealsInfo,
         selectedDeals,
         checkAll,
         isSortingEnabled,
@@ -76,6 +77,7 @@ export default function SheetPage({ params }) {
             <Table
                 userId={user.id}
                 deals={deals}
+                dealsInfo={dealsInfo}
                 sheetId={id}
                 selectedDeals={selectedDeals}
                 checkAll={checkAll}
@@ -105,6 +107,7 @@ export default function SheetPage({ params }) {
                     <Table
                         userId={user.id}
                         deals={deals}
+                        dealsInfo={dealsInfo}
                         sheetId={id}
                         selectedDeals={selectedDeals}
                         checkAll={checkAll}

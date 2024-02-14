@@ -24,8 +24,13 @@ export default function PublishedPage({ searchParams }) {
         longShorts,
         risksRewards
     );
-    const { sheetPublished, isSortingEnabled, onSortDeals, onResetSortDeals } =
-        useSheetPublished(id, onSort, onResetSort);
+    const {
+        sheetPublished,
+        dealsInfo,
+        isSortingEnabled,
+        onSortDeals,
+        onResetSortDeals,
+    } = useSheetPublished(id, onSort, onResetSort);
 
     const { currentDealOptions, onClickDealImg, onCloseModal } =
         useDealModalCarousel();
@@ -57,6 +62,7 @@ export default function PublishedPage({ searchParams }) {
             <SheetWrapper className="h-[calc(100vh-132px)]">
                 <Table
                     deals={sheetPublished?.deals}
+                    dealsInfo={dealsInfo}
                     isSortingEnabled={isSortingEnabled}
                     onSort={onSortDeals}
                     onResetSort={onResetSortDeals}
@@ -66,6 +72,7 @@ export default function PublishedPage({ searchParams }) {
                     allTags={sheetPublished?.tagsUser}
                     onClickDealImg={onClickDealImg}
                     isPublished={true}
+                    deal={sheetPublished?.deals?.[0]}
                 />
 
                 <DealScreenshotModal
@@ -77,6 +84,7 @@ export default function PublishedPage({ searchParams }) {
                     table={
                         <Table
                             deals={sheetPublished?.deals}
+                            dealsInfo={dealsInfo}
                             isSortingEnabled={isSortingEnabled}
                             onSort={onSortDeals}
                             onResetSort={onResetSortDeals}
@@ -86,7 +94,7 @@ export default function PublishedPage({ searchParams }) {
                             allTags={sheetPublished?.tagsUser}
                             isPublished={true}
                             isModal={true}
-                            deal={sheetPublished?.deals[0]}
+                            deal={sheetPublished?.deals?.[0]}
                         />
                     }
                 />

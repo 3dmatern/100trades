@@ -16,6 +16,7 @@ import { dealLimitionDateWithTime } from "@/utils/formatedDate";
 
 export function useDeals({ userId, sheetId, onSort, onResetSort }) {
     const [deals, setDeals] = useState([]);
+    const [dealsInfo, setDealsInfo] = useState([]);
     const [isPending, setIsPending] = useState(undefined);
     const [selectedDeals, setSelectedDeals] = useState([]);
     const [checkAll, setCheckAll] = useState(false);
@@ -29,11 +30,13 @@ export function useDeals({ userId, sheetId, onSort, onResetSort }) {
                     toast.error(dealsData.error);
                 } else {
                     setDeals((prev) => dealsData);
+                    setDealsInfo((prev) => dealsData);
                 }
             };
             getData();
         } else {
             setDeals((prev) => []);
+            setDealsInfo((prev) => []);
         }
     }, [sheetId]);
 
@@ -47,6 +50,7 @@ export function useDeals({ userId, sheetId, onSort, onResetSort }) {
                 userId,
                 sheetId,
                 setDeals,
+                setDealsInfo,
             });
         }
         delete values?.id;
@@ -66,9 +70,14 @@ export function useDeals({ userId, sheetId, onSort, onResetSort }) {
                 const { success, newEntrie } = data;
                 newDealId = newEntrie.id;
                 setDeals((prev) => {
-                    const newDeals = prev.slice();
-                    newDeals.push(newEntrie);
-                    return newDeals;
+                    const updDeals = prev.slice();
+                    updDeals.push(newEntrie);
+                    return updDeals;
+                });
+                setDealsInfo((prev) => {
+                    const updDeals = prev.slice();
+                    updDeals.push(newEntrie);
+                    return updDeals;
                 });
                 toast.success(success);
             }
@@ -113,7 +122,7 @@ export function useDeals({ userId, sheetId, onSort, onResetSort }) {
                             ...payload,
                         };
                     }
-
+                    setDealsInfo((prev) => updatedDeals);
                     return updatedDeals;
                 });
             }
@@ -133,6 +142,10 @@ export function useDeals({ userId, sheetId, onSort, onResetSort }) {
             prev.slice().filter((deal) => !copySelectedDeals.includes(deal.id))
         );
 
+        setDealsInfo((prev) =>
+            prev.slice().filter((deal) => !copySelectedDeals.includes(deal.id))
+        );
+
         const allRemoved = await Promise.all(
             copySelectedDeals.map(
                 async (dealId) =>
@@ -148,6 +161,10 @@ export function useDeals({ userId, sheetId, onSort, onResetSort }) {
         removedDeal = copySelectedDeals.filter((d) => !removedDeal.includes(d));
         if (removedDeal.length > 0) {
             setDeals((prev) => [
+                ...prev,
+                ...prev.slice().filter((c) => removedDeal.includes(c.id)),
+            ]);
+            setDealsInfo((prev) => [
                 ...prev,
                 ...prev.slice().filter((c) => removedDeal.includes(c.id)),
             ]);
@@ -206,6 +223,7 @@ export function useDeals({ userId, sheetId, onSort, onResetSort }) {
 
     return {
         deals,
+        dealsInfo,
         checkAll,
         selectedDeals,
         isSortingEnabled,
@@ -220,7 +238,14 @@ export function useDeals({ userId, sheetId, onSort, onResetSort }) {
     };
 }
 
-async function modifiedValues({ deals, values, userId, sheetId, setDeals }) {
+async function modifiedValues({
+    deals,
+    values,
+    userId,
+    sheetId,
+    setDeals,
+    setDealsInfo,
+}) {
     const dealIndex = deals.findIndex((d) => d.id === values.id);
     const firstDeal = deals.reduce((minDeal, currentDeal) => {
         if (!minDeal || new Date(currentDeal.date) < new Date(minDeal.date)) {
@@ -237,30 +262,33 @@ async function modifiedValues({ deals, values, userId, sheetId, setDeals }) {
     ) {
         values.progress = progress(values.deposit, firstDeal.deposit);
     } else if (values.id === firstDeal.id && values.deposit === "") {
-        await resetEveryonesProgress(
+        const updDeals = await resetEveryonesProgress(
             deals,
             values,
             updateEntrie,
             userId,
             sheetId,
-            toast,
-            setDeals
+            toast
         );
+        setDeals((prev) => updDeals);
+        setDealsInfo((prev) => updDeals);
     } else if (
         values.id === firstDeal.id &&
         values.deposit &&
         values.deposit !== ""
     ) {
-        await updateEveryonesProgress(
+        const updDeals = await updateEveryonesProgress(
             deals,
             progress,
             values,
             updateEntrie,
             userId,
             sheetId,
-            toast,
-            setDeals
+            toast
         );
+
+        setDeals((prev) => updDeals);
+        setDealsInfo((prev) => updDeals);
     } else if (dealIndex !== -1 && !Object.keys(values).includes("deposit")) {
         const findDealProgress = deals[dealIndex].progress;
         values.progress = findDealProgress ? findDealProgress : "";
