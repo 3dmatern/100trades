@@ -2,13 +2,14 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { cn } from "@/lib/utils";
 import { UiModal } from "@/components/uikit/ui-modal";
 import {
     Carousel,
     CarouselContent,
     CarouselItem,
 } from "@/components/ui/carousel";
-import { cn } from "@/lib/utils";
+import { Button } from "./ui/button";
 
 const IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL;
 
@@ -61,7 +62,26 @@ export function DealScreenshotModal({
             onClose={onClose}
             className="py-0 z-[4]"
         >
-            <UiModal.Header className="text-white">{deal?.name}</UiModal.Header>
+            <UiModal.Header className="flex items-center justify-center gap-5 text-white uppercase">
+                {deal?.name}
+                {!isPublished && (
+                    <Button
+                        title="Удалить скриншот"
+                        size="sm"
+                        variant="destructive"
+                        onClick={() =>
+                            onRemove({
+                                dealId: deal.id,
+                                inputName: currentScreen,
+                                fileName: deal?.[currentScreen],
+                            })
+                        }
+                        className="w-max px-2  bg-red-700 hover:bg-red-500 rounded-md"
+                    >
+                        <TrashIcon />
+                    </Button>
+                )}
+            </UiModal.Header>
             <UiModal.Body className="mx-auto px-0">
                 <Carousel
                     setApi={setEmblaApi}
@@ -85,53 +105,44 @@ export function DealScreenshotModal({
                         )}
                     </CarouselContent>
 
-                    <div className="flex items-center justify-center ">
+                    <div className="flex items-center justify-center my-5">
                         {scrollSnaps.map((_, index) => (
-                            <DotButton
+                            <Button
                                 key={index}
                                 onClick={() => scrollTo(index)}
-                                className="w-10 h-10 flex items-center ml-3 mr-3 bg-transparent"
+                                variant={
+                                    index === selectedIndex ? "outline" : ""
+                                }
+                                size="sm"
+                                className={cn(
+                                    "w-max flex items-center ml-3 mr-3"
+                                )}
                             >
-                                <span
-                                    className={cn(
-                                        "w-full h-1 bg-white rounded",
-                                        index === selectedIndex &&
-                                            "bg-gradient-to-r from-cyan-500 to-blue-500"
-                                    )}
-                                />
-                            </DotButton>
+                                СКРИН {index + 1}
+                            </Button>
                         ))}
                     </div>
                 </Carousel>
             </UiModal.Body>
             <UiModal.Footer className="flex-col h-max p-0 pb-5">
-                {!isPublished && (
-                    <button
-                        type="button"
-                        onClick={() =>
-                            onRemove({
-                                dealId: deal.id,
-                                inputName: currentScreen,
-                                fileName: deal?.[currentScreen],
-                            })
-                        }
-                        className="w-max mx-auto py-1 px-2 h-8 bg-red-700 hover:bg-red-500 rounded-md text-white"
-                    >
-                        Удалить скриншот
-                    </button>
-                )}
                 {table}
             </UiModal.Footer>
         </UiModal>
     );
 }
 
-export const DotButton = (props) => {
-    const { children, ...restProps } = props;
-
+function TrashIcon() {
     return (
-        <button type="button" {...restProps}>
-            {children}
-        </button>
+        <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"
+                fill="currentColor"
+            />
+        </svg>
     );
-};
+}

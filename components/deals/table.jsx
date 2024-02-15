@@ -84,7 +84,7 @@ export default function Table({
                     isModal && !isPublished && !isAdmin ? "h-[200px]" : ""
                 }
             >
-                {!isModal && (
+                {!isModal && deals && (
                     <TableInfo
                         columnWidth={columnWidth}
                         dealsInfo={dealsInfo}
