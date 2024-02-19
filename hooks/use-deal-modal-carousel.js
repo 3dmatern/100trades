@@ -30,22 +30,27 @@ export function useDealModalCarousel(onUpdateDeal) {
     };
 
     const handleRemoveImg = async (payload) => {
-        onUpdateDeal({
-            id: payload.dealId,
-            [payload.inputName]: "",
-        });
+        const isConfirm = window.confirm(
+            "Вы уверены, что хотите удалить скриншот?"
+        );
+        if (isConfirm) {
+            onUpdateDeal({
+                id: payload.dealId,
+                [payload.inputName]: "",
+            });
 
-        deleteFile(payload.fileName).then((data) => {
-            if (data.error) {
-                toast.error(data.error);
-                return;
-            }
-            if (data.success) {
-                toast.success(data.success);
-            }
-        });
+            deleteFile(payload.fileName).then((data) => {
+                if (data.error) {
+                    toast.error(data.error);
+                    return;
+                }
+                if (data.success) {
+                    toast.success(data.success);
+                }
+            });
 
-        setCurrentDealOptions((prev) => undefined);
+            setCurrentDealOptions((prev) => undefined);
+        }
     };
 
     const handleCloseModal = () => {

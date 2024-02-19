@@ -88,6 +88,7 @@ export function DealScreenshotModal({
                     opts={{
                         align: "start",
                         loop: true,
+                        duration: 0,
                     }}
                 >
                     <CarouselContent className="flex items-center">
