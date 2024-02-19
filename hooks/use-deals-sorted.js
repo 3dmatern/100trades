@@ -95,7 +95,7 @@ export function useSortedDeals(results, longShorts, risksRewards) {
 
     const handleResetSort = (deals) => {
         return deals.slice().sort((a, b) => {
-            return new Date(a.date) - new Date(b.date);
+            return new Date(b.date) - new Date(a.date);
         });
     };
 

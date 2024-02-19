@@ -81,12 +81,12 @@ export function useDeals({
                 newDealId = newEntrie.id;
                 setDeals((prev) => {
                     const updDeals = prev.slice();
-                    updDeals.push(newEntrie);
+                    updDeals.unshift(newEntrie);
                     return updDeals;
                 });
                 setDealsInfo((prev) => {
                     const updDeals = prev.slice();
-                    updDeals.push(newEntrie);
+                    updDeals.unshift(newEntrie);
                     return updDeals;
                 });
                 toast.success(success);

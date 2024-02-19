@@ -7,7 +7,7 @@ export const getEntriesBySheetId = async (sheetId) => {
         const entries = await db.entrie.findMany({
             where: { sheetId },
             orderBy: {
-                date: "asc",
+                date: "desc",
             },
         });
 
