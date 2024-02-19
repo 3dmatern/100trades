@@ -20,6 +20,7 @@ guide.mp4
 todo.txt
 scripts/seed.js
 server/node_modules
+server/images
 
 # misc
 .DS_Store
