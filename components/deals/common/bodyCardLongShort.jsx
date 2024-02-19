@@ -15,6 +15,7 @@ export default function BodyCardLongShort({
     isAdmin,
     isPublished,
 }) {
+    const selectRef = useRef(null);
     const listRef = useRef(null);
     const [open, setOpen] = useState(false);
     const [longShort, setLongShort] = useState(undefined);
@@ -26,6 +27,18 @@ export default function BodyCardLongShort({
     };
 
     useEffect(() => {
+        if (listRef.current) {
+            const list = listRef.current;
+            const rect = list.getBoundingClientRect();
+
+            if (rect.bottom > window.innerHeight) {
+                list.style.top = "unset";
+                list.style.bottom = "32px";
+            }
+        }
+    }, [open]);
+
+    useEffect(() => {
         if (lsId && longShorts) {
             setLongShort((prev) => longShorts.find((item) => item.id === lsId));
         }
@@ -33,7 +46,7 @@ export default function BodyCardLongShort({
 
     useEffect(() => {
         const handleClickOutside = (e) => {
-            if (listRef.current && !listRef.current.contains(e.target)) {
+            if (selectRef.current && !selectRef.current.contains(e.target)) {
                 setOpen((prev) => false);
             }
         };
@@ -52,7 +65,7 @@ export default function BodyCardLongShort({
     return (
         <div className="table-cell align-middle h-full">
             <div
-                ref={listRef}
+                ref={selectRef}
                 onClick={() => setOpen((prev) => !prev)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className="flex items-center h-full px-2 relative border-r border-slate-300"
@@ -95,7 +108,10 @@ export default function BodyCardLongShort({
                 </button>
 
                 {open && !isAdmin && !isPublished && (
-                    <ul className="w-full absolute left-0 top-8 z-[1] rounded-md py-2 bg-white border border-gray-300">
+                    <ul
+                        ref={listRef}
+                        className="w-full absolute left-0 top-8 z-[1] rounded-md py-2 bg-white border border-gray-300"
+                    >
                         {longShorts
                             ?.filter((ls) => lsId !== ls.id)
                             .map((longShort) => (

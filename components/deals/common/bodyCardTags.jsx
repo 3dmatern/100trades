@@ -27,6 +27,7 @@ export default function BodyCardTags({
     isAdmin,
     isPublished,
 }) {
+    const selectRef = useRef(null);
     const listRef = useRef(null);
     const [active, setActive] = useState(false);
     const [open, setOpen] = useState(false);
@@ -126,6 +127,18 @@ export default function BodyCardTags({
     };
 
     useEffect(() => {
+        if (listRef.current) {
+            const list = listRef.current;
+            const rect = list.getBoundingClientRect();
+
+            if (rect.bottom > window.innerHeight - 32) {
+                list.style.top = "unset";
+                list.style.bottom = "32px";
+            }
+        }
+    }, [open]);
+
+    useEffect(() => {
         if (allTags) {
             setFilteredTags((prev) => allTags);
         }
@@ -147,7 +160,7 @@ export default function BodyCardTags({
 
     useEffect(() => {
         const handleClickOutside = (e) => {
-            if (listRef.current && !listRef.current.contains(e.target)) {
+            if (selectRef.current && !selectRef.current.contains(e.target)) {
                 setOpen((prev) => false);
                 setActive((prev) => false);
             }
@@ -166,7 +179,7 @@ export default function BodyCardTags({
     }, []);
 
     return (
-        <div ref={listRef} className="table-cell relative h-full">
+        <div ref={selectRef} className="table-cell relative h-full">
             <div
                 onClick={() => setActive((prev) => true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
@@ -237,6 +250,7 @@ export default function BodyCardTags({
 
             {open && !isAdmin && !isPublished && (
                 <div
+                    ref={listRef}
                     style={{ width: columnWidth }}
                     className="absolute top-16 left-0 z-[1] rounded-md py-2 bg-white border border-gray-300"
                 >

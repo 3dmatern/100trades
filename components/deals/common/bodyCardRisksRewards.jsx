@@ -19,10 +19,10 @@ export default function BodyCardRisksRewards({
     isAdmin,
     isPublished,
 }) {
+    const selectRef = useRef(null);
     const listRef = useRef(null);
     const [isPending, startTransaction] = useTransition();
     const [active, setActive] = useState(false);
-    const [open, setOpen] = useState(false);
     const [filterRRs, setFilterRRs] = useState([]);
     const [lpBgColor, setLPBgColor] = useState("");
     const [currentRR, setCurrentRR] = useState(undefined);
@@ -37,7 +37,6 @@ export default function BodyCardRisksRewards({
         e.stopPropagation();
         setRR((prev) => "");
         setActive((prev) => false);
-        setOpen((prev) => false);
 
         if (!selectRR.id) {
             startTransaction(() => {
@@ -70,6 +69,18 @@ export default function BodyCardRisksRewards({
     };
 
     useEffect(() => {
+        if (listRef.current) {
+            const list = listRef.current;
+            const rect = list.getBoundingClientRect();
+
+            if (rect.bottom > window.innerHeight - 32) {
+                list.style.top = "unset";
+                list.style.bottom = "32px";
+            }
+        }
+    }, [active]);
+
+    useEffect(() => {
         if (rrId && allRRs) {
             setCurrentRR(allRRs?.find((item) => item.id === rrId));
         }
@@ -87,20 +98,25 @@ export default function BodyCardRisksRewards({
 
     useEffect(() => {
         const handleClickOutside = (e) => {
-            if (listRef.current && !listRef.current.contains(e.target)) {
+            if (selectRef.current && !selectRef.current.contains(e.target)) {
                 setActive((prev) => false);
-                setOpen((prev) => false);
+            }
+        };
+        const handleKyeDown = (e) => {
+            if (e.key === "Escape" && listRef.current) {
+                setActive((prev) => false);
             }
         };
         const handleScroll = () => {
             setActive((prev) => false);
-            setOpen((prev) => false);
         };
 
         document.addEventListener("click", handleClickOutside);
+        document.addEventListener("keydown", handleKyeDown);
         window.addEventListener("scroll", handleScroll);
         return () => {
             document.removeEventListener("click", handleClickOutside);
+            document.removeEventListener("keydown", handleKyeDown);
             window.removeEventListener("scroll", handleScroll);
         };
     }, []);
@@ -108,8 +124,8 @@ export default function BodyCardRisksRewards({
     return (
         <div className="table-cell align-middle h-full">
             <div
-                ref={listRef}
-                onClick={() => setActive(true)}
+                ref={selectRef}
+                onClick={() => setActive((prev) => true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className={`flex items-center h-full px-2 relative text-xs ${
                     active && !isAdmin && !isPublished
@@ -145,7 +161,7 @@ export default function BodyCardRisksRewards({
                             width={10}
                             height={10}
                             style={{
-                                rotate: open ? "180deg" : "0deg",
+                                rotate: active ? "180deg" : "0deg",
                                 transition: "all .3s",
                             }}
                         />
@@ -153,7 +169,10 @@ export default function BodyCardRisksRewards({
                 </button>
 
                 {active && !isAdmin && !isPublished && (
-                    <div className="absolute left-0 top-8 z-[1] w-max rounded-md py-2 bg-white border border-gray-300">
+                    <div
+                        ref={listRef}
+                        className="absolute left-0 top-8 z-[1] w-max rounded-md py-2 bg-white border border-gray-300"
+                    >
                         <input
                             type="text"
                             name="rr"
