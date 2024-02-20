@@ -76,17 +76,18 @@ export function useDeals({
             if (data.error) {
                 toast.error(data.error);
             }
+
             if (data.success) {
                 const { success, newEntrie } = data;
                 newDealId = newEntrie.id;
                 setDeals((prev) => {
                     const updDeals = prev.slice();
-                    updDeals.unshift(newEntrie);
+                    updDeals.unshift({ ...newEntrie, number: prev.length + 1 });
                     return updDeals;
                 });
                 setDealsInfo((prev) => {
                     const updDeals = prev.slice();
-                    updDeals.unshift(newEntrie);
+                    updDeals.unshift({ ...newEntrie, number: prev.length + 1 });
                     return updDeals;
                 });
                 toast.success(success);

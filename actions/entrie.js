@@ -71,22 +71,24 @@ export const getEntries = async (isAdmin, userId, sheetId) => {
     try {
         const entries = await getEntriesBySheetId(existingSheet.id);
 
-        for (const entrie of entries) {
+        for (let i = 0; i < entries.length; i++) {
             if (
-                entrie &&
-                entrie.entryDate &&
-                entrie.exitDate &&
-                !entrie.imageEnd
+                entries[i] &&
+                entries[i].entryDate &&
+                entries[i].exitDate &&
+                !entries[i].imageEnd
             ) {
-                const passedDays = areTwoWorkdaysPassed(entrie.exitDate);
+                const passedDays = areTwoWorkdaysPassed(entries[i].exitDate);
                 const isPassedTwoDays = passedDays >= daysToPass;
 
                 if (isPassedTwoDays) {
-                    entrie.take = "Сделай скрин";
+                    entries[i].take = "Сделай скрин";
                 } else {
-                    entrie.take = "Рано";
+                    entries[i].take = "Рано";
                 }
             }
+
+            entries[i]["number"] = entries.length - i;
         }
 
         return entries;

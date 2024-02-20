@@ -59,9 +59,9 @@ export default function TableBodyCard({
         >
             {isPublished && deal?.name === undefined ? null : (
                 <BodyCardName
-                    index={index}
                     dealId={deal?.id}
                     dealName={deal?.name}
+                    dealNumber={deal?.number}
                     selectedDeals={selectedDeals}
                     dealHover={hover}
                     columnWidth={columnWidth.column1}

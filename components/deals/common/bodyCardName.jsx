@@ -10,10 +10,9 @@ import { Input } from "@/components/ui/input";
 import CheckboxOrNumber from "@/components/deals/common/checkboxOrNumber";
 
 export default function BodyCardName({
-    index,
-
     dealId,
     dealName,
+    dealNumber,
     selectedDeals,
     dealHover,
     columnWidth,
@@ -86,7 +85,7 @@ export default function BodyCardName({
             >
                 {dealId && (
                     <CheckboxOrNumber
-                        number={index + 1}
+                        number={dealNumber}
                         name="deals"
                         value={dealId}
                         checked={selectedDeals?.includes(dealId)}
