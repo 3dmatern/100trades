@@ -40,6 +40,7 @@ export default function TableBodyCard({
     isPending,
     onActionDeal,
     onClickDealImg,
+    isCreate = false,
     isAdmin,
     isModal,
     isPublished,
@@ -105,6 +106,7 @@ export default function TableBodyCard({
                     columnWidth={columnWidth.column4}
                     isPending={isPending}
                     onActionDeal={onActionDeal}
+                    isCreate={isCreate}
                     isAdmin={isAdmin}
                     isPublished={isPublished}
                 />
@@ -118,6 +120,7 @@ export default function TableBodyCard({
                     columnWidth={columnWidth.column5}
                     isPending={isPending}
                     onActionDeal={onActionDeal}
+                    isCreate={isCreate}
                     isAdmin={isAdmin}
                     isPublished={isPublished}
                 />
@@ -131,6 +134,7 @@ export default function TableBodyCard({
                     columnWidth={columnWidth.column6}
                     isPending={isPending}
                     onActionDeal={onActionDeal}
+                    isCreate={isCreate}
                     isAdmin={isAdmin}
                     isPublished={isPublished}
                 />
@@ -189,6 +193,7 @@ export default function TableBodyCard({
                     columnWidth={columnWidth.column10}
                     isPending={isPending}
                     onActionDeal={onActionDeal}
+                    isCreate={isCreate}
                     isAdmin={isAdmin}
                     isPublished={isPublished}
                 />

@@ -16,6 +16,7 @@ export default function BodyCardRisk({
     columnWidth,
     isPending,
     onActionDeal,
+    isCreate,
     isAdmin,
     isPublished,
 }) {
@@ -30,34 +31,31 @@ export default function BodyCardRisk({
         },
     });
 
-    const handleOpen = () => {
-        setOpen((prev) => true);
-        form.setValue("id", dealId);
-        form.setValue("risk", dealRisk);
-    };
-
     const onSubmit = (values) => {
         if ((!values.risk && !dealRisk) || values.risk === dealRisk) {
             setOpen((prev) => false);
             return;
         }
         onActionDeal(values);
+
+        if (isCreate) {
+            form.reset();
+        }
     };
 
     const updateRisk = async () => {
         form.handleSubmit(onSubmit(form.getValues()));
-        form.reset({ id: "", risk: "" });
         setOpen((prev) => false);
     };
 
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (cellRef.current && !cellRef.current.contains(e.target)) {
-                setOpen(false);
+                setOpen((prev) => false);
             }
         };
         const handleScroll = () => {
-            setOpen(false);
+            setOpen((prev) => false);
         };
 
         document.addEventListener("click", handleClickOutside);
@@ -72,7 +70,7 @@ export default function BodyCardRisk({
         <div className="table-cell align-middle h-full">
             <div
                 ref={cellRef}
-                onClick={handleOpen}
+                onClick={() => setOpen((prev) => true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className={`flex items-center w-full h-full relative text-xs ${
                     selectedDeals?.includes(dealId) || dealHover

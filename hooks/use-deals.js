@@ -267,11 +267,11 @@ async function modifiedValues({
     if (
         values.deposit &&
         firstDeal &&
-        firstDeal.deposit &&
-        values.id !== firstDeal.id
+        firstDeal?.deposit &&
+        values.id !== firstDeal?.id
     ) {
-        values.progress = progress(values.deposit, firstDeal.deposit);
-    } else if (values.id === firstDeal.id && values.deposit === "") {
+        values.progress = progress(values.deposit, firstDeal?.deposit);
+    } else if (values.id === firstDeal?.id && values.deposit === "") {
         await resetEveryonesProgress(
             deals,
             values,
@@ -283,7 +283,7 @@ async function modifiedValues({
             setDealsInfo
         );
     } else if (
-        values.id === firstDeal.id &&
+        values.id === firstDeal?.id &&
         values.deposit &&
         values.deposit !== ""
     ) {
@@ -299,7 +299,7 @@ async function modifiedValues({
             setDealsInfo
         );
     } else if (dealIndex !== -1 && !Object.keys(values).includes("deposit")) {
-        const findDealProgress = deals[dealIndex].progress;
+        const findDealProgress = deals[dealIndex]?.progress;
         values.progress = findDealProgress ? findDealProgress : "";
     } else if (values.deposit === "") {
         values.progress = "";

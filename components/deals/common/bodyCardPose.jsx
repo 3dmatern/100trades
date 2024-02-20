@@ -16,6 +16,7 @@ export default function BodyCardPose({
     columnWidth,
     isPending,
     onActionDeal,
+    isCreate,
     isAdmin,
     isPublished,
 }) {
@@ -33,11 +34,14 @@ export default function BodyCardPose({
 
     const onSubmit = (values) => {
         if ((!values.pose && !dealPose) || values.pose === dealPose) {
-            setOpen(false);
+            setOpen((prev) => false);
             return;
         }
         onActionDeal(values);
-        form.reset();
+
+        if (isCreate) {
+            form.reset();
+        }
     };
 
     const updatePose = async () => {
@@ -46,7 +50,7 @@ export default function BodyCardPose({
         if (formattedPrice !== "NaN") {
             setPose(formattedPrice);
         }
-        setOpen(false);
+        setOpen((prev) => false);
     };
 
     useEffect(() => {
@@ -54,18 +58,18 @@ export default function BodyCardPose({
             form.setValue("pose", dealPose);
 
             const formattedPrice = formatPrice(dealPose);
-            setPose(formattedPrice);
+            setPose((prev) => formattedPrice);
         }
     }, [dealPose, form]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (cellRef.current && !cellRef.current.contains(e.target)) {
-                setOpen(false);
+                setOpen((prev) => false);
             }
         };
         const handleScroll = () => {
-            setOpen(false);
+            setOpen((prev) => false);
         };
 
         document.addEventListener("click", handleClickOutside);
@@ -80,7 +84,7 @@ export default function BodyCardPose({
         <div className="table-cell align-middle h-full">
             <div
                 ref={cellRef}
-                onClick={() => setOpen(true)}
+                onClick={() => setOpen((prev) => true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className={`flex items-center w-full h-full px-2 relative text-xs ${
                     open && !isAdmin && !isPublished

@@ -16,6 +16,7 @@ export default function BodyCardProfit({
     columnWidth,
     isPending,
     onActionDeal,
+    isCreate,
     isAdmin,
     isPublished,
 }) {
@@ -30,23 +31,20 @@ export default function BodyCardProfit({
         },
     });
 
-    const handleOpen = () => {
-        setOpen((prev) => true);
-        form.setValue("id", dealId);
-        form.setValue("profit", dealProfit);
-    };
-
     const onSubmit = (values) => {
         if ((!values.profit && !dealProfit) || values.profit === dealProfit) {
             setOpen((prev) => false);
             return;
         }
         onActionDeal(values);
+
+        if (isCreate) {
+            form.reset();
+        }
     };
 
     const updateProfit = async () => {
         form.handleSubmit(onSubmit(form.getValues()));
-        form.reset({ id: "", profit: "" });
         setOpen((prev) => false);
     };
 
@@ -72,7 +70,7 @@ export default function BodyCardProfit({
         <div className="table-cell align-middle h-full">
             <div
                 ref={cellRef}
-                onClick={handleOpen}
+                onClick={() => setOpen((prev) => true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className={`flex items-center w-full h-full relative text-xs ${
                     selectedDeals?.includes(dealId) || dealHover

@@ -39,6 +39,7 @@ export default function TableBody({
                     columnWidth={columnWidth}
                     onCheckDeal={onCheckDeal}
                     onActionDeal={onCreateDeal}
+                    isCreate={true}
                 />
             )}
             {deals?.map((deal, index) => (

@@ -16,6 +16,7 @@ export default function BodyCardDeposit({
     columnWidth,
     isPending,
     onActionDeal,
+    isCreate,
     isAdmin,
     isPublished,
 }) {
@@ -30,12 +31,6 @@ export default function BodyCardDeposit({
         },
     });
 
-    const handleOpen = () => {
-        setOpen((prev) => true);
-        form.setValue("id", dealId);
-        form.setValue("deposit", dealDeposit);
-    };
-
     const onSubmit = (values) => {
         if (
             (!values.deposit && !dealDeposit) ||
@@ -46,11 +41,14 @@ export default function BodyCardDeposit({
             return;
         }
         onActionDeal(values);
+
+        if (isCreate) {
+            form.reset();
+        }
     };
 
     const updateDeposit = () => {
         form.handleSubmit(onSubmit(form.getValues()));
-        form.reset({ id: "", deposit: "" });
         setOpen((prev) => false);
     };
 
@@ -76,7 +74,7 @@ export default function BodyCardDeposit({
         <div className="table-cell align-middle h-full">
             <div
                 ref={cellRef}
-                onClick={handleOpen}
+                onClick={() => setOpen((prev) => true)}
                 style={{ width: columnWidth, minWidth: "64px" }}
                 className={`flex items-center w-full h-full px-2 relative text-xs ${
                     open && !isAdmin && !isPublished
