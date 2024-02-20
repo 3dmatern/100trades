@@ -1,7 +1,7 @@
 export const HEADERS_COLUMN = [
     { dbName: "name", name: "Тикер", up: false, w: "112px" },
     { dbName: "resultId", name: "Win-Loss", up: true, w: "96px" },
-    { dbName: "lsId", name: "Long-Short", up: true, w: "96px" },
+    { dbName: "lsId", name: "ls", up: true, w: "96px" },
     { dbName: "pose", name: "Поза", up: false, w: "96px" },
     { dbName: "risk", name: "Риск", up: false, w: "70px" },
     { dbName: "profit", name: "Профит", up: false, w: "80px" },

@@ -1,7 +1,7 @@
 export const ITEMS = [
     { id: "name", label: "Тикер" },
     { id: "resultId", label: "win-loss" },
-    { id: "lsId", label: "long-short" },
+    { id: "lsId", label: "ls" },
     { id: "pose", label: "Поза" },
     { id: "risk", label: "Риск" },
     { id: "profit", label: "Профит" },

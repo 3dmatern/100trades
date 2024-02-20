@@ -57,6 +57,18 @@ export default function Table({
         }));
     };
 
+    const getClassNameContainer = () => {
+        if (isModal && !isPublished && !isAdmin) {
+            return "h-[200px]";
+        }
+
+        if (isPublished) {
+            return " mx-auto";
+        }
+
+        return "";
+    };
+
     useEffect(() => {
         if (risksRewarsData) {
             if (risksRewarsData.error) {
@@ -79,11 +91,7 @@ export default function Table({
 
     return (
         <TableLayout>
-            <TableContainer
-                className={
-                    isModal && !isPublished && !isAdmin ? "h-[200px]" : ""
-                }
-            >
+            <TableContainer className={getClassNameContainer()}>
                 {!isModal && deals && (
                     <TableInfo
                         columnWidth={columnWidth}

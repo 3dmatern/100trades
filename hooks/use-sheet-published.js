@@ -13,6 +13,7 @@ export function useSheetPublished(sheetId, onSort, onResetSort) {
         if (sheetId) {
             const getData = async () => {
                 const sheetPublished = await getSheetPublished(sheetId);
+
                 if (!sheetPublished) {
                     return <NotFound />;
                 } else {

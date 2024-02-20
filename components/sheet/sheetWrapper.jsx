@@ -4,7 +4,7 @@ export default function SheetWrapper({ className, children }) {
     return (
         <main
             className={cn(
-                "flex flex-col w-max mx-auto p-4 pb-0 relative overflow-x-hidden",
+                "flex flex-col p-4 pb-0 relative overflow-x-hidden",
                 className
             )}
         >
