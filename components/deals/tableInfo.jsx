@@ -37,7 +37,7 @@ export default function TableInfo({
                     totalClosedDeal++;
                 }
 
-                if (d.progress) {
+                if (d.progress && lastProgress === 0) {
                     lastProgress = d.progress;
                 }
 
