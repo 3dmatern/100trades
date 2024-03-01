@@ -23,7 +23,7 @@ export const getEntriesBySheetIdByFields = async (sheetId, fields) => {
         const entries = await db.entrie.findMany({
             where: { sheetId },
             orderBy: {
-                date: "asc",
+                date: "desc",
             },
             select: {
                 id: true,

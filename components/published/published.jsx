@@ -67,8 +67,8 @@ export function Published({ sheetPublishedId }) {
                     onResetSort={onResetSortDeals}
                     results={results}
                     longShorts={longShorts}
-                    allRRs={risksRewards}
-                    allTags={sheetPublished?.tagsUser}
+                    risksRewarsData={risksRewards}
+                    tagsData={sheetPublished?.tagsUser}
                     onClickDealImg={onClickDealImg}
                     isPublished={true}
                     deal={sheetPublished?.deals?.[0]}

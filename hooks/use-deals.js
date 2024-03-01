@@ -34,6 +34,7 @@ export function useDeals({
         if (sheetId) {
             const getData = async () => {
                 const dealsData = await getEntries(isAdmin, userId, sheetId);
+
                 if (dealsData?.error) {
                     toast.error(dealsData.error);
                 } else if (dealsData?.redirect) {
@@ -43,6 +44,7 @@ export function useDeals({
                     setDealsInfo((prev) => dealsData);
                 }
             };
+
             getData();
         } else {
             setDeals((prev) => []);

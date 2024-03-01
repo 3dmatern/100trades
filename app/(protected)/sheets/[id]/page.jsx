@@ -11,12 +11,12 @@ import { useRisksRewards } from "@/hooks/use-risks-rewards";
 import { useTags } from "@/hooks/use-tags";
 import { useDeals } from "@/hooks/use-deals";
 import { useDealModalCarousel } from "@/hooks/use-deal-modal-carousel";
+import { useSortedDeals } from "@/hooks/use-deals-sorted";
 
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Sheets from "@/components/sheet/sheets";
 import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/deal-screenshot-modal";
-import { useSortedDeals } from "@/hooks/use-deals-sorted";
 
 export default function SheetPage({ params }) {
     const { id } = params;
