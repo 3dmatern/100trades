@@ -42,12 +42,11 @@ export default function TableBody({
                     isCreate={true}
                 />
             )}
-            {deals?.map((deal, index) => (
+            {deals?.map((deal) => (
                 <TableBodyCard
                     key={deal.id}
                     userId={userId}
                     sheetId={sheetId}
-                    index={index}
                     deal={deal}
                     selectedDeals={selectedDeals}
                     results={results}

@@ -42,8 +42,8 @@ export default function TableHead({
                             name={item.name}
                             dbName={item.dbName}
                             isSort={filteredDBName(item.dbName)}
-                            nameColumn={`column${index + 2}`}
-                            initWidth={columnWidth[`column${index + 2}`]}
+                            nameColumn={item.dbName}
+                            initWidth={columnWidth[item.dbName]}
                             onResize={onResize}
                             onSort={onSort}
                             classNameList="z-[1]"
@@ -68,8 +68,8 @@ export default function TableHead({
                             name={item.name}
                             dbName={item.dbName}
                             isSort={filteredDBName(item.dbName)}
-                            nameColumn={`column${index + 2}`}
-                            initWidth={columnWidth[`column${index + 2}`]}
+                            nameColumn={item.dbName}
+                            initWidth={columnWidth[item.dbName]}
                             onResize={onResize}
                             onSort={onSort}
                             classNameList="z-[1]"
@@ -93,8 +93,8 @@ export default function TableHead({
                             name={item.name}
                             dbName={item.dbName}
                             isSort={filteredDBName(item.dbName)}
-                            nameColumn={`column${index + 2}`}
-                            initWidth={columnWidth[`column${index + 2}`]}
+                            nameColumn={item.dbName}
+                            initWidth={columnWidth[item.dbName]}
                             onResize={onResize}
                             onSort={onSort}
                             classNameList="z-[1]"
@@ -116,8 +116,8 @@ export default function TableHead({
                     name={item.name}
                     dbName={item.dbName}
                     isSort={filteredDBName(item.dbName)}
-                    nameColumn={`column${index + 2}`}
-                    initWidth={columnWidth[`column${index + 2}`]}
+                    nameColumn={item.dbName}
+                    initWidth={columnWidth[item.dbName]}
                     onResize={onResize}
                     onSort={onSort}
                     classNameList="z-[1]"
@@ -149,8 +149,8 @@ export default function TableHead({
                         name={item.name}
                         dbName={item.dbName}
                         isSort={item.dbName}
-                        nameColumn="column1"
-                        initWidth={columnWidth.column1}
+                        nameColumn={item.dbName}
+                        initWidth={columnWidth[item.dbName]}
                         onResize={onResize}
                         onSort={onSort}
                         className="sticky left-0 z-[3]"

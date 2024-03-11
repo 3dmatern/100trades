@@ -51,7 +51,7 @@ export default function SheetCreatePublishedForm({
                 "timeInTrade",
                 "resultId",
                 "lsId",
-                "rrId",
+                // "rrId",
                 "entrieTag",
             ],
         },

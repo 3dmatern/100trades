@@ -26,7 +26,6 @@ import BodyCardLongShort from "@/components/deals/common/bodyCardLongShort";
 export default function TableBodyCard({
     userId,
     sheetId,
-    index,
     deal,
     selectedDeals,
     results,
@@ -64,7 +63,7 @@ export default function TableBodyCard({
                     dealNumber={deal?.number}
                     selectedDeals={selectedDeals}
                     dealHover={hover}
-                    columnWidth={columnWidth.column1}
+                    columnWidth={columnWidth["name"]}
                     onCheckDeal={onCheckDeal}
                     isPending={isPending}
                     onActionDeal={onActionDeal}
@@ -78,7 +77,7 @@ export default function TableBodyCard({
                     dealId={deal?.id}
                     resultId={deal?.resultId}
                     results={results}
-                    columnWidth={columnWidth.column2}
+                    columnWidth={columnWidth["resultId"]}
                     isPending={isPending}
                     onActionDeal={onActionDeal}
                     isAdmin={isAdmin}
@@ -91,7 +90,7 @@ export default function TableBodyCard({
                     dealId={deal?.id}
                     lsId={deal?.lsId}
                     longShorts={longShorts}
-                    columnWidth={columnWidth.column3}
+                    columnWidth={columnWidth["lsId"]}
                     isPending={isPending}
                     onActionDeal={onActionDeal}
                     isAdmin={isAdmin}
@@ -103,7 +102,7 @@ export default function TableBodyCard({
                     dealId={deal?.id}
                     dealPose={deal?.pose}
                     dealHover={hover}
-                    columnWidth={columnWidth.column4}
+                    columnWidth={columnWidth["pose"]}
                     isPending={isPending}
                     onActionDeal={onActionDeal}
                     isCreate={isCreate}
@@ -117,7 +116,7 @@ export default function TableBodyCard({
                     dealRisk={deal?.risk}
                     dealHover={hover}
                     selectedDeals={selectedDeals}
-                    columnWidth={columnWidth.column5}
+                    columnWidth={columnWidth["risk"]}
                     isPending={isPending}
                     onActionDeal={onActionDeal}
                     isCreate={isCreate}
@@ -131,7 +130,7 @@ export default function TableBodyCard({
                     dealProfit={deal?.profit}
                     dealHover={hover}
                     selectedDeals={selectedDeals}
-                    columnWidth={columnWidth.column6}
+                    columnWidth={columnWidth["profit"]}
                     isPending={isPending}
                     onActionDeal={onActionDeal}
                     isCreate={isCreate}
@@ -139,14 +138,14 @@ export default function TableBodyCard({
                     isPublished={isPublished}
                 />
             )}
-            {isPublished && deal?.rrId === undefined ? null : (
+            {(isPublished && deal?.rrId === undefined) || !deal?.rrId ? null : (
                 <BodyCardRisksRewards
                     userId={userId}
                     dealId={deal?.id}
                     rrId={deal?.rrId}
                     allRRs={allRRs}
                     onChangeAllRRs={onChangeAllRRs}
-                    columnWidth={columnWidth.column7}
+                    columnWidth={columnWidth["rrId"]}
                     determineTextColor={determineTextColor}
                     onActionDeal={onActionDeal}
                     isAdmin={isAdmin}
@@ -159,7 +158,7 @@ export default function TableBodyCard({
                     inputName="entryDate"
                     dealDate={deal?.entryDate}
                     maxDate={dealLimitionDateWithTime(new Date())}
-                    columnWidth={columnWidth.column8}
+                    columnWidth={columnWidth["entryDate"]}
                     isPending={isPending}
                     disabled={deal?.exitDate}
                     onActionDeal={onActionDeal}
@@ -177,7 +176,7 @@ export default function TableBodyCard({
                           imageAlt="screenshot start"
                           width={49}
                           height={25}
-                          columnWidth={columnWidth.column9}
+                          columnWidth={columnWidth["imageStart"]}
                           isPending={isPending}
                           onActionDeal={onActionDeal}
                           onClickDealImg={onClickDealImg}
@@ -190,7 +189,7 @@ export default function TableBodyCard({
                     dealId={deal?.id}
                     dealDeposit={deal?.deposit}
                     dealHover={hover}
-                    columnWidth={columnWidth.column10}
+                    columnWidth={columnWidth["deposit"]}
                     isPending={isPending}
                     onActionDeal={onActionDeal}
                     isCreate={isCreate}
@@ -201,7 +200,7 @@ export default function TableBodyCard({
             {isPublished && deal?.progress === undefined ? null : (
                 <BodyCardProgress
                     dealProgress={deal?.progress}
-                    columnWidth={columnWidth.column11}
+                    columnWidth={columnWidth["progress"]}
                 />
             )}
             {isPublished && deal?.exitDate === undefined ? null : (
@@ -216,7 +215,7 @@ export default function TableBodyCard({
                     }
                     maxDate={dealLimitionDateWithTime(new Date())}
                     disabled={!deal?.entryDate}
-                    columnWidth={columnWidth.column12}
+                    columnWidth={columnWidth["exitDate"]}
                     isPending={isPending}
                     onActionDeal={onActionDeal}
                     isAdmin={isAdmin}
@@ -233,7 +232,7 @@ export default function TableBodyCard({
                           imageAlt="screenshot end"
                           width={49}
                           height={25}
-                          columnWidth={columnWidth.column13}
+                          columnWidth={columnWidth["imageEnd"]}
                           isPending={isPending}
                           onActionDeal={onActionDeal}
                           onClickDealImg={onClickDealImg}
@@ -245,14 +244,14 @@ export default function TableBodyCard({
                 <BodyCardTakeScreenshot
                     takeScreenshot={deal?.take}
                     dealImageEndSrc={deal?.imageEnd}
-                    columnWidth={columnWidth.column14}
+                    columnWidth={columnWidth["take"]}
                 />
             )}
             {isPublished && deal?.stress === undefined ? null : (
                 <BodyCardStress
                     dealId={deal?.id}
                     dealStress={deal?.stress}
-                    columnWidth={columnWidth.column15}
+                    columnWidth={columnWidth["stress"]}
                     isPending={isPending}
                     onActionDeal={onActionDeal}
                     isAdmin={isAdmin}
@@ -265,7 +264,7 @@ export default function TableBodyCard({
                     dealId={deal?.id}
                     allTags={allTags}
                     onUpdateAllTags={onUpdateAllTags}
-                    columnWidth={columnWidth.column16}
+                    columnWidth={columnWidth["entrieTag"]}
                     dealHover={hover}
                     selectedDeals={selectedDeals}
                     determineTextColor={determineTextColor}
@@ -279,7 +278,7 @@ export default function TableBodyCard({
                 <BodyCardNotes
                     dealId={deal?.id}
                     dealNotes={deal?.notes}
-                    columnWidth={columnWidth.column17}
+                    columnWidth={columnWidth["notes"]}
                     isPending={isPending}
                     onActionDeal={onActionDeal}
                     isAdmin={isAdmin}
@@ -289,7 +288,7 @@ export default function TableBodyCard({
             {isPublished && deal?.timeInTrade === undefined ? null : (
                 <BodyCardTimeInTrade
                     timeInTrade={deal?.timeInTrade}
-                    columnWidth={columnWidth.column18}
+                    columnWidth={columnWidth["timeInTrade"]}
                 />
             )}
         </div>
