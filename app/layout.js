@@ -19,6 +19,7 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
     const session = await auth();
+
     return (
         <SessionProvider session={session}>
             <html lang="ru">

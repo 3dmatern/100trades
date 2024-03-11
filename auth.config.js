@@ -4,8 +4,7 @@ import Credentials from "next-auth/providers/credentials";
 import { LoginSchema } from "@/schemas";
 import { getUserByEmail } from "@/data/user";
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default {
+export const authConfig = {
     providers: [
         Credentials({
             async authorize(credentials) {
