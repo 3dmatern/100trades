@@ -138,7 +138,7 @@ export default function TableBodyCard({
                     isPublished={isPublished}
                 />
             )}
-            {(isPublished && deal?.rrId === undefined) || !deal?.rrId ? null : (
+            {/* {isPublished && deal?.rrId === undefined ? null : (
                 <BodyCardRisksRewards
                     userId={userId}
                     dealId={deal?.id}
@@ -151,7 +151,7 @@ export default function TableBodyCard({
                     isAdmin={isAdmin}
                     isPublished={isPublished}
                 />
-            )}
+            )} */}
             {isPublished && deal?.entryDate === undefined ? null : (
                 <BodyCardDate
                     dealId={deal?.id}
