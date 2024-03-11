@@ -1,6 +1,6 @@
 import { currentUser } from "@/lib/auth";
 
-import { UserInfo } from "@/components/ui/userInfo";
+import { UserInfo } from "@/components/profile/userInfo";
 
 export const metadata = {
     title: "Профиль",

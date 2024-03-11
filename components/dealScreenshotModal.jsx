@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { UiModal } from "@/components/uikit/ui-modal";
+import { UiModal } from "@/components/uikit/uiModal";
 import {
     Carousel,
     CarouselContent,

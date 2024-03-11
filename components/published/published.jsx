@@ -12,7 +12,7 @@ import { useSortedDeals } from "@/hooks/use-deals-sorted";
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import { Button } from "@/components/ui/button";
 import Table from "@/components/deals/table";
-import { DealScreenshotModal } from "@/components/deal-screenshot-modal";
+import { DealScreenshotModal } from "@/components/dealScreenshotModal";
 
 export function Published({ sheetPublishedId }) {
     const { results } = useResults();

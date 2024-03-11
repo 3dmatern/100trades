@@ -16,7 +16,7 @@ import { useSortedDeals } from "@/hooks/use-deals-sorted";
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Sheets from "@/components/sheet/sheets";
 import Table from "@/components/deals/table";
-import { DealScreenshotModal } from "@/components/deal-screenshot-modal";
+import { DealScreenshotModal } from "@/components/dealScreenshotModal";
 
 export default function SheetPage({ params }) {
     const { id } = params;

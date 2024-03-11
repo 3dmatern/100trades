@@ -15,7 +15,7 @@ import { useAdminUsersState } from "@/components/admin/use-admin-users-state";
 import { Admin } from "@/components/admin";
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Table from "@/components/deals/table";
-import { DealScreenshotModal } from "@/components/deal-screenshot-modal";
+import { DealScreenshotModal } from "@/components/dealScreenshotModal";
 
 export default function AdminPage() {
     const user = useCurrentUser();
