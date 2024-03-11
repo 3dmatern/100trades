@@ -24,6 +24,7 @@ export function DealScreenshotModal({
     onRemove,
     onClose,
     isPublished,
+    isAdmin,
     table,
 }) {
     const [emblaApi, setEmblaApi] = useState();
@@ -77,7 +78,7 @@ export function DealScreenshotModal({
                     <ArrowBarLeftIcon />
                 </Button>
                 {deal?.name}
-                {!isPublished && (
+                {!isPublished && !isAdmin && (
                     <Button
                         title="Удалить скриншот"
                         size="sm"

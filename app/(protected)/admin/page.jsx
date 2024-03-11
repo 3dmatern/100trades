@@ -100,6 +100,7 @@ export default function AdminPage() {
                         onClose={onCloseModal}
                         onPrevDeal={onPrevDeal}
                         onNextDeal={onNextDeal}
+                        isAdmin={true}
                         table={
                             <Table
                                 userId={user.id}
