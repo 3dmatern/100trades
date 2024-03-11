@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 
-import Cell from "./common/cell";
+import Cell from "@/components/deals/common/cell";
+
 import { formatPrice } from "@/utils/formattedNumber";
+import { percentLossOfCount, percentWinOfCount } from "@/utils/getPercent";
 
 export default function TableInfo({
     columnWidth,
@@ -65,18 +67,19 @@ export default function TableInfo({
 
             const total = quantityWin + quantityLoss;
             if (quantityWin > 0) {
-                const resultPercentWin = Math.floor(
-                    (quantityWin / total) * 100
-                );
+                const resultPercentWin = percentWinOfCount(quantityWin, total);
+
                 setPercentWin(resultPercentWin);
             } else {
                 setPercentWin(0);
             }
 
             if (quantityLoss > 0) {
-                const resultPercentLoss = Math.ceil(
-                    (quantityLoss / total) * 100
+                const resultPercentLoss = percentLossOfCount(
+                    quantityLoss,
+                    total
                 );
+
                 setPercentLoss(resultPercentLoss);
             } else {
                 setPercentLoss(0);
@@ -113,68 +116,68 @@ export default function TableInfo({
     return (
         <div className="flex items-center h-8 sticky left-0 top-0 z-[4] bg-gray-200">
             {dealsInfo?.[0]?.name !== undefined && (
-                <Cell columnWidth={columnWidth.column1}></Cell>
+                <Cell columnWidth={columnWidth["name"]}></Cell>
             )}
             {dealsInfo?.[0]?.resultId !== undefined && (
-                <Cell columnWidth={columnWidth.column2}>
+                <Cell columnWidth={columnWidth["resultId"]}>
                     <span className=" overflow-hidden whitespace-nowrap text-ellipsis">
                         W:L(%) = {percentWin}:{percentLoss}
                     </span>
                 </Cell>
             )}
             {dealsInfo?.[0]?.lsId !== undefined && (
-                <Cell columnWidth={columnWidth.column3}></Cell>
+                <Cell columnWidth={columnWidth["lsId"]}></Cell>
             )}
             {dealsInfo?.[0]?.pose !== undefined && (
-                <Cell columnWidth={columnWidth.column4}></Cell>
+                <Cell columnWidth={columnWidth["pose"]}></Cell>
             )}
             {dealsInfo?.[0]?.risk !== undefined && (
-                <Cell columnWidth={columnWidth.column5}>
+                <Cell columnWidth={columnWidth["risk"]}>
                     <span className={portfolioRisk > 0 ? "text-red-600" : ""}>
                         ₽ {formatPrice(portfolioRisk)}
                     </span>
                 </Cell>
             )}
             {dealsInfo?.[0]?.profit !== undefined && (
-                <Cell columnWidth={columnWidth.column6}></Cell>
+                <Cell columnWidth={columnWidth["profit"]}></Cell>
             )}
-            {dealsInfo?.[0]?.rrId !== undefined && (
-                <Cell columnWidth={columnWidth.column7}></Cell>
-            )}
+            {/* {dealsInfo?.[0]?.rrId !== undefined && (
+                <Cell columnWidth={columnWidth['rrId']}></Cell>
+            )} */}
             {dealsInfo?.[0]?.entryDate !== undefined && (
-                <Cell columnWidth={columnWidth.column8}></Cell>
+                <Cell columnWidth={columnWidth["entryDate"]}></Cell>
             )}
             {dealsInfo?.[0]?.imageStart !== undefined && (
-                <Cell columnWidth={columnWidth.column9}></Cell>
+                <Cell columnWidth={columnWidth["imageStart"]}></Cell>
             )}
             {dealsInfo?.[0]?.deposit !== undefined && (
-                <Cell columnWidth={columnWidth.column10}></Cell>
+                <Cell columnWidth={columnWidth["deposit"]}></Cell>
             )}
             {dealsInfo?.[0]?.progress !== undefined && (
-                <Cell columnWidth={columnWidth.column11}>
+                <Cell columnWidth={columnWidth["progress"]}>
                     {portfolioProgress || "0.00"}%
                 </Cell>
             )}
             {dealsInfo?.[0]?.exitDate !== undefined && (
-                <Cell columnWidth={columnWidth.column12}></Cell>
+                <Cell columnWidth={columnWidth["exitDate"]}></Cell>
             )}
             {dealsInfo?.[0]?.imageEnd !== undefined && (
-                <Cell columnWidth={columnWidth.column13}></Cell>
+                <Cell columnWidth={columnWidth["imageEnd"]}></Cell>
             )}
             {dealsInfo?.[0]?.take !== undefined && (
-                <Cell columnWidth={columnWidth.column14}></Cell>
+                <Cell columnWidth={columnWidth["take"]}></Cell>
             )}
             {dealsInfo?.[0]?.stress !== undefined && (
-                <Cell columnWidth={columnWidth.column15}></Cell>
+                <Cell columnWidth={columnWidth["stress"]}></Cell>
             )}
             {isPublished && dealsInfo?.[0]?.entrieTag === undefined ? null : (
-                <Cell columnWidth={columnWidth.column16}></Cell>
+                <Cell columnWidth={columnWidth["entrieTag"]}></Cell>
             )}
             {dealsInfo?.[0]?.notes !== undefined && (
-                <Cell columnWidth={columnWidth.column17}></Cell>
+                <Cell columnWidth={columnWidth["notes"]}></Cell>
             )}
             {dealsInfo?.[0]?.timeInTrade !== undefined && (
-                <Cell columnWidth={columnWidth.column18}>
+                <Cell columnWidth={columnWidth["timeInTrade"]}>
                     ~ {portfolioAverageTime}
                 </Cell>
             )}

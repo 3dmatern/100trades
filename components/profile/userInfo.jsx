@@ -1,10 +1,10 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
-export function UserInfo({ user, label }) {
+export function UserInfo({ user }) {
     return (
         <Card className="max-w-[600px] min-w-80 w-full">
             <CardHeader>
-                <p className="text-2xl font-semibold text-center">{label}</p>
+                <p className="text-2xl font-semibold text-center">Профиль</p>
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">

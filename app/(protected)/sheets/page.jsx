@@ -4,6 +4,11 @@ import { currentUser } from "@/lib/auth";
 import { getSheets } from "@/actions/sheet";
 import SheetAddButton from "@/components/sheet/sheetAddButton";
 
+export const metadata = {
+    title: "Листы сделок",
+    description: "Листы сделок Homa-Trading",
+};
+
 export default async function SheetsPage() {
     const user = await currentUser();
     const sheetsData = await getSheets(user.id);

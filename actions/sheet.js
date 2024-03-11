@@ -5,7 +5,11 @@ import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { SheetCreateSchema, SheetUpdateSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
-import { getSheetById, getSheetsByUserId } from "@/data/sheet";
+import {
+    getSheetById,
+    getSheetsByUserId,
+    getSheetsWithEntrieWLByUserId,
+} from "@/data/sheet";
 import { getEntriesBySheetId } from "@/data/entrie";
 import { deleteFile } from "./files";
 
@@ -69,6 +73,35 @@ export const getSheets = async (userId) => {
         console.error("Error receiving sheets: ", error);
         return {
             error: "Ошибка получения листов!",
+        };
+    }
+};
+
+export const getSheetsWithEntrieWL = async (userId) => {
+    noStore();
+    const existingUser = await getUserById(userId);
+
+    if (!existingUser) {
+        return {
+            redirect: "/",
+        };
+    }
+
+    try {
+        let entries = [];
+        const sheets = await getSheetsWithEntrieWLByUserId(existingUser.id);
+
+        for (const sheet of sheets) {
+            if (sheet.entries?.length) {
+                entries = [...entries, ...sheet.entries];
+            }
+        }
+
+        return entries;
+    } catch (error) {
+        console.error("Error receiving sheetsWithEntrieWL: ", error);
+        return {
+            error: "Ошибка получения листов с сделками!",
         };
     }
 };
