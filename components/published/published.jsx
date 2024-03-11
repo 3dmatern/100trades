@@ -31,8 +31,14 @@ export function Published({ sheetPublishedId }) {
         onResetSortDeals,
     } = useSheetPublished(sheetPublishedId, onSort, onResetSort);
 
-    const { currentDealOptions, onClickDealImg, onCloseModal } =
-        useDealModalCarousel();
+    const {
+        currentDealOptions,
+        isThereDeal,
+        onClickDealImg,
+        onCloseModal,
+        onPrevDeal,
+        onNextDeal,
+    } = useDealModalCarousel({ deals: sheetPublished?.deals });
 
     return (
         <>
@@ -76,9 +82,12 @@ export function Published({ sheetPublishedId }) {
 
                 <DealScreenshotModal
                     isOpen={currentDealOptions}
+                    isThereDeal={isThereDeal}
                     deal={currentDealOptions?.deal}
                     currentScreen={currentDealOptions?.inputName}
                     onClose={onCloseModal}
+                    onPrevDeal={onPrevDeal}
+                    onNextDeal={onNextDeal}
                     isPublished={true}
                     table={
                         <Table
@@ -93,7 +102,7 @@ export function Published({ sheetPublishedId }) {
                             allTags={sheetPublished?.tagsUser}
                             isPublished={true}
                             isModal={true}
-                            deal={sheetPublished?.deals?.[0]}
+                            deal={currentDealOptions?.deal}
                         />
                     }
                 />

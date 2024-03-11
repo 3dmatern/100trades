@@ -47,8 +47,14 @@ export default function AdminPage() {
         onSort,
         onResetSort,
     });
-    const { currentDealOptions, onClickDealImg, onCloseModal } =
-        useDealModalCarousel();
+    const {
+        currentDealOptions,
+        isThereDeal,
+        onClickDealImg,
+        onCloseModal,
+        onPrevDeal,
+        onNextDeal,
+    } = useDealModalCarousel({ deals });
 
     if (users.length === 0) {
         return (
@@ -88,9 +94,12 @@ export default function AdminPage() {
 
                     <DealScreenshotModal
                         isOpen={currentDealOptions}
+                        isThereDeal={isThereDeal}
                         deal={currentDealOptions?.deal}
                         currentScreen={currentDealOptions?.inputName}
                         onClose={onCloseModal}
+                        onPrevDeal={onPrevDeal}
+                        onNextDeal={onNextDeal}
                         table={
                             <Table
                                 userId={user.id}

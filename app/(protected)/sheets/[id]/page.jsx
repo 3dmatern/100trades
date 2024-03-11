@@ -107,12 +107,12 @@ export default function SheetPage({ params }) {
             <DealScreenshotModal
                 isOpen={currentDealOptions}
                 isThereDeal={isThereDeal}
-                onPrevDeal={onPrevDeal}
-                onNextDeal={onNextDeal}
                 deal={deals?.find((d) => d.id === currentDealOptions?.deal.id)}
                 currentScreen={currentDealOptions?.inputName}
                 onRemove={onRemoveImg}
                 onClose={onCloseModal}
+                onPrevDeal={onPrevDeal}
+                onNextDeal={onNextDeal}
                 table={
                     <Table
                         userId={user.id}

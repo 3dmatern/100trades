@@ -12,19 +12,23 @@ export function useDealModalCarousel({ deals, onUpdateDeal }) {
     });
 
     useEffect(() => {
-        if (currentDealOptions && deals) {
+        if (deals) {
             const filteredDeals = deals.filter(
                 (deal) => deal.imageStart || deal.imageEnd
             );
-            const indexCurrentDeal = filteredDeals.findIndex(
+            setDealsWithImage((prev) => filteredDeals);
+        }
+    }, [deals]);
+
+    useEffect(() => {
+        if (currentDealOptions) {
+            const indexCurrentDeal = dealsWithImage.findIndex(
                 (deal) => deal.id === currentDealOptions.deal.id
             );
 
-            setDealsWithImage((prev) => filteredDeals);
-
             if (
                 indexCurrentDeal > 0 &&
-                indexCurrentDeal < filteredDeals.length - 1
+                indexCurrentDeal < dealsWithImage.length - 1
             ) {
                 setIsThereDeal((prev) => ({
                     ...prev,
@@ -37,7 +41,7 @@ export function useDealModalCarousel({ deals, onUpdateDeal }) {
                     prevDeal: false,
                     nextDeal: true,
                 }));
-            } else if (indexCurrentDeal === filteredDeals.length - 1) {
+            } else if (indexCurrentDeal === dealsWithImage.length - 1) {
                 setIsThereDeal((prev) => ({
                     ...prev,
                     prevDeal: true,
@@ -51,7 +55,7 @@ export function useDealModalCarousel({ deals, onUpdateDeal }) {
                 }));
             }
         }
-    }, [currentDealOptions, deals]);
+    }, [currentDealOptions, dealsWithImage]);
 
     useEffect(() => {
         const handleKyeDown = (e) => {
