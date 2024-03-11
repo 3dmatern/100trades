@@ -55,8 +55,15 @@ export default function SheetPage({ params }) {
         onSort,
         onResetSort,
     });
-    const { currentDealOptions, onClickDealImg, onRemoveImg, onCloseModal } =
-        useDealModalCarousel(onUpdateDeal);
+    const {
+        currentDealOptions,
+        isThereDeal,
+        onClickDealImg,
+        onRemoveImg,
+        onCloseModal,
+        onPrevDeal,
+        onNextDeal,
+    } = useDealModalCarousel({ deals, onUpdateDeal });
 
     useEffect(() => {
         if (sheets && sheets.length === 0) {
@@ -99,6 +106,9 @@ export default function SheetPage({ params }) {
 
             <DealScreenshotModal
                 isOpen={currentDealOptions}
+                isThereDeal={isThereDeal}
+                onPrevDeal={onPrevDeal}
+                onNextDeal={onNextDeal}
                 deal={deals?.find((d) => d.id === currentDealOptions?.deal.id)}
                 currentScreen={currentDealOptions?.inputName}
                 onRemove={onRemoveImg}

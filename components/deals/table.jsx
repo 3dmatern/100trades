@@ -59,11 +59,11 @@ export default function Table({
 
     const getClassNameContainer = () => {
         if (isModal && !isPublished && !isAdmin) {
-            return "h-[200px]";
+            return "h-[80px]";
         }
 
         if (isPublished) {
-            return " mx-auto";
+            return "mx-auto";
         }
 
         return "";

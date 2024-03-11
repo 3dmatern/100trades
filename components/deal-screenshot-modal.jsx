@@ -2,19 +2,23 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { cn } from "@/lib/utils";
 import { UiModal } from "@/components/uikit/ui-modal";
 import {
     Carousel,
     CarouselContent,
     CarouselItem,
 } from "@/components/ui/carousel";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
+import { ArrowBarLeftIcon } from "@/components/icons/arrow-bar-left-icon";
+import { ArrowBarRightIcon } from "@/components/icons/arrow-bar-right-icon";
 
 const IMAGE_URL = process.env.NEXT_PUBLIC_IMAGE_URL;
 
 export function DealScreenshotModal({
     isOpen,
+    isThereDeal,
+    onPrevDeal,
+    onNextDeal,
     deal,
     currentScreen,
     onRemove,
@@ -63,6 +67,14 @@ export function DealScreenshotModal({
             className="py-0 z-[4]"
         >
             <UiModal.Header className="flex items-center justify-center gap-5 text-white uppercase">
+                <Button
+                    disabled={!isThereDeal.prevDeal}
+                    onClick={onPrevDeal}
+                    size="sm"
+                    className="w-max flex items-center ml-3 mr-3"
+                >
+                    <ArrowBarLeftIcon />
+                </Button>
                 {deal?.name}
                 {!isPublished && (
                     <Button
@@ -81,8 +93,19 @@ export function DealScreenshotModal({
                         <TrashIcon />
                     </Button>
                 )}
+                <Button
+                    disabled={!isThereDeal.nextDeal}
+                    onClick={onNextDeal}
+                    size="sm"
+                    className="w-max flex items-center ml-3 mr-3"
+                >
+                    <ArrowBarRightIcon />
+                </Button>
             </UiModal.Header>
-            <UiModal.Body className="mx-auto px-0">
+            <UiModal.Body className="flex-col h-max p-0 pb-5">
+                {table}
+            </UiModal.Body>
+            <UiModal.Footer className="mt-0 mx-auto px-0">
                 <Carousel
                     setApi={setEmblaApi}
                     opts={{
@@ -106,29 +129,32 @@ export function DealScreenshotModal({
                         )}
                     </CarouselContent>
 
-                    <div className="flex items-center justify-center my-5">
-                        {scrollSnaps.map((_, index) => (
-                            <Button
-                                key={index}
-                                onClick={() => scrollTo(index)}
-                                variant={
-                                    index === selectedIndex ? "outline" : ""
-                                }
-                                size="sm"
-                                className={cn(
-                                    "w-max flex items-center ml-3 mr-3"
-                                )}
-                            >
-                                СКРИН {index + 1}
-                            </Button>
-                        ))}
-                    </div>
+                    <DealScreenshotModalActions
+                        scrollSnaps={scrollSnaps}
+                        selectedIndex={selectedIndex}
+                        scrollTo={scrollTo}
+                    />
                 </Carousel>
-            </UiModal.Body>
-            <UiModal.Footer className="flex-col h-max p-0 pb-5">
-                {table}
             </UiModal.Footer>
         </UiModal>
+    );
+}
+
+function DealScreenshotModalActions({ scrollSnaps, selectedIndex, scrollTo }) {
+    return (
+        <div className="flex items-center justify-center my-5">
+            {scrollSnaps.map((_, index) => (
+                <Button
+                    key={index}
+                    onClick={() => scrollTo(index)}
+                    variant={index === selectedIndex ? "outline" : ""}
+                    size="sm"
+                    className="w-max flex items-center ml-3 mr-3"
+                >
+                    СКРИН {index + 1}
+                </Button>
+            ))}
+        </div>
     );
 }
 
