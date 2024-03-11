@@ -14,7 +14,7 @@ export function useDealModalCarousel({ deals, onUpdateDeal }) {
     useEffect(() => {
         if (deals) {
             const filteredDeals = deals.filter(
-                (deal) => deal.imageStart || deal.imageEnd
+                (deal) => deal.imageStart && deal.imageEnd
             );
             setDealsWithImage((prev) => filteredDeals);
         }
@@ -34,6 +34,12 @@ export function useDealModalCarousel({ deals, onUpdateDeal }) {
                     ...prev,
                     prevDeal: true,
                     nextDeal: true,
+                }));
+            } else if (indexCurrentDeal === 0 && dealsWithImage.length === 1) {
+                setIsThereDeal((prev) => ({
+                    ...prev,
+                    prevDeal: false,
+                    nextDeal: false,
                 }));
             } else if (indexCurrentDeal === 0) {
                 setIsThereDeal((prev) => ({

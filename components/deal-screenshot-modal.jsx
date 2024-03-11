@@ -68,6 +68,7 @@ export function DealScreenshotModal({
         >
             <UiModal.Header className="flex items-center justify-center gap-5 text-white uppercase">
                 <Button
+                    type="button"
                     disabled={!isThereDeal.prevDeal}
                     onClick={onPrevDeal}
                     size="sm"
@@ -94,6 +95,7 @@ export function DealScreenshotModal({
                     </Button>
                 )}
                 <Button
+                    type="button"
                     disabled={!isThereDeal.nextDeal}
                     onClick={onNextDeal}
                     size="sm"
@@ -146,6 +148,7 @@ function DealScreenshotModalActions({ scrollSnaps, selectedIndex, scrollTo }) {
             {scrollSnaps.map((_, index) => (
                 <Button
                     key={index}
+                    type="button"
                     onClick={() => scrollTo(index)}
                     variant={index === selectedIndex ? "outline" : ""}
                     size="sm"
