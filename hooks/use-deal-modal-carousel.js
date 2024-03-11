@@ -21,12 +21,18 @@ export function useDealModalCarousel({ deals, onUpdateDeal }) {
     }, [deals]);
 
     useEffect(() => {
-        if (currentDealOptions) {
+        if (currentDealOptions && dealsWithImage) {
             const indexCurrentDeal = dealsWithImage.findIndex(
                 (deal) => deal.id === currentDealOptions.deal.id
             );
 
-            if (
+            if (indexCurrentDeal === -1) {
+                setIsThereDeal((prev) => ({
+                    ...prev,
+                    prevDeal: false,
+                    nextDeal: false,
+                }));
+            } else if (
                 indexCurrentDeal > 0 &&
                 indexCurrentDeal < dealsWithImage.length - 1
             ) {
