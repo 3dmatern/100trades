@@ -252,7 +252,7 @@ export default function BodyCardTags({
                 <div
                     ref={listRef}
                     style={{ width: columnWidth }}
-                    className="absolute top-16 left-0 z-[1] rounded-md py-2 bg-white border border-gray-300"
+                    className="absolute top-16 left-0 z-[5] rounded-md py-2 bg-white border border-gray-300"
                 >
                     <input
                         type="text"
@@ -264,7 +264,12 @@ export default function BodyCardTags({
                     />
 
                     {filteredTags.length > 0 ? (
-                        <ul className="flex items-center justify-start flex-wrap gap-1 w-full px-2 text-xs bg-white ">
+                        <ul
+                            className={`
+                                w-full max-h-12 px-2 flex items-center justify-start flex-wrap gap-1 
+                                text-xs bg-white overflow-y-auto no-scrollbar
+                            `}
+                        >
                             {filteredTags
                                 .filter(
                                     (t) =>
