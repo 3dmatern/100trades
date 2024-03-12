@@ -65,7 +65,7 @@ export default function AdminPage() {
     }
 
     return (
-        <main>
+        <main className="h-[calc(100%-132px)]">
             <Admin
                 users={users}
                 onSelectUser={handleSelectUser}

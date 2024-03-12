@@ -14,11 +14,11 @@ export default async function SheetsPage() {
     const sheetsData = await getSheets(user.id);
 
     return (
-        <main className="container mx-auto p-5 overflow-x-auto">
+        <main className="container h-[calc(100%-132px)] mx-auto p-5 overflow-x-auto">
             <h1 className="mt-8 text-center text-2xl font-semibold">
                 Листы сделок
             </h1>
-            <div className="w-max mx-auto mt-8 grid md:grid-cols-5 grid-cols-4 justify-items-center gap-3">
+            <div className="w-max mx-auto mt-8 grid md:grid-cols-5 grid-cols-3 justify-items-center gap-3">
                 {sheetsData.length > 0 &&
                     sheetsData?.map((sheet) => (
                         <Link

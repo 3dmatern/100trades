@@ -61,8 +61,8 @@ export default function SettingsPage() {
     }
 
     return (
-        <main className="w-full md:flex items-start justify-center gap-8 mt-8">
-            <Card className="max-w-[600px] w-full">
+        <main className="w-full h-[calc(100%-132px)] mt-8 px-5 md:flex md:items-start md:justify-center md:gap-8">
+            <Card className="max-w-[600px] min-w-80 w-full">
                 <CardHeader>
                     <p className="text-2xl font-semibold text-center">
                         Настройки профиля

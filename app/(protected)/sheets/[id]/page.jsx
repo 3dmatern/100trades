@@ -72,7 +72,7 @@ export default function SheetPage({ params }) {
     }, [router, sheets]);
 
     return (
-        <SheetWrapper className="md:h-[calc(100vh-132px)] h-[calc(100vh-172px)]">
+        <SheetWrapper className="h-[calc(100%-132px)]">
             <Sheets
                 userId={user.id}
                 sheets={sheets}
