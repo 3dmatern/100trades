@@ -48,26 +48,31 @@ export function UserStatistics({ dealsWLByUserId }) {
                 const itemName = item.name;
                 const itemResultId = item.resultId;
 
-                if (!acc[itemName]) {
+                if (acc[itemName]) {
+                    acc[itemName].count++;
+                    if (itemResultId === RESULT_WIN_ID) {
+                        acc[itemName].win++;
+                    } else if (itemResultId === RESULT_LOSS_ID) {
+                        acc[itemName].loss++;
+                    }
+                } else if (
+                    !acc[itemName] &&
+                    (itemResultId === RESULT_WIN_ID ||
+                        itemResultId === RESULT_LOSS_ID)
+                ) {
                     acc[itemName] = {
                         name: itemName,
                         count: 1,
                         win: itemResultId === RESULT_WIN_ID ? 1 : 0,
                         loss: itemResultId === RESULT_LOSS_ID ? 1 : 0,
                     };
-                } else {
-                    acc[itemName].count += 1;
-                    if (itemResultId === RESULT_WIN_ID) {
-                        acc[itemName].win += 1;
-                    }
-                    if (itemResultId === RESULT_LOSS_ID) {
-                        acc[itemName].loss += 1;
-                    }
                 }
 
-                allCount += acc[itemName].count;
-                allWin += acc[itemName].win;
-                allLoss += acc[itemName].loss;
+                if (acc[itemName]) {
+                    allCount += acc[itemName].count;
+                    allWin += acc[itemName].win;
+                    allLoss += acc[itemName].loss;
+                }
 
                 return acc;
             }, {});
