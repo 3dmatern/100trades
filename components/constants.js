@@ -39,3 +39,5 @@ export const COLUMN_WIDTH = {
     notes: "176px",
     timeInTrade: "128px",
 };
+
+export const PAGE_SIZE = 9;

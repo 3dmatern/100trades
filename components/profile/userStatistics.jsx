@@ -1,11 +1,15 @@
 "use client";
 
+import { memo, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+
+import { percentLossOfCount, percentWinOfCount } from "@/utils/getPercent";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
     Table,
+    TableCaption,
     TableBody,
     TableCell,
     TableFooter,
@@ -13,20 +17,41 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useEffect, useState } from "react";
-import { percentLossOfCount, percentWinOfCount } from "@/utils/getPercent";
+import { PAGE_SIZE } from "@/components/constants";
+import { itemsCrop } from "@/utils/paginate";
+import { UserStatisticsPagination } from "@/components/profile/ui/userStatisticsPagination";
 
 const RESULT_WIN_ID = process.env.NEXT_PUBLIC_RESULT_WIN_ID;
 const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
 
-export function UserStatistics({ dealsWLByUserId }) {
+export const UserStatistics = memo(function UserStatistics({
+    dealsWLByUserId,
+}) {
     const router = useRouter();
 
-    const [dealsStatistics, setDealsStatistics] = useState([]);
-    const [dealsStatisticsFiltered, setDealsStatisticsFiltered] = useState([]);
+    const [dealsStatInit, setDealsStatInit] = useState([]);
+    const [dealsStatDefault, setDealsStatDefault] = useState([]);
+    const [dealsStatCrop, setDealsStatCrop] = useState([]);
     const [totalCount, setTotalCount] = useState(null);
     const [winPercent, setWinPercent] = useState(null);
     const [lossPercent, setLossPercent] = useState(null);
+
+    const [{ currentPage, pageCount }, setPaginateData] = useState({
+        currentPage: 1,
+        pageCount: 0,
+    });
+
+    const changePaginateData = useCallback(
+        (items) => {
+            const pageCount = Math.ceil(items.length / PAGE_SIZE);
+            const dealsCrop = itemsCrop(items, currentPage, PAGE_SIZE);
+
+            setPaginateData((prev) => ({ ...prev, pageCount }));
+
+            return dealsCrop;
+        },
+        [currentPage]
+    );
 
     useEffect(() => {
         if (dealsWLByUserId?.error) {
@@ -37,7 +62,7 @@ export function UserStatistics({ dealsWLByUserId }) {
         }
 
         if (dealsWLByUserId.length) {
-            setDealsStatistics((prev) => dealsWLByUserId);
+            setDealsStatInit((prev) => dealsWLByUserId);
 
             let statistics = {};
             let allCount = 0;
@@ -77,24 +102,79 @@ export function UserStatistics({ dealsWLByUserId }) {
                 return acc;
             }, {});
 
-            setDealsStatisticsFiltered((prev) =>
-                Object.keys(statistics).map((key) => ({
-                    ...statistics[key],
-                    win: percentWinOfCount(
-                        statistics[key].win,
-                        statistics[key].count
-                    ),
-                    loss: percentLossOfCount(
-                        statistics[key].loss,
-                        statistics[key].count
-                    ),
-                }))
-            );
+            const dealsStatistics = Object.keys(statistics).map((key) => ({
+                ...statistics[key],
+                win: percentWinOfCount(
+                    statistics[key].win,
+                    statistics[key].count
+                ),
+                loss: percentLossOfCount(
+                    statistics[key].loss,
+                    statistics[key].count
+                ),
+            }));
+            const dealsStatisticsCrop = changePaginateData(dealsStatistics);
+
+            setDealsStatDefault((prev) => dealsStatistics);
+            setDealsStatCrop((prev) => dealsStatisticsCrop);
             setTotalCount((prev) => allCount);
             setWinPercent((prev) => percentWinOfCount(allWin, allCount));
             setLossPercent((prev) => percentLossOfCount(allLoss, allCount));
         }
-    }, [dealsWLByUserId, router]);
+    }, [changePaginateData, dealsWLByUserId, router]);
+
+    function handleChangePage(selectPage) {
+        if (selectPage === currentPage) return;
+
+        setPaginateData((prev) => ({
+            ...prev,
+            currentPage: selectPage,
+        }));
+
+        const dealsCrop = itemsCrop(dealsStatDefault, selectPage, PAGE_SIZE);
+
+        if (dealsCrop) {
+            setDealsStatCrop((prev) => dealsCrop);
+        }
+    }
+
+    function handleClickPrevPage() {
+        if (currentPage === 1 || pageCount === 0) {
+            return;
+        }
+
+        const selectPage = currentPage - 1;
+
+        setPaginateData((prev) => ({
+            ...prev,
+            currentPage: selectPage,
+        }));
+
+        const newDealsCrop = itemsCrop(dealsStatDefault, selectPage, PAGE_SIZE);
+
+        if (newDealsCrop) {
+            setDealsStatCrop((prev) => newDealsCrop);
+        }
+    }
+
+    function handleClickNextPage() {
+        if (currentPage === pageCount || pageCount === 0) {
+            return;
+        }
+
+        const selectPage = currentPage + 1;
+
+        setPaginateData((prev) => ({
+            ...prev,
+            currentPage: selectPage,
+        }));
+
+        const newDealsCrop = itemsCrop(dealsStatDefault, selectPage, PAGE_SIZE);
+
+        if (newDealsCrop) {
+            setDealsStatCrop((prev) => newDealsCrop);
+        }
+    }
 
     return (
         <Card className="max-w-[600px] min-w-80 w-full">
@@ -119,7 +199,7 @@ export function UserStatistics({ dealsWLByUserId }) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {dealsStatisticsFiltered?.map((dealStatics) => (
+                        {dealsStatCrop?.map((dealStatics) => (
                             <TableRow key={dealStatics.name}>
                                 <TableCell className="font-medium">
                                     {dealStatics.name}
@@ -144,8 +224,19 @@ export function UserStatistics({ dealsWLByUserId }) {
                             </TableCell>
                         </TableRow>
                     </TableFooter>
+                    <TableCaption>
+                        {pageCount > 1 && (
+                            <UserStatisticsPagination
+                                currentPage={currentPage}
+                                pageCount={pageCount}
+                                onChangePage={handleChangePage}
+                                onClickPrevPage={handleClickPrevPage}
+                                onClickNextPage={handleClickNextPage}
+                            />
+                        )}
+                    </TableCaption>
                 </Table>
             </CardContent>
         </Card>
     );
-}
+});
