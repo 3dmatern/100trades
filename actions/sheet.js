@@ -97,7 +97,10 @@ export const getSheetsWithEntrieWL = async (userId) => {
             }
         }
 
-        return entries;
+        return entries.map((entrie) => ({
+            ...entrie,
+            name: entrie.name?.toUpperCase(),
+        }));
     } catch (error) {
         console.error("Error receiving sheetsWithEntrieWL: ", error);
         return {

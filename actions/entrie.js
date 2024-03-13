@@ -15,7 +15,8 @@ const daysToPass = 172800000;
 
 export const createEntrie = async (userId, values) => {
     noStore();
-    let { sheetId } = values;
+
+    let { sheetId, name } = values;
 
     const existingUser = await getUserById(userId);
     if (!existingUser) {
@@ -29,6 +30,10 @@ export const createEntrie = async (userId, values) => {
         return {
             error: "Несанкционированный доступ!",
         };
+    }
+
+    if (name) {
+        values.name = values.name.toLowerCase();
     }
 
     try {
@@ -72,19 +77,26 @@ export const getEntries = async (isAdmin, userId, sheetId) => {
         const entries = await getEntriesBySheetId(existingSheet.id);
 
         for (let i = 0; i < entries.length; i++) {
-            if (
-                entries[i] &&
-                entries[i].entryDate &&
-                entries[i].exitDate &&
-                !entries[i].imageEnd
-            ) {
-                const passedDays = areTwoWorkdaysPassed(entries[i].exitDate);
-                const isPassedTwoDays = passedDays >= daysToPass;
+            if (entries[i]) {
+                if (entries[i].name) {
+                    entries[i].name = entries[i].name.toUpperCase();
+                }
 
-                if (isPassedTwoDays) {
-                    entries[i].take = "Сделай скрин";
-                } else {
-                    entries[i].take = "Рано";
+                if (
+                    entries[i].entryDate &&
+                    entries[i].exitDate &&
+                    !entries[i].imageEnd
+                ) {
+                    const passedDays = areTwoWorkdaysPassed(
+                        entries[i].exitDate
+                    );
+                    const isPassedTwoDays = passedDays >= daysToPass;
+
+                    if (isPassedTwoDays) {
+                        entries[i].take = "Сделай скрин";
+                    } else {
+                        entries[i].take = "Рано";
+                    }
                 }
             }
 
@@ -178,6 +190,10 @@ export const updateEntrie = async (userId, values) => {
         return {
             error: "Несанкционированный доступ!",
         };
+    }
+
+    if (name) {
+        name = name.toLowerCase();
     }
 
     try {

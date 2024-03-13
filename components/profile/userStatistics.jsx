@@ -74,10 +74,11 @@ export const UserStatistics = memo(function UserStatistics({
                 const itemResultId = item.resultId;
 
                 if (acc[itemName]) {
-                    acc[itemName].count++;
                     if (itemResultId === RESULT_WIN_ID) {
+                        acc[itemName].count++;
                         acc[itemName].win++;
                     } else if (itemResultId === RESULT_LOSS_ID) {
+                        acc[itemName].count++;
                         acc[itemName].loss++;
                     }
                 } else if (
@@ -93,26 +94,26 @@ export const UserStatistics = memo(function UserStatistics({
                     };
                 }
 
-                if (acc[itemName]) {
-                    allCount += acc[itemName].count;
-                    allWin += acc[itemName].win;
-                    allLoss += acc[itemName].loss;
-                }
-
                 return acc;
             }, {});
 
-            const dealsStatistics = Object.keys(statistics).map((key) => ({
-                ...statistics[key],
-                win: percentWinOfCount(
-                    statistics[key].win,
-                    statistics[key].count
-                ),
-                loss: percentLossOfCount(
-                    statistics[key].loss,
-                    statistics[key].count
-                ),
-            }));
+            const dealsStatistics = Object.keys(statistics).map((key) => {
+                allCount += statistics[key].count;
+                allWin += statistics[key].win;
+                allLoss += statistics[key].loss;
+
+                return {
+                    ...statistics[key],
+                    win: percentWinOfCount(
+                        statistics[key].win,
+                        statistics[key].count
+                    ),
+                    loss: percentLossOfCount(
+                        statistics[key].loss,
+                        statistics[key].count
+                    ),
+                };
+            });
             const dealsStatisticsCrop = changePaginateData(dealsStatistics);
 
             setDealsStatDefault((prev) => dealsStatistics);
