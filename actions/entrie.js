@@ -33,7 +33,7 @@ export const createEntrie = async (userId, values) => {
     }
 
     if (name) {
-        values.name = values.name.toLowerCase();
+        name = name.toLowerCase();
     }
 
     try {

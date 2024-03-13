@@ -81,7 +81,13 @@ export function useDeals({
 
             if (data.success) {
                 const { success, newEntrie } = data;
+
                 newDealId = newEntrie.id;
+
+                if (newEntrie.name) {
+                    newEntrie.name = newEntrie.name.toUpperCase();
+                }
+
                 setDeals((prev) => {
                     const updDeals = prev.slice();
                     updDeals.unshift({ ...newEntrie, number: prev.length + 1 });
@@ -92,6 +98,7 @@ export function useDeals({
                     updDeals.unshift({ ...newEntrie, number: prev.length + 1 });
                     return updDeals;
                 });
+
                 toast.success(success);
             }
         });
@@ -122,6 +129,10 @@ export function useDeals({
                 toast.success(data.success);
 
                 const { payload } = data;
+
+                if (payload.name) {
+                    payload.name = payload.name.toUpperCase();
+                }
 
                 setDeals((prev) => {
                     const updatedDeals = prev.slice();

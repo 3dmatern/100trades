@@ -40,12 +40,16 @@ export default function BodyCardName({
             setOpen(false);
             return;
         }
+
+        if (!values.id) {
+            form.reset();
+        }
+
         onActionDeal(values);
     };
 
     const updateName = async () => {
         form.handleSubmit(onSubmit(form.getValues()));
-        form.reset();
         setOpen(false);
     };
 
@@ -65,7 +69,7 @@ export default function BodyCardName({
             document.removeEventListener("click", handleClickOutside);
             window.removeEventListener("scroll", handleScroll);
         };
-    }, []);
+    }, [form]);
 
     return (
         <div className="table-cell align-middle h-full sticky left-0 z-[2]">
@@ -142,8 +146,8 @@ export default function BodyCardName({
                 ) : (
                     <span
                         className={`flex items-center justify-start h-7 p-0 pl-1 text-xs ${
-                            !dealName && "text-gray-500"
-                        } overflow-hidden whitespace-nowrap uppercase text-ellipsis pointer-events-none`}
+                            !dealName && "text-gray-500 uppercase"
+                        } overflow-hidden whitespace-nowrap text-ellipsis pointer-events-none`}
                     >
                         {dealName || "тикер"}
                     </span>
