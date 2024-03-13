@@ -97,23 +97,35 @@ export const UserStatistics = memo(function UserStatistics({
                 return acc;
             }, {});
 
-            const dealsStatistics = Object.keys(statistics).map((key) => {
-                allCount += statistics[key].count;
-                allWin += statistics[key].win;
-                allLoss += statistics[key].loss;
+            const dealsStatistics = Object.keys(statistics)
+                .map((key) => {
+                    allCount += statistics[key].count;
+                    allWin += statistics[key].win;
+                    allLoss += statistics[key].loss;
 
-                return {
-                    ...statistics[key],
-                    win: percentWinOfCount(
-                        statistics[key].win,
-                        statistics[key].count
-                    ),
-                    loss: percentLossOfCount(
-                        statistics[key].loss,
-                        statistics[key].count
-                    ),
-                };
-            });
+                    return {
+                        ...statistics[key],
+                        win: percentWinOfCount(
+                            statistics[key].win,
+                            statistics[key].count
+                        ),
+                        loss: percentLossOfCount(
+                            statistics[key].loss,
+                            statistics[key].count
+                        ),
+                    };
+                })
+                .sort((a, b) => {
+                    if (a.count > b.count) {
+                        return -1;
+                    }
+
+                    if (a.count < b.count) {
+                        return 1;
+                    }
+
+                    return 0;
+                });
             const dealsStatisticsCrop = changePaginateData(dealsStatistics);
 
             setDealsStatDefault((prev) => dealsStatistics);
