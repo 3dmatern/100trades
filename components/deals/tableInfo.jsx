@@ -16,6 +16,7 @@ export default function TableInfo({
     const [percentWin, setPercentWin] = useState(0);
     const [percentLoss, setPercentLoss] = useState(0);
     const [portfolioRisk, setPortfolioRisk] = useState(0);
+    const [portfolioProfit, setPortfolioProfit] = useState(0);
     const [portfolioProgress, setPortfolioProgress] = useState("");
     const [portfolioAverageTime, setPortfolioAverageTime] = useState("");
 
@@ -25,6 +26,7 @@ export default function TableInfo({
             let quantityLoss = 0;
             let quantityNoLoss = 0;
             let riskSum = 0;
+            let profitSum = 0;
             let lastProgress = 0;
             let totalClosedDeal = 0;
             let quantityHours = 0;
@@ -57,6 +59,8 @@ export default function TableInfo({
                                 break;
                             case 4:
                                 riskSum = riskSum + (+d.pose / 100) * +d.risk;
+                                profitSum =
+                                    profitSum + (+d.pose / 100) * +d.profit;
                                 break;
                             default:
                                 break;
@@ -101,6 +105,7 @@ export default function TableInfo({
             }
 
             setPortfolioRisk(riskSum);
+            setPortfolioProfit(profitSum);
             setPortfolioAverageTime(
                 (prev) => `${quantityHours} ч. ${quantityMinutes} мин.`
             );
@@ -108,6 +113,7 @@ export default function TableInfo({
             setPercentWin(0);
             setPercentLoss(0);
             setPortfolioRisk(0);
+            setPortfolioProfit(0);
             setPortfolioProgress("");
             setPortfolioAverageTime("");
         }
@@ -139,7 +145,13 @@ export default function TableInfo({
                 </Cell>
             )}
             {dealsInfo?.[0]?.profit !== undefined && (
-                <Cell columnWidth={columnWidth["profit"]}></Cell>
+                <Cell columnWidth={columnWidth["profit"]}>
+                    <span
+                        className={portfolioProfit > 0 ? "text-teal-600" : ""}
+                    >
+                        ₽ {formatPrice(portfolioProfit)}
+                    </span>
+                </Cell>
             )}
             {/* {dealsInfo?.[0]?.rrId !== undefined && (
                 <Cell columnWidth={columnWidth['rrId']}></Cell>
