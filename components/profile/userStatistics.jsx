@@ -17,9 +17,9 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { PAGE_SIZE } from "@/components/constants";
+import { PAGE_SIZE_PROFILE_STAT } from "@/components/constants";
 import { itemsCrop } from "@/utils/paginate";
-import { UserStatisticsPagination } from "@/components/profile/ui/userStatisticsPagination";
+import { UiPagination } from "@/components/uikit/uiPagination";
 
 const RESULT_WIN_ID = process.env.NEXT_PUBLIC_RESULT_WIN_ID;
 const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
@@ -43,8 +43,12 @@ export const UserStatistics = memo(function UserStatistics({
 
     const changePaginateData = useCallback(
         (items) => {
-            const pageCount = Math.ceil(items.length / PAGE_SIZE);
-            const dealsCrop = itemsCrop(items, currentPage, PAGE_SIZE);
+            const pageCount = Math.ceil(items.length / PAGE_SIZE_PROFILE_STAT);
+            const dealsCrop = itemsCrop(
+                items,
+                currentPage,
+                PAGE_SIZE_PROFILE_STAT
+            );
 
             setPaginateData((prev) => ({ ...prev, pageCount }));
 
@@ -144,7 +148,11 @@ export const UserStatistics = memo(function UserStatistics({
             currentPage: selectPage,
         }));
 
-        const dealsCrop = itemsCrop(dealsStatDefault, selectPage, PAGE_SIZE);
+        const dealsCrop = itemsCrop(
+            dealsStatDefault,
+            selectPage,
+            PAGE_SIZE_PROFILE_STAT
+        );
 
         if (dealsCrop) {
             setDealsStatCrop((prev) => dealsCrop);
@@ -163,7 +171,11 @@ export const UserStatistics = memo(function UserStatistics({
             currentPage: selectPage,
         }));
 
-        const newDealsCrop = itemsCrop(dealsStatDefault, selectPage, PAGE_SIZE);
+        const newDealsCrop = itemsCrop(
+            dealsStatDefault,
+            selectPage,
+            PAGE_SIZE_PROFILE_STAT
+        );
 
         if (newDealsCrop) {
             setDealsStatCrop((prev) => newDealsCrop);
@@ -182,7 +194,11 @@ export const UserStatistics = memo(function UserStatistics({
             currentPage: selectPage,
         }));
 
-        const newDealsCrop = itemsCrop(dealsStatDefault, selectPage, PAGE_SIZE);
+        const newDealsCrop = itemsCrop(
+            dealsStatDefault,
+            selectPage,
+            PAGE_SIZE_PROFILE_STAT
+        );
 
         if (newDealsCrop) {
             setDealsStatCrop((prev) => newDealsCrop);
@@ -212,16 +228,16 @@ export const UserStatistics = memo(function UserStatistics({
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {dealsStatCrop?.map((dealStatics) => (
-                            <TableRow key={dealStatics.name}>
+                        {dealsStatCrop?.map((dealStat) => (
+                            <TableRow key={dealStat.name}>
                                 <TableCell className="font-medium">
-                                    {dealStatics.name}
+                                    {dealStat.name}
                                 </TableCell>
                                 <TableCell className="text-center">
-                                    {dealStatics.win}:{dealStatics.loss}
+                                    {dealStat.win}:{dealStat.loss}
                                 </TableCell>
                                 <TableCell className="text-center">
-                                    {dealStatics.count}
+                                    {dealStat.count}
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -239,7 +255,7 @@ export const UserStatistics = memo(function UserStatistics({
                     </TableFooter>
                     <TableCaption>
                         {pageCount > 1 && (
-                            <UserStatisticsPagination
+                            <UiPagination
                                 currentPage={currentPage}
                                 pageCount={pageCount}
                                 onChangePage={handleChangePage}

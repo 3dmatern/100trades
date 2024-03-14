@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 
-import { AdminSelectSheet } from "./admin-select-sheet";
-import { AdminSelectUser } from "./admin-select-user";
+import { AdminSelectSheet } from "@/components/admin/ui/admin-select-sheet";
+import { AdminSelectUser } from "@/components/admin/ui/admin-select-user";
 
-export function Admin({
+export function AdminSelect({
     users,
     isSelectUserId,
     onSelectUser,

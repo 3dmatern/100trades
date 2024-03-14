@@ -55,3 +55,33 @@ export const getEntrieById = async (entrieId) => {
         return null;
     }
 };
+
+export const getEntrieWithWL = async ({ winID, lossID }) => {
+    try {
+        const entrie = await db.entrie.findMany({
+            where: {
+                OR: [
+                    {
+                        resultId: {
+                            contains: winID,
+                        },
+                    },
+                    {
+                        resultId: {
+                            contains: lossID,
+                        },
+                    },
+                ],
+            },
+            select: {
+                entryDate: true,
+                exitDate: true,
+                resultId: true,
+            },
+        });
+
+        return entrie;
+    } catch (error) {
+        return null;
+    }
+};

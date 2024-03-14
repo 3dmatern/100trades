@@ -11,7 +11,7 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination";
 
-export function UserStatisticsPagination({
+export function UiPagination({
     className,
     currentPage,
     pageCount,

@@ -40,4 +40,5 @@ export const COLUMN_WIDTH = {
     timeInTrade: "128px",
 };
 
-export const PAGE_SIZE = 9;
+export const PAGE_SIZE_PROFILE_STAT = 9;
+export const PAGE_SIZE_ADMIN_STAT = 9;
