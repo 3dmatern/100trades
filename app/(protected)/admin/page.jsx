@@ -1,5 +1,7 @@
 "use client";
 
+import { BeatLoader } from "react-spinners";
+
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useSheets } from "@/hooks/use-sheets";
 import { useResults } from "@/hooks/use-results";
@@ -9,8 +11,8 @@ import { useTags } from "@/hooks/use-tags";
 import { useDeals } from "@/hooks/use-deals";
 import { useSortedDeals } from "@/hooks/use-deals-sorted";
 import { useDealModalCarousel } from "@/hooks/use-deal-modal-carousel";
-
 import { useAdminUsersState } from "@/hooks/use-admin-users-state";
+import { useDealsStatistics } from "@/hooks/use-deals-statistics";
 
 import {
     Accordion,
@@ -18,31 +20,25 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
-
 import { AdminSelect } from "@/components/admin";
-import { AdminStatistics } from "@/components/admin/";
+import { DealsDateStatistics } from "@/components/deals/deals-date-statistics";
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/dealScreenshotModal";
-import { BeatLoader } from "react-spinners";
 
 const RESULT_WIN_ID = process.env.NEXT_PUBLIC_RESULT_WIN_ID;
 const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
 
 export default function AdminPage() {
     const user = useCurrentUser();
-    const {
-        dealsStatWLPeriod,
-        totalCountDealsStat,
-        totalWin,
-        totalLoss,
-        users,
-        selectUserId,
-        handleSelectUser,
-    } = useAdminUsersState({
+    const { dealsStatWLPeriod, totalCountPeriod, totalWin, totalLoss } =
+        useDealsStatistics({
+            isAdmin: true,
+            winID: RESULT_WIN_ID,
+            lossID: RESULT_LOSS_ID,
+        });
+    const { users, selectUserId, handleSelectUser } = useAdminUsersState({
         user,
-        winID: RESULT_WIN_ID,
-        lossID: RESULT_LOSS_ID,
     });
     const { sheets, selectSheetId, handleSelectSheet } =
         useSheets(selectUserId);
@@ -95,10 +91,10 @@ export default function AdminPage() {
                     <AccordionTrigger className="px-5">
                         Почасовая статистика W:L
                     </AccordionTrigger>
-                    <AccordionContent>
-                        <AdminStatistics
+                    <AccordionContent className="pt-4">
+                        <DealsDateStatistics
                             dealsStatWLPeriod={dealsStatWLPeriod}
-                            totalCountDealsStat={totalCountDealsStat}
+                            totalCountPeriod={totalCountPeriod}
                             totalWin={totalWin}
                             totalLoss={totalLoss}
                         />
@@ -108,7 +104,7 @@ export default function AdminPage() {
                     <AccordionTrigger className="px-5">
                         Просмотр журналов пользователей
                     </AccordionTrigger>
-                    <AccordionContent>
+                    <AccordionContent className="pt-4">
                         <AdminSelect
                             users={users}
                             onSelectUser={handleSelectUser}

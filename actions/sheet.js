@@ -77,7 +77,7 @@ export const getSheets = async (userId) => {
     }
 };
 
-export const getSheetsWithEntrieWL = async (userId) => {
+export const getSheetsWithEntrieWL = async ({ userId, winID, lossID }) => {
     noStore();
     const existingUser = await getUserById(userId);
 
@@ -89,7 +89,11 @@ export const getSheetsWithEntrieWL = async (userId) => {
 
     try {
         let entries = [];
-        const sheets = await getSheetsWithEntrieWLByUserId(existingUser.id);
+        const sheets = await getSheetsWithEntrieWLByUserId({
+            userId: existingUser.id,
+            winID,
+            lossID,
+        });
 
         for (const sheet of sheets) {
             if (sheet.entries?.length) {

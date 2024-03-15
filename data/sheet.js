@@ -17,15 +17,27 @@ export const getSheetsByUserId = async (userId) => {
     }
 };
 
-export const getSheetsWithEntrieWLByUserId = async (userId) => {
+export const getSheetsWithEntrieWLByUserId = async ({
+    userId,
+    winID,
+    lossID,
+}) => {
     noStore();
     try {
         const sheetsWithEntrieWL = await db.sheet.findMany({
             where: { userId },
             include: {
                 entries: {
+                    where: {
+                        OR: [
+                            { resultId: { contains: winID } },
+                            { resultId: { contains: lossID } },
+                        ],
+                    },
                     select: {
                         name: true,
+                        entryDate: true,
+                        exitDate: true,
                         resultId: true,
                         date: true,
                     },

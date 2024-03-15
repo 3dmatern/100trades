@@ -2,6 +2,9 @@
 
 import { memo, useCallback, useEffect, useState } from "react";
 
+import { cn } from "@/lib/utils";
+import { itemsCrop } from "@/utils/paginate";
+
 import {
     Table,
     TableCaption,
@@ -12,14 +15,12 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { PAGE_SIZE_ADMIN_STAT } from "@/components/constants";
-import { itemsCrop } from "@/utils/paginate";
+import { PAGE_SIZE_STAT_PERIOD } from "@/components/constants";
 import { UiPagination } from "@/components/uikit/uiPagination";
-import { cn } from "@/lib/utils";
 
-export const AdminStatistics = memo(function AdminStatistics({
+export const DealsDateStatistics = memo(function DealsDateStatistics({
     dealsStatWLPeriod,
-    totalCountDealsStat,
+    totalCountPeriod,
     totalWin,
     totalLoss,
 }) {
@@ -31,11 +32,11 @@ export const AdminStatistics = memo(function AdminStatistics({
 
     const changePaginateData = useCallback(
         (items) => {
-            const pageCount = Math.ceil(items.length / PAGE_SIZE_ADMIN_STAT);
+            const pageCount = Math.ceil(items.length / PAGE_SIZE_STAT_PERIOD);
             const dealsCrop = itemsCrop(
                 items,
                 currentPage,
-                PAGE_SIZE_ADMIN_STAT
+                PAGE_SIZE_STAT_PERIOD
             );
 
             setPaginateData((prev) => ({ ...prev, pageCount }));
@@ -64,7 +65,7 @@ export const AdminStatistics = memo(function AdminStatistics({
         const dealsCrop = itemsCrop(
             dealsStatWLPeriod,
             selectPage,
-            PAGE_SIZE_ADMIN_STAT
+            PAGE_SIZE_STAT_PERIOD
         );
 
         if (dealsCrop) {
@@ -87,7 +88,7 @@ export const AdminStatistics = memo(function AdminStatistics({
         const newDealsCrop = itemsCrop(
             dealsStatWLPeriod,
             selectPage,
-            PAGE_SIZE_ADMIN_STAT
+            PAGE_SIZE_STAT_PERIOD
         );
 
         if (newDealsCrop) {
@@ -110,7 +111,7 @@ export const AdminStatistics = memo(function AdminStatistics({
         const newDealsCrop = itemsCrop(
             dealsStatWLPeriod,
             selectPage,
-            PAGE_SIZE_ADMIN_STAT
+            PAGE_SIZE_STAT_PERIOD
         );
 
         if (newDealsCrop) {
@@ -164,7 +165,7 @@ export const AdminStatistics = memo(function AdminStatistics({
                         {totalWin}:{totalLoss}
                     </TableCell>
                     <TableCell className="text-center">
-                        {totalCountDealsStat}
+                        {totalCountPeriod}
                     </TableCell>
                 </TableRow>
             </TableFooter>
