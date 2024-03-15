@@ -21,22 +21,31 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import { AdminSelect } from "@/components/admin";
-import { DealsDateStatistics } from "@/components/deals/deals-date-statistics";
+import { DealsTimeStatistics } from "@/components/deals/dealsTimeStatistics";
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/dealScreenshotModal";
+import { DealsDaysStatistics } from "@/components/deals/dealsDaysStatistics";
 
 const RESULT_WIN_ID = process.env.NEXT_PUBLIC_RESULT_WIN_ID;
 const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
 
 export default function AdminPage() {
     const user = useCurrentUser();
-    const { dealsStatWLPeriod, totalCountPeriod, totalWin, totalLoss } =
-        useDealsStatistics({
-            isAdmin: true,
-            winID: RESULT_WIN_ID,
-            lossID: RESULT_LOSS_ID,
-        });
+    const {
+        dealsStatWLHours,
+        totalCountHours,
+        totalWinHours,
+        totalLossHours,
+        dealsStatWLDays,
+        totalCountDays,
+        totalWinDays,
+        totalLossDays,
+    } = useDealsStatistics({
+        isAdmin: true,
+        winID: RESULT_WIN_ID,
+        lossID: RESULT_LOSS_ID,
+    });
     const { users, selectUserId, handleSelectUser } = useAdminUsersState({
         user,
     });
@@ -85,22 +94,17 @@ export default function AdminPage() {
     }
 
     return (
-        <main className="h-[calc(100%-132px)]">
-            <Accordion type="single" collapsible className="w-full">
+        <main>
+            <Accordion
+                type="single"
+                collapsible
+                className="w-full"
+                onClick={() => {
+                    handleSelectUser("");
+                    handleSelectSheet("");
+                }}
+            >
                 <AccordionItem value="item-1">
-                    <AccordionTrigger className="px-5">
-                        Почасовая статистика W:L
-                    </AccordionTrigger>
-                    <AccordionContent className="pt-4">
-                        <DealsDateStatistics
-                            dealsStatWLPeriod={dealsStatWLPeriod}
-                            totalCountPeriod={totalCountPeriod}
-                            totalWin={totalWin}
-                            totalLoss={totalLoss}
-                        />
-                    </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-2">
                     <AccordionTrigger className="px-5">
                         Просмотр журналов пользователей
                     </AccordionTrigger>
@@ -164,6 +168,32 @@ export default function AdminPage() {
                                 />
                             </SheetWrapper>
                         )}
+                    </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-2">
+                    <AccordionTrigger className="px-5">
+                        Статистика W:L по часам (c 9 до 24)
+                    </AccordionTrigger>
+                    <AccordionContent className="pt-4">
+                        <DealsTimeStatistics
+                            deals={dealsStatWLHours}
+                            totalCount={totalCountHours}
+                            totalWin={totalWinHours}
+                            totalLoss={totalLossHours}
+                        />
+                    </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-3">
+                    <AccordionTrigger className="px-5">
+                        Статистика W:L по дням
+                    </AccordionTrigger>
+                    <AccordionContent className="pt-4">
+                        <DealsDaysStatistics
+                            deals={dealsStatWLDays}
+                            totalCount={totalCountDays}
+                            totalWin={totalWinDays}
+                            totalLoss={totalLossDays}
+                        />
                     </AccordionContent>
                 </AccordionItem>
             </Accordion>

@@ -8,19 +8,24 @@ import { getSheetsWithEntrieWL } from "@/actions/sheet";
 
 import { percentLossOfCount, percentWinOfCount } from "@/utils/getPercent";
 
-import { TIMES_PERIOD } from "@/hooks/constants";
+import { DAYS_PERIOD, TIMES_PERIOD } from "@/hooks/constants";
 
 export function useDealsStatistics({ isAdmin = false, userId, winID, lossID }) {
-    const [dealsStatInit, setDealsStatInit] = useState([]);
-    const [dealsStatDefault, setDealsStatDefault] = useState([]);
+    const [dealsStatTikerInit, setDealsStatTikerInit] = useState([]);
+    const [dealsStatTikerDefault, setDealsStatTikerDefault] = useState([]);
     const [totalCountTiker, setTotalCountTiker] = useState(null);
-    const [winPercent, setWinPercent] = useState(null);
-    const [lossPercent, setLossPercent] = useState(null);
+    const [winPercentTiker, setWinPercentTiker] = useState(null);
+    const [lossPercentTiker, setLossPercentTiker] = useState(null);
 
-    const [dealsStatWLPeriod, setDealsStatWLPeriod] = useState([]);
-    const [totalCountPeriod, setTotalCountPeriod] = useState(null);
-    const [totalWin, setTotalWin] = useState(null);
-    const [totalLoss, setLTotaloss] = useState(null);
+    const [dealsStatWLHours, setDealsStatWLHours] = useState([]);
+    const [totalCountHours, setTotalCountHours] = useState(null);
+    const [totalWinHours, setTotalWinHours] = useState(null);
+    const [totalLossHours, setLTotalossHours] = useState(null);
+
+    const [dealsStatWLDays, setDealsStatWLDays] = useState([]);
+    const [totalCountDays, setTotalCountDays] = useState(null);
+    const [totalWinDays, setTotalWinDays] = useState(null);
+    const [totalLossDays, setLTotalossDays] = useState(null);
 
     useEffect(() => {
         if (userId && winID && lossID) {
@@ -39,7 +44,7 @@ export function useDealsStatistics({ isAdmin = false, userId, winID, lossID }) {
                 }
 
                 if (deals.length) {
-                    setDealsStatInit((prev) => deals);
+                    setDealsStatTikerInit((prev) => deals);
 
                     let statistics = {};
                     let allCount = 0;
@@ -103,27 +108,42 @@ export function useDealsStatistics({ isAdmin = false, userId, winID, lossID }) {
                             return 0;
                         });
 
-                    setDealsStatDefault((prev) => dealsStatistics);
+                    setDealsStatTikerDefault((prev) => dealsStatistics);
                     setTotalCountTiker((prev) => allCount);
-                    setWinPercent((prev) =>
+                    setWinPercentTiker((prev) =>
                         percentWinOfCount(allWin, allCount)
                     );
-                    setLossPercent((prev) =>
+                    setLossPercentTiker((prev) =>
                         percentLossOfCount(allLoss, allCount)
                     );
 
-                    const dealsStatMoreWOrL = getStatMoreWOrL({
+                    const {
+                        dealsStatHours,
+                        allCountHours,
+                        allWinHours,
+                        allLossHours,
+                    } = getStatHours({
                         deals,
                         winID,
                         lossID,
                     });
 
-                    setDealsStatWLPeriod(
-                        (prev) => dealsStatMoreWOrL.dealsStatistics
-                    );
-                    setTotalCountPeriod((prev) => dealsStatMoreWOrL.allCount);
-                    setTotalWin((prev) => dealsStatMoreWOrL.allWin);
-                    setLTotaloss((prev) => dealsStatMoreWOrL.allLoss);
+                    setDealsStatWLHours((prev) => dealsStatHours);
+                    setTotalCountHours((prev) => allCountHours);
+                    setTotalWinHours((prev) => allWinHours);
+                    setLTotalossHours((prev) => allLossHours);
+
+                    const {
+                        dealsStatDays,
+                        allCountDays,
+                        allWinDays,
+                        allLossDays,
+                    } = getStatDays({ deals, winID, lossID });
+
+                    setDealsStatWLDays((prev) => dealsStatDays);
+                    setTotalCountDays((prev) => allCountDays);
+                    setTotalWinDays((prev) => allWinDays);
+                    setLTotalossDays((prev) => allLossDays);
                 }
             };
 
@@ -139,13 +159,29 @@ export function useDealsStatistics({ isAdmin = false, userId, winID, lossID }) {
                 if (deals && deals.error) {
                     toast.error(users.error);
                 } else {
-                    const { dealsStatistics, allCount, allWin, allLoss } =
-                        getStatMoreWOrL({ deals, winID, lossID });
+                    const {
+                        dealsStatHours,
+                        allCountHours,
+                        allWinHours,
+                        allLossHours,
+                    } = getStatHours({ deals, winID, lossID });
 
-                    setDealsStatWLPeriod((prev) => dealsStatistics);
-                    setTotalCountPeriod((prev) => allCount);
-                    setTotalWin((prev) => allWin);
-                    setLTotaloss((prev) => allLoss);
+                    setDealsStatWLHours((prev) => dealsStatHours);
+                    setTotalCountHours((prev) => allCountHours);
+                    setTotalWinHours((prev) => allWinHours);
+                    setLTotalossHours((prev) => allLossHours);
+
+                    const {
+                        dealsStatDays,
+                        allCountDays,
+                        allWinDays,
+                        allLossDays,
+                    } = getStatDays({ deals, winID, lossID });
+
+                    setDealsStatWLDays((prev) => dealsStatDays);
+                    setTotalCountDays((prev) => allCountDays);
+                    setTotalWinDays((prev) => allWinDays);
+                    setLTotalossDays((prev) => allLossDays);
                 }
             };
 
@@ -154,22 +190,26 @@ export function useDealsStatistics({ isAdmin = false, userId, winID, lossID }) {
     }, [isAdmin, lossID, winID]);
 
     return {
-        dealsStatDefault,
+        dealsStatTikerDefault,
         totalCountTiker,
-        winPercent,
-        lossPercent,
-        dealsStatWLPeriod,
-        totalCountPeriod,
-        totalWin,
-        totalLoss,
+        winPercentTiker,
+        lossPercentTiker,
+        dealsStatWLHours,
+        totalCountHours,
+        totalWinHours,
+        totalLossHours,
+        dealsStatWLDays,
+        totalCountDays,
+        totalWinDays,
+        totalLossDays,
     };
 }
 
-function getStatMoreWOrL({ deals, winID, lossID }) {
+function getStatHours({ deals, winID, lossID }) {
     let statistics = {};
-    let allCount = 0;
-    let allWin = 0;
-    let allLoss = 0;
+    let allCountHours = 0;
+    let allWinHours = 0;
+    let allLossHours = 0;
 
     statistics = deals.reduce((acc, item) => {
         const entryHours = new Date(item.entryDate).getHours();
@@ -213,24 +253,88 @@ function getStatMoreWOrL({ deals, winID, lossID }) {
         return acc;
     }, {});
 
-    const dealsStatistics = Object.keys(statistics)
+    const dealsStatHours = Object.keys(statistics)
         .sort((a, b) => {
             if (a > b) return 1;
             if (a < b) return -1;
             return 0;
         })
         .map((key) => {
-            allCount += statistics[key].count;
-            allWin += statistics[key].win;
-            allLoss += statistics[key].loss;
+            allCountHours += statistics[key].count;
+            allWinHours += statistics[key].win;
+            allLossHours += statistics[key].loss;
 
             return statistics[key];
         });
 
     return {
-        dealsStatistics,
-        allCount,
-        allWin,
-        allLoss,
+        dealsStatHours,
+        allCountHours,
+        allWinHours,
+        allLossHours,
+    };
+}
+
+function getStatDays({ deals, winID, lossID }) {
+    let statistics = {};
+    let allCountDays = 0;
+    let allWinDays = 0;
+    let allLossDays = 0;
+
+    statistics = deals.reduce((acc, item) => {
+        const entryDayIndex = new Date(item.entryDate).getDay();
+        const itemResultId = item.resultId;
+
+        for (const day of DAYS_PERIOD) {
+            const dayName = day.name.toUpperCase();
+            const dayIndex = day.index;
+
+            if (acc[dayName] && entryDayIndex === dayIndex) {
+                if (itemResultId === winID) {
+                    acc[dayName].win++;
+                    acc[dayName].count++;
+                }
+
+                if (itemResultId === lossID) {
+                    acc[dayName].loss++;
+                    acc[dayName].count++;
+                }
+            } else if (
+                !acc[dayName] &&
+                entryDayIndex === dayIndex &&
+                (itemResultId === winID || itemResultId === lossID)
+            ) {
+                acc[dayName] = {
+                    name: dayName,
+                    dayIndex,
+                    count: 1,
+                    win: itemResultId === winID ? 1 : 0,
+                    loss: itemResultId === lossID ? 1 : 0,
+                };
+            }
+        }
+
+        return acc;
+    }, {});
+
+    const dealsStatDays = Object.keys(statistics)
+        .map((key) => {
+            allCountDays += statistics[key].count;
+            allWinDays += statistics[key].win;
+            allLossDays += statistics[key].loss;
+
+            return statistics[key];
+        })
+        .sort((a, b) => {
+            if (a.dayIndex > b.dayIndex) return 1;
+            if (a.dayIndex < b.dayIndex) return -1;
+            return 0;
+        });
+
+    return {
+        dealsStatDays,
+        allCountDays,
+        allWinDays,
+        allLossDays,
     };
 }

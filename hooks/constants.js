@@ -15,3 +15,11 @@ export const TIMES_PERIOD = [
     { entry: 22, exit: 23 },
     { entry: 23, exit: 24 },
 ];
+
+export const DAYS_PERIOD = [
+    { name: "пн", index: 1 },
+    { name: "вт", index: 2 },
+    { name: "ср", index: 3 },
+    { name: "чт", index: 4 },
+    { name: "пт", index: 5 },
+];

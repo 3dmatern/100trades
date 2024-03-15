@@ -15,12 +15,12 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { PAGE_SIZE_STAT_PERIOD } from "@/components/constants";
+import { PAGE_SIZE_STAT_HOURS } from "@/components/constants";
 import { UiPagination } from "@/components/uikit/uiPagination";
 
-export const DealsDateStatistics = memo(function DealsDateStatistics({
-    dealsStatWLPeriod,
-    totalCountPeriod,
+export const DealsTimeStatistics = memo(function DealsTimeStatistics({
+    deals,
+    totalCount,
     totalWin,
     totalLoss,
 }) {
@@ -32,11 +32,11 @@ export const DealsDateStatistics = memo(function DealsDateStatistics({
 
     const changePaginateData = useCallback(
         (items) => {
-            const pageCount = Math.ceil(items.length / PAGE_SIZE_STAT_PERIOD);
+            const pageCount = Math.ceil(items.length / PAGE_SIZE_STAT_HOURS);
             const dealsCrop = itemsCrop(
                 items,
                 currentPage,
-                PAGE_SIZE_STAT_PERIOD
+                PAGE_SIZE_STAT_HOURS
             );
 
             setPaginateData((prev) => ({ ...prev, pageCount }));
@@ -47,12 +47,12 @@ export const DealsDateStatistics = memo(function DealsDateStatistics({
     );
 
     useEffect(() => {
-        if (dealsStatWLPeriod.length) {
-            const dealsStatisticsCrop = changePaginateData(dealsStatWLPeriod);
+        if (deals) {
+            const dealsStatisticsCrop = changePaginateData(deals);
 
             setDealsStatCrop((prev) => dealsStatisticsCrop);
         }
-    }, [changePaginateData, dealsStatWLPeriod]);
+    }, [changePaginateData, deals]);
 
     function handleChangePage(selectPage) {
         if (selectPage === currentPage) return;
@@ -62,11 +62,7 @@ export const DealsDateStatistics = memo(function DealsDateStatistics({
             currentPage: selectPage,
         }));
 
-        const dealsCrop = itemsCrop(
-            dealsStatWLPeriod,
-            selectPage,
-            PAGE_SIZE_STAT_PERIOD
-        );
+        const dealsCrop = itemsCrop(deals, selectPage, PAGE_SIZE_STAT_HOURS);
 
         if (dealsCrop) {
             setDealsStatCrop((prev) => dealsCrop);
@@ -85,11 +81,7 @@ export const DealsDateStatistics = memo(function DealsDateStatistics({
             currentPage: selectPage,
         }));
 
-        const newDealsCrop = itemsCrop(
-            dealsStatWLPeriod,
-            selectPage,
-            PAGE_SIZE_STAT_PERIOD
-        );
+        const newDealsCrop = itemsCrop(deals, selectPage, PAGE_SIZE_STAT_HOURS);
 
         if (newDealsCrop) {
             setDealsStatCrop((prev) => newDealsCrop);
@@ -108,11 +100,7 @@ export const DealsDateStatistics = memo(function DealsDateStatistics({
             currentPage: selectPage,
         }));
 
-        const newDealsCrop = itemsCrop(
-            dealsStatWLPeriod,
-            selectPage,
-            PAGE_SIZE_STAT_PERIOD
-        );
+        const newDealsCrop = itemsCrop(deals, selectPage, PAGE_SIZE_STAT_HOURS);
 
         if (newDealsCrop) {
             setDealsStatCrop((prev) => newDealsCrop);
@@ -121,13 +109,16 @@ export const DealsDateStatistics = memo(function DealsDateStatistics({
 
     const getTableBody = () => {
         return dealsStatCrop.map((deal, index) => {
+            const winIsMore = deal.win > deal.loss;
             const lossIsMore = deal.loss > deal.win;
+
             return (
                 <TableRow key={index}>
                     <TableCell>{deal.name}</TableCell>
                     <TableCell
                         className={cn(
-                            "text-center text-teal-500",
+                            "text-center",
+                            winIsMore && "text-teal-500",
                             lossIsMore && "text-destructive"
                         )}
                     >
@@ -158,15 +149,14 @@ export const DealsDateStatistics = memo(function DealsDateStatistics({
                     <TableCell>Всего</TableCell>
                     <TableCell
                         className={cn(
-                            "text-center text-teal-500",
+                            "text-center",
+                            totalWin > totalLoss && "text-teal-500",
                             totalWin < totalLoss && "text-destructive"
                         )}
                     >
                         {totalWin}:{totalLoss}
                     </TableCell>
-                    <TableCell className="text-center">
-                        {totalCountPeriod}
-                    </TableCell>
+                    <TableCell className="text-center">{totalCount}</TableCell>
                 </TableRow>
             </TableFooter>
             <TableCaption>

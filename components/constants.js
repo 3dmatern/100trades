@@ -40,5 +40,5 @@ export const COLUMN_WIDTH = {
     timeInTrade: "128px",
 };
 
-export const PAGE_SIZE_STAT_TIKER = 9;
-export const PAGE_SIZE_STAT_PERIOD = 9;
+export const PAGE_SIZE_STAT_TIKER = 8;
+export const PAGE_SIZE_STAT_HOURS = 8;
