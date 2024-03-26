@@ -9,33 +9,33 @@ import { cn } from "@/lib/utils";
 const inter = Inter({ subsets: ["cyrillic", "latin"] });
 
 export const metadata = {
-    title: "Журнал Cделок",
-    description: "Журнал Cделок трейдинга Homa-Trading",
-    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL),
-    alternates: {
-        canonical: "/",
-    },
+  title: "Журнал Cделок",
+  description: "Журнал Cделок трейдинга Homa-Trading",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL),
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default async function RootLayout({ children }) {
-    const session = await auth();
+  const session = await auth();
 
-    return (
-        <SessionProvider session={session}>
-            <html lang="ru">
-                <body className={cn("min-w-96", inter.className)}>
-                    <Toaster />
-                    {children}
-                    <div id="modals" />
-                    <a
-                        href="https://winloss.ru"
-                        target="_blank"
-                        className="block w-full py-1 text-center text-slate-500 text-sm"
-                    >
-                        © Школа Трейдинга Хомяка-Спекулянта, winloss.ru
-                    </a>
-                </body>
-            </html>
-        </SessionProvider>
-    );
+  return (
+    <SessionProvider session={session}>
+      <html lang="ru">
+        <body className={cn("min-w-96", inter.className)}>
+          <Toaster />
+          {children}
+          <div id="modals" />
+          <a
+            href="https://winloss.ru"
+            target="_blank"
+            className="block w-full py-1 text-center text-slate-500 text-sm"
+          >
+            © Школа Трейдинга Хомяка-Спекулянта, winloss.ru
+          </a>
+        </body>
+      </html>
+    </SessionProvider>
+  );
 }

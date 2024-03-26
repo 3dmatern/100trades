@@ -19,129 +19,127 @@ import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/dealScreenshotModal";
 
 export default function SheetPage({ params }) {
-    const { id } = params;
-    const router = useRouter();
-    const user = useCurrentUser();
-    const { sheets, handleSheetUpdate, handleRemoveSheet } = useSheets(user.id);
-    const { results } = useResults();
-    const { longShorts } = useLongShort();
-    const { risksRewards } = useRisksRewards();
-    const { tags } = useTags(user.id);
-    const { onSort, onResetSort } = useSortedDeals(
-        results,
-        longShorts,
-        risksRewards
-    );
-    const {
-        deals,
-        dealsInfo,
-        selectedDeals,
-        checkAll,
-        isSortingEnabled,
-        isPending,
-        onCreateDeal,
-        onUpdateDeal,
-        onRemoveDeal,
-        onCheckAll,
-        onCheckDeal,
-        onSortDeals,
-        onResetSortDeals,
-    } = useDeals({
-        userId: user.id,
-        sheetId: id,
-        results,
-        longShorts,
-        risksRewards,
-        onSort,
-        onResetSort,
-    });
-    const {
-        currentDealOptions,
-        isThereDeal,
-        onClickDealImg,
-        onRemoveImg,
-        onCloseModal,
-        onPrevDeal,
-        onNextDeal,
-    } = useDealModalCarousel({ deals, onUpdateDeal });
+  const { id } = params;
+  const router = useRouter();
+  const user = useCurrentUser();
+  const { sheets, onSheetUpdate, onRemoveSheet } = useSheets(user.id);
+  const { results } = useResults();
+  const { longShorts } = useLongShort();
+  const { risksRewards } = useRisksRewards();
+  const { tags } = useTags(user.id);
+  const { onSort, onResetSort } = useSortedDeals(
+    results,
+    longShorts,
+    risksRewards
+  );
+  const {
+    deals,
+    dealsInfo,
+    selectedDeals,
+    checkAll,
+    isSortingEnabled,
+    isPending,
+    onCreateDeal,
+    onUpdateDeal,
+    onRemoveDeal,
+    onCheckAll,
+    onCheckDeal,
+    onSortDeals,
+    onResetSortDeals,
+  } = useDeals({
+    userId: user.id,
+    sheetId: id,
+    results,
+    longShorts,
+    risksRewards,
+    onSort,
+    onResetSort,
+  });
+  const {
+    currentDealOptions,
+    isThereDeal,
+    onClickDealImg,
+    onRemoveImg,
+    onCloseModal,
+    onPrevDeal,
+    onNextDeal,
+  } = useDealModalCarousel({ deals, onUpdateDeal });
 
-    useEffect(() => {
-        if (sheets && sheets.length === 0) {
-            router.push("/sheets");
+  useEffect(() => {
+    if (sheets && sheets.length === 0) {
+      router.push("/sheets");
+    }
+  }, [router, sheets]);
+
+  return (
+    <SheetWrapper className="h-[calc(100%-132px)]">
+      <Sheets
+        userId={user.id}
+        sheets={sheets}
+        sheetId={id}
+        onSheetUpdate={onSheetUpdate}
+        onRemoveSheet={onRemoveSheet}
+      />
+
+      <Table
+        userId={user.id}
+        deals={deals}
+        dealsInfo={dealsInfo}
+        sheetId={id}
+        selectedDeals={selectedDeals}
+        checkAll={checkAll}
+        isSortingEnabled={isSortingEnabled}
+        isPending={isPending}
+        onCreateDeal={onCreateDeal}
+        onUpdateDeal={onUpdateDeal}
+        onRemoveDeal={onRemoveDeal}
+        onCheckAll={onCheckAll}
+        onCheckDeal={onCheckDeal}
+        onSort={onSortDeals}
+        onResetSort={onResetSortDeals}
+        results={results}
+        longShorts={longShorts}
+        risksRewarsData={risksRewards}
+        tagsData={tags}
+        onClickDealImg={onClickDealImg}
+      />
+
+      <DealScreenshotModal
+        isOpen={currentDealOptions}
+        isThereDeal={isThereDeal}
+        deal={deals?.find((d) => d.id === currentDealOptions?.deal.id)}
+        currentScreen={currentDealOptions?.inputName}
+        onRemove={onRemoveImg}
+        onClose={onCloseModal}
+        onPrevDeal={onPrevDeal}
+        onNextDeal={onNextDeal}
+        table={
+          <Table
+            userId={user.id}
+            deals={deals}
+            dealsInfo={dealsInfo}
+            sheetId={id}
+            selectedDeals={selectedDeals}
+            checkAll={checkAll}
+            isSortingEnabled={isSortingEnabled}
+            isPending={isPending}
+            onCreateDeal={onCreateDeal}
+            onUpdateDeal={onUpdateDeal}
+            onRemoveDeal={onRemoveDeal}
+            onCheckAll={onCheckAll}
+            onCheckDeal={onCheckDeal}
+            onSort={onSortDeals}
+            onResetSort={onResetSortDeals}
+            results={results}
+            longShorts={longShorts}
+            risksRewarsData={risksRewards}
+            tagsData={tags}
+            onClickDealImg={onRemoveImg}
+            isModal={true}
+            deal={deals?.find((d) => d.id === currentDealOptions?.deal.id)}
+          />
         }
-    }, [router, sheets]);
-
-    return (
-        <SheetWrapper className="h-[calc(100%-132px)]">
-            <Sheets
-                userId={user.id}
-                sheets={sheets}
-                sheetId={id}
-                onSheetUpdate={handleSheetUpdate}
-                onRemoveSheet={handleRemoveSheet}
-            />
-
-            <Table
-                userId={user.id}
-                deals={deals}
-                dealsInfo={dealsInfo}
-                sheetId={id}
-                selectedDeals={selectedDeals}
-                checkAll={checkAll}
-                isSortingEnabled={isSortingEnabled}
-                isPending={isPending}
-                onCreateDeal={onCreateDeal}
-                onUpdateDeal={onUpdateDeal}
-                onRemoveDeal={onRemoveDeal}
-                onCheckAll={onCheckAll}
-                onCheckDeal={onCheckDeal}
-                onSort={onSortDeals}
-                onResetSort={onResetSortDeals}
-                results={results}
-                longShorts={longShorts}
-                risksRewarsData={risksRewards}
-                tagsData={tags}
-                onClickDealImg={onClickDealImg}
-            />
-
-            <DealScreenshotModal
-                isOpen={currentDealOptions}
-                isThereDeal={isThereDeal}
-                deal={deals?.find((d) => d.id === currentDealOptions?.deal.id)}
-                currentScreen={currentDealOptions?.inputName}
-                onRemove={onRemoveImg}
-                onClose={onCloseModal}
-                onPrevDeal={onPrevDeal}
-                onNextDeal={onNextDeal}
-                table={
-                    <Table
-                        userId={user.id}
-                        deals={deals}
-                        dealsInfo={dealsInfo}
-                        sheetId={id}
-                        selectedDeals={selectedDeals}
-                        checkAll={checkAll}
-                        isSortingEnabled={isSortingEnabled}
-                        isPending={isPending}
-                        onCreateDeal={onCreateDeal}
-                        onUpdateDeal={onUpdateDeal}
-                        onRemoveDeal={onRemoveDeal}
-                        onCheckAll={onCheckAll}
-                        onCheckDeal={onCheckDeal}
-                        onSort={onSortDeals}
-                        onResetSort={onResetSortDeals}
-                        results={results}
-                        longShorts={longShorts}
-                        risksRewarsData={risksRewards}
-                        tagsData={tags}
-                        onClickDealImg={onRemoveImg}
-                        isModal={true}
-                        deal={deals?.find(
-                            (d) => d.id === currentDealOptions?.deal.id
-                        )}
-                    />
-                }
-            />
-        </SheetWrapper>
-    );
+      />
+    </SheetWrapper>
+  );
 }
