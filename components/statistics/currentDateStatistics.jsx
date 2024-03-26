@@ -1,4 +1,4 @@
-import { CurrentDayStatistics } from "./CurrentDayStatistics";
+import { CurrentDayStatistics } from "./currentDayStatistics";
 import { CurrentTimeStatistics } from "./currentTimeStatistics";
 
 export const CurrentDateStatistics = ({
