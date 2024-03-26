@@ -1,3 +1,5 @@
+"use client";
+
 export function dealDateWithTime(date) {
   const oldDate = new Date(date);
   const day = String(oldDate.getDate()).padStart(2, "0");
@@ -30,5 +32,6 @@ export function currentTime() {
   const getDate = new Date();
   const hours = String(getDate.getHours()).padStart(2, "0");
   const minutes = String(getDate.getMinutes()).padStart(2, "0");
-  return `${hours}:${minutes}`;
+  const seconds = String(getDate.getSeconds()).padStart(2, "0");
+  return `${hours}:${minutes}:${seconds}`;
 }

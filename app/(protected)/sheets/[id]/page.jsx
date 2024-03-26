@@ -18,7 +18,7 @@ import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Sheets from "@/components/sheet/sheets";
 import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/dealScreenshotModal";
-import { CurrentDayStatistics } from "@/components/statistics";
+import { CurrentDateStatistics } from "@/components/statistics";
 
 const RESULT_WIN_ID = process.env.NEXT_PUBLIC_RESULT_WIN_ID;
 const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
@@ -69,7 +69,7 @@ export default function SheetPage({ params }) {
     onPrevDeal,
     onNextDeal,
   } = useDealModalCarousel({ deals, onUpdateDeal });
-  const { dealsStatWLDays } = useDealsStatistics({
+  const { dealsStatWLDays, dealsStatWLHours } = useDealsStatistics({
     userId: user.id,
     winID: RESULT_WIN_ID,
     lossID: RESULT_LOSS_ID,
@@ -83,7 +83,11 @@ export default function SheetPage({ params }) {
 
   return (
     <SheetWrapper className="h-[calc(100%-132px)]">
-      <CurrentDayStatistics dealsStatWLDays={dealsStatWLDays} />
+      <CurrentDateStatistics
+        dealsStatWLDays={dealsStatWLDays}
+        dealsStatWLHours={dealsStatWLHours}
+      />
+
       <Sheets
         userId={user.id}
         sheets={sheets}
