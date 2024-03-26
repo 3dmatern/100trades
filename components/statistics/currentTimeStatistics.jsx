@@ -6,13 +6,13 @@ import { createRowData } from "@/utils/createRowData";
 
 import { CurrentDateCard } from "./ui/currentDateCard";
 
-export const CurrentTimeStatistics = ({ dealsStatWLHours }) => {
+export const CurrentTimeStatistics = ({ dealsStatWLCurrentHours }) => {
   const [dealStat, setDealStat] = useState();
   const [dealRow, setDealRow] = useState([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const deal = dealsStatWLHours.find(
+      const deal = dealsStatWLCurrentHours.find(
         (deal) => +deal.name.split("-")[0] === new Date().getHours()
       );
 
@@ -29,7 +29,7 @@ export const CurrentTimeStatistics = ({ dealsStatWLHours }) => {
     return () => {
       clearInterval(interval);
     };
-  }, [dealsStatWLHours]);
+  }, [dealsStatWLCurrentHours]);
 
   return dealRow.length > 0 ? (
     <CurrentDateCard>

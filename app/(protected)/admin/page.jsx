@@ -26,26 +26,13 @@ import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/dealScreenshotModal";
 import { DealsDaysStatistics } from "@/components/statistics/dealsDaysStatistics";
+import { CurrentDateStatistics } from "@/components/statistics";
 
 const RESULT_WIN_ID = process.env.NEXT_PUBLIC_RESULT_WIN_ID;
 const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
 
 export default function AdminPage() {
   const user = useCurrentUser();
-  const {
-    dealsStatWLHours,
-    totalCountHours,
-    totalWinHours,
-    totalLossHours,
-    dealsStatWLDays,
-    totalCountDays,
-    totalWinDays,
-    totalLossDays,
-  } = useDealsStatistics({
-    isAdmin: true,
-    winID: RESULT_WIN_ID,
-    lossID: RESULT_LOSS_ID,
-  });
   const { users, selectUserId, onSelectUser } = useAdminUsersState({
     user,
   });
@@ -70,6 +57,24 @@ export default function AdminPage() {
       onSort,
       onResetSort,
     });
+
+  const {
+    dealsStatWLHours,
+    dealsStatWLCurrentHours,
+    totalCountHours,
+    totalWinHours,
+    totalLossHours,
+    dealsStatWLDays,
+    dealsStatWLCurrentDay,
+    totalCountDays,
+    totalWinDays,
+    totalLossDays,
+  } = useDealsStatistics({
+    isAdmin: true,
+    winID: RESULT_WIN_ID,
+    lossID: RESULT_LOSS_ID,
+    userDeals: deals,
+  });
   const {
     currentDealOptions,
     isThereDeal,
@@ -115,6 +120,11 @@ export default function AdminPage() {
 
             {!!selectSheetId && (
               <SheetWrapper className="md:h-[calc(100vh-168px)] h-[calc(100vh-240px)]">
+                <CurrentDateStatistics
+                  dealsStatWLCurrentHours={dealsStatWLCurrentHours}
+                  dealsStatWLCurrentDay={dealsStatWLCurrentDay}
+                />
+
                 <Table
                   userId={user.id}
                   deals={deals}

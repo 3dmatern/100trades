@@ -69,11 +69,13 @@ export default function SheetPage({ params }) {
     onPrevDeal,
     onNextDeal,
   } = useDealModalCarousel({ deals, onUpdateDeal });
-  const { dealsStatWLDays, dealsStatWLHours } = useDealsStatistics({
-    winID: RESULT_WIN_ID,
-    lossID: RESULT_LOSS_ID,
-    userDeals: deals,
-  });
+  const { dealsStatWLCurrentHours, dealsStatWLCurrentDay } = useDealsStatistics(
+    {
+      winID: RESULT_WIN_ID,
+      lossID: RESULT_LOSS_ID,
+      userDeals: deals,
+    }
+  );
 
   useEffect(() => {
     if (sheets && sheets.length === 0) {
@@ -84,8 +86,8 @@ export default function SheetPage({ params }) {
   return (
     <SheetWrapper className="h-[calc(100%-132px)]">
       <CurrentDateStatistics
-        dealsStatWLDays={dealsStatWLDays}
-        dealsStatWLHours={dealsStatWLHours}
+        dealsStatWLCurrentHours={dealsStatWLCurrentHours}
+        dealsStatWLCurrentDay={dealsStatWLCurrentDay}
       />
 
       <Sheets

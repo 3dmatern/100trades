@@ -2,8 +2,8 @@ import { CurrentDayStatistics } from "./CurrentDayStatistics";
 import { CurrentTimeStatistics } from "./currentTimeStatistics";
 
 export const CurrentDateStatistics = ({
-  dealsStatWLDays,
-  dealsStatWLHours,
+  dealsStatWLCurrentHours,
+  dealsStatWLCurrentDay,
 }) => {
   return (
     <div
@@ -11,8 +11,10 @@ export const CurrentDateStatistics = ({
         py-2 flex flex-col items-center justify-center gap-2.5 md:flex-row text-sm md:text-base
       "
     >
-      <CurrentDayStatistics dealsStatWLDays={dealsStatWLDays} />
-      <CurrentTimeStatistics dealsStatWLHours={dealsStatWLHours} />
+      <CurrentDayStatistics dealsStatWLCurrentDay={dealsStatWLCurrentDay} />
+      <CurrentTimeStatistics
+        dealsStatWLCurrentHours={dealsStatWLCurrentHours}
+      />
     </div>
   );
 };

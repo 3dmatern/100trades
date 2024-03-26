@@ -24,11 +24,13 @@ export function useDealsStatistics({
   const [lossPercentTiker, setLossPercentTiker] = useState(null);
 
   const [dealsStatWLHours, setDealsStatWLHours] = useState([]);
+  const [dealsStatWLCurrentHours, setDealsStatWLCurrentHours] = useState([]);
   const [totalCountHours, setTotalCountHours] = useState(null);
   const [totalWinHours, setTotalWinHours] = useState(null);
   const [totalLossHours, setLTotalossHours] = useState(null);
 
   const [dealsStatWLDays, setDealsStatWLDays] = useState([]);
+  const [dealsStatWLCurrentDay, setDealsStatWLCurrentDay] = useState([]);
   const [totalCountDays, setTotalCountDays] = useState(null);
   const [totalWinDays, setTotalWinDays] = useState(null);
   const [totalLossDays, setLTotalossDays] = useState(null);
@@ -184,7 +186,7 @@ export function useDealsStatistics({
         lossID,
       });
 
-      setDealsStatWLHours((prev) => dealsStatHours);
+      setDealsStatWLCurrentHours((prev) => dealsStatHours);
 
       const { dealsStatDays } = getStatDays({
         deals: userDeals,
@@ -192,7 +194,7 @@ export function useDealsStatistics({
         lossID,
       });
 
-      setDealsStatWLDays((prev) => dealsStatDays);
+      setDealsStatWLCurrentDay((prev) => dealsStatDays);
     }
   }, [lossID, winID, userDeals]);
 
@@ -202,10 +204,12 @@ export function useDealsStatistics({
     winPercentTiker,
     lossPercentTiker,
     dealsStatWLHours,
+    dealsStatWLCurrentHours,
     totalCountHours,
     totalWinHours,
     totalLossHours,
     dealsStatWLDays,
+    dealsStatWLCurrentDay,
     totalCountDays,
     totalWinDays,
     totalLossDays,
