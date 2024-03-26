@@ -70,9 +70,9 @@ export default function SheetPage({ params }) {
     onNextDeal,
   } = useDealModalCarousel({ deals, onUpdateDeal });
   const { dealsStatWLDays, dealsStatWLHours } = useDealsStatistics({
-    userId: user.id,
     winID: RESULT_WIN_ID,
     lossID: RESULT_LOSS_ID,
+    userDeals: deals,
   });
 
   useEffect(() => {

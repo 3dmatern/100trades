@@ -10,7 +10,13 @@ import { percentLossOfCount, percentWinOfCount } from "@/utils/getPercent";
 
 import { DAYS_PERIOD, TIMES_PERIOD } from "@/hooks/constants";
 
-export function useDealsStatistics({ isAdmin = false, userId, winID, lossID }) {
+export function useDealsStatistics({
+  isAdmin = false,
+  userId,
+  winID,
+  lossID,
+  userDeals,
+}) {
   const [dealsStatTikerInit, setDealsStatTikerInit] = useState([]);
   const [dealsStatTikerDefault, setDealsStatTikerDefault] = useState([]);
   const [totalCountTiker, setTotalCountTiker] = useState(null);
@@ -169,6 +175,26 @@ export function useDealsStatistics({ isAdmin = false, userId, winID, lossID }) {
       getData();
     }
   }, [isAdmin, lossID, winID]);
+
+  useEffect(() => {
+    if (winID && lossID && userDeals) {
+      const { dealsStatHours } = getStatHours({
+        deals: userDeals,
+        winID,
+        lossID,
+      });
+
+      setDealsStatWLHours((prev) => dealsStatHours);
+
+      const { dealsStatDays } = getStatDays({
+        deals: userDeals,
+        winID,
+        lossID,
+      });
+
+      setDealsStatWLDays((prev) => dealsStatDays);
+    }
+  }, [lossID, winID, userDeals]);
 
   return {
     dealsStatTikerDefault,
