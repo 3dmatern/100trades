@@ -21,11 +21,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { AdminSelect } from "@/components/admin";
-import { DealsTimeStatistics } from "@/components/deals/dealsTimeStatistics";
+import { DealsTimeStatistics } from "@/components/statistics/dealsTimeStatistics";
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/dealScreenshotModal";
-import { DealsDaysStatistics } from "@/components/deals/dealsDaysStatistics";
+import { DealsDaysStatistics } from "@/components/statistics/dealsDaysStatistics";
 
 const RESULT_WIN_ID = process.env.NEXT_PUBLIC_RESULT_WIN_ID;
 const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
@@ -96,7 +96,7 @@ export default function AdminPage() {
 
   return (
     <main>
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion type="single" collapsible className="w-full mt-8">
         <AccordionItem
           value="item-1"
           onClick={(e) => handleResetSelects(e.target.dataset.state)}

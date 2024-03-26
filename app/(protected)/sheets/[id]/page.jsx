@@ -12,11 +12,16 @@ import { useTags } from "@/hooks/use-tags";
 import { useDeals } from "@/hooks/use-deals";
 import { useDealModalCarousel } from "@/hooks/use-deal-modal-carousel";
 import { useSortedDeals } from "@/hooks/use-deals-sorted";
+import { useDealsStatistics } from "@/hooks/use-deals-statistics";
 
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Sheets from "@/components/sheet/sheets";
 import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/dealScreenshotModal";
+import { CurrentDayStatistics } from "@/components/statistics";
+
+const RESULT_WIN_ID = process.env.NEXT_PUBLIC_RESULT_WIN_ID;
+const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
 
 export default function SheetPage({ params }) {
   const { id } = params;
@@ -64,6 +69,11 @@ export default function SheetPage({ params }) {
     onPrevDeal,
     onNextDeal,
   } = useDealModalCarousel({ deals, onUpdateDeal });
+  const { dealsStatWLDays } = useDealsStatistics({
+    userId: user.id,
+    winID: RESULT_WIN_ID,
+    lossID: RESULT_LOSS_ID,
+  });
 
   useEffect(() => {
     if (sheets && sheets.length === 0) {
@@ -73,6 +83,7 @@ export default function SheetPage({ params }) {
 
   return (
     <SheetWrapper className="h-[calc(100%-132px)]">
+      <CurrentDayStatistics dealsStatWLDays={dealsStatWLDays} />
       <Sheets
         userId={user.id}
         sheets={sheets}
