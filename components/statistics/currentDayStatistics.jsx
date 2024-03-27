@@ -4,8 +4,8 @@ import { DAYS } from "../constants";
 
 import { CurrentDateCard } from "./ui/currentDateCard";
 
-export const CurrentDayStatistics = ({ dealsStatWLCurrentDay }) => {
-  const dealStat = dealsStatWLCurrentDay?.find(
+export const CurrentDayStatistics = ({ dealsStatWLDays }) => {
+  const dealStat = dealsStatWLDays?.find(
     (deal) => deal.dayIndex === new Date().getDay()
   );
 

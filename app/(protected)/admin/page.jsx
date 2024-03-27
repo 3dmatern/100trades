@@ -27,6 +27,7 @@ import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/dealScreenshotModal";
 import { DealsDaysStatistics } from "@/components/statistics/dealsDaysStatistics";
 import { CurrentDateStatistics } from "@/components/statistics";
+import { useDealsStatisticsAdmin } from "@/hooks/use-deals-statistics-admin";
 
 const RESULT_WIN_ID = process.env.NEXT_PUBLIC_RESULT_WIN_ID;
 const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
@@ -58,22 +59,23 @@ export default function AdminPage() {
       onResetSort,
     });
 
-  const {
-    dealsStatWLHours,
-    dealsStatWLCurrentHours,
-    totalCountHours,
-    totalWinHours,
-    totalLossHours,
-    dealsStatWLDays,
-    dealsStatWLCurrentDay,
-    totalCountDays,
-    totalWinDays,
-    totalLossDays,
-  } = useDealsStatistics({
-    isAdmin: true,
+  const { dealsStatWLHours, dealsStatWLDays } = useDealsStatistics({
+    userId: selectUserId,
     winID: RESULT_WIN_ID,
     lossID: RESULT_LOSS_ID,
-    userDeals: deals,
+  });
+  const {
+    allDealsStatWLHours,
+    allTotalCountHours,
+    allTotalWinHours,
+    allTotalLossHours,
+    allDealsStatWLDays,
+    allTotalCountDays,
+    allTotalWinDays,
+    allTotalLossDays,
+  } = useDealsStatisticsAdmin({
+    winID: RESULT_WIN_ID,
+    lossID: RESULT_LOSS_ID,
   });
   const {
     currentDealOptions,
@@ -121,8 +123,8 @@ export default function AdminPage() {
             {!!selectSheetId && (
               <SheetWrapper className="md:h-[calc(100vh-168px)] h-[calc(100vh-240px)]">
                 <CurrentDateStatistics
-                  dealsStatWLCurrentHours={dealsStatWLCurrentHours}
-                  dealsStatWLCurrentDay={dealsStatWLCurrentDay}
+                  dealsStatWLHours={dealsStatWLHours}
+                  dealsStatWLDays={dealsStatWLDays}
                 />
 
                 <Table
@@ -180,10 +182,10 @@ export default function AdminPage() {
           </AccordionTrigger>
           <AccordionContent className="pt-4">
             <DealsTimeStatistics
-              deals={dealsStatWLHours}
-              totalCount={totalCountHours}
-              totalWin={totalWinHours}
-              totalLoss={totalLossHours}
+              deals={allDealsStatWLHours}
+              totalCount={allTotalCountHours}
+              totalWin={allTotalWinHours}
+              totalLoss={allTotalLossHours}
             />
           </AccordionContent>
         </AccordionItem>
@@ -193,10 +195,10 @@ export default function AdminPage() {
           </AccordionTrigger>
           <AccordionContent className="pt-4">
             <DealsDaysStatistics
-              deals={dealsStatWLDays}
-              totalCount={totalCountDays}
-              totalWin={totalWinDays}
-              totalLoss={totalLossDays}
+              deals={allDealsStatWLDays}
+              totalCount={allTotalCountDays}
+              totalWin={allTotalWinDays}
+              totalLoss={allTotalLossDays}
             />
           </AccordionContent>
         </AccordionItem>

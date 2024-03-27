@@ -116,12 +116,12 @@ export const DealsTikerStatistics = memo(function DealsTikerStatistics({
   }
 
   const getTableBody = () => {
-    return dealsStatCrop?.map((dealStat) => {
+    return dealsStatCrop?.map((dealStat, index) => {
       const winIsMore = dealStat.win > dealStat.loss;
       const lossIsMore = dealStat.loss > dealStat.win;
 
       return (
-        <TableRow key={dealStat.name}>
+        <TableRow key={index}>
           <TableCell className="font-medium">{dealStat.name}</TableCell>
           <TableCell
             className={cn(

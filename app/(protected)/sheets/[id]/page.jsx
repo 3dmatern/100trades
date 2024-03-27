@@ -37,6 +37,11 @@ export default function SheetPage({ params }) {
     longShorts,
     risksRewards
   );
+  const { dealsStatWLHours, dealsStatWLDays, onCRUDDeal } = useDealsStatistics({
+    userId: user.id,
+    winID: RESULT_WIN_ID,
+    lossID: RESULT_LOSS_ID,
+  });
   const {
     deals,
     dealsInfo,
@@ -59,6 +64,7 @@ export default function SheetPage({ params }) {
     risksRewards,
     onSort,
     onResetSort,
+    onCRUDDeal,
   });
   const {
     currentDealOptions,
@@ -69,13 +75,6 @@ export default function SheetPage({ params }) {
     onPrevDeal,
     onNextDeal,
   } = useDealModalCarousel({ deals, onUpdateDeal });
-  const { dealsStatWLCurrentHours, dealsStatWLCurrentDay } = useDealsStatistics(
-    {
-      winID: RESULT_WIN_ID,
-      lossID: RESULT_LOSS_ID,
-      userDeals: deals,
-    }
-  );
 
   useEffect(() => {
     if (sheets && sheets.length === 0) {
@@ -86,8 +85,8 @@ export default function SheetPage({ params }) {
   return (
     <SheetWrapper className="h-[calc(100%-132px)]">
       <CurrentDateStatistics
-        dealsStatWLCurrentHours={dealsStatWLCurrentHours}
-        dealsStatWLCurrentDay={dealsStatWLCurrentDay}
+        dealsStatWLHours={dealsStatWLHours}
+        dealsStatWLDays={dealsStatWLDays}
       />
 
       <Sheets
