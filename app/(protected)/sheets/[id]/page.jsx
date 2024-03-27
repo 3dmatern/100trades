@@ -118,6 +118,7 @@ export default function SheetPage({ params }) {
         risksRewarsData={risksRewards}
         tagsData={tags}
         onClickDealImg={onClickDealImg}
+        lossID={RESULT_LOSS_ID}
       />
 
       <DealScreenshotModal

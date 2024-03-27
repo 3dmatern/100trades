@@ -13,140 +13,142 @@ import ActionTableRow from "@/components/deals/actionTableRow";
 import TableInfo from "@/components/deals/tableInfo";
 
 export default function Table({
-    userId,
-    deals,
-    dealsInfo,
-    sheetId,
-    selectedDeals,
-    checkAll,
-    isSortingEnabled,
-    isPending,
-    onCreateDeal,
-    onUpdateDeal,
-    onRemoveDeal,
-    onCheckAll,
-    onCheckDeal,
-    onSort,
-    onResetSort,
-    results,
-    longShorts,
-    risksRewarsData,
-    tagsData,
-    onClickDealImg,
-    isAdmin = false,
-    isModal = false,
-    deal,
-    isPublished = false,
+  userId,
+  deals,
+  dealsInfo,
+  sheetId,
+  selectedDeals,
+  checkAll,
+  isSortingEnabled,
+  isPending,
+  onCreateDeal,
+  onUpdateDeal,
+  onRemoveDeal,
+  onCheckAll,
+  onCheckDeal,
+  onSort,
+  onResetSort,
+  results,
+  longShorts,
+  risksRewarsData,
+  tagsData,
+  onClickDealImg,
+  isAdmin = false,
+  isModal = false,
+  deal,
+  isPublished = false,
+  lossID,
 }) {
-    const [allTags, setAllTags] = useState([]);
-    const [allRRs, setAllRRs] = useState([]);
-    const [columnWidth, setColumnWidth] = useState(COLUMN_WIDTH);
+  const [allTags, setAllTags] = useState([]);
+  const [allRRs, setAllRRs] = useState([]);
+  const [columnWidth, setColumnWidth] = useState(COLUMN_WIDTH);
 
-    const changeAllRRs = (rr) => {
-        setAllRRs((prev) => [...prev, rr]);
-    };
+  const changeAllRRs = (rr) => {
+    setAllRRs((prev) => [...prev, rr]);
+  };
 
-    const handleUpdateAllTags = (tags) => {
-        setAllTags([...tags]);
-    };
+  const handleUpdateAllTags = (tags) => {
+    setAllTags([...tags]);
+  };
 
-    const handleResize = (column, newWidth) => {
-        setColumnWidth((prevWidths) => ({
-            ...prevWidths,
-            [column]: newWidth,
-        }));
-    };
+  const handleResize = (column, newWidth) => {
+    setColumnWidth((prevWidths) => ({
+      ...prevWidths,
+      [column]: newWidth,
+    }));
+  };
 
-    const getClassNameContainer = () => {
-        if (isModal && !isPublished && !isAdmin) {
-            return "h-[80px]";
-        }
+  const getClassNameContainer = () => {
+    if (isModal && !isPublished && !isAdmin) {
+      return "h-[80px]";
+    }
 
-        if (isPublished) {
-            return "mx-auto";
-        }
+    if (isPublished) {
+      return "mx-auto";
+    }
 
-        return "";
-    };
+    return "";
+  };
 
-    useEffect(() => {
-        if (risksRewarsData) {
-            if (risksRewarsData.error) {
-                toast.error(risksRewarsData.error);
-                return;
-            }
-            setAllRRs(risksRewarsData);
-        }
-    }, [risksRewarsData]);
+  useEffect(() => {
+    if (risksRewarsData) {
+      if (risksRewarsData.error) {
+        toast.error(risksRewarsData.error);
+        return;
+      }
+      setAllRRs(risksRewarsData);
+    }
+  }, [risksRewarsData]);
 
-    useEffect(() => {
-        if (tagsData) {
-            if (tagsData.error) {
-                toast.error(tagsData.error);
-                return;
-            }
-            setAllTags(tagsData);
-        }
-    }, [tagsData]);
+  useEffect(() => {
+    if (tagsData) {
+      if (tagsData.error) {
+        toast.error(tagsData.error);
+        return;
+      }
+      setAllTags(tagsData);
+    }
+  }, [tagsData]);
 
-    return (
-        <TableLayout>
-            <TableContainer className={getClassNameContainer()}>
-                {!isModal && deals && (
-                    <TableInfo
-                        columnWidth={columnWidth}
-                        dealsInfo={dealsInfo}
-                        results={results}
-                        isPublished={isPublished}
-                    />
-                )}
+  return (
+    <TableLayout>
+      <TableContainer className={getClassNameContainer()}>
+        {!isModal && deals && (
+          <TableInfo
+            columnWidth={columnWidth}
+            dealsInfo={dealsInfo}
+            results={results}
+            isPublished={isPublished}
+          />
+        )}
 
-                {deals && (
-                    <TableHead
-                        checkAll={checkAll}
-                        columnWidth={columnWidth}
-                        onResize={handleResize}
-                        onCheckAll={onCheckAll}
-                        onSort={onSort}
-                        isAdmin={isAdmin}
-                        isModal={isModal}
-                        deal={deal}
-                        isPublished={isPublished}
-                        className={isModal ? "top-0" : null}
-                    />
-                )}
+        {deals && (
+          <TableHead
+            checkAll={checkAll}
+            columnWidth={columnWidth}
+            onResize={handleResize}
+            onCheckAll={onCheckAll}
+            onSort={onSort}
+            isAdmin={isAdmin}
+            isModal={isModal}
+            deal={deal}
+            isPublished={isPublished}
+            className={isModal ? "top-0" : null}
+          />
+        )}
 
-                <TableBody
-                    userId={userId}
-                    sheetId={sheetId}
-                    deals={isModal && deal ? [{ ...deal }] : deals}
-                    selectedDeals={selectedDeals}
-                    results={results}
-                    longShorts={longShorts}
-                    allRRs={allRRs}
-                    onChangeAllRRs={changeAllRRs}
-                    allTags={allTags}
-                    onUpdateAllTags={handleUpdateAllTags}
-                    columnWidth={columnWidth}
-                    onCheckDeal={onCheckDeal}
-                    isPending={isPending}
-                    onCreateDeal={onCreateDeal}
-                    onUpdateDeal={onUpdateDeal}
-                    onClickDealImg={onClickDealImg}
-                    isAdmin={isAdmin}
-                    isModal={isModal}
-                    isPublished={isPublished}
-                />
+        <TableBody
+          userId={userId}
+          sheetId={sheetId}
+          deals={isModal && deal ? [{ ...deal }] : deals}
+          selectedDeals={selectedDeals}
+          results={results}
+          longShorts={longShorts}
+          allRRs={allRRs}
+          onChangeAllRRs={changeAllRRs}
+          allTags={allTags}
+          onUpdateAllTags={handleUpdateAllTags}
+          columnWidth={columnWidth}
+          onCheckDeal={onCheckDeal}
+          isPending={isPending}
+          onCreateDeal={onCreateDeal}
+          onUpdateDeal={onUpdateDeal}
+          onClickDealImg={onClickDealImg}
+          isAdmin={isAdmin}
+          isModal={isModal}
+          isPublished={isPublished}
+          lossID={lossID}
+        />
 
-                {!isAdmin && !isModal && deals && (
-                    <ActionTableRow
-                        selectedDeals={selectedDeals}
-                        isSortingEnabled={isSortingEnabled}
-                        onRemoveDeal={onRemoveDeal}
-                        onResetSort={onResetSort}
-                    />
-                )}
-            </TableContainer>
-        </TableLayout>
-    );
+        {!isAdmin && !isModal && deals && (
+          <ActionTableRow
+            selectedDeals={selectedDeals}
+            isSortingEnabled={isSortingEnabled}
+            onRemoveDeal={onRemoveDeal}
+            onResetSort={onResetSort}
+          />
+        )}
+      </TableContainer>
+    </TableLayout>
+  );
 }

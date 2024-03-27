@@ -1,0 +1,1 @@
+export const DAYS_HAVE_PASSED = 172800000;
