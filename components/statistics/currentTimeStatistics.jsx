@@ -23,6 +23,9 @@ export const CurrentTimeStatistics = ({ dealsStatWLHours }) => {
           createRowData("W:L", `${deal.win}:${deal.loss}`),
           createRowData("Сделок", deal.count),
         ]);
+      } else {
+        setDealStat((prev) => null);
+        setDealRow((prev) => []);
       }
     }, 1000);
 

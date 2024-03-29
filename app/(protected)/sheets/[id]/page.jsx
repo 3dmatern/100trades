@@ -37,7 +37,7 @@ export default function SheetPage({ params }) {
     longShorts,
     risksRewards
   );
-  const { hoursWLStat, dealsStatWLDays, onCRUDDeal } = useDealsStatistics({
+  const { hoursWLStat, daysWLStat, onCRUDDeal } = useDealsStatistics({
     userId: user.id,
     winID: RESULT_WIN_ID,
     lossID: RESULT_LOSS_ID,
@@ -84,7 +84,7 @@ export default function SheetPage({ params }) {
     <SheetWrapper className="h-[calc(100%-132px)]">
       <CurrentDateStatistics
         dealsStatWLHours={hoursWLStat?.dealsStat}
-        dealsStatWLDays={dealsStatWLDays}
+        dealsStatWLDays={daysWLStat?.dealsStat}
       />
 
       <Sheets

@@ -11,5 +11,5 @@ export function percentAverageRisk(sumRisk, count) {
     return 0;
   }
 
-  return sumRisk / count;
+  return +(sumRisk / count).toFixed(1);
 }
