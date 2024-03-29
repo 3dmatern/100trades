@@ -59,13 +59,11 @@ export default function SheetPage({ params }) {
   } = useDeals({
     userId: user.id,
     sheetId: id,
-    results,
-    longShorts,
-    risksRewards,
     onSort,
     onResetSort,
     onCRUDDeal,
   });
+  const { dealsInfoStat } = useDealsStatistics({ dealsInfo, results });
   const {
     currentDealOptions,
     isThereDeal,
@@ -101,6 +99,7 @@ export default function SheetPage({ params }) {
         userId={user.id}
         deals={deals}
         dealsInfo={dealsInfo}
+        dealsInfoStat={dealsInfoStat}
         sheetId={id}
         selectedDeals={selectedDeals}
         checkAll={checkAll}

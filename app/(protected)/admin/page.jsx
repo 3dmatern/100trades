@@ -52,18 +52,20 @@ export default function AdminPage() {
       isAdmin: true,
       userId: user.id,
       sheetId: selectSheetId,
-      results,
       longShorts,
       risksRewards,
       onSort,
       onResetSort,
     });
 
-  const { dealsStatWLHours, dealsStatWLDays } = useDealsStatistics({
-    userId: selectUserId,
-    winID: RESULT_WIN_ID,
-    lossID: RESULT_LOSS_ID,
-  });
+  const { dealsStatWLHours, dealsStatWLDays, dealsInfoStat } =
+    useDealsStatistics({
+      userId: selectUserId,
+      winID: RESULT_WIN_ID,
+      lossID: RESULT_LOSS_ID,
+      dealsInfo,
+      results,
+    });
   const {
     allDealsStatWLHours,
     allTotalCountHours,
@@ -141,6 +143,7 @@ export default function AdminPage() {
                   tagsData={tags}
                   onClickDealImg={onClickDealImg}
                   isAdmin={true}
+                  dealsInfoStat={dealsInfoStat}
                 />
 
                 <DealScreenshotModal

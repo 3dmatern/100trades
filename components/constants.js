@@ -5,6 +5,7 @@ export const HEADERS_COLUMN = [
   { dbName: "pose", name: "Поза", up: false, w: "96px" },
   { dbName: "risk", name: "Риск", up: false, w: "70px" },
   { dbName: "profit", name: "Профит", up: false, w: "80px" },
+  // { dbName: "forecast", name: "Прогноз", up: false, w: "96px" },
   // { dbName: "rrId", name: "R:R", up: true, w: "80px" },
   { dbName: "entryDate", name: "Вход", up: true, w: "144px" },
   { dbName: "imageStart", name: "Скрин", up: true, w: "96px" },
@@ -26,6 +27,7 @@ export const COLUMN_WIDTH = {
   pose: "96px",
   risk: "70px",
   profit: "80px",
+  // forecast: "96px",
   // rrId: "80px",
   entryDate: "144px",
   imageStart: "96px",
@@ -39,6 +41,28 @@ export const COLUMN_WIDTH = {
   notes: "176px",
   timeInTrade: "128px",
 };
+
+export const ITEMS = [
+  { id: "name", label: "Тикер" },
+  { id: "resultId", label: "Win-Loss" },
+  { id: "lsId", label: "LS" },
+  { id: "pose", label: "Поза" },
+  { id: "risk", label: "Риск" },
+  { id: "profit", label: "Профит" },
+  // { id: "forecast", label: "Прогноз" },
+  // { id: "rrId", label: "R:R" },
+  { id: "entryDate", label: "Вход" },
+  { id: "imageStart", label: "СКРИН" },
+  { id: "deposit", label: "Депозит" },
+  { id: "progress", label: "Прогресс" },
+  { id: "exitDate", label: "Выход" },
+  { id: "imageEnd", label: "Скрин 2" },
+  { id: "take", label: "Пора?" },
+  { id: "stress", label: "Стресс" },
+  { id: "entrieTag", label: "Теги" },
+  { id: "notes", label: "Заметки" },
+  { id: "timeInTrade", label: "Время в сделке" },
+];
 
 export const PAGE_SIZE_STAT_TIKER = 8;
 export const PAGE_SIZE_STAT_HOURS = 8;

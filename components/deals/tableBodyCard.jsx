@@ -24,6 +24,7 @@ import BodyCardTakeScreenshot from "@/components/deals/common/bodyCardTakeScreen
 import BodyCardTimeInTrade from "@/components/deals/common/bodyCardTimeInTrade";
 import BodyCardResult from "@/components/deals/common/bodyCardResult";
 import BodyCardLongShort from "@/components/deals/common/bodyCardLongShort";
+import BodyCardForecast from "./common/bodyCardForecast";
 
 export default function TableBodyCard({
   userId,
@@ -142,6 +143,12 @@ export default function TableBodyCard({
           isPublished={isPublished}
         />
       )}
+      {/* {isPublished && deal?.forecast === undefined ? null : (
+        <BodyCardForecast
+          dealPose={deal?.forecast}
+          columnWidth={columnWidth["forecast"]}
+        />
+      )} */}
       {/* {isPublished && deal?.rrId === undefined ? null : (
                 <BodyCardRisksRewards
                     userId={userId}

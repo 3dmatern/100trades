@@ -16,6 +16,7 @@ export default function Table({
   userId,
   deals,
   dealsInfo,
+  dealsInfoStat,
   sheetId,
   selectedDeals,
   checkAll,
@@ -97,7 +98,7 @@ export default function Table({
           <TableInfo
             columnWidth={columnWidth}
             dealsInfo={dealsInfo}
-            results={results}
+            dealsInfoStat={dealsInfoStat}
             isPublished={isPublished}
           />
         )}

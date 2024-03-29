@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -16,7 +18,7 @@ import {
 import { dealLimitionDateWithTime } from "@/utils/formatedDate";
 
 export function useDeals({
-  isAdmin = false,
+  isAdmin,
   userId,
   sheetId,
   onSort,
@@ -118,6 +120,7 @@ export function useDeals({
         setDeals,
         setDealsInfo,
       });
+
       const data = await updateEntrie(userId, {
         ...fixValues,
         sheetId,
@@ -147,6 +150,7 @@ export function useDeals({
               ...payload,
             };
           }
+
           setDealsInfo(updatedDeals);
           return updatedDeals;
         });

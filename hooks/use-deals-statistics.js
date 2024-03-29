@@ -5,12 +5,27 @@ import { toast } from "sonner";
 
 import { getSheetsWithEntrieWL } from "@/actions/sheet";
 
-import { percentLossOfCount, percentWinOfCount } from "@/utils/getPercent";
-
 import { DAYS_PERIOD, TIMES_PERIOD } from "@/hooks/constants";
+
+import { percentLossOfCount, percentWinOfCount } from "@/utils/getPercent";
 import { getStatDays, getStatHours } from "@/utils/getStatisticsDeals";
 
-export function useDealsStatistics({ userId, winID, lossID }) {
+const initDealInfoStat = {
+  percentWin: 0,
+  percentLoss: 0,
+  portfolioRisk: 0,
+  portfolioProfit: 0,
+  portfolioProgress: "",
+  portfolioAverageTime: "",
+};
+
+export function useDealsStatistics({
+  userId,
+  winID,
+  lossID,
+  dealsInfo,
+  results,
+}) {
   const [isCRUDDeal, setIsCRUDDeal] = useState(false);
 
   const [dealsStatTikerInit, setDealsStatTikerInit] = useState([]);
@@ -28,6 +43,9 @@ export function useDealsStatistics({ userId, winID, lossID }) {
   const [totalCountDays, setTotalCountDays] = useState(null);
   const [totalWinDays, setTotalWinDays] = useState(null);
   const [totalLossDays, setLTotalossDays] = useState(null);
+
+  const [dealsInfoStat, setDealInfoStat] = useState(initDealInfoStat);
+  const [resultActiveId, setResultActiveId] = useState("");
 
   useEffect(() => {
     if (userId && winID && lossID) {
@@ -163,6 +181,104 @@ export function useDealsStatistics({ userId, winID, lossID }) {
     }
   }, [userId, winID, lossID, isCRUDDeal]);
 
+  useEffect(() => {
+    if (results?.length > 0 && dealsInfo?.length > 0) {
+      setResultActiveId((prev) => results.find((r) => r.type === 4).id);
+
+      let quantityWin = 0;
+      let quantityLoss = 0;
+      let quantityNoLoss = 0;
+      let riskSum = 0;
+      let profitSum = 0;
+      let lastProgress = 0;
+      let totalClosedDeal = 0;
+      let quantityHours = 0;
+      let quantityMinutes = 0;
+
+      dealsInfo.forEach((d) => {
+        if (d.timeInTrade) {
+          const [hours, iterHours, minutes, iterMinutes] = parseTimeInTrade(
+            d.timeInTrade
+          );
+          quantityHours += +hours;
+          quantityMinutes += +minutes;
+          totalClosedDeal++;
+        }
+
+        if (d.progress && lastProgress === 0) {
+          lastProgress = d.progress;
+        }
+
+        results.forEach((r) => {
+          if (r.id === d.resultId) {
+            switch (r.type) {
+              case 1:
+                quantityWin++;
+                break;
+              case 2:
+                quantityLoss++;
+                break;
+              case 3:
+                quantityNoLoss++;
+                break;
+              case 4:
+                riskSum = riskSum + (+d.pose / 100) * +d.risk;
+                profitSum = profitSum + (+d.pose / 100) * +d.profit;
+                break;
+              default:
+                break;
+            }
+          }
+        });
+      });
+
+      const total = quantityWin + quantityLoss;
+      if (quantityWin > 0) {
+        const resultPercentWin = percentWinOfCount(quantityWin, total);
+
+        setDealInfoStat((prev) => ({ ...prev, percentWin: resultPercentWin }));
+      } else {
+        setDealInfoStat((prev) => ({ ...prev, percentWin: 0 }));
+      }
+
+      if (quantityLoss > 0) {
+        const resultPercentLoss = percentLossOfCount(quantityLoss, total);
+
+        setDealInfoStat((prev) => ({
+          ...prev,
+          percentLoss: resultPercentLoss,
+        }));
+      } else {
+        setDealInfoStat((prev) => ({ ...prev, percentLoss: 0 }));
+      }
+
+      if (lastProgress) {
+        setDealInfoStat((prev) => ({
+          ...prev,
+          portfolioProgress: lastProgress,
+        }));
+      } else {
+        setDealInfoStat((prev) => ({ ...prev, portfolioProgress: "" }));
+      }
+
+      if (totalClosedDeal > 0) {
+        quantityHours += Math.floor(quantityMinutes / 60);
+
+        quantityHours = Math.ceil(quantityHours / totalClosedDeal);
+        quantityMinutes = Math.floor((quantityMinutes % 60) / totalClosedDeal);
+      }
+
+      setDealInfoStat((prev) => ({
+        ...prev,
+        portfolioRisk: riskSum,
+        portfolioProfit: profitSum,
+        portfolioAverageTime: `${quantityHours} ч. ${quantityMinutes} мин.`,
+      }));
+    } else {
+      setDealInfoStat((prev) => initDealInfoStat);
+    }
+  }, [dealsInfo, results]);
+
   const handleCRUDDeal = () => {
     setIsCRUDDeal((prev) => !prev);
   };
@@ -180,6 +296,13 @@ export function useDealsStatistics({ userId, winID, lossID }) {
     totalCountDays,
     totalWinDays,
     totalLossDays,
+    dealsInfoStat,
+    resultActiveId,
     onCRUDDeal: handleCRUDDeal,
   };
+}
+
+function parseTimeInTrade(time) {
+  const parseTime = time.split(" ");
+  return parseTime;
 }
