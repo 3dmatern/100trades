@@ -112,10 +112,6 @@ export const DealsTikerStatistics = memo(function DealsTikerStatistics({
     return dealsStatCrop?.map((dealStat, index) => {
       const winIsMore = dealStat.win > dealStat.loss;
       const lossIsMore = dealStat.loss > dealStat.win;
-      const riskWinIsMore =
-        dealStat.averageRiskWinPercent > dealStat.averageRiskLossPercent;
-      const riskLossIsMore =
-        dealStat.averageRiskLossPercent > dealStat.averageRiskWinPercent;
 
       return (
         <TableRow key={index}>
@@ -129,13 +125,7 @@ export const DealsTikerStatistics = memo(function DealsTikerStatistics({
           >
             {dealStat.win}:{dealStat.loss}
           </TableCell>
-          <TableCell
-            className={cn(
-              "text-center",
-              riskWinIsMore && "text-teal-500",
-              riskLossIsMore && "text-destructive"
-            )}
-          >
+          <TableCell className="text-center">
             {dealStat.averageRiskWinPercent}:{dealStat.averageRiskLossPercent}
           </TableCell>
           <TableCell className="text-center">{dealStat.count}</TableCell>
@@ -169,15 +159,7 @@ export const DealsTikerStatistics = memo(function DealsTikerStatistics({
           >
             {winPercent}:{lossPercent}
           </TableCell>
-          <TableCell
-            className={cn(
-              "text-center",
-              allAverageRiskWin > allAverageRiskLoss && "text-teal-500",
-              allAverageRiskWin < allAverageRiskLoss && "text-destructive"
-            )}
-          >
-            {allAverageRiskWin.toFixed(1)}:{allAverageRiskLoss.toFixed(1)}
-          </TableCell>
+          <TableCell />
           <TableCell className="text-center">{totalCount}</TableCell>
         </TableRow>
       </TableFooter>
