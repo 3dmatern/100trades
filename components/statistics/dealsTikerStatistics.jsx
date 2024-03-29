@@ -176,7 +176,7 @@ export const DealsTikerStatistics = memo(function DealsTikerStatistics({
               allAverageRiskWin < allAverageRiskLoss && "text-destructive"
             )}
           >
-            {allAverageRiskWin}:{allAverageRiskLoss}
+            {allAverageRiskWin.toFixed(1)}:{allAverageRiskLoss.toFixed(1)}
           </TableCell>
           <TableCell className="text-center">{totalCount}</TableCell>
         </TableRow>
