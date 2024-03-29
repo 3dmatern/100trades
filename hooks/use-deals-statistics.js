@@ -7,7 +7,11 @@ import { getSheetsWithEntrieWL } from "@/actions/sheet";
 
 import { DAYS_PERIOD, TIMES_PERIOD } from "@/hooks/constants";
 
-import { percentLossOfCount, percentWinOfCount } from "@/utils/getPercent";
+import {
+  percentLossOfCount,
+  percentWinOfCount,
+  percentAverageRisk,
+} from "@/utils/getPercent";
 import { getStatDays, getStatHours } from "@/utils/getStatisticsDeals";
 
 const initDealInfoStat = {
@@ -27,22 +31,27 @@ export function useDealsStatistics({
   results,
 }) {
   const [isCRUDDeal, setIsCRUDDeal] = useState(false);
-
-  const [dealsStatTikerInit, setDealsStatTikerInit] = useState([]);
-  const [dealsStatTikerDefault, setDealsStatTikerDefault] = useState([]);
-  const [totalCountTiker, setTotalCountTiker] = useState(null);
-  const [winPercentTiker, setWinPercentTiker] = useState(null);
-  const [lossPercentTiker, setLossPercentTiker] = useState(null);
-
-  const [dealsStatWLHours, setDealsStatWLHours] = useState([]);
-  const [totalCountHours, setTotalCountHours] = useState(null);
-  const [totalWinHours, setTotalWinHours] = useState(null);
-  const [totalLossHours, setLTotalossHours] = useState(null);
-
-  const [dealsStatWLDays, setDealsStatWLDays] = useState([]);
-  const [totalCountDays, setTotalCountDays] = useState(null);
-  const [totalWinDays, setTotalWinDays] = useState(null);
-  const [totalLossDays, setLTotalossDays] = useState(null);
+  const [tikersStat, setTikersStat] = useState({
+    initDealsStat: [],
+    dealsStat: [],
+    totalCount: 0,
+    winPercent: 0,
+    lossPercent: 0,
+    allAverageRiskWin: 0,
+    allAverageRiskLoss: 0,
+  });
+  const [hoursWLStat, setHoursWLStat] = useState({
+    dealsStat: [],
+    totalCount: 0,
+    totalWin: 0,
+    totalLoss: 0,
+  });
+  const [daysWLStat, setDaysWLStat] = useState({
+    dealsStat: [],
+    totalCount: 0,
+    totalWin: 0,
+    totalLoss: 0,
+  });
 
   const [dealsInfoStat, setDealInfoStat] = useState(initDealInfoStat);
   const [resultActiveId, setResultActiveId] = useState("");
@@ -78,39 +87,56 @@ export function useDealsStatistics({
               days: DAYS_PERIOD,
             });
 
-            setDealsStatWLHours((prev) => dealsStatHours);
-            setDealsStatWLDays((prev) => dealsStatDays);
+            setHoursWLStat((prev) => ({ ...prev, dealsStat: dealsStatHours }));
+            setDaysWLStat((prev) => ({ ...prev, dealsStat: dealsStatDays }));
             setIsCRUDDeal((prev) => false);
           } else {
-            setDealsStatTikerInit((prev) => deals);
+            setTikersStat((prev) => ({ ...prev, initDealsStat: deals }));
 
             let statistics = {};
             let allCount = 0;
             let allWin = 0;
             let allLoss = 0;
+            let allAverageRiskWin = 0;
+            let allAverageRiskLoss = 0;
 
             statistics = deals.reduce((acc, item) => {
               const itemName = item.name;
               const itemResultId = item.resultId;
+              const itemRisk = Number(item.risk);
+              const itemRiskNaN = !isNaN(itemRisk);
               const itemEntryDay = new Date(item.entryDate).getDay();
 
               if (acc[itemName]) {
                 if (itemResultId === winID) {
                   acc[itemName].count++;
                   acc[itemName].win++;
+
+                  if (itemRiskNaN) {
+                    acc[itemName].averageRiskWinPercent += itemRisk;
+                  }
                 } else if (itemResultId === lossID) {
                   acc[itemName].count++;
                   acc[itemName].loss++;
+
+                  if (itemRiskNaN) {
+                    acc[itemName].averageRiskLossPercent += itemRisk;
+                  }
                 }
               } else if (
                 !acc[itemName] &&
                 (itemResultId === winID || itemResultId === lossID)
               ) {
+                const isWin = itemResultId === winID;
+                const isLoss = itemResultId === lossID;
+
                 acc[itemName] = {
                   name: itemName,
                   count: 1,
-                  win: itemResultId === winID ? 1 : 0,
-                  loss: itemResultId === lossID ? 1 : 0,
+                  win: isWin ? 1 : 0,
+                  loss: isLoss ? 1 : 0,
+                  averageRiskWinPercent: isWin && itemRiskNaN ? itemRisk : 0,
+                  averageRiskLossPercent: isLoss && itemRiskNaN ? itemRisk : 0,
                 };
               }
 
@@ -122,6 +148,8 @@ export function useDealsStatistics({
                 allCount += statistics[key].count;
                 allWin += statistics[key].win;
                 allLoss += statistics[key].loss;
+                allAverageRiskWin += statistics[key].averageRiskWinPercent;
+                allAverageRiskLoss += statistics[key].averageRiskLossPercent;
 
                 return {
                   ...statistics[key],
@@ -132,6 +160,14 @@ export function useDealsStatistics({
                   loss: percentLossOfCount(
                     statistics[key].loss,
                     statistics[key].count
+                  ),
+                  averageRiskWinPercent: percentAverageRisk(
+                    statistics[key].averageRiskWinPercent,
+                    statistics[key].win
+                  ),
+                  averageRiskLossPercent: percentAverageRisk(
+                    statistics[key].averageRiskLossPercent,
+                    statistics[key].loss
                   ),
                 };
               })
@@ -147,12 +183,15 @@ export function useDealsStatistics({
                 return 0;
               });
 
-            setDealsStatTikerDefault((prev) => dealsStatistics);
-            setTotalCountTiker((prev) => allCount);
-            setWinPercentTiker((prev) => percentWinOfCount(allWin, allCount));
-            setLossPercentTiker((prev) =>
-              percentLossOfCount(allLoss, allCount)
-            );
+            setTikersStat((prev) => ({
+              ...prev,
+              dealsStat: dealsStatistics,
+              totalCount: allCount,
+              winPercent: percentWinOfCount(allWin, allCount),
+              lossPercent: percentLossOfCount(allLoss, allCount),
+              allAverageRiskWin: allAverageRiskWin,
+              allAverageRiskLoss: allAverageRiskLoss,
+            }));
 
             const { dealsStatHours, allCountHours, allWinHours, allLossHours } =
               getStatHours({
@@ -164,15 +203,20 @@ export function useDealsStatistics({
             const { dealsStatDays, allCountDays, allWinDays, allLossDays } =
               getStatDays({ deals, winID, lossID, days: DAYS_PERIOD });
 
-            setDealsStatWLHours((prev) => dealsStatHours);
-            setTotalCountHours((prev) => allCountHours);
-            setTotalWinHours((prev) => allWinHours);
-            setLTotalossHours((prev) => allLossHours);
-
-            setDealsStatWLDays((prev) => dealsStatDays);
-            setTotalCountDays((prev) => allCountDays);
-            setTotalWinDays((prev) => allWinDays);
-            setLTotalossDays((prev) => allLossDays);
+            setHoursWLStat((prev) => ({
+              ...prev,
+              dealsStat: dealsStatHours,
+              totalCount: allCountHours,
+              totalWin: allWinHours,
+              totalLoss: allLossHours,
+            }));
+            setDaysWLStat((prev) => ({
+              ...prev,
+              dealsStat: dealsStatDays,
+              totalCount: allCountDays,
+              totalWin: allWinDays,
+              totalLoss: allLossDays,
+            }));
           }
         }
       };
@@ -284,18 +328,9 @@ export function useDealsStatistics({
   };
 
   return {
-    dealsStatTikerDefault,
-    totalCountTiker,
-    winPercentTiker,
-    lossPercentTiker,
-    dealsStatWLHours,
-    totalCountHours,
-    totalWinHours,
-    totalLossHours,
-    dealsStatWLDays,
-    totalCountDays,
-    totalWinDays,
-    totalLossDays,
+    tikersStat,
+    hoursWLStat,
+    daysWLStat,
     dealsInfoStat,
     resultActiveId,
     onCRUDDeal: handleCRUDDeal,

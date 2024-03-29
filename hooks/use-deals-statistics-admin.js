@@ -9,15 +9,18 @@ import { DAYS_PERIOD, TIMES_PERIOD } from "@/hooks/constants";
 import { getStatDays, getStatHours } from "@/utils/getStatisticsDeals";
 
 export function useDealsStatisticsAdmin({ winID, lossID }) {
-  const [allDealsStatWLHours, setAllDealsStatWLHours] = useState([]);
-  const [allTotalCountHours, setAllTotalCountHours] = useState(null);
-  const [allTotalWinHours, setAllTotalWinHours] = useState(null);
-  const [allTotalLossHours, setAllTotalossHours] = useState(null);
-
-  const [allDealsStatWLDays, setAllDealsStatWLDays] = useState([]);
-  const [allTotalCountDays, setAllTotalCountDays] = useState(null);
-  const [allTotalWinDays, setAllTotalWinDays] = useState(null);
-  const [allTotalLossDays, setAllTotalossDays] = useState(null);
+  const [allHoursWLStat, setAllHoursWLStat] = useState({
+    dealsStat: [],
+    totalCount: 0,
+    totalWin: 0,
+    totalLoss: 0,
+  });
+  const [allDaysWLStat, setAllDaysWLStat] = useState({
+    dealsStat: [],
+    totalCount: 0,
+    totalWin: 0,
+    totalLoss: 0,
+  });
 
   useEffect(() => {
     if (winID && lossID) {
@@ -32,15 +35,20 @@ export function useDealsStatisticsAdmin({ winID, lossID }) {
           const { dealsStatDays, allCountDays, allWinDays, allLossDays } =
             getStatDays({ deals, winID, lossID, days: DAYS_PERIOD });
 
-          setAllDealsStatWLHours((prev) => dealsStatHours);
-          setAllTotalCountHours((prev) => allCountHours);
-          setAllTotalWinHours((prev) => allWinHours);
-          setAllTotalossHours((prev) => allLossHours);
-
-          setAllDealsStatWLDays((prev) => dealsStatDays);
-          setAllTotalCountDays((prev) => allCountDays);
-          setAllTotalWinDays((prev) => allWinDays);
-          setAllTotalossDays((prev) => allLossDays);
+          setAllHoursWLStat((prev) => ({
+            ...prev,
+            dealsStat: dealsStatHours,
+            totalCount: allCountHours,
+            totalWin: allWinHours,
+            totalLoss: allLossHours,
+          }));
+          setAllDaysWLStat((prev) => ({
+            ...prev,
+            dealsStat: dealsStatDays,
+            totalCount: allCountDays,
+            totalWin: allWinDays,
+            totalLoss: allLossDays,
+          }));
         }
       };
 
@@ -49,13 +57,7 @@ export function useDealsStatisticsAdmin({ winID, lossID }) {
   }, [lossID, winID]);
 
   return {
-    allDealsStatWLHours,
-    allTotalCountHours,
-    allTotalWinHours,
-    allTotalLossHours,
-    allDealsStatWLDays,
-    allTotalCountDays,
-    allTotalWinDays,
-    allTotalLossDays,
+    allHoursWLStat,
+    allDaysWLStat,
   };
 }

@@ -11,29 +11,18 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { UserInfo } from "@/components/profile/userInfo";
-import { DealsTikerStatistics } from "@/components/statistics/dealsTikerStatistics";
-import { DealsTimeStatistics } from "@/components/statistics/dealsTimeStatistics";
-import { DealsDaysStatistics } from "@/components/statistics/dealsDaysStatistics";
+import {
+  DealsTikerStatistics,
+  DealsTimeStatistics,
+  DealsDaysStatistics,
+} from "@/components/statistics";
 
 const RESULT_WIN_ID = process.env.NEXT_PUBLIC_RESULT_WIN_ID;
 const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
 
 export default function ProfilePage() {
   const user = useCurrentUser();
-  const {
-    dealsStatTikerDefault,
-    totalCountTiker,
-    winPercentTiker,
-    lossPercentTiker,
-    dealsStatWLHours,
-    totalCountHours,
-    totalWinHours,
-    totalLossHours,
-    dealsStatWLDays,
-    totalCountDays,
-    totalWinDays,
-    totalLossDays,
-  } = useDealsStatistics({
+  const { tikersStat, hoursWLStat, daysWLStat } = useDealsStatistics({
     userId: user.id,
     winID: RESULT_WIN_ID,
     lossID: RESULT_LOSS_ID,
@@ -54,12 +43,7 @@ export default function ProfilePage() {
             <AccordionItem value="item-2">
               <AccordionTrigger className="px-5">По тикерам</AccordionTrigger>
               <AccordionContent className="pt-4">
-                <DealsTikerStatistics
-                  dealsStatTikerDefault={dealsStatTikerDefault}
-                  totalCountTiker={totalCountTiker}
-                  winPercentTiker={winPercentTiker}
-                  lossPercentTiker={lossPercentTiker}
-                />
+                <DealsTikerStatistics tikersStat={tikersStat} />
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-1">
@@ -67,23 +51,13 @@ export default function ProfilePage() {
                 По часам (c 9 до 24)
               </AccordionTrigger>
               <AccordionContent className="pt-4">
-                <DealsTimeStatistics
-                  deals={dealsStatWLHours}
-                  totalCount={totalCountHours}
-                  totalWin={totalWinHours}
-                  totalLoss={totalLossHours}
-                />
+                <DealsTimeStatistics hoursWLStat={hoursWLStat} />
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
               <AccordionTrigger className="px-5">По дням</AccordionTrigger>
               <AccordionContent className="pt-4">
-                <DealsDaysStatistics
-                  deals={dealsStatWLDays}
-                  totalCount={totalCountDays}
-                  totalWin={totalWinDays}
-                  totalLoss={totalLossDays}
-                />
+                <DealsDaysStatistics daysWLStat={daysWLStat} />
               </AccordionContent>
             </AccordionItem>
           </Accordion>

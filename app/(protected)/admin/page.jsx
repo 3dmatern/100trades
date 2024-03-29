@@ -58,24 +58,14 @@ export default function AdminPage() {
       onResetSort,
     });
 
-  const { dealsStatWLHours, dealsStatWLDays, dealsInfoStat } =
-    useDealsStatistics({
-      userId: selectUserId,
-      winID: RESULT_WIN_ID,
-      lossID: RESULT_LOSS_ID,
-      dealsInfo,
-      results,
-    });
-  const {
-    allDealsStatWLHours,
-    allTotalCountHours,
-    allTotalWinHours,
-    allTotalLossHours,
-    allDealsStatWLDays,
-    allTotalCountDays,
-    allTotalWinDays,
-    allTotalLossDays,
-  } = useDealsStatisticsAdmin({
+  const { hoursWLStat, daysWLStat, dealsInfoStat } = useDealsStatistics({
+    userId: selectUserId,
+    winID: RESULT_WIN_ID,
+    lossID: RESULT_LOSS_ID,
+    dealsInfo,
+    results,
+  });
+  const { allHoursWLStat, allDaysWLStat } = useDealsStatisticsAdmin({
     winID: RESULT_WIN_ID,
     lossID: RESULT_LOSS_ID,
   });
@@ -125,8 +115,8 @@ export default function AdminPage() {
             {!!selectSheetId && (
               <SheetWrapper className="md:h-[calc(100vh-168px)] h-[calc(100vh-240px)]">
                 <CurrentDateStatistics
-                  dealsStatWLHours={dealsStatWLHours}
-                  dealsStatWLDays={dealsStatWLDays}
+                  dealsStatWLHours={hoursWLStat?.dealsStat}
+                  dealsStatWLDays={daysWLStat?.dealsStat}
                 />
 
                 <Table
@@ -184,12 +174,7 @@ export default function AdminPage() {
             Статистика W:L по часам (c 9 до 24)
           </AccordionTrigger>
           <AccordionContent className="pt-4">
-            <DealsTimeStatistics
-              deals={allDealsStatWLHours}
-              totalCount={allTotalCountHours}
-              totalWin={allTotalWinHours}
-              totalLoss={allTotalLossHours}
-            />
+            <DealsTimeStatistics hoursWLStat={allHoursWLStat} />
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-3">
@@ -197,12 +182,7 @@ export default function AdminPage() {
             Статистика W:L по дням
           </AccordionTrigger>
           <AccordionContent className="pt-4">
-            <DealsDaysStatistics
-              deals={allDealsStatWLDays}
-              totalCount={allTotalCountDays}
-              totalWin={allTotalWinDays}
-              totalLoss={allTotalLossDays}
-            />
+            <DealsDaysStatistics daysWLStat={allDaysWLStat} />
           </AccordionContent>
         </AccordionItem>
       </Accordion>

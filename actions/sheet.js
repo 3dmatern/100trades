@@ -6,228 +6,228 @@ import { db } from "@/lib/db";
 import { SheetCreateSchema, SheetUpdateSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
 import {
-    getSheetById,
-    getSheetsByUserId,
-    getSheetsWithEntrieWLByUserId,
+  getSheetById,
+  getSheetsByUserId,
+  getSheetsWithEntrieByUserId,
 } from "@/data/sheet";
 import { getEntriesBySheetId } from "@/data/entrie";
 import { deleteFile } from "./files";
 
 export const createSheet = async (values) => {
-    noStore();
-    const validatedFields = SheetCreateSchema.safeParse(values);
+  noStore();
+  const validatedFields = SheetCreateSchema.safeParse(values);
 
-    if (!validatedFields.success) {
-        return {
-            error: "Несанкционированный доступ!",
-        };
-    }
+  if (!validatedFields.success) {
+    return {
+      error: "Несанкционированный доступ!",
+    };
+  }
 
-    const { userId, name } = validatedFields.data;
+  const { userId, name } = validatedFields.data;
 
-    const existingUser = await getUserById(userId);
+  const existingUser = await getUserById(userId);
 
-    if (!existingUser) {
-        return {
-            error: "Несанкционированный доступ!",
-        };
-    }
+  if (!existingUser) {
+    return {
+      error: "Несанкционированный доступ!",
+    };
+  }
 
-    try {
-        const newSheet = await db.sheet.create({
-            data: {
-                userId,
-                name,
-            },
-        });
+  try {
+    const newSheet = await db.sheet.create({
+      data: {
+        userId,
+        name,
+      },
+    });
 
-        revalidatePath("/sheets");
+    revalidatePath("/sheets");
 
-        return {
-            newSheet,
-            success: "Лист успешно создан",
-        };
-    } catch (error) {
-        console.error("Error creating sheet: ", error);
-        return {
-            error: "Ошибка создания листа!",
-        };
-    }
+    return {
+      newSheet,
+      success: "Лист успешно создан",
+    };
+  } catch (error) {
+    console.error("Error creating sheet: ", error);
+    return {
+      error: "Ошибка создания листа!",
+    };
+  }
 };
 
 export const getSheets = async (userId) => {
-    noStore();
-    const existingUser = await getUserById(userId);
+  noStore();
+  const existingUser = await getUserById(userId);
 
-    if (!existingUser) {
-        return {
-            error: "Несанкционированный доступ!",
-        };
-    }
+  if (!existingUser) {
+    return {
+      error: "Несанкционированный доступ!",
+    };
+  }
 
-    try {
-        const sheets = getSheetsByUserId(existingUser.id);
+  try {
+    const sheets = getSheetsByUserId(existingUser.id);
 
-        return sheets;
-    } catch (error) {
-        console.error("Error receiving sheets: ", error);
-        return {
-            error: "Ошибка получения листов!",
-        };
-    }
+    return sheets;
+  } catch (error) {
+    console.error("Error receiving sheets: ", error);
+    return {
+      error: "Ошибка получения листов!",
+    };
+  }
 };
 
 export const getSheetsWithEntrieWL = async ({ userId, winID, lossID }) => {
-    noStore();
-    const existingUser = await getUserById(userId);
+  noStore();
+  const existingUser = await getUserById(userId);
 
-    if (!existingUser) {
-        return {
-            redirect: "/",
-        };
+  if (!existingUser) {
+    return {
+      redirect: "/",
+    };
+  }
+
+  try {
+    let entries = [];
+    const sheets = await getSheetsWithEntrieByUserId({
+      userId: existingUser.id,
+      winID,
+      lossID,
+    });
+
+    for (const sheet of sheets) {
+      if (sheet.entries?.length) {
+        entries = [...entries, ...sheet.entries];
+      }
     }
 
-    try {
-        let entries = [];
-        const sheets = await getSheetsWithEntrieWLByUserId({
-            userId: existingUser.id,
-            winID,
-            lossID,
-        });
-
-        for (const sheet of sheets) {
-            if (sheet.entries?.length) {
-                entries = [...entries, ...sheet.entries];
-            }
-        }
-
-        return entries.map((entrie) => ({
-            ...entrie,
-            name: entrie.name?.toUpperCase(),
-        }));
-    } catch (error) {
-        console.error("Error receiving sheetsWithEntrieWL: ", error);
-        return {
-            error: "Ошибка получения листов с сделками!",
-        };
-    }
+    return entries.map((entrie) => ({
+      ...entrie,
+      name: entrie.name?.toUpperCase(),
+    }));
+  } catch (error) {
+    console.error("Error receiving sheetsWithEntrieWL: ", error);
+    return {
+      error: "Ошибка получения листов с сделками!",
+    };
+  }
 };
 
 export const getSheet = async (sheetId) => {
-    noStore();
+  noStore();
 
-    try {
-        const sheet = getSheetById(sheetId);
+  try {
+    const sheet = getSheetById(sheetId);
 
-        return sheet;
-    } catch (error) {
-        console.error("Error receiving sheets: ", error);
-        return {
-            error: "Ошибка получения листа!",
-        };
-    }
+    return sheet;
+  } catch (error) {
+    console.error("Error receiving sheets: ", error);
+    return {
+      error: "Ошибка получения листа!",
+    };
+  }
 };
 
 export const updateSheet = async (values) => {
-    noStore();
-    const validatedFields = SheetUpdateSchema.safeParse(values);
+  noStore();
+  const validatedFields = SheetUpdateSchema.safeParse(values);
 
-    if (!validatedFields.success) {
-        return {
-            error: "Несанкционированный доступ!",
-        };
-    }
+  if (!validatedFields.success) {
+    return {
+      error: "Несанкционированный доступ!",
+    };
+  }
 
-    const { id, userId, name } = validatedFields.data;
+  const { id, userId, name } = validatedFields.data;
 
-    const existingSheet = await getSheetById(id);
+  const existingSheet = await getSheetById(id);
 
-    if (!existingSheet) {
-        return {
-            error: "Несанкционированный доступ!",
-        };
-    }
+  if (!existingSheet) {
+    return {
+      error: "Несанкционированный доступ!",
+    };
+  }
 
-    const existingUser = await getUserById(userId);
+  const existingUser = await getUserById(userId);
 
-    if (!existingUser) {
-        return {
-            error: "Несанкционированный доступ!",
-        };
-    }
+  if (!existingUser) {
+    return {
+      error: "Несанкционированный доступ!",
+    };
+  }
 
-    try {
-        const updSheet = await db.sheet.update({
-            where: {
-                id: existingSheet.id,
-            },
-            data: {
-                name,
-            },
-        });
+  try {
+    const updSheet = await db.sheet.update({
+      where: {
+        id: existingSheet.id,
+      },
+      data: {
+        name,
+      },
+    });
 
-        revalidatePath(`/sheets/${existingSheet.id}`);
+    revalidatePath(`/sheets/${existingSheet.id}`);
 
-        return {
-            payload: updSheet,
-            success: "Лист успешно обновлен!",
-        };
-    } catch (error) {
-        console.error("Sheet update error: ", error);
-        return {
-            error: "Ошибка обновления листа!",
-        };
-    }
+    return {
+      payload: updSheet,
+      success: "Лист успешно обновлен!",
+    };
+  } catch (error) {
+    console.error("Sheet update error: ", error);
+    return {
+      error: "Ошибка обновления листа!",
+    };
+  }
 };
 
 export const removeSheet = async (sheetId, userId) => {
-    noStore();
+  noStore();
 
-    const existingSheet = await getSheetById(sheetId);
-    if (!existingSheet) {
-        return {
-            error: "Несанкционированный доступ!",
-        };
+  const existingSheet = await getSheetById(sheetId);
+  if (!existingSheet) {
+    return {
+      error: "Несанкционированный доступ!",
+    };
+  }
+
+  const existingUser = await getUserById(userId);
+  if (!existingUser || existingSheet.userId !== existingUser.id) {
+    return {
+      error: "Несанкционированный доступ!",
+    };
+  }
+
+  try {
+    const entries = await getEntriesBySheetId(existingSheet.id);
+
+    await db.sheet.delete({
+      where: {
+        id: existingSheet.id,
+      },
+    });
+
+    revalidatePath("/sheets");
+
+    for (const e of entries) {
+      if (e.imageStart) {
+        console.log("Пытался удалить ", e.imageStart);
+        deleteFile(e.imageStart);
+        console.log("Удалил ", e.imageStart);
+      }
+      if (e.imageEnd) {
+        console.log("Пытался удалить ", e.imageEnd);
+        deleteFile(e.imageEnd);
+        console.log("Удалил ", e.imageEnd);
+      }
     }
 
-    const existingUser = await getUserById(userId);
-    if (!existingUser || existingSheet.userId !== existingUser.id) {
-        return {
-            error: "Несанкционированный доступ!",
-        };
-    }
-
-    try {
-        const entries = await getEntriesBySheetId(existingSheet.id);
-
-        await db.sheet.delete({
-            where: {
-                id: existingSheet.id,
-            },
-        });
-
-        revalidatePath("/sheets");
-
-        for (const e of entries) {
-            if (e.imageStart) {
-                console.log("Пытался удалить ", e.imageStart);
-                deleteFile(e.imageStart);
-                console.log("Удалил ", e.imageStart);
-            }
-            if (e.imageEnd) {
-                console.log("Пытался удалить ", e.imageEnd);
-                deleteFile(e.imageEnd);
-                console.log("Удалил ", e.imageEnd);
-            }
-        }
-
-        return {
-            success: "Лист успешно удален!",
-        };
-    } catch (error) {
-        console.error("Error deleting sheet: ", error);
-        return {
-            error: "Ошибка удаления листа!",
-        };
-    }
+    return {
+      success: "Лист успешно удален!",
+    };
+  } catch (error) {
+    console.error("Error deleting sheet: ", error);
+    return {
+      error: "Ошибка удаления листа!",
+    };
+  }
 };

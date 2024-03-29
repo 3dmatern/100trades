@@ -18,11 +18,16 @@ import { UiPagination } from "@/components/uikit/uiPagination";
 import { cn } from "@/lib/utils";
 
 export const DealsTikerStatistics = memo(function DealsTikerStatistics({
-  dealsStatTikerDefault,
-  totalCountTiker,
-  winPercentTiker,
-  lossPercentTiker,
+  tikersStat,
 }) {
+  const {
+    dealsStat,
+    totalCount,
+    winPercent,
+    lossPercent,
+    allAverageRiskWin,
+    allAverageRiskLoss,
+  } = tikersStat;
   const [dealsStatCrop, setDealsStatCrop] = useState([]);
 
   const [{ currentPage, pageCount }, setPaginateData] = useState({
@@ -43,12 +48,12 @@ export const DealsTikerStatistics = memo(function DealsTikerStatistics({
   );
 
   useEffect(() => {
-    if (dealsStatTikerDefault.length) {
-      const dealsStatisticsCrop = changePaginateData(dealsStatTikerDefault);
+    if (dealsStat.length) {
+      const dealsStatisticsCrop = changePaginateData(dealsStat);
 
       setDealsStatCrop((prev) => dealsStatisticsCrop);
     }
-  }, [changePaginateData, dealsStatTikerDefault]);
+  }, [changePaginateData, dealsStat]);
 
   function handleChangePage(selectPage) {
     if (selectPage === currentPage) return;
@@ -58,11 +63,7 @@ export const DealsTikerStatistics = memo(function DealsTikerStatistics({
       currentPage: selectPage,
     }));
 
-    const dealsCrop = itemsCrop(
-      dealsStatTikerDefault,
-      selectPage,
-      PAGE_SIZE_STAT_TIKER
-    );
+    const dealsCrop = itemsCrop(dealsStat, selectPage, PAGE_SIZE_STAT_TIKER);
 
     if (dealsCrop) {
       setDealsStatCrop((prev) => dealsCrop);
@@ -81,11 +82,7 @@ export const DealsTikerStatistics = memo(function DealsTikerStatistics({
       currentPage: selectPage,
     }));
 
-    const newDealsCrop = itemsCrop(
-      dealsStatTikerDefault,
-      selectPage,
-      PAGE_SIZE_STAT_TIKER
-    );
+    const newDealsCrop = itemsCrop(dealsStat, selectPage, PAGE_SIZE_STAT_TIKER);
 
     if (newDealsCrop) {
       setDealsStatCrop((prev) => newDealsCrop);
@@ -104,11 +101,7 @@ export const DealsTikerStatistics = memo(function DealsTikerStatistics({
       currentPage: selectPage,
     }));
 
-    const newDealsCrop = itemsCrop(
-      dealsStatTikerDefault,
-      selectPage,
-      PAGE_SIZE_STAT_TIKER
-    );
+    const newDealsCrop = itemsCrop(dealsStat, selectPage, PAGE_SIZE_STAT_TIKER);
 
     if (newDealsCrop) {
       setDealsStatCrop((prev) => newDealsCrop);
@@ -119,6 +112,10 @@ export const DealsTikerStatistics = memo(function DealsTikerStatistics({
     return dealsStatCrop?.map((dealStat, index) => {
       const winIsMore = dealStat.win > dealStat.loss;
       const lossIsMore = dealStat.loss > dealStat.win;
+      const riskWinIsMore =
+        dealStat.averageRiskWinPercent > dealStat.averageRiskLossPercent;
+      const riskLossIsMore =
+        dealStat.averageRiskLossPercent > dealStat.averageRiskWinPercent;
 
       return (
         <TableRow key={index}>
@@ -132,6 +129,15 @@ export const DealsTikerStatistics = memo(function DealsTikerStatistics({
           >
             {dealStat.win}:{dealStat.loss}
           </TableCell>
+          <TableCell
+            className={cn(
+              "text-center",
+              riskWinIsMore && "text-teal-500",
+              riskLossIsMore && "text-destructive"
+            )}
+          >
+            {dealStat.averageRiskWinPercent}:{dealStat.averageRiskLossPercent}
+          </TableCell>
           <TableCell className="text-center">{dealStat.count}</TableCell>
         </TableRow>
       );
@@ -144,6 +150,9 @@ export const DealsTikerStatistics = memo(function DealsTikerStatistics({
         <TableRow>
           <TableHead className="max-w-[100px]">Тикер</TableHead>
           <TableHead className="max-w-[100px] text-center">W:L(%)</TableHead>
+          <TableHead className="max-w-[100px] text-center">
+            STOP:Loss(%)
+          </TableHead>
           <TableHead className="max-w-[100px] text-center">Сделок</TableHead>
         </TableRow>
       </TableHeader>
@@ -154,13 +163,22 @@ export const DealsTikerStatistics = memo(function DealsTikerStatistics({
           <TableCell
             className={cn(
               "text-center",
-              winPercentTiker > lossPercentTiker && "text-teal-500",
-              winPercentTiker < lossPercentTiker && "text-destructive"
+              winPercent > lossPercent && "text-teal-500",
+              winPercent < lossPercent && "text-destructive"
             )}
           >
-            {winPercentTiker}:{lossPercentTiker}
+            {winPercent}:{lossPercent}
           </TableCell>
-          <TableCell className="text-center">{totalCountTiker}</TableCell>
+          <TableCell
+            className={cn(
+              "text-center",
+              allAverageRiskWin > allAverageRiskLoss && "text-teal-500",
+              allAverageRiskWin < allAverageRiskLoss && "text-destructive"
+            )}
+          >
+            {allAverageRiskWin}:{allAverageRiskLoss}
+          </TableCell>
+          <TableCell className="text-center">{totalCount}</TableCell>
         </TableRow>
       </TableFooter>
       <TableCaption>

@@ -15,13 +15,12 @@ import {
 } from "@/components/ui/table";
 
 export const DealsDaysStatistics = memo(function DealsDaysStatistics({
-  deals,
-  totalCount,
-  totalWin,
-  totalLoss,
+  daysWLStat,
 }) {
+  const { dealsStat, totalCount, totalWin, totalLoss } = daysWLStat;
+
   const getTableBody = () => {
-    return deals.map((deal, index) => {
+    return dealsStat.map((deal, index) => {
       const winIsMore = deal.win > deal.loss;
       const lossIsMore = deal.loss > deal.win;
 
