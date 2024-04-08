@@ -13,6 +13,7 @@ import {
   percentAverageRisk,
 } from "@/utils/getPercent";
 import { getStatDays, getStatHours } from "@/utils/getStatisticsDeals";
+import { getTag } from "@/actions/tag";
 
 const initDealInfoStat = {
   percentWin: 0,
@@ -51,6 +52,10 @@ export function useDealsStatistics({
     totalCount: 0,
     totalWin: 0,
     totalLoss: 0,
+  });
+  const [tagsWLStat, setTagsWLStat] = useState({
+    winTags: [],
+    lossTags: [],
   });
 
   const [dealsInfoStat, setDealInfoStat] = useState(initDealInfoStat);
@@ -99,6 +104,8 @@ export function useDealsStatistics({
             let allLoss = 0;
             let allAverageRiskWin = 0;
             let allAverageRiskLoss = 0;
+            let allWinTags = [];
+            let allLossTags = [];
 
             statistics = deals.reduce((acc, item) => {
               const itemName = item.name;
@@ -106,6 +113,7 @@ export function useDealsStatistics({
               const itemRisk = Number(item.risk);
               const itemRiskNaN = !isNaN(itemRisk);
               const itemEntryDay = new Date(item.entryDate).getDay();
+              const itemTagsIds = item.entrieTag?.map((tag) => tag.tagId);
 
               if (acc[itemName]) {
                 if (itemResultId === winID) {
@@ -115,12 +123,26 @@ export function useDealsStatistics({
                   if (itemRiskNaN) {
                     acc[itemName].averageRiskWinPercent += itemRisk;
                   }
+
+                  if (itemTagsIds.length > 0) {
+                    acc[itemName].winTags = [
+                      ...acc[itemName].winTags,
+                      ...itemTagsIds,
+                    ];
+                  }
                 } else if (itemResultId === lossID) {
                   acc[itemName].count++;
                   acc[itemName].loss++;
 
                   if (itemRiskNaN) {
                     acc[itemName].averageRiskLossPercent += itemRisk;
+                  }
+
+                  if (itemTagsIds.length > 0) {
+                    acc[itemName].lossTags = [
+                      ...acc[itemName].lossTags,
+                      ...itemTagsIds,
+                    ];
                   }
                 }
               } else if (
@@ -137,6 +159,8 @@ export function useDealsStatistics({
                   loss: isLoss ? 1 : 0,
                   averageRiskWinPercent: isWin && itemRiskNaN ? itemRisk : 0,
                   averageRiskLossPercent: isLoss && itemRiskNaN ? itemRisk : 0,
+                  winTags: isWin ? [...itemTagsIds] : [],
+                  lossTags: isLoss ? [...itemTagsIds] : [],
                 };
               }
 
@@ -150,6 +174,8 @@ export function useDealsStatistics({
                 allLoss += statistics[key].loss;
                 allAverageRiskWin += statistics[key].averageRiskWinPercent;
                 allAverageRiskLoss += statistics[key].averageRiskLossPercent;
+                allWinTags = [...allWinTags, ...statistics[key].winTags];
+                allLossTags = [...allLossTags, ...statistics[key].lossTags];
 
                 return {
                   ...statistics[key],
@@ -202,6 +228,60 @@ export function useDealsStatistics({
               });
             const { dealsStatDays, allCountDays, allWinDays, allLossDays } =
               getStatDays({ deals, winID, lossID, days: DAYS_PERIOD });
+
+            if (allWinTags.length > 0) {
+              const winTags = [];
+
+              allWinTags = allWinTags.reduce((acc, item) => {
+                if (acc[item]) {
+                  acc[item].count++;
+                } else {
+                  acc[item] = {
+                    count: 1,
+                  };
+                }
+
+                return acc;
+              }, {});
+
+              for (const key in allWinTags) {
+                const tag = await getTag(key);
+
+                winTags.push({ ...allWinTags[key], tag });
+              }
+
+              setTagsWLStat((prev) => ({
+                ...prev,
+                winTags,
+              }));
+            }
+
+            if (allLossTags.length > 0) {
+              const lossTags = [];
+
+              allLossTags = allLossTags.reduce((acc, item) => {
+                if (acc[item]) {
+                  acc[item].count++;
+                } else {
+                  acc[item] = {
+                    count: 1,
+                  };
+                }
+
+                return acc;
+              }, {});
+
+              for (const key in allLossTags) {
+                const tag = await getTag(key);
+
+                lossTags.push({ ...allLossTags[key], tag });
+              }
+
+              setTagsWLStat((prev) => ({
+                ...prev,
+                lossTags,
+              }));
+            }
 
             setHoursWLStat((prev) => ({
               ...prev,
@@ -331,6 +411,7 @@ export function useDealsStatistics({
     tikersStat,
     hoursWLStat,
     daysWLStat,
+    tagsWLStat,
     dealsInfoStat,
     resultActiveId,
     onCRUDDeal: handleCRUDDeal,

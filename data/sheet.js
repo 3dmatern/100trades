@@ -40,6 +40,7 @@ export const getSheetsWithEntrieByUserId = async ({
             entryDate: true,
             exitDate: true,
             resultId: true,
+            entrieTag: true,
             date: true,
           },
         },

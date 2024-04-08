@@ -27,7 +27,7 @@ import { DealsTimeStatistics } from "@/components/statistics/dealsTimeStatistics
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/dealScreenshotModal";
-import { DealsDaysStatistics } from "@/components/statistics/dealsDaysStatistics";
+import { DealsDaysStatistics } from "@/components/statistics";
 import { CurrentDateStatistics } from "@/components/statistics";
 
 const RESULT_WIN_ID = process.env.NEXT_PUBLIC_RESULT_WIN_ID;
@@ -60,13 +60,14 @@ export default function AdminPage() {
       onResetSort,
     });
 
-  const { hoursWLStat, daysWLStat, dealsInfoStat } = useDealsStatistics({
-    userId: selectUserId,
-    winID: RESULT_WIN_ID,
-    lossID: RESULT_LOSS_ID,
-    dealsInfo,
-    results,
-  });
+  const { hoursWLStat, daysWLStat, dealsInfoStat, tagsWLStat } =
+    useDealsStatistics({
+      userId: selectUserId,
+      winID: RESULT_WIN_ID,
+      lossID: RESULT_LOSS_ID,
+      dealsInfo,
+      results,
+    });
   const { allHoursWLStat, allDaysWLStat } = useDealsStatisticsAdmin({
     winID: RESULT_WIN_ID,
     lossID: RESULT_LOSS_ID,

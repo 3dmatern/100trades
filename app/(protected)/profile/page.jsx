@@ -15,6 +15,7 @@ import {
   DealsTikerStatistics,
   DealsTimeStatistics,
   DealsDaysStatistics,
+  DealsTagsStatistics,
 } from "@/components/statistics";
 
 const RESULT_WIN_ID = process.env.NEXT_PUBLIC_RESULT_WIN_ID;
@@ -22,11 +23,12 @@ const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
 
 export default function ProfilePage() {
   const user = useCurrentUser();
-  const { tikersStat, hoursWLStat, daysWLStat } = useDealsStatistics({
-    userId: user.id,
-    winID: RESULT_WIN_ID,
-    lossID: RESULT_LOSS_ID,
-  });
+  const { tikersStat, hoursWLStat, daysWLStat, tagsWLStat } =
+    useDealsStatistics({
+      userId: user.id,
+      winID: RESULT_WIN_ID,
+      lossID: RESULT_LOSS_ID,
+    });
 
   return (
     <>
@@ -58,6 +60,12 @@ export default function ProfilePage() {
               <AccordionTrigger className="px-5">По дням</AccordionTrigger>
               <AccordionContent className="pt-4">
                 <DealsDaysStatistics daysWLStat={daysWLStat} />
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-4">
+              <AccordionTrigger className="px-5">По тегам</AccordionTrigger>
+              <AccordionContent className="pt-4">
+                <DealsTagsStatistics tagsWLStat={tagsWLStat} />
               </AccordionContent>
             </AccordionItem>
           </Accordion>

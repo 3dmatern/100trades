@@ -5,7 +5,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import { db } from "@/lib/db";
 import { TagSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
-import { getTagByUserId, getTagByValue } from "@/data/tag";
+import { getTagById, getTagByUserId, getTagByValue } from "@/data/tag";
 
 export const createTag = async (values) => {
   noStore();
@@ -71,6 +71,21 @@ export const getTags = async (userId) => {
     console.error("Error receiving tags: ", error);
     return {
       error: "Ошибка получения тегов!",
+    };
+  }
+};
+
+export const getTag = async (tagId) => {
+  noStore();
+
+  try {
+    const tag = await getTagById(tagId);
+
+    return tag;
+  } catch (error) {
+    console.error("Error receiving tag: ", error);
+    return {
+      error: "Ошибка получения тега!",
     };
   }
 };
