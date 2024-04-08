@@ -17,50 +17,59 @@ import {
 export const DealsTagsStatistics = memo(function DealsDaysStatistics({
   tagsWLStat,
 }) {
-  const { winTags, lossTags } = tagsWLStat;
-  const winIsMore = winTags.length > lossTags.length;
-  const lossIsMore = lossTags.length > winTags.length;
+  const { tagsStat, allWinCount, allLossCount } = tagsWLStat;
 
   const getTableBody = () => {
-    return (
-      <>
-        <TableRow>
-          <TableCell colSpan={2} className="text-center text-teal-500">
-            Win
+    return tagsStat.map((tagStat, index) => {
+      const { tag, winCount, lossCount } = tagStat;
+      const winIsMore = winCount > lossCount;
+      const lossIsMore = lossCount > winCount;
+
+      return (
+        <TableRow key={index}>
+          <TableCell>{tag.label}</TableCell>
+          <TableCell
+            className={cn(
+              "text-center",
+              winIsMore && "text-teal-500",
+              lossIsMore && "text-destructive"
+            )}
+          >
+            {winCount}:{lossCount}
           </TableCell>
+          <TableCell className="text-center">{winCount + lossCount}</TableCell>
         </TableRow>
-        {winTags.map((winTag) => (
-          <TableRow key={winTag.tag.id}>
-            <TableCell>{winTag.tag.label}</TableCell>
-            <TableCell className="text-center">{winTag.count}</TableCell>
-          </TableRow>
-        ))}
-        <TableRow>
-          <TableCell colSpan={2} className="text-center text-destructive">
-            Loss
-          </TableCell>
-        </TableRow>
-        {lossTags.map((lossTag) => (
-          <TableRow key={lossTag.tag.id}>
-            <TableCell>{lossTag.tag.label}</TableCell>
-            <TableCell className="text-center">{lossTag.count}</TableCell>
-          </TableRow>
-        ))}
-      </>
-    );
+      );
+    });
   };
 
   return (
     <Table className="max-w-[400px] min-w-80 w-full max-h-[598px] mx-auto border overflow-y-auto no-scrollbar">
       <TableHeader>
         <TableRow>
-          <TableHead className="max-w-[100px]">Теги</TableHead>
-          <TableHead className="max-w-[100px] text-center">
-            Количество
-          </TableHead>
+          <TableHead className="max-w-[100px]">Тег</TableHead>
+          <TableHead className="max-w-[100px] text-center">W:L</TableHead>
+          <TableHead className="max-w-[100px] text-center">Сделок</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>{getTableBody()}</TableBody>
+      <TableFooter>
+        <TableRow>
+          <TableCell>Всего</TableCell>
+          <TableCell
+            className={cn(
+              "text-center",
+              allWinCount > allLossCount && "text-teal-500",
+              allWinCount < allLossCount && "text-destructive"
+            )}
+          >
+            {allWinCount}:{allLossCount}
+          </TableCell>
+          <TableCell className="text-center">
+            {allWinCount + allLossCount}
+          </TableCell>
+        </TableRow>
+      </TableFooter>
     </Table>
   );
 });

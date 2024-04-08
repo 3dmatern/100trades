@@ -53,10 +53,7 @@ export function useDealsStatistics({
     totalWin: 0,
     totalLoss: 0,
   });
-  const [tagsWLStat, setTagsWLStat] = useState({
-    winTags: [],
-    lossTags: [],
-  });
+  const [tagsWLStat, setTagsWLStat] = useState({});
 
   const [dealsInfoStat, setDealInfoStat] = useState(initDealInfoStat);
   const [resultActiveId, setResultActiveId] = useState("");
@@ -106,6 +103,7 @@ export function useDealsStatistics({
             let allAverageRiskLoss = 0;
             let allWinTags = [];
             let allLossTags = [];
+            let mergeWLTags = {};
 
             statistics = deals.reduce((acc, item) => {
               const itemName = item.name;
@@ -229,60 +227,6 @@ export function useDealsStatistics({
             const { dealsStatDays, allCountDays, allWinDays, allLossDays } =
               getStatDays({ deals, winID, lossID, days: DAYS_PERIOD });
 
-            if (allWinTags.length > 0) {
-              const winTags = [];
-
-              allWinTags = allWinTags.reduce((acc, item) => {
-                if (acc[item]) {
-                  acc[item].count++;
-                } else {
-                  acc[item] = {
-                    count: 1,
-                  };
-                }
-
-                return acc;
-              }, {});
-
-              for (const key in allWinTags) {
-                const tag = await getTag(key);
-
-                winTags.push({ ...allWinTags[key], tag });
-              }
-
-              setTagsWLStat((prev) => ({
-                ...prev,
-                winTags,
-              }));
-            }
-
-            if (allLossTags.length > 0) {
-              const lossTags = [];
-
-              allLossTags = allLossTags.reduce((acc, item) => {
-                if (acc[item]) {
-                  acc[item].count++;
-                } else {
-                  acc[item] = {
-                    count: 1,
-                  };
-                }
-
-                return acc;
-              }, {});
-
-              for (const key in allLossTags) {
-                const tag = await getTag(key);
-
-                lossTags.push({ ...allLossTags[key], tag });
-              }
-
-              setTagsWLStat((prev) => ({
-                ...prev,
-                lossTags,
-              }));
-            }
-
             setHoursWLStat((prev) => ({
               ...prev,
               dealsStat: dealsStatHours,
@@ -296,6 +240,23 @@ export function useDealsStatistics({
               totalCount: allCountDays,
               totalWin: allWinDays,
               totalLoss: allLossDays,
+            }));
+
+            allWinTags = counterTags(allWinTags);
+            allLossTags = counterTags(allLossTags);
+
+            if (allWinTags.length > allLossTags.length) {
+              mergeWLTags = await cycleMergeWLTags(allWinTags, allLossTags);
+            } else {
+              mergeWLTags = await cycleMergeLWTags(allLossTags, allWinTags);
+            }
+
+            const { mergeResult, allWinCount, allLossCount } = mergeWLTags;
+
+            setTagsWLStat((prev) => ({
+              tagsStat: mergeResult,
+              allWinCount,
+              allLossCount,
             }));
           }
         }
@@ -416,6 +377,82 @@ export function useDealsStatistics({
     resultActiveId,
     onCRUDDeal: handleCRUDDeal,
   };
+}
+
+function counterTags(tags) {
+  return tags.reduce((acc, tagId) => {
+    const tagIndex = acc.findIndex((t) => t.tagId === tagId);
+
+    if (tagIndex !== -1) {
+      acc[tagIndex] = {
+        ...acc[tagIndex],
+        count: acc[tagIndex].count + 1,
+      };
+    } else {
+      acc.push({
+        tagId: tagId,
+        count: 1,
+      });
+    }
+
+    return acc;
+  }, []);
+}
+
+async function cycleMergeWLTags(winTags, lossTags) {
+  const mergeResult = [];
+  let allWinCount = 0;
+  let allLossCount = 0;
+
+  for (const winTag of winTags) {
+    const tag = await getTag(winTag.tagId);
+    const indexLossTag = lossTags.findIndex((t) => t.tagId === winTag.tagId);
+
+    allWinCount += winTag.count;
+
+    if (indexLossTag !== -1) {
+      const lossTag = lossTags[indexLossTag];
+
+      allLossCount += lossTag.count;
+      mergeResult.push({
+        tag,
+        winCount: winTag.count,
+        lossCount: lossTag.count,
+      });
+    } else {
+      mergeResult.push({ tag, winCount: winTag.count, lossCount: 0 });
+    }
+  }
+
+  return { mergeResult, allWinCount, allLossCount };
+}
+
+async function cycleMergeLWTags(lossTags, winTags) {
+  const mergeResult = [];
+  let allWinCount = 0;
+  let allLossCount = 0;
+
+  for (const lossTag of lossTags) {
+    const tag = await getTag(lossTag.tagId);
+    const indexWinTag = winTags.findIndex((t) => t.tagId === lossTag.tagId);
+
+    allLossCount += lossTag.count;
+
+    if (indexWinTag !== -1) {
+      const winTag = winTags[indexWinTag];
+
+      allWinCount += winTag.count;
+      mergeResult.push({
+        tag,
+        winCount: winTag.count,
+        lossCount: lossTag.count,
+      });
+    } else {
+      mergeResult.push({ tag, winCount: 0, lossCount: lossTag.count });
+    }
+  }
+
+  return { mergeResult, allWinCount, allLossCount };
 }
 
 function parseTimeInTrade(time) {
