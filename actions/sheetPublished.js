@@ -128,6 +128,7 @@ export const updateSheetPublished = async ({ userId, sheetId, items }) => {
     lsId,
     rrId,
     entrieTag,
+    entrieTake,
   } = items.reduce((acc, field) => {
     acc[field] = field;
     return acc;
@@ -155,6 +156,7 @@ export const updateSheetPublished = async ({ userId, sheetId, items }) => {
         take: take || null,
         stress: stress || null,
         entrieTag: entrieTag || null,
+        entrieTake: entrieTake || null,
         notes: notes || null,
         timeInTrade: timeInTrade || null,
       },
