@@ -6,18 +6,18 @@ import { toast } from "sonner";
 import { BeatLoader } from "react-spinners";
 
 import { Button } from "@/components/ui/button";
-import { createTag, getTags } from "@/actions/tag";
+import { createTake, getTakes } from "@/actions/take";
 import {
-  createEntrieTag,
-  getEntrieTags,
-  removeEntrieTag,
-} from "@/actions/entrieTag";
+  createEntrieTake,
+  getEntrieTakes,
+  removeEntrieTake,
+} from "@/actions/entrieTake";
 
-export default function BodyCardTags({
+export default function BodyCardTakes({
   userId,
   dealId,
-  allTags,
-  onUpdateAllTags,
+  allTakes,
+  onUpdateAllTakes,
   columnWidth,
   dealHover,
   selectedDeals,
@@ -31,31 +31,31 @@ export default function BodyCardTags({
   const listRef = useRef(null);
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
-  const [filteredTags, setFilteredTags] = useState([]);
-  const [currentTags, setCurrentTags] = useState(null);
-  const [tag, setTag] = useState("");
-  const [tagBgColor, setTagBgColor] = useState("");
+  const [filteredTakes, setFilteredTakes] = useState([]);
+  const [currentTakes, setCurrentTakes] = useState(null);
+  const [take, setTake] = useState("");
+  const [takeBgColor, setTakeBgColor] = useState("");
 
   const handleItemSearch = ({ target }) => {
-    if (target.name === "tag") {
-      setTag((prev) => target.value);
-      setFilteredTags((prev) =>
-        allTags.filter((tag) => tag.label.includes(target.value))
+    if (target.name === "take") {
+      setTake((prev) => target.value);
+      setFilteredTakes((prev) =>
+        allTakes.filter((take) => take.label.includes(target.value))
       );
     }
   };
 
-  const handleSelectTag = async (tag) => {
+  const handleSelectTake = async (take) => {
     setOpen((prev) => false);
     setActive((prev) => false);
-    setTag((prev) => "");
-    let selectTag = tag;
-    let updTags = allTags;
+    setTake((prev) => "");
+    let selectTake = take;
+    let updTakes = allTakes;
     let newDealId = "";
 
-    if (!selectTag.id) {
-      const { newTag, success, error } = await createTag({
-        ...tag,
+    if (!selectTake.id) {
+      const { newTake, success, error } = await createTake({
+        ...take,
         userId,
       });
 
@@ -64,9 +64,9 @@ export default function BodyCardTags({
         return;
       } else {
         toast.success(success);
-        selectTag = newTag;
-        updTags = await getTags(userId);
-        onUpdateAllTags(updTags);
+        selectTake = newTake;
+        updTakes = await getTakes(userId);
+        onUpdateAllTakes(updTakes);
       }
     }
 
@@ -74,49 +74,51 @@ export default function BodyCardTags({
       newDealId = await onActionDeal();
     }
 
-    const { success, error } = await createEntrieTag(userId, {
+    const { success, error } = await createEntrieTake(userId, {
       entrieId: dealId || newDealId,
-      tagId: selectTag.id,
+      takeId: selectTake.id,
     });
     if (error) {
       toast.error(error);
     }
     if (success) {
       toast.success(success);
-      getEntrieTagsData(updTags, dealId);
+      getEntrieTakesData(updTakes, dealId);
     }
   };
 
-  const handleRemoveTag = async (e, tagId) => {
+  const handleRemoveTake = async (e, takeId) => {
     e.stopPropagation();
     setOpen((prev) => false);
     setActive((prev) => false);
 
-    await removeEntrieTag(userId, { entrieId: dealId, tagId }).then((data) => {
-      if (data.error) {
-        toast.error(data.error);
+    await removeEntrieTake(userId, { entrieId: dealId, takeId }).then(
+      (data) => {
+        if (data.error) {
+          toast.error(data.error);
+        }
+        if (data.success) {
+          toast.success(data.success);
+          setCurrentTakes((prev) => prev.filter((take) => take.id !== takeId));
+        }
       }
-      if (data.success) {
-        toast.success(data.success);
-        setCurrentTags((prev) => prev.filter((tag) => tag.id !== tagId));
-      }
-    });
+    );
   };
 
-  const getEntrieTagsData = async (tags, dealId) => {
+  const getEntrieTakesData = async (takes, dealId) => {
     if (dealId) {
-      const entrieTagsData = await getEntrieTags(dealId);
-      if (entrieTagsData.error) {
-        toast.error(entrieTagsData.error);
+      const entrieTakesData = await getEntrieTakes(dealId);
+      if (entrieTakesData.error) {
+        toast.error(entrieTakesData.error);
       } else {
-        setCurrentTags((prev) =>
-          tags?.filter((tag) =>
-            entrieTagsData.entrieTags.some((et) => tag.id === et.tagId)
+        setCurrentTakes((prev) =>
+          takes?.filter((take) =>
+            entrieTakesData.entrieTakes.some((et) => take.id === et.takeId)
           )
         );
       }
     } else {
-      setCurrentTags((prev) => []);
+      setCurrentTakes((prev) => []);
     }
   };
 
@@ -133,22 +135,22 @@ export default function BodyCardTags({
   }, [open]);
 
   useEffect(() => {
-    if (allTags) {
-      setFilteredTags((prev) => allTags);
+    if (allTakes) {
+      setFilteredTakes((prev) => allTakes);
     }
-  }, [allTags]);
+  }, [allTakes]);
 
   useEffect(() => {
-    if ((allTags, dealId)) {
-      getEntrieTagsData(allTags, dealId);
+    if ((allTakes, dealId)) {
+      getEntrieTakesData(allTakes, dealId);
     } else {
-      setCurrentTags((prev) => []);
+      setCurrentTakes((prev) => []);
     }
-  }, [allTags, dealId]);
+  }, [allTakes, dealId]);
 
   useEffect(() => {
     if (open) {
-      setTagBgColor((prev) => getRandomHexColor());
+      setTakeBgColor((prev) => getRandomHexColor());
     }
   }, [getRandomHexColor, open]);
 
@@ -190,10 +192,10 @@ export default function BodyCardTags({
               : "items-center h-full border-r px-2 overflow-hidden"
           }`}
         >
-          {!currentTags ? (
+          {!currentTakes ? (
             <BeatLoader size={7} className="mx-auto" />
           ) : (
-            currentTags.map((t) => (
+            currentTakes.map((t) => (
               <span
                 key={t.label}
                 style={{
@@ -208,7 +210,7 @@ export default function BodyCardTags({
                 {active && !isAdmin && !isPublished && (
                   <button
                     type="button"
-                    onClick={(e) => handleRemoveTag(e, t.id)}
+                    onClick={(e) => handleRemoveTake(e, t.id)}
                     className="p-0.5 cursor-pointer"
                   >
                     <Image
@@ -242,59 +244,61 @@ export default function BodyCardTags({
           className="absolute top-16 left-0 z-[5] rounded-md py-2 bg-white border border-gray-300"
         >
           <input
-            type="text"
-            name="tag"
-            value={tag}
-            placeholder="Введите тег"
+            type="number"
+            step={0.1}
+            min={0}
+            name="take"
+            value={take}
+            placeholder="Введите тейк"
             onChange={handleItemSearch}
             className="w-full mb-1 py-1 px-2 text-xs outline-none"
           />
 
-          {filteredTags.length > 0 ? (
+          {filteredTakes.length > 0 ? (
             <ul
               className={`
-                                w-full max-h-12 px-2 flex items-center justify-start flex-wrap gap-1 
-                                text-xs bg-white overflow-y-auto no-scrollbar
-                            `}
+                    w-full max-h-12 px-2 flex items-center justify-start flex-wrap gap-1 
+                    text-xs bg-white overflow-y-auto no-scrollbar
+                `}
             >
-              {filteredTags
-                .filter((t) => !currentTags?.some((item) => item.id === t.id))
-                .map((tag) => (
+              {filteredTakes
+                .filter((t) => !currentTakes?.some((item) => item.id === t.id))
+                .map((take) => (
                   <li
-                    key={tag.label}
-                    onClick={() => handleSelectTag(tag)}
+                    key={take.label}
+                    onClick={() => handleSelectTake(take)}
                     className="flex items-center justify-start hover:bg-slate-200 cursor-pointer"
                   >
                     <span
-                      key={tag.label}
+                      key={take.label}
                       style={{
-                        color: determineTextColor(tag.value),
-                        backgroundColor: tag.value,
+                        color: determineTextColor(take.value),
+                        backgroundColor: take.value,
                       }}
                       className="rounded-xl px-2 py-px"
                     >
-                      {tag.label}
+                      {take.label}
                     </span>
                   </li>
                 ))}
             </ul>
           ) : (
             <div className="flex items-center gap-1 px-2 text-xs">
-              Добавить тег:{" "}
+              Добавить тейк:{" "}
               <span
                 style={{
-                  color: determineTextColor(tagBgColor),
-                  backgroundColor: tagBgColor,
+                  color: determineTextColor(takeBgColor),
+                  backgroundColor: takeBgColor,
                 }}
                 onClick={() =>
-                  handleSelectTag({
-                    label: tag,
-                    value: tagBgColor,
+                  handleSelectTake({
+                    label: take,
+                    value: takeBgColor,
                   })
                 }
                 className="rounded-xl px-2 py-px cursor-pointer"
               >
-                {tag}
+                {take}
               </span>
             </div>
           )}

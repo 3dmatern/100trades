@@ -52,6 +52,9 @@ export default function TableInfo({
       {/* {dealsInfo?.[0]?.rrId !== undefined && (
         <Cell columnWidth={columnWidth["forecast"]}></Cell>
       )} */}
+      {isPublished && dealsInfo?.[0]?.entrieTake === undefined ? null : (
+        <Cell columnWidth={columnWidth["entrieTake"]}></Cell>
+      )}
       {/* {dealsInfo?.[0]?.rrId !== undefined && (
                 <Cell columnWidth={columnWidth['rrId']}></Cell>
             )} */}
@@ -94,9 +97,4 @@ export default function TableInfo({
       )}
     </div>
   );
-}
-
-function parseTimeInTrade(time) {
-  const parseTime = time.split(" ");
-  return parseTime;
 }

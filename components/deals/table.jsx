@@ -33,6 +33,7 @@ export default function Table({
   longShorts,
   risksRewarsData,
   tagsData,
+  takesData,
   onClickDealImg,
   isAdmin = false,
   isModal = false,
@@ -41,6 +42,7 @@ export default function Table({
   lossID,
 }) {
   const [allTags, setAllTags] = useState([]);
+  const [allTakes, setAllTakes] = useState([]);
   const [allRRs, setAllRRs] = useState([]);
   const [columnWidth, setColumnWidth] = useState(COLUMN_WIDTH);
 
@@ -50,6 +52,10 @@ export default function Table({
 
   const handleUpdateAllTags = (tags) => {
     setAllTags([...tags]);
+  };
+
+  const handleUpdateAllTakes = (takes) => {
+    setAllTakes([...takes]);
   };
 
   const handleResize = (column, newWidth) => {
@@ -77,7 +83,7 @@ export default function Table({
         toast.error(risksRewarsData.error);
         return;
       }
-      setAllRRs(risksRewarsData);
+      setAllRRs((prev) => risksRewarsData);
     }
   }, [risksRewarsData]);
 
@@ -87,9 +93,19 @@ export default function Table({
         toast.error(tagsData.error);
         return;
       }
-      setAllTags(tagsData);
+      setAllTags((prev) => tagsData);
     }
   }, [tagsData]);
+
+  useEffect(() => {
+    if (takesData) {
+      if (takesData.error) {
+        toast.error(takesData.error);
+        return;
+      }
+      setAllTakes((prev) => takesData);
+    }
+  }, [takesData]);
 
   return (
     <TableLayout>
@@ -129,6 +145,8 @@ export default function Table({
           onChangeAllRRs={changeAllRRs}
           allTags={allTags}
           onUpdateAllTags={handleUpdateAllTags}
+          allTakes={allTakes}
+          onUpdateAllTakes={handleUpdateAllTakes}
           columnWidth={columnWidth}
           onCheckDeal={onCheckDeal}
           isPending={isPending}

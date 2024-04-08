@@ -140,6 +140,7 @@ export const updateEntrie = async (userId, values) => {
     lsId,
     rrId,
     entrieTag,
+    entrieTake,
   } = validatedFields.data;
 
   const existingEntrie = await getEntrieById(id);
@@ -218,6 +219,7 @@ export const updateEntrie = async (userId, values) => {
         lsId: lsId || undefined,
         rrId: rrId || undefined,
         entrieTag: entrieTag || undefined,
+        entrieTake: entrieTake || undefined,
       },
     });
 

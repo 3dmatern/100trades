@@ -20,7 +20,33 @@ export const EntrieTagSchema = z
     return true;
   });
 
+export const EntrieTakeSchema = z
+  .object({
+    entrieId: z.string(),
+    takeId: z.string(),
+  })
+  .refine((data) => {
+    if (!data.entrieId) {
+      return false;
+    }
+
+    return true;
+  })
+  .refine((data) => {
+    if (!data.takeId) {
+      return false;
+    }
+
+    return true;
+  });
+
 export const TagSchema = z.object({
+  userId: z.string(),
+  label: z.string(),
+  value: z.string(),
+});
+
+export const TakeSchema = z.object({
   userId: z.string(),
   label: z.string(),
   value: z.string(),

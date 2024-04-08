@@ -12,6 +12,8 @@ import BodyCardName from "@/components/deals/common/bodyCardName";
 import BodyCardPose from "@/components/deals/common/bodyCardPose";
 import BodyCardRisk from "@/components/deals/common/bodyCardRisk";
 import BodyCardProfit from "@/components/deals/common/bodyCardProfit";
+// import BodyCardForecast from "./common/bodyCardForecast";
+import BodyCardTakes from "./common/bodyCardTakes";
 // import BodyCardRisksRewards from "@/components/deals/common/bodyCardRisksRewards";
 import BodyCardDate from "@/components/deals/common/bodyCardDate";
 import BodyCardScreenshot from "@/components/deals/common/bodyCardScreenshot";
@@ -24,7 +26,6 @@ import BodyCardTakeScreenshot from "@/components/deals/common/bodyCardTakeScreen
 import BodyCardTimeInTrade from "@/components/deals/common/bodyCardTimeInTrade";
 import BodyCardResult from "@/components/deals/common/bodyCardResult";
 import BodyCardLongShort from "@/components/deals/common/bodyCardLongShort";
-import BodyCardForecast from "./common/bodyCardForecast";
 
 export default function TableBodyCard({
   userId,
@@ -37,6 +38,8 @@ export default function TableBodyCard({
   // onChangeAllRRs,
   allTags,
   onUpdateAllTags,
+  allTakes,
+  onUpdateAllTakes,
   columnWidth,
   onCheckDeal,
   isPending,
@@ -149,6 +152,22 @@ export default function TableBodyCard({
           columnWidth={columnWidth["forecast"]}
         />
       )} */}
+      {isPublished && deal?.entrieTake === undefined ? null : (
+        <BodyCardTakes
+          userId={userId}
+          dealId={deal?.id}
+          allTakes={allTakes}
+          onUpdateAllTakes={onUpdateAllTakes}
+          columnWidth={columnWidth["entrieTake"]}
+          dealHover={hover}
+          selectedDeals={selectedDeals}
+          determineTextColor={determineTextColor}
+          getRandomHexColor={getRandomHexColor}
+          onActionDeal={onActionDeal}
+          isAdmin={isAdmin}
+          isPublished={isPublished}
+        />
+      )}
       {/* {isPublished && deal?.rrId === undefined ? null : (
                 <BodyCardRisksRewards
                     userId={userId}

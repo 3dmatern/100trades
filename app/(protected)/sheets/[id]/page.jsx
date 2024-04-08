@@ -9,6 +9,7 @@ import { useResults } from "@/hooks/use-results";
 import { useLongShort } from "@/hooks/use-long-short";
 import { useRisksRewards } from "@/hooks/use-risks-rewards";
 import { useTags } from "@/hooks/use-tags";
+import { useTakes } from "@/hooks/use-takes";
 import { useDeals } from "@/hooks/use-deals";
 import { useDealModalCarousel } from "@/hooks/use-deal-modal-carousel";
 import { useSortedDeals } from "@/hooks/use-deals-sorted";
@@ -32,6 +33,7 @@ export default function SheetPage({ params }) {
   const { longShorts } = useLongShort();
   const { risksRewards } = useRisksRewards();
   const { tags } = useTags(user.id);
+  const { takes } = useTakes(user.id);
   const { onSort, onResetSort } = useSortedDeals(
     results,
     longShorts,
@@ -116,6 +118,7 @@ export default function SheetPage({ params }) {
         longShorts={longShorts}
         risksRewarsData={risksRewards}
         tagsData={tags}
+        takesData={takes}
         onClickDealImg={onClickDealImg}
         lossID={RESULT_LOSS_ID}
       />
@@ -150,6 +153,7 @@ export default function SheetPage({ params }) {
             longShorts={longShorts}
             risksRewarsData={risksRewards}
             tagsData={tags}
+            takesData={takes}
             onClickDealImg={onRemoveImg}
             isModal={true}
             deal={deals?.find((d) => d.id === currentDealOptions?.deal.id)}

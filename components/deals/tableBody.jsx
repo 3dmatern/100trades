@@ -13,6 +13,8 @@ export default function TableBody({
   onChangeAllRRs,
   allTags,
   onUpdateAllTags,
+  allTakes,
+  onUpdateAllTakes,
   columnWidth,
   onCheckDeal,
   isPending,
@@ -37,6 +39,8 @@ export default function TableBody({
           onChangeAllRRs={onChangeAllRRs}
           allTags={allTags}
           onUpdateAllTags={onUpdateAllTags}
+          allTakes={allTakes}
+          onUpdateAllTakes={onUpdateAllTakes}
           columnWidth={columnWidth}
           onCheckDeal={onCheckDeal}
           onActionDeal={onCreateDeal}
@@ -56,6 +60,8 @@ export default function TableBody({
           onChangeAllRRs={onChangeAllRRs}
           allTags={allTags}
           onUpdateAllTags={onUpdateAllTags}
+          allTakes={allTakes}
+          onUpdateAllTakes={onUpdateAllTakes}
           columnWidth={columnWidth}
           onCheckDeal={onCheckDeal}
           isPending={isPending}
