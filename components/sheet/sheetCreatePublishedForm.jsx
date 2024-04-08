@@ -54,6 +54,7 @@ export default function SheetCreatePublishedForm({
         "lsId",
         // "rrId",
         "entrieTag",
+        "entrieTake",
       ],
     },
   });

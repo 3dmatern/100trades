@@ -52,6 +52,7 @@ export const ITEMS = [
   { id: "risk", label: "Риск" },
   { id: "profit", label: "Профит" },
   // { id: "forecast", label: "Прогноз" },
+  { id: "entrieTake", label: "Тейки" },
   // { id: "rrId", label: "R:R" },
   { id: "entryDate", label: "Вход" },
   { id: "imageStart", label: "СКРИН" },

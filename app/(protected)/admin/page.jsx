@@ -13,6 +13,8 @@ import { useSortedDeals } from "@/hooks/use-deals-sorted";
 import { useDealModalCarousel } from "@/hooks/use-deal-modal-carousel";
 import { useAdminUsersState } from "@/hooks/use-admin-users-state";
 import { useDealsStatistics } from "@/hooks/use-deals-statistics";
+import { useDealsStatisticsAdmin } from "@/hooks/use-deals-statistics-admin";
+import { useTakes } from "@/hooks/use-takes";
 
 import {
   Accordion,
@@ -27,7 +29,6 @@ import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/dealScreenshotModal";
 import { DealsDaysStatistics } from "@/components/statistics/dealsDaysStatistics";
 import { CurrentDateStatistics } from "@/components/statistics";
-import { useDealsStatisticsAdmin } from "@/hooks/use-deals-statistics-admin";
 
 const RESULT_WIN_ID = process.env.NEXT_PUBLIC_RESULT_WIN_ID;
 const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
@@ -42,6 +43,7 @@ export default function AdminPage() {
   const { longShorts } = useLongShort();
   const { risksRewards } = useRisksRewards();
   const { tags } = useTags(selectUserId);
+  const { takes } = useTakes(selectUserId);
   const { onSort, onResetSort } = useSortedDeals(
     results,
     longShorts,
@@ -131,6 +133,7 @@ export default function AdminPage() {
                   longShorts={longShorts}
                   risksRewarsData={risksRewards}
                   tagsData={tags}
+                  takesData={takes}
                   onClickDealImg={onClickDealImg}
                   isAdmin={true}
                   dealsInfoStat={dealsInfoStat}
@@ -158,6 +161,7 @@ export default function AdminPage() {
                       longShorts={longShorts}
                       risksRewarsData={risksRewards}
                       tagsData={tags}
+                      takesData={takes}
                       onClickDealImg={onClickDealImg}
                       isAdmin={true}
                       isModal={true}
