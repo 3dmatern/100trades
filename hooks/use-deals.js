@@ -58,7 +58,7 @@ export function useDeals({
   const handleCreateDeal = async (values) => {
     let newDealId = "";
 
-    if (values.deposit) {
+    if (values?.deposit) {
       values = await modifiedValues({
         deals,
         values,
