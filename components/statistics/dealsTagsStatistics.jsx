@@ -20,7 +20,7 @@ export const DealsTagsStatistics = memo(function DealsDaysStatistics({
   const { tagsStat, allWinCount, allLossCount } = tagsWLStat;
 
   const getTableBody = () => {
-    return tagsStat.map((tagStat, index) => {
+    return tagsStat?.map((tagStat, index) => {
       const { tag, winCount, lossCount } = tagStat;
       const winIsMore = winCount > lossCount;
       const lossIsMore = lossCount > winCount;

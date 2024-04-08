@@ -20,14 +20,7 @@ import { cn } from "@/lib/utils";
 export const DealsTikerStatistics = memo(function DealsTikerStatistics({
   tikersStat,
 }) {
-  const {
-    dealsStat,
-    totalCount,
-    winPercent,
-    lossPercent,
-    allAverageRiskWin,
-    allAverageRiskLoss,
-  } = tikersStat;
+  const { dealsStat, totalCount, winPercent, lossPercent } = tikersStat;
   const [dealsStatCrop, setDealsStatCrop] = useState([]);
 
   const [{ currentPage, pageCount }, setPaginateData] = useState({

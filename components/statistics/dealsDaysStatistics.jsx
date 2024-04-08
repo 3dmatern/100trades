@@ -20,7 +20,7 @@ export const DealsDaysStatistics = memo(function DealsDaysStatistics({
   const { dealsStat, totalCount, totalWin, totalLoss } = daysWLStat;
 
   const getTableBody = () => {
-    return dealsStat.map((deal, index) => {
+    return dealsStat?.map((deal, index) => {
       const winIsMore = deal.win > deal.loss;
       const lossIsMore = deal.loss > deal.win;
 

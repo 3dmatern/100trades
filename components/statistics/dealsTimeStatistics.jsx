@@ -102,7 +102,7 @@ export const DealsTimeStatistics = memo(function DealsTimeStatistics({
   }
 
   const getTableBody = () => {
-    return dealsStatCrop.map((deal, index) => {
+    return dealsStatCrop?.map((deal, index) => {
       const winIsMore = deal.win > deal.loss;
       const lossIsMore = deal.loss > deal.win;
 

@@ -38,8 +38,6 @@ export function useDealsStatistics({
     totalCount: 0,
     winPercent: 0,
     lossPercent: 0,
-    allAverageRiskWin: 0,
-    allAverageRiskLoss: 0,
   });
   const [hoursWLStat, setHoursWLStat] = useState({
     dealsStat: [],
@@ -99,8 +97,6 @@ export function useDealsStatistics({
             let allCount = 0;
             let allWin = 0;
             let allLoss = 0;
-            let allAverageRiskWin = 0;
-            let allAverageRiskLoss = 0;
             let allWinTags = [];
             let allLossTags = [];
             let mergeWLTags = {};
@@ -170,8 +166,6 @@ export function useDealsStatistics({
                 allCount += statistics[key].count;
                 allWin += statistics[key].win;
                 allLoss += statistics[key].loss;
-                allAverageRiskWin += statistics[key].averageRiskWinPercent;
-                allAverageRiskLoss += statistics[key].averageRiskLossPercent;
                 allWinTags = [...allWinTags, ...statistics[key].winTags];
                 allLossTags = [...allLossTags, ...statistics[key].lossTags];
 
@@ -213,8 +207,6 @@ export function useDealsStatistics({
               totalCount: allCount,
               winPercent: percentWinOfCount(allWin, allCount),
               lossPercent: percentLossOfCount(allLoss, allCount),
-              allAverageRiskWin: allAverageRiskWin,
-              allAverageRiskLoss: allAverageRiskLoss,
             }));
 
             const { dealsStatHours, allCountHours, allWinHours, allLossHours } =
