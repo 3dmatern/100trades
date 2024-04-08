@@ -47,17 +47,22 @@ export function getStatHours({ deals, winID, lossID, times }) {
   }, {});
 
   const dealsStatHours = Object.keys(statistics)
-    .sort((a, b) => {
-      if (a > b) return 1;
-      if (a < b) return -1;
-      return 0;
-    })
+
     .map((key) => {
       allCountHours += statistics[key].count;
       allWinHours += statistics[key].win;
       allLossHours += statistics[key].loss;
 
       return statistics[key];
+    })
+    .sort((a, b) => {
+      if (a.count > b.count) {
+        return -1;
+      }
+      if (a.count < b.count) {
+        return 1;
+      }
+      return 0;
     });
 
   return {

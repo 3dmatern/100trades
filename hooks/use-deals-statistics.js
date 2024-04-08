@@ -416,6 +416,18 @@ async function cycleMergeWLTags(winTags, lossTags) {
     }
   }
 
+  mergeResult.sort((a, b) => {
+    const aCount = a.winCount + a.lossCount;
+    const bCount = b.winCount + b.lossCount;
+    if (aCount > bCount) {
+      return -1;
+    }
+    if (aCount < bCount) {
+      return 1;
+    }
+    return 0;
+  });
+
   return { mergeResult, allWinCount, allLossCount };
 }
 
