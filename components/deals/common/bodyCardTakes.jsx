@@ -28,6 +28,7 @@ export default function BodyCardTakes({
   isPublished,
 }) {
   const selectRef = useRef(null);
+  const actionsTakeRef = useRef(null);
   const listRef = useRef(null);
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
@@ -123,15 +124,23 @@ export default function BodyCardTakes({
   };
 
   useEffect(() => {
-    if (listRef.current) {
-      const list = listRef.current;
-      const rect = list.getBoundingClientRect();
+    const handleResizeActionsTag = () => {
+      if(actionsTakeRef.current && listRef.current) {
+        const actionsTag = actionsTakeRef.current;
+        const list = listRef.current;
+        const actionsTagRect = actionsTag.getBoundingClientRect();
 
-      if (rect.bottom > window.innerHeight - 32) {
-        list.style.top = "unset";
-        list.style.bottom = "32px";
+        list.style.top = actionsTagRect.height + 'px';
+        list.style.bottom = "unset";
       }
-    }
+    };
+    
+    handleResizeActionsTag(); // инициализируем высоту при загрузке
+
+    window.addEventListener('resize', handleResizeActionsTag);
+    return () => {
+      window.removeEventListener('resize', handleResizeActionsTag);
+    };
   }, [open]);
 
   useEffect(() => {
@@ -182,13 +191,17 @@ export default function BodyCardTakes({
         className="flex items-center justify-start h-full"
       >
         <div
+          ref={actionsTakeRef}
           className={`flex justify-start gap-1 w-full text-xs ${
             selectedDeals?.includes(dealId) || dealHover
               ? "bg-slate-50"
               : "bg-white"
           } ${
             active && !isAdmin && !isPublished
-              ? "items-start flex-wrap h-16 overflow-y-auto absolute top-0 left-0 z-[1] p-1 border border-blue-800"
+              ? `
+                  items-start flex-wrap min-h-8 max-h-16 overflow-y-auto
+                  absolute top-0 left-0 z-[1] p-1 border border-blue-800
+                `
               : "items-center h-full border-r px-2 overflow-hidden"
           }`}
         >
@@ -229,7 +242,10 @@ export default function BodyCardTakes({
             <Button
               type="button"
               onClick={() => setOpen((prev) => !prev)}
-              className="flex items-center justify-center size-4 p-0.5 rounded-sm bg-slate-200 hover:bg-slate-300"
+              className="
+                flex items-center justify-center size-4 p-0.5 rounded-sm 
+                bg-slate-200 hover:bg-slate-300
+              "
             >
               <Image src="/plus-lg.svg" alt="plus" width={10} height={10} />
             </Button>
@@ -241,7 +257,10 @@ export default function BodyCardTakes({
         <div
           ref={listRef}
           style={{ width: columnWidth }}
-          className="absolute top-16 left-0 z-[5] rounded-md py-2 bg-white border border-gray-300"
+          className="
+            absolute left-0 z-[5] rounded-md py-2 
+            bg-white border border-gray-300
+          "
         >
           <input
             type="number"
@@ -256,10 +275,10 @@ export default function BodyCardTakes({
 
           {filteredTakes.length > 0 ? (
             <ul
-              className={`
-                    w-full max-h-12 px-2 flex items-center justify-start flex-wrap gap-1 
-                    text-xs bg-white overflow-y-auto no-scrollbar
-                `}
+              className="
+                w-full max-h-28 px-2 flex items-center justify-start flex-wrap gap-1 
+                text-xs bg-white overflow-y-auto no-scrollbar
+              "
             >
               {filteredTakes
                 .filter((t) => !currentTakes?.some((item) => item.id === t.id))

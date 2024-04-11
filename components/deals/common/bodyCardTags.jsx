@@ -255,10 +255,10 @@ export default function BodyCardTags({
         <div
           ref={listRef}
           style={{ width: columnWidth }}
-          className={`
+          className="
             absolute left-0 z-[5] rounded-md 
             py-2 bg-white border border-gray-300
-          `}
+          "
         >
           <input
             type="text"
@@ -271,10 +271,10 @@ export default function BodyCardTags({
 
           {filteredTags.length > 0 ? (
             <ul
-              className={`
-                  w-full max-h-28 px-2 flex items-center justify-start flex-wrap gap-1 
-                  text-xs bg-white overflow-y-auto no-scrollbar
-              `}
+              className="
+                w-full max-h-28 px-2 flex items-center justify-start flex-wrap gap-1 
+                text-xs bg-white overflow-y-auto no-scrollbar
+              "
             >
               {filteredTags
                 .filter((t) => !currentTags?.some((item) => item.id === t.id))
