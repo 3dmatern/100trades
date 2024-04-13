@@ -17,30 +17,32 @@ import {
 export const DealsTagsStatistics = memo(function DealsDaysStatistics({
   tagsWLStat,
 }) {
-  const { tagsStat, allWinCount, allLossCount } = tagsWLStat;
+  const { dealCount, tagsStat, allWinCount, allLossCount } = tagsWLStat;
 
   const getTableBody = () => {
-    return tagsStat?.map((tagStat, index) => {
-      const { tag, winCount, lossCount } = tagStat;
-      const winIsMore = winCount > lossCount;
-      const lossIsMore = lossCount > winCount;
+    if (tagsStat) {
+      return tagsStat?.map((tagStat, index) => {
+        const { tag, winCount, lossCount } = tagStat;
+        const winIsMore = winCount > lossCount;
+        const lossIsMore = lossCount > winCount;
 
-      return (
-        <TableRow key={index}>
-          <TableCell>{tag.label}</TableCell>
-          <TableCell
-            className={cn(
-              "text-center",
-              winIsMore && "text-teal-500",
-              lossIsMore && "text-destructive"
-            )}
-          >
-            {winCount}:{lossCount}
-          </TableCell>
-          <TableCell className="text-center">{winCount + lossCount}</TableCell>
-        </TableRow>
-      );
-    });
+        return (
+          <TableRow key={index}>
+            <TableCell>{tag.label}</TableCell>
+            <TableCell
+              className={cn(
+                "text-center",
+                winIsMore && "text-teal-500",
+                lossIsMore && "text-destructive"
+              )}
+            >
+              {winCount}:{lossCount}
+            </TableCell>
+            <TableCell className="text-center">{winCount + lossCount}</TableCell>
+          </TableRow>
+        );
+      });
+    }
   };
 
   return (
@@ -66,7 +68,7 @@ export const DealsTagsStatistics = memo(function DealsDaysStatistics({
             {allWinCount}:{allLossCount}
           </TableCell>
           <TableCell className="text-center">
-            {allWinCount + allLossCount}
+            {dealCount}
           </TableCell>
         </TableRow>
       </TableFooter>

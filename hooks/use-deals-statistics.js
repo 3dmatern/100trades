@@ -99,6 +99,7 @@ export function useDealsStatistics({
             let allLoss = 0;
             let allWinTags = [];
             let allLossTags = [];
+            let dealCountWithWLTags = 0;
             let mergeWLTags = {};
 
             statistics = deals.reduce((acc, item) => {
@@ -109,8 +110,13 @@ export function useDealsStatistics({
               const itemEntryDay = new Date(item.entryDate).getDay();
               const itemTagsIds = item.entrieTag?.map((tag) => tag.tagId);
 
+              const isWin = itemResultId === winID;
+              const isLoss = itemResultId === lossID;
+
+              (isWin || isLoss) && itemTagsIds.length && dealCountWithWLTags++;
+
               if (acc[itemName]) {
-                if (itemResultId === winID) {
+                if (isWin) {
                   acc[itemName].count++;
                   acc[itemName].win++;
 
@@ -124,7 +130,7 @@ export function useDealsStatistics({
                       ...itemTagsIds,
                     ];
                   }
-                } else if (itemResultId === lossID) {
+                } else if (isLoss) {
                   acc[itemName].count++;
                   acc[itemName].loss++;
 
@@ -139,13 +145,7 @@ export function useDealsStatistics({
                     ];
                   }
                 }
-              } else if (
-                !acc[itemName] &&
-                (itemResultId === winID || itemResultId === lossID)
-              ) {
-                const isWin = itemResultId === winID;
-                const isLoss = itemResultId === lossID;
-
+              } else if (!acc[itemName] && (isWin || isLoss)) {
                 acc[itemName] = {
                   name: itemName,
                   count: 1,
@@ -236,16 +236,12 @@ export function useDealsStatistics({
 
             allWinTags = counterTags(allWinTags);
             allLossTags = counterTags(allLossTags);
-
-            if (allWinTags.length > allLossTags.length) {
-              mergeWLTags = await cycleMergeWLTags(allWinTags, allLossTags);
-            } else {
-              mergeWLTags = await cycleMergeLWTags(allLossTags, allWinTags);
-            }
-
+            mergeWLTags = await cycleMergeWLTags(allWinTags, allLossTags);
+           
             const { mergeResult, allWinCount, allLossCount } = mergeWLTags;
 
             setTagsWLStat((prev) => ({
+              dealCount: dealCountWithWLTags,
               tagsStat: mergeResult,
               allWinCount,
               allLossCount,
@@ -397,24 +393,35 @@ async function cycleMergeWLTags(winTags, lossTags) {
   let allLossCount = 0;
 
   for (const winTag of winTags) {
-    const tag = await getTag(winTag.tagId);
-    const indexLossTag = lossTags.findIndex((t) => t.tagId === winTag.tagId);
+    const tagId = winTag.tagId;
+    const lossTag = lossTags.find((t) => t.tagId === tagId);
+    const tagData = await getTag(tagId);
 
     allWinCount += winTag.count;
+    mergeResult.push({
+      tag: tagData,
+      winCount: winTag.count,
+      lossCount: lossTag ? lossTag.count : 0,
+    });
+  }
 
-    if (indexLossTag !== -1) {
-      const lossTag = lossTags[indexLossTag];
+  for (const lossTag of lossTags) {
+    const tagId = lossTag.tagId;
+    const winTag = winTags.find((t) => t.tagId === tagId);
 
-      allLossCount += lossTag.count;
+    allLossCount += lossTag.count;
+
+    if (!winTag) {
+      const tagData = await getTag(tagId);
+
       mergeResult.push({
-        tag,
-        winCount: winTag.count,
+        tag: tagData,
+        winCount: 0,
         lossCount: lossTag.count,
       });
-    } else {
-      mergeResult.push({ tag, winCount: winTag.count, lossCount: 0 });
     }
   }
+
 
   mergeResult.sort((a, b) => {
     const aCount = a.winCount + a.lossCount;
@@ -427,34 +434,6 @@ async function cycleMergeWLTags(winTags, lossTags) {
     }
     return 0;
   });
-
-  return { mergeResult, allWinCount, allLossCount };
-}
-
-async function cycleMergeLWTags(lossTags, winTags) {
-  const mergeResult = [];
-  let allWinCount = 0;
-  let allLossCount = 0;
-
-  for (const lossTag of lossTags) {
-    const tag = await getTag(lossTag.tagId);
-    const indexWinTag = winTags.findIndex((t) => t.tagId === lossTag.tagId);
-
-    allLossCount += lossTag.count;
-
-    if (indexWinTag !== -1) {
-      const winTag = winTags[indexWinTag];
-
-      allWinCount += winTag.count;
-      mergeResult.push({
-        tag,
-        winCount: winTag.count,
-        lossCount: lossTag.count,
-      });
-    } else {
-      mergeResult.push({ tag, winCount: 0, lossCount: lossTag.count });
-    }
-  }
 
   return { mergeResult, allWinCount, allLossCount };
 }
