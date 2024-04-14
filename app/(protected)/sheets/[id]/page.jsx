@@ -32,7 +32,7 @@ export default function SheetPage({ params }) {
   const { results } = useResults();
   const { longShorts } = useLongShort();
   const { risksRewards } = useRisksRewards();
-  const { tags } = useTags(user.id);
+  const { tags } = useTags({ userId: user.id });
   const { takes } = useTakes(user.id);
   const { onSort, onResetSort } = useSortedDeals(
     results,

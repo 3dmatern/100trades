@@ -5,7 +5,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import { db } from "@/lib/db";
 import { TagSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
-import { getTagById, getTagByUserId, getTagByValue } from "@/data/tag";
+import { getAllTag, getTagById, getTagByUserId, getTagByValue } from "@/data/tag";
 
 export const createTag = async (values) => {
   noStore();
@@ -80,12 +80,37 @@ export const getTag = async (tagId) => {
 
   try {
     const tag = await getTagById(tagId);
-
     return tag;
   } catch (error) {
     console.error("Error receiving tag: ", error);
     return {
       error: "Ошибка получения тега!",
     };
+  }
+};
+
+export const getTagIDs = async (params = null) => {
+  try {
+    const tags = await getAllTag(skip, take);
+    return tags;
+  } catch (error) {
+    console.error("Error receiving offset tags: ", error);
+    return {
+      error: "Ошибка получения диапазона тегов!"
+    }
+  }
+}
+
+export const getTagsByOffset = async (skip, take) => {
+  noStore();
+
+  try {
+    const tags = await getAllTag(skip, take);
+    return tags;
+  } catch (error) {
+    console.error("Error receiving offset tags: ", error);
+    return {
+      error: "Ошибка получения диапазона тегов!"
+    }
   }
 };

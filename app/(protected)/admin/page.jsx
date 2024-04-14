@@ -22,7 +22,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { AdminSelect } from "@/components/admin";
+import { AdminSelect, AllTagsApp } from "@/components/admin";
 import { DealsTimeStatistics } from "@/components/statistics/dealsTimeStatistics";
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Table from "@/components/deals/table";
@@ -42,7 +42,7 @@ export default function AdminPage() {
   const { results } = useResults();
   const { longShorts } = useLongShort();
   const { risksRewards } = useRisksRewards();
-  const { tags } = useTags(selectUserId);
+  const { tags } = useTags({ userId: selectUserId });
   const { takes } = useTakes(selectUserId);
   const { onSort, onResetSort } = useSortedDeals(
     results,
@@ -59,7 +59,6 @@ export default function AdminPage() {
       onSort,
       onResetSort,
     });
-
   const { hoursWLStat, daysWLStat, dealsInfoStat, tagsWLStat } =
     useDealsStatistics({
       userId: selectUserId,
@@ -188,6 +187,14 @@ export default function AdminPage() {
           </AccordionTrigger>
           <AccordionContent className="pt-4">
             <DealsDaysStatistics daysWLStat={allDaysWLStat} />
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-4">
+          <AccordionTrigger className="px-5">
+            Все теги
+          </AccordionTrigger>
+          <AccordionContent className="pt-4">
+            <AllTagsApp />
           </AccordionContent>
         </AccordionItem>
       </Accordion>

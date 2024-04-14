@@ -1,10 +1,21 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { getTags } from "@/actions/tag";
+import { getTags, getTagsByOffset } from "@/actions/tag";
 
-export function useTags(userId) {
+export function useTags({ userId, skip, take }) {
     const [tags, setTags] = useState([]);
+    const [tagsOffset, setTagsOffset] = useState([]);
+
+    const handleOffsetTags = async (skip, take) => {
+        const data = await getTagsByOffset(skip, take);
+
+        if (data && data.error) {
+            toast.error(data.error);
+        } else {
+            setTagsOffset(prev => data);
+        }
+    };
 
     useEffect(() => {
         if (userId) {
@@ -21,6 +32,12 @@ export function useTags(userId) {
             setTags([]);
         }
     }, [userId]);
+
+    useEffect(() => {
+        if(skip && take) {
+            
+        }
+    }, [skip, take]);
 
     return { tags };
 }

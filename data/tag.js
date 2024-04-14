@@ -1,12 +1,28 @@
 import { db } from "@/lib/db";
 import { unstable_noStore as noStore } from "next/cache";
 
-export const getAllTag = async () => {
+export const getAllTag = async (skip, take) => {
     noStore();
-    try {
-        const allTag = await db.tag.findMany();
+    let allTags = [];
 
-        return allTag;
+    try {
+        if (skip && take) {
+            allTags = await db.tag.findMany({
+                skip,
+                take,
+                include: {
+                    entrieTag: {
+                        include: {
+                            id: true,
+                        },
+                    },
+                },
+            });
+        } else {
+            allTags = await db.tag.findMany();
+        }
+
+        return allTags;
     } catch (error) {
         return null;
     }
