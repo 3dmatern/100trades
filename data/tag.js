@@ -72,3 +72,35 @@ export const getTagByValue = async (value) => {
         return null;
     }
 };
+
+export const getIDs = async (skip, take) => {
+    try {
+        const ids = await db.tag.findMany({
+            skip,
+            take,
+            select: {
+                id: true,
+            },
+        });
+
+        return ids.map((item) => item.id);
+    } catch (error) {
+        return null;
+    }
+}
+
+export const getByIDs = async (ids) => {
+    try {
+        const tags = await db.tag.findMany({
+            where: {
+                id: {
+                    in: ids,
+                },
+            },
+        });
+
+        return tags;
+    } catch (error) {
+        return null;
+    }
+}

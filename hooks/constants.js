@@ -1,3 +1,5 @@
+export const PAGE_SIZE_ALL_TAGS_ADMIN = 50;
+
 export const TIMES_PERIOD = [
   { entry: 9, exit: 10 },
   { entry: 10, exit: 11 },

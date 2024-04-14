@@ -42,7 +42,17 @@ export default function AdminPage() {
   const { results } = useResults();
   const { longShorts } = useLongShort();
   const { risksRewards } = useRisksRewards();
-  const { tags } = useTags({ userId: selectUserId });
+  const {
+    tags,
+    currentPage,
+    pageCount,
+    adminTags,
+    selectedAdminTags,
+    onChangePage,
+    onClickPrevPage,
+    onClickNextPage,
+    onRemoveAdminTag,
+  } = useTags({ userId: selectUserId, skip: 0, take: 100 });
   const { takes } = useTakes(selectUserId);
   const { onSort, onResetSort } = useSortedDeals(
     results,
@@ -194,7 +204,16 @@ export default function AdminPage() {
             Все теги
           </AccordionTrigger>
           <AccordionContent className="pt-4">
-            <AllTagsApp />
+            <AllTagsApp 
+              currentPage={currentPage}
+              pageCount={pageCount}
+              adminTags={adminTags}
+              selectedAdminTags={selectedAdminTags}
+              onChangePage={onChangePage}
+              onClickPrevPage={onClickPrevPage}
+              onClickNextPage={onClickNextPage}
+              onRemoveAdminTag={onRemoveAdminTag}
+            />
           </AccordionContent>
         </AccordionItem>
       </Accordion>
