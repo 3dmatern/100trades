@@ -56,11 +56,14 @@ export const getTagByValue = async (value) => {
     }
 };
 
-export const getIDs = async (skip, take) => {
+export const getIDsByUserId = async (userId, skip, take) => {
     try {
         const ids = await db.tag.findMany({
             skip,
             take,
+            where: {
+                userId,
+            },
             select: {
                 id: true,
             },

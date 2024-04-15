@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { getTagByIDs, getTagIDs, getTags, removeTagByIDs } from "@/actions/tag";
+import { getTagByIDs, getTagIDsByUserId, getTags, removeTagByIDs } from "@/actions/tag";
 import { PAGE_SIZE_ALL_TAGS_ADMIN, TAKE_TAGS } from "./constants";
 import { itemsCrop } from "@/utils/paginate";
 
@@ -11,7 +11,7 @@ export function useTags({ userId, skip, take }) {
       currentPage: 1,
       pageCount: 0,
   });
-  const [adminTags, setAdminTags] = useState([]);
+  const [userTags, setUserTags] = useState([]);
   // TODO: initTagIDs возможно понадобиться для филтра и т.п.
   const [initTagIDs, setInitTagIDs] = useState([]);
   const [tagIDs, setTagIDs] = useState([]);
@@ -43,19 +43,19 @@ export function useTags({ userId, skip, take }) {
   }, [userId]);
 
   useEffect(() => {
-    if (skip >= 0 && take) {
+    if (userId && skip >= 0 && take) {
       const getData = async () => {
-        const allTagIDsData = await dataTagIDs({ skip, take });
+        const allTagIDsData = await dataTagIDs({ userId, skip, take });
 
         if (allTagIDsData?.length) {
           const pageCount = Math.ceil(allTagIDsData.length / PAGE_SIZE_ALL_TAGS_ADMIN);
           const tagIDsCrop = itemsCrop(allTagIDsData, currentPage, PAGE_SIZE_ALL_TAGS_ADMIN);
 
           if (tagIDsCrop.length) {
-            const tagsAdmin = await getDataTagByIDs(tagIDsCrop);
+            const tagsUser = await getDataTagByIDs(tagIDsCrop);
 
-            if (tagsAdmin) { 
-                setAdminTags((prev) => tagsAdmin);
+            if (tagsUser) { 
+                setUserTags((prev) => tagsUser);
             }
           }
 
@@ -70,7 +70,7 @@ export function useTags({ userId, skip, take }) {
 
       getData();
     }
-  }, [skip, take, getDataTagByIDs]);
+  }, [userId, skip, take, getDataTagByIDs]);
 
   const handleChangePage = async (selectPage) => {
     setPaginateData((prev) => ({
@@ -79,10 +79,10 @@ export function useTags({ userId, skip, take }) {
     }));
 
     const newTagCrop = itemsCrop(tagIDs, selectPage, PAGE_SIZE_ALL_TAGS_ADMIN);
-    const tagsAdmin = await getDataTagByIDs(newTagCrop);
+    const tagsUser = await getDataTagByIDs(newTagCrop);
 
-    if(tagsAdmin) {
-        setAdminTags((prev) => tagsAdmin);
+    if(tagsUser) {
+        setUserTags((prev) => tagsUser);
     }
   };
 
@@ -97,10 +97,10 @@ export function useTags({ userId, skip, take }) {
     }));
 
     const newTagCrop = itemsCrop(tagIDs, selectPage, PAGE_SIZE_ALL_TAGS_ADMIN);
-    const tagsAdmin = await getDataTagByIDs(newTagCrop);
+    const tagsUser = await getDataTagByIDs(newTagCrop);
 
-    if (tagsAdmin) {
-      setAdminTags((prev) => tagsAdmin);
+    if (tagsUser) {
+      setUserTags((prev) => tagsUser);
     }
   };
 
@@ -115,19 +115,20 @@ export function useTags({ userId, skip, take }) {
     }));
 
     const newTagCrop = itemsCrop(tagIDs, selectPage, PAGE_SIZE_ALL_TAGS_ADMIN);
-    const tagsAdmin = await getDataTagByIDs(newTagCrop);
+    const tagsUser = await getDataTagByIDs(newTagCrop);
 
-    if (tagsAdmin) {
-      setAdminTags((prev) => tagsAdmin);
+    if (tagsUser) {
+      setUserTags((prev) => tagsUser);
     }
   };
 
-  const handleRemoveAdminTag = async ({ items }) => {
+  const handleRemoveUserTag = async ({ items }) => {
     const ids = items.map((tag) => tag.id);
     const data = await removeTagByIDs(ids);
     
     if(data?.error) {
       toast.error(data.error);
+      return false;
     } else {
       setInitTagIDs(prev => {
         const copy = prev.slice();
@@ -146,13 +147,14 @@ export function useTags({ userId, skip, take }) {
         const copy = prev.slice();
         return copy.filter((tagID) => !ids.includes(tagID));
       });
-      setAdminTags(prev => {
+      setUserTags(prev => {
         const copy = prev.slice();
         return copy.filter((tag) => !ids.includes(tag.id));
       });
       handleChangePage(1);
 
       toast.success(`Удалено тегов: ${data.success.count} из ${ids.length}.`);
+      return true;
     }
   }
 
@@ -160,17 +162,17 @@ export function useTags({ userId, skip, take }) {
     tags,
     currentPage,
     pageCount,
-    adminTags,
+    userTags,
     onChangePage: handleChangePage,
     onClickPrevPage: handleClickPrevPage,
     onClickNextPage: handleClickNextPage,
-    onRemoveAdminTag: handleRemoveAdminTag,
+    onRemoveUserTag: handleRemoveUserTag,
   };
 }
 
-async function dataTagIDs({ skip, take }, dataSoFar = []) {
+async function dataTagIDs({userId, skip, take }, dataSoFar = []) {
   let updateTagIDs = [...dataSoFar];
-  const data = await getTagIDs(skip, take);
+  const data = await getTagIDsByUserId(userId, skip, take);
 
   if(data?.success) {
     const tagIDsLength = data.success.length;
@@ -178,7 +180,7 @@ async function dataTagIDs({ skip, take }, dataSoFar = []) {
     updateTagIDs = [...updateTagIDs, ...data.success];
 
     if (tagIDsLength === TAKE_TAGS) {
-      return dataTagIDs({ skip: skip + tagIDsLength, take }, updateTagIDs);
+      return dataTagIDs({ userId, skip: skip + tagIDsLength, take }, updateTagIDs);
     }
   }
 

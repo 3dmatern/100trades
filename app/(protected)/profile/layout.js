@@ -5,7 +5,12 @@ export const metadata = {
 
 export default function ProfileLayout({ children }) {
     return (
-        <main className="w-full h-full mt-8 px-5 pb-5 flex flex-col items-center justify-center gap-8 md:flex-row md:items-start">
+        <main
+            className="
+                w-full h-full mt-8 px-5 pb-5 flex flex-col items-center
+                justify-start gap-8 lg:flex-row lg:items-start lg:justify-center 
+            "
+        >
             {children}
         </main>
     );

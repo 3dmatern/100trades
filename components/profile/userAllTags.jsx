@@ -1,5 +1,7 @@
 'use client'
 
+import { useForm } from "react-hook-form";
+
 import {
   Form,
   FormControl,
@@ -8,18 +10,17 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox"
-import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import { UiPagination } from "../uikit/uiPagination";
 
-export function AllTagsApp({
+export function UserAllTags({
   currentPage,
   pageCount,
-  adminTags,
+  userTags,
   onChangePage,
   onClickPrevPage,
   onClickNextPage,
-  onRemoveAdminTag,
+  onRemoveUserTag,
 }) {
   const form = useForm({
     defaultValues: {
@@ -28,8 +29,11 @@ export function AllTagsApp({
   });
   
   const onSubmit = async (values) => {
-    await onRemoveAdminTag(values);
-    form.setValue('items', [])
+    const isRemoved = await onRemoveUserTag(values);
+    
+    if(isRemoved) {
+      form.reset();
+    }
   };
 
   return (
@@ -40,7 +44,7 @@ export function AllTagsApp({
           name="items"
           render={() => (
             <FormItem className="grid lg:grid-cols-4 grid-cols-3 gap-2 space-y-0">
-              {adminTags?.map((item) => (
+              {userTags?.map((item) => (
                 <FormField
                   key={item.id}
                   control={form.control}
@@ -74,7 +78,7 @@ export function AllTagsApp({
           )}
         />
 
-          {form.getValues('items').length !== 0 && <Button
+          {form.getValues('items').length > 0 && <Button
               className="block h-8 mx-auto"
               type="submit"
           >

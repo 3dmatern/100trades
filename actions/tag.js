@@ -7,7 +7,7 @@ import { TagSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
 import {
   getByIDs,
-  getIDs,
+  getIDsByUserId,
   getTagById,
   getTagByUserId,
   getTagByValue,
@@ -96,9 +96,16 @@ export const getTag = async (tagId) => {
   }
 };
 
-export const getTagIDs = async (skip, take) => {
+export const getTagIDsByUserId = async (userId, skip, take) => {
+  const existingUser = await getUserById(userId);
+  if(!existingUser) {
+    return {
+      error: "Несанкционированный доступ!",
+    };
+  }
+
   try {
-    const tagIDs = await getIDs(skip, take);
+    const tagIDs = await getIDsByUserId(userId, skip, take);
     return {
       success: tagIDs,
     };

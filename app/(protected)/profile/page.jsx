@@ -2,6 +2,7 @@
 
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useDealsStatistics } from "@/hooks/use-deals-statistics";
+import { useTags } from "@/hooks/use-tags";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
@@ -17,6 +18,8 @@ import {
   DealsDaysStatistics,
   DealsTagsStatistics,
 } from "@/components/statistics";
+import { TAKE_TAGS } from "@/hooks/constants";
+import { UserAllTags } from "@/components/profile/userAllTags";
 
 const RESULT_WIN_ID = process.env.NEXT_PUBLIC_RESULT_WIN_ID;
 const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
@@ -29,10 +32,20 @@ export default function ProfilePage() {
       winID: RESULT_WIN_ID,
       lossID: RESULT_LOSS_ID,
     });
+  const {
+    currentPage,
+    pageCount,
+    userTags,
+    selecteduserTags,
+    onChangePage,
+    onClickPrevPage,
+    onClickNextPage,
+    onRemoveUserTag,
+  } = useTags({ userId: user.id, skip: 0, take: TAKE_TAGS });
 
   return (
     <>
-      <UserInfo user={user} />
+      <UserInfo user={user}  />
 
       <Card className="max-w-[600px] min-w-80 w-full">
         <CardHeader>
@@ -66,6 +79,52 @@ export default function ProfilePage() {
               <AccordionTrigger className="px-5">По тегам</AccordionTrigger>
               <AccordionContent className="pt-4">
                 <DealsTagsStatistics tagsWLStat={tagsWLStat} />
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-5">
+              <AccordionTrigger className="px-5">
+                Все теги
+              </AccordionTrigger>
+              <AccordionContent className="pt-4">
+                <UserAllTags
+                  currentPage={currentPage}
+                  pageCount={pageCount}
+                  userTags={userTags}
+                  selecteduserTags={selecteduserTags}
+                  onChangePage={onChangePage}
+                  onClickPrevPage={onClickPrevPage}
+                  onClickNextPage={onClickNextPage}
+                  onRemoveUserTag={onRemoveUserTag}
+                />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </CardContent>
+      </Card>
+
+      <Card className="max-w-[600px] min-w-80 w-full">
+        <CardHeader>
+          <p className="text-2xl font-semibold text-center">
+            Текущие данные
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Accordion type="single" collapsible>
+            <AccordionItem value="item-1">
+              <AccordionTrigger className="px-5">
+                Все теги
+              </AccordionTrigger>
+              <AccordionContent className="pt-4">
+                <UserAllTags
+                  currentPage={currentPage}
+                  pageCount={pageCount}
+                  userTags={userTags}
+                  selecteduserTags={selecteduserTags}
+                  onChangePage={onChangePage}
+                  onClickPrevPage={onClickPrevPage}
+                  onClickNextPage={onClickNextPage}
+                  onRemoveUserTag={onRemoveUserTag}
+                />
               </AccordionContent>
             </AccordionItem>
           </Accordion>
