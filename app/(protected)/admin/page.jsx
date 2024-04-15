@@ -29,6 +29,7 @@ import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/dealScreenshotModal";
 import { DealsDaysStatistics } from "@/components/statistics";
 import { CurrentDateStatistics } from "@/components/statistics";
+import { TAKE_TAGS } from "@/hooks/constants";
 
 const RESULT_WIN_ID = process.env.NEXT_PUBLIC_RESULT_WIN_ID;
 const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
@@ -52,7 +53,7 @@ export default function AdminPage() {
     onClickPrevPage,
     onClickNextPage,
     onRemoveAdminTag,
-  } = useTags({ userId: selectUserId, skip: 0, take: 100 });
+  } = useTags({ userId: selectUserId, skip: 0, take: TAKE_TAGS });
   const { takes } = useTakes(selectUserId);
   const { onSort, onResetSort } = useSortedDeals(
     results,
@@ -69,7 +70,7 @@ export default function AdminPage() {
       onSort,
       onResetSort,
     });
-  const { hoursWLStat, daysWLStat, dealsInfoStat, tagsWLStat } =
+  const { hoursWLStat, daysWLStat, dealsInfoStat } =
     useDealsStatistics({
       userId: selectUserId,
       winID: RESULT_WIN_ID,

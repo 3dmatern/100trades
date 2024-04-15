@@ -87,7 +87,7 @@ export const getIDs = async (skip, take) => {
     } catch (error) {
         return null;
     }
-}
+};
 
 export const getByIDs = async (ids) => {
     try {
@@ -103,4 +103,28 @@ export const getByIDs = async (ids) => {
     } catch (error) {
         return null;
     }
-}
+};
+
+export const removeByIDs = async (ids) => {
+        console.log(ids);
+    try {
+        await db.entrieTag.deleteMany({
+            where: {
+                tagId: {
+                    in: ids,
+                },
+            },
+        });
+        const removedTags = await db.tag.deleteMany({
+            where: {
+                id: {
+                    in: ids,
+                },
+            },
+        });
+
+        return removedTags;
+    } catch (error) {
+        return null;
+    }
+};

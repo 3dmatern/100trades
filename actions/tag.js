@@ -5,7 +5,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import { db } from "@/lib/db";
 import { TagSchema } from "@/schemas";
 import { getUserById } from "@/data/user";
-import { getAllTag, getByIDs, getIDs, getTagById, getTagByUserId, getTagByValue } from "@/data/tag";
+import { getAllTag, getByIDs, getIDs, getTagById, getTagByUserId, getTagByValue, removeByIDs } from "@/data/tag";
 
 export const createTag = async (values) => {
   noStore();
@@ -112,7 +112,21 @@ export const getTagByIDs = async (tagIDs) => {
   } catch (error) {
     console.error("Error receiving tagsByIDs: ", error);
     return {
-      error: "Ошибка получения тегов!"
+      error: "Ошибка получения тегов!",
+    }
+  }
+};
+
+export const removeTagByIDs = async (ids) => {
+  try {
+    const result = await removeByIDs(ids);
+    return {
+      success: result,
+    };
+  } catch (error) {
+    console.error('Error delete tagByIDs: ', error);
+    return {
+      error: "Ошибка при удалении тегов!",
     }
   }
 };
