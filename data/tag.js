@@ -106,7 +106,6 @@ export const getByIDs = async (ids) => {
 };
 
 export const removeByIDs = async (ids) => {
-        console.log(ids);
     try {
         await db.entrieTag.deleteMany({
             where: {
