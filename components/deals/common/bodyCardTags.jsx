@@ -203,6 +203,18 @@ export default function BodyCardTags({
               : "items-center h-full border-r px-2 overflow-hidden"
           }`}
         >
+          {active && !isAdmin && !isPublished && (
+            <Button
+              type="button"
+              onClick={() => setOpen((prev) => !prev)}
+              className="
+                flex items-center justify-center size-4 p-0.5 
+                rounded-sm bg-slate-200 hover:bg-slate-300
+              "
+            >
+              <Image src="/plus-lg.svg" alt="plus" width={10} height={10} />
+            </Button>
+          )}
           {!currentTags ? (
             <BeatLoader size={7} className="mx-auto" />
           ) : (
@@ -234,19 +246,6 @@ export default function BodyCardTags({
                 )}
               </span>
             ))
-          )}
-
-          {active && !isAdmin && !isPublished && (
-            <Button
-              type="button"
-              onClick={() => setOpen((prev) => !prev)}
-              className="
-                flex items-center justify-center size-4 p-0.5 
-                rounded-sm bg-slate-200 hover:bg-slate-300
-              "
-            >
-              <Image src="/plus-lg.svg" alt="plus" width={10} height={10} />
-            </Button>
           )}
         </div>
       </div>
