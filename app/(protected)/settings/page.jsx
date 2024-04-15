@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { SettingsSchema } from "@/schemas";
 import { settings } from "@/actions/settings";
 
+import { UiContainer } from "@/components/uikit/uiContainer";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -61,7 +62,7 @@ export default function SettingsPage() {
     }
 
     return (
-        <main className="w-full h-[calc(100%-132px)] mt-8 px-5 md:flex md:items-start md:justify-center md:gap-8">
+        <UiContainer className="px-5 flex items-center justify-center">
             <Card className="max-w-[600px] min-w-80 w-full">
                 <CardHeader>
                     <p className="text-2xl font-semibold text-center">
@@ -145,6 +146,6 @@ export default function SettingsPage() {
                     </Form>
                 </CardContent>
             </Card>
-        </main>
+        </UiContainer>
     );
 }

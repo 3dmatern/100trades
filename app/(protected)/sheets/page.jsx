@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { currentUser } from "@/lib/auth";
 import { getSheets } from "@/actions/sheet";
+import { UiContainer } from "@/components/uikit/uiContainer";
 import SheetAddButton from "@/components/sheet/sheetAddButton";
 
 export const metadata = {
@@ -14,7 +15,7 @@ export default async function SheetsPage() {
     const sheetsData = await getSheets(user.id);
 
     return (
-        <main className="container h-[calc(100%-132px)] mx-auto p-5 overflow-x-auto">
+        <UiContainer className="container p-5 overflow-x-auto">
             <h1 className="mt-8 text-center text-2xl font-semibold">
                 Листы сделок
             </h1>
@@ -36,6 +37,6 @@ export default async function SheetsPage() {
                     userId={user.id}
                 />
             </div>
-        </main>
+        </UiContainer>
     );
 }

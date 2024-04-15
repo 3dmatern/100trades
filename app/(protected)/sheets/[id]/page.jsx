@@ -15,7 +15,7 @@ import { useDealModalCarousel } from "@/hooks/use-deal-modal-carousel";
 import { useSortedDeals } from "@/hooks/use-deals-sorted";
 import { useDealsStatistics } from "@/hooks/use-deals-statistics";
 
-import SheetWrapper from "@/components/sheet/sheetWrapper";
+import UiContainer from "@/components/sheet/sheetWrapper";
 import Sheets from "@/components/sheet/sheets";
 import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/dealScreenshotModal";
@@ -83,7 +83,11 @@ export default function SheetPage({ params }) {
   }, [router, sheets]);
 
   return (
-    <SheetWrapper className="h-[calc(100%-132px)]">
+    <UiContainer
+      className="
+        flex flex-col p-4 pb-0 relative overflow-x-hidden
+      "
+    >
       <CurrentDateStatistics
         dealsStatWLHours={hoursWLStat?.dealsStat}
         dealsStatWLDays={daysWLStat?.dealsStat}
@@ -160,6 +164,6 @@ export default function SheetPage({ params }) {
           />
         }
       />
-    </SheetWrapper>
+    </UiContainer>
   );
 }

@@ -16,6 +16,7 @@ import { useDealsStatistics } from "@/hooks/use-deals-statistics";
 import { useDealsStatisticsAdmin } from "@/hooks/use-deals-statistics-admin";
 import { useTakes } from "@/hooks/use-takes";
 
+import { UiContainer } from "@/components/uikit/uiContainer";
 import {
   Accordion,
   AccordionContent,
@@ -84,9 +85,9 @@ export default function AdminPage() {
 
   if (users.length === 0) {
     return (
-      <div className="h-[calc(100vh-132px)] text-lg font-semibold text-center">
+      <UiContainer className="flex items-center justify-center">
         <BeatLoader />
-      </div>
+      </UiContainer>
     );
   }
 
@@ -98,8 +99,8 @@ export default function AdminPage() {
   };
 
   return (
-    <main>
-      <Accordion type="single" collapsible className="w-full mt-8">
+    <UiContainer className="pt-8 px-1">
+      <Accordion type="single" collapsible>
         <AccordionItem
           value="item-1"
           onClick={(e) => handleResetSelects(e.target.dataset.state)}
@@ -192,6 +193,6 @@ export default function AdminPage() {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-    </main>
+    </UiContainer>
   );
 }

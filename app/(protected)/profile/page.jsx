@@ -45,64 +45,71 @@ export default function ProfilePage() {
 
   return (
     <>
-      <UserInfo user={user}  />
+      <div
+        className="
+          flex flex-col items-center justify-start gap-8 
+          lg:flex-row lg:items-start lg:justify-center
+        "
+      >
+        <UserInfo user={user}  />
 
-      <Card className="max-w-[600px] min-w-80 w-full">
-        <CardHeader>
-          <p className="text-2xl font-semibold text-center">
-            Статистика по сделкам с W:L
-          </p>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="item-2">
-              <AccordionTrigger className="px-5">По тикерам</AccordionTrigger>
-              <AccordionContent className="pt-4">
-                <DealsTikerStatistics tikersStat={tikersStat} />
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-1">
-              <AccordionTrigger className="px-5">
-                По часам (c 9 до 24)
-              </AccordionTrigger>
-              <AccordionContent className="pt-4">
-                <DealsTimeStatistics hoursWLStat={hoursWLStat} />
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-3">
-              <AccordionTrigger className="px-5">По дням</AccordionTrigger>
-              <AccordionContent className="pt-4">
-                <DealsDaysStatistics daysWLStat={daysWLStat} />
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-4">
-              <AccordionTrigger className="px-5">По тегам</AccordionTrigger>
-              <AccordionContent className="pt-4">
-                <DealsTagsStatistics tagsWLStat={tagsWLStat} />
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-5">
-              <AccordionTrigger className="px-5">
-                Все теги
-              </AccordionTrigger>
-              <AccordionContent className="pt-4">
-                <UserAllTags
-                  currentPage={currentPage}
-                  pageCount={pageCount}
-                  userTags={userTags}
-                  selecteduserTags={selecteduserTags}
-                  onChangePage={onChangePage}
-                  onClickPrevPage={onClickPrevPage}
-                  onClickNextPage={onClickNextPage}
-                  onRemoveUserTag={onRemoveUserTag}
-                />
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </CardContent>
-      </Card>
-
-      <Card className="max-w-[600px] min-w-80 w-full">
+        <Card className="max-w-[600px] min-w-80 w-full">
+          <CardHeader>
+            <p className="text-2xl font-semibold text-center">
+              Статистика по сделкам с W:L
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="item-2">
+                <AccordionTrigger className="px-5">По тикерам</AccordionTrigger>
+                <AccordionContent className="pt-4">
+                  <DealsTikerStatistics tikersStat={tikersStat} />
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-1">
+                <AccordionTrigger className="px-5">
+                  По часам (c 9 до 24)
+                </AccordionTrigger>
+                <AccordionContent className="pt-4">
+                  <DealsTimeStatistics hoursWLStat={hoursWLStat} />
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-3">
+                <AccordionTrigger className="px-5">По дням</AccordionTrigger>
+                <AccordionContent className="pt-4">
+                  <DealsDaysStatistics daysWLStat={daysWLStat} />
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-4">
+                <AccordionTrigger className="px-5">По тегам</AccordionTrigger>
+                <AccordionContent className="pt-4">
+                  <DealsTagsStatistics tagsWLStat={tagsWLStat} />
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-5">
+                <AccordionTrigger className="px-5">
+                  Все теги
+                </AccordionTrigger>
+                <AccordionContent className="pt-4">
+                  <UserAllTags
+                    currentPage={currentPage}
+                    pageCount={pageCount}
+                    userTags={userTags}
+                    selecteduserTags={selecteduserTags}
+                    onChangePage={onChangePage}
+                    onClickPrevPage={onClickPrevPage}
+                    onClickNextPage={onClickNextPage}
+                    onRemoveUserTag={onRemoveUserTag}
+                  />
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </CardContent>
+        </Card>
+      </div>
+      
+      <Card className="max-w-5xl min-w-80 w-full mx-auto">
         <CardHeader>
           <p className="text-2xl font-semibold text-center">
             Текущие данные

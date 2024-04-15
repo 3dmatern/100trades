@@ -1,3 +1,5 @@
+import { UiContainer } from "@/components/uikit/uiContainer";
+
 export const metadata = {
     title: "Профиль",
     description: "Страница профиля журнала сделок Homa-Trading",
@@ -5,13 +7,12 @@ export const metadata = {
 
 export default function ProfileLayout({ children }) {
     return (
-        <main
+        <UiContainer
             className="
-                w-full h-full mt-8 px-5 pb-5 flex flex-col items-center
-                justify-start gap-8 lg:flex-row lg:items-start lg:justify-center 
+                pt-8 px-5 flex flex-col gap-8
             "
         >
             {children}
-        </main>
+        </UiContainer>
     );
 }

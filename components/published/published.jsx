@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/dealScreenshotModal";
 import { useDealsStatistics } from "@/hooks/use-deals-statistics";
+import { UiContainer } from "../uikit/uiContainer";
 
 export function Published({ sheetPublishedId }) {
   const { results } = useResults();
@@ -43,7 +44,12 @@ export function Published({ sheetPublishedId }) {
 
   return (
     <>
-      <div className="flex items-center justify-between pt-5 px-5">
+      <div
+        className="
+          absolute top-0 right-0 left-0
+          flex items-center justify-between pt-5 px-5
+        "
+      >
         <h1 className="text-2xl font-bold">Журнал Cделок</h1>
 
         <Button asChild>
@@ -65,7 +71,8 @@ export function Published({ sheetPublishedId }) {
           </span>
         </span>
       </div>
-      <SheetWrapper className="h-[calc(100vh-132px)]">
+
+      <UiContainer className="pt-4" >
         <Table
           deals={sheetPublished?.deals}
           dealsInfo={dealsInfo}
@@ -110,7 +117,7 @@ export function Published({ sheetPublishedId }) {
             />
           }
         />
-      </SheetWrapper>
+      </UiContainer>
     </>
   );
 }

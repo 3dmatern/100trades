@@ -11,7 +11,12 @@ export default function Navbar() {
   const pathname = usePathname();
   const user = useCurrentUser();
   return (
-    <nav className="flex items-center justify-between w-full p-4 bg-secondary shadow-sm">
+    <nav
+      className="
+        absolute top-0 right-0 left-0
+        flex items-center justify-between w-full p-4 bg-secondary shadow-sm
+      "
+    >
       <Link href="/">
         <h1 className="text-2xl font-bold">Журнал Cделок</h1>
       </Link>

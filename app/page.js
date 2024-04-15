@@ -1,10 +1,16 @@
 import Link from "next/link";
 
+import { UiContainer } from "@/components/uikit/uiContainer";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
     return (
-        <main className="container min-w-96 min-h-96 h-full mx-auto flex items-center justify-center md:flex-nowrap flex-wrap">
+        <UiContainer
+            className="
+                container flex items-center justify-center flex-wrap
+                md:flex-nowrap
+            "
+        >
             <div className="lg:w-3/5 w-max mx-auto mb-4 lg:mb-0">
                 <iframe
                     src="https://www.youtube.com/embed/unYUlksBnEE?si=JMCtwQNzMRLPxijy"
@@ -31,6 +37,6 @@ export default function Home() {
                     </Button>
                 </div>
             </div>
-        </main>
+        </UiContainer>
     );
 }

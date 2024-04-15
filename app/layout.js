@@ -5,6 +5,7 @@ import "./globals.css";
 import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
+import { UiContainer } from "@/components/uikit/uiContainer";
 
 const inter = Inter({ subsets: ["cyrillic", "latin"] });
 
@@ -23,17 +24,26 @@ export default async function RootLayout({ children }) {
   return (
     <SessionProvider session={session}>
       <html lang="ru">
-        <body className={cn("min-w-96", inter.className)}>
+        <body className={cn("", inter.className)}>
           <Toaster />
-          {children}
+          <div className="min-w-96 min-h-screen pt-[72px] pb-12">
+            {children}
+          </div>
           <div id="modals" />
-          <a
-            href="https://winloss.ru"
-            target="_blank"
-            className="block w-full py-1 text-center text-slate-500 text-sm"
+          <footer
+            className="
+              block fixed right-0 bottom-0 left-0 py-3 text-center
+              z-[9999] bg-white
+            "
           >
-            © Школа Трейдинга Хомяка-Спекулянта, winloss.ru
-          </a>
+            <a
+              href="https://winloss.ru"
+              target="_blank"
+              className="text-slate-500 text-sm"
+            >
+              © Школа Трейдинга Хомяка-Спекулянта, winloss.ru
+            </a>
+          </footer>
         </body>
       </html>
     </SessionProvider>
