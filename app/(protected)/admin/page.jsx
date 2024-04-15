@@ -22,13 +22,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { AdminSelect } from "@/components/admin";
+import { AdminSelect, AllTagsApp } from "@/components/admin";
 import { DealsTimeStatistics } from "@/components/statistics/dealsTimeStatistics";
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/dealScreenshotModal";
 import { DealsDaysStatistics } from "@/components/statistics";
 import { CurrentDateStatistics } from "@/components/statistics";
+import { TAKE_TAGS } from "@/hooks/constants";
 
 const RESULT_WIN_ID = process.env.NEXT_PUBLIC_RESULT_WIN_ID;
 const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
@@ -42,7 +43,17 @@ export default function AdminPage() {
   const { results } = useResults();
   const { longShorts } = useLongShort();
   const { risksRewards } = useRisksRewards();
-  const { tags } = useTags(selectUserId);
+  const {
+    tags,
+    currentPage,
+    pageCount,
+    adminTags,
+    selectedAdminTags,
+    onChangePage,
+    onClickPrevPage,
+    onClickNextPage,
+    onRemoveAdminTag,
+  } = useTags({ userId: selectUserId, skip: 0, take: TAKE_TAGS });
   const { takes } = useTakes(selectUserId);
   const { onSort, onResetSort } = useSortedDeals(
     results,
@@ -59,8 +70,7 @@ export default function AdminPage() {
       onSort,
       onResetSort,
     });
-
-  const { hoursWLStat, daysWLStat, dealsInfoStat, tagsWLStat } =
+  const { hoursWLStat, daysWLStat, dealsInfoStat } =
     useDealsStatistics({
       userId: selectUserId,
       winID: RESULT_WIN_ID,
@@ -188,6 +198,23 @@ export default function AdminPage() {
           </AccordionTrigger>
           <AccordionContent className="pt-4">
             <DealsDaysStatistics daysWLStat={allDaysWLStat} />
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-4">
+          <AccordionTrigger className="px-5">
+            Все теги
+          </AccordionTrigger>
+          <AccordionContent className="pt-4">
+            <AllTagsApp 
+              currentPage={currentPage}
+              pageCount={pageCount}
+              adminTags={adminTags}
+              selectedAdminTags={selectedAdminTags}
+              onChangePage={onChangePage}
+              onClickPrevPage={onClickPrevPage}
+              onClickNextPage={onClickNextPage}
+              onRemoveAdminTag={onRemoveAdminTag}
+            />
           </AccordionContent>
         </AccordionItem>
       </Accordion>

@@ -1,12 +1,28 @@
 import { db } from "@/lib/db";
 import { unstable_noStore as noStore } from "next/cache";
 
-export const getAllTag = async () => {
+export const getAllTag = async (skip, take) => {
     noStore();
-    try {
-        const allTag = await db.tag.findMany();
+    let allTags = [];
 
-        return allTag;
+    try {
+        if (skip && take) {
+            allTags = await db.tag.findMany({
+                skip,
+                take,
+                include: {
+                    entrieTag: {
+                        include: {
+                            id: true,
+                        },
+                    },
+                },
+            });
+        } else {
+            allTags = await db.tag.findMany();
+        }
+
+        return allTags;
     } catch (error) {
         return null;
     }
@@ -52,6 +68,61 @@ export const getTagByValue = async (value) => {
         });
 
         return tag;
+    } catch (error) {
+        return null;
+    }
+};
+
+export const getIDs = async (skip, take) => {
+    try {
+        const ids = await db.tag.findMany({
+            skip,
+            take,
+            select: {
+                id: true,
+            },
+        });
+
+        return ids.map((item) => item.id);
+    } catch (error) {
+        return null;
+    }
+};
+
+export const getByIDs = async (ids) => {
+    try {
+        const tags = await db.tag.findMany({
+            where: {
+                id: {
+                    in: ids,
+                },
+            },
+        });
+
+        return tags;
+    } catch (error) {
+        return null;
+    }
+};
+
+export const removeByIDs = async (ids) => {
+    try {
+        await db.entrieTag.deleteMany({
+            where: {
+                tagId: {
+                    in: ids,
+                },
+            },
+        });
+        const removedTags = await db.tag.deleteMany({
+            where: {
+                id: {
+                    in: ids,
+                },
+            },
+        });
+
+        return removedTags;
     } catch (error) {
         return null;
     }
