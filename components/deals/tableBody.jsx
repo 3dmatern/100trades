@@ -25,6 +25,7 @@ export default function TableBody({
   isModal,
   isPublished,
   lossID,
+  currentSheetColumns
 }) {
   return deals && deals.length >= 0 ? (
     <>
@@ -45,6 +46,7 @@ export default function TableBody({
           onCheckDeal={onCheckDeal}
           onActionDeal={onCreateDeal}
           isCreate={true}
+          currentSheetColumns={currentSheetColumns}
         />
       )}
       {deals?.map((deal) => (
@@ -71,6 +73,7 @@ export default function TableBody({
           isModal={isModal}
           isPublished={isPublished}
           lossID={lossID}
+          currentSheetColumns={currentSheetColumns}
         />
       ))}
     </>

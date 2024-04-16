@@ -50,6 +50,7 @@ export default function TableBodyCard({
   isModal,
   isPublished,
   lossID,
+  currentSheetColumns
 }) {
   const [hover, setHover] = useState(false);
   const isLoss = deal?.resultId === lossID;
@@ -64,23 +65,29 @@ export default function TableBodyCard({
         selectedDeals?.includes(deal?.id) || hover ? "bg-slate-50" : "bg-white"
       }`}
     >
-      {isPublished && deal?.name === undefined ? null : (
-        <BodyCardName
-          dealId={deal?.id}
-          dealName={deal?.name}
-          dealNumber={deal?.number}
-          selectedDeals={selectedDeals}
-          dealHover={hover}
-          columnWidth={columnWidth["name"]}
-          onCheckDeal={onCheckDeal}
-          isPending={isPending}
-          onActionDeal={onActionDeal}
-          isAdmin={isAdmin}
-          isModal={isModal}
-          isPublished={isPublished}
-        />
+      {currentSheetColumns?.name === null
+        || (isPublished && currentSheetColumns?.name === null)
+        ? null
+        : (
+          <BodyCardName
+            dealId={deal?.id}
+            dealName={deal?.name}
+            dealNumber={deal?.number}
+            selectedDeals={selectedDeals}
+            dealHover={hover}
+            columnWidth={columnWidth["name"]}
+            onCheckDeal={onCheckDeal}
+            isPending={isPending}
+            onActionDeal={onActionDeal}
+            isAdmin={isAdmin}
+            isModal={isModal}
+            isPublished={isPublished}
+          />
       )}
-      {isPublished && deal?.resultId === undefined ? null : (
+      {currentSheetColumns?.resultId === null
+        || (isPublished && currentSheetColumns?.resultId === null)
+        ? null 
+        : (
         <BodyCardResult
           dealId={deal?.id}
           resultId={deal?.resultId}
@@ -93,7 +100,10 @@ export default function TableBodyCard({
           dealLimitionDateWithTime={dealLimitionDateWithTime}
         />
       )}
-      {isPublished && deal?.lsId === undefined ? null : (
+      {currentSheetColumns?.lsId === null
+        || (isPublished && currentSheetColumns?.lsId === null)
+        ? null 
+        : (
         <BodyCardLongShort
           dealId={deal?.id}
           lsId={deal?.lsId}
@@ -105,7 +115,10 @@ export default function TableBodyCard({
           isPublished={isPublished}
         />
       )}
-      {isPublished && deal?.pose === undefined ? null : (
+      {currentSheetColumns?.pose === null
+        || (isPublished && currentSheetColumns?.pose === null)
+        ? null 
+        : (
         <BodyCardPose
           dealId={deal?.id}
           dealPose={deal?.pose}
@@ -118,7 +131,10 @@ export default function TableBodyCard({
           isPublished={isPublished}
         />
       )}
-      {isPublished && deal?.risk === undefined ? null : (
+      {currentSheetColumns?.risk === null
+        || (isPublished && currentSheetColumns?.risk === null)
+        ? null 
+        : (
         <BodyCardRisk
           dealId={deal?.id}
           dealRisk={deal?.risk}
@@ -132,7 +148,10 @@ export default function TableBodyCard({
           isPublished={isPublished}
         />
       )}
-      {isPublished && deal?.profit === undefined ? null : (
+      {currentSheetColumns?.profit === null
+        || (isPublished && currentSheetColumns?.profit === null)
+        ? null 
+        : (
         <BodyCardProfit
           dealId={deal?.id}
           dealProfit={deal?.profit}
@@ -146,13 +165,19 @@ export default function TableBodyCard({
           isPublished={isPublished}
         />
       )}
-      {/* {isPublished && deal?.forecast === undefined ? null : (
+      {/* {currentSheetColumns?.forecast === null
+        || (isPublished && currentSheetColumns?.forecast === null)
+        ? null 
+        : (
         <BodyCardForecast
           dealPose={deal?.forecast}
           columnWidth={columnWidth["forecast"]}
         />
       )} */}
-      {isPublished && deal?.entrieTake === undefined ? null : (
+      {currentSheetColumns?.entrieTake === null
+        || (isPublished && currentSheetColumns?.entrieTake === null)
+        ? null 
+        : (
         <BodyCardTakes
           userId={userId}
           dealId={deal?.id}
@@ -168,7 +193,10 @@ export default function TableBodyCard({
           isPublished={isPublished}
         />
       )}
-      {/* {isPublished && deal?.rrId === undefined ? null : (
+      {/* {currentSheetColumns?.rrId === null
+        || (isPublished && currentSheetColumns?.rrId === null)
+        ? null 
+        : (
                 <BodyCardRisksRewards
                     userId={userId}
                     dealId={deal?.id}
@@ -182,7 +210,10 @@ export default function TableBodyCard({
                     isPublished={isPublished}
                 />
             )} */}
-      {isPublished && deal?.entryDate === undefined ? null : (
+      {currentSheetColumns?.entryDate === null
+        || (isPublished && currentSheetColumns?.entryDate === null)
+        ? null 
+        : (
         <BodyCardDate
           dealId={deal?.id}
           inputName="entryDate"
@@ -196,7 +227,9 @@ export default function TableBodyCard({
           isPublished={isPublished}
         />
       )}
-      {isPublished && deal?.imageStart === undefined
+      {currentSheetColumns?.imageStart === null
+        || (isPublished && currentSheetColumns?.imageStart === null)
+               
         ? null
         : !isModal && (
             <BodyCardScreenshot
@@ -214,7 +247,10 @@ export default function TableBodyCard({
               isPublished={isPublished}
             />
           )}
-      {isPublished && deal?.deposit === undefined ? null : (
+      {currentSheetColumns?.deposit === null
+        || (isPublished && currentSheetColumns?.deposit === null)
+        ? null 
+        : (
         <BodyCardDeposit
           dealId={deal?.id}
           dealDeposit={deal?.deposit}
@@ -227,13 +263,19 @@ export default function TableBodyCard({
           isPublished={isPublished}
         />
       )}
-      {isPublished && deal?.progress === undefined ? null : (
+      {currentSheetColumns?.progress === null
+        || (isPublished && currentSheetColumns?.progress === null)
+        ? null 
+        : (
         <BodyCardProgress
           dealProgress={deal?.progress}
           columnWidth={columnWidth["progress"]}
         />
       )}
-      {isPublished && deal?.exitDate === undefined ? null : (
+      {currentSheetColumns?.exitDate === null
+        || (isPublished && currentSheetColumns?.exitDate === null)
+        ? null 
+        : (
         <BodyCardDate
           sheetId={sheetId}
           dealId={deal?.id}
@@ -249,7 +291,9 @@ export default function TableBodyCard({
           isPublished={isPublished}
         />
       )}
-      {isPublished && deal?.imageStart === undefined
+      {currentSheetColumns?.imageEnd === null
+        || (isPublished && currentSheetColumns?.imageEnd === null)
+               
         ? null
         : !isModal && (
             <BodyCardScreenshot
@@ -267,7 +311,10 @@ export default function TableBodyCard({
               isPublished={isPublished}
             />
           )}
-      {isPublished && deal?.take === undefined ? null : (
+      {currentSheetColumns?.take === null
+        || (isPublished && currentSheetColumns?.take === null)
+        ? null 
+        : (
         <BodyCardTakeScreenshot
           takeScreenshot={deal?.take}
           isLoss={isLoss && isPassedTwoDays}
@@ -275,7 +322,10 @@ export default function TableBodyCard({
           columnWidth={columnWidth["take"]}
         />
       )}
-      {isPublished && deal?.stress === undefined ? null : (
+      {currentSheetColumns?.stress === null
+        || (isPublished && currentSheetColumns?.stress === null)
+        ? null 
+        : (
         <BodyCardStress
           dealId={deal?.id}
           dealStress={deal?.stress}
@@ -286,7 +336,10 @@ export default function TableBodyCard({
           isPublished={isPublished}
         />
       )}
-      {isPublished && deal?.entrieTag === undefined ? null : (
+      {currentSheetColumns?.entrieTag === null
+        || (isPublished && currentSheetColumns?.entrieTag === null)
+        ? null 
+        : (
         <BodyCardTags
           userId={userId}
           dealId={deal?.id}
@@ -302,7 +355,10 @@ export default function TableBodyCard({
           isPublished={isPublished}
         />
       )}
-      {isPublished && deal?.notes === undefined ? null : (
+      {currentSheetColumns?.notes === null
+        || (isPublished && currentSheetColumns?.notes === null)
+        ? null 
+        : (
         <BodyCardNotes
           dealId={deal?.id}
           dealNotes={deal?.notes}
@@ -313,7 +369,10 @@ export default function TableBodyCard({
           isPublished={isPublished}
         />
       )}
-      {isPublished && deal?.timeInTrade === undefined ? null : (
+      {currentSheetColumns?.timeInTrade === null
+        || (isPublished && currentSheetColumns?.timeInTrade === null)
+        ? null 
+        : (
         <BodyCardTimeInTrade
           timeInTrade={deal?.timeInTrade}
           columnWidth={columnWidth["timeInTrade"]}

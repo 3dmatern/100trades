@@ -9,14 +9,16 @@ import { cn } from "@/lib/utils";
 import SettingsSheet from "@/components/sheet/settingsSheet";
 
 export default function Sheet({
+  className,
   selectSheet,
   sheet,
   userId,
+  currentSheetColumns,
   onAddSheetRef,
   onUpdateSheet,
   onRemoveSheet,
+  onUpdatePrivateSettings,
   isAdmin,
-  className,
 }) {
   const sheetRef = useRef(null);
   const router = useRouter();
@@ -49,7 +51,10 @@ export default function Sheet({
       id={sheet.id}
       onClick={() => router.push(`/sheets/${sheet.id}`)}
       className={cn(
-        `flex items-center justify-center gap-1 w-max h-9 px-2 relative hover:bg-gray-300 rounded-t-lg cursor-pointer`,
+        `
+          flex items-center justify-center gap-1 w-max h-9 px-2 relative
+          hover:bg-gray-300 rounded-t-lg cursor-pointer
+        `,
         className
       )}
     >
@@ -62,8 +67,10 @@ export default function Sheet({
             <SettingsSheet
               sheet={sheet}
               userId={userId}
+              currentSheetColumns={currentSheetColumns}
               onUpdateSheet={onUpdateSheet}
               onRemoveSheet={handleRemoveSheet}
+              onUpdatePrivateSettings={onUpdatePrivateSettings}
             />
           )}
         </>

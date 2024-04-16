@@ -10,9 +10,11 @@ export default function Sheets({
     userId,
     sheets,
     sheetId,
+    currentSheetColumns,
     onSheetUpdate,
     onRemoveSheet,
     isAdmin = false,
+    onUpdatePrivateSettings,
 }) {
     const containerRef = useRef(null);
     const contentRef = useRef(null);
@@ -99,18 +101,20 @@ export default function Sheets({
                         sheets?.map((sheet) => (
                             <Sheet
                                 key={sheet.id}
-                                selectSheet={sheetId}
-                                sheet={sheet}
-                                userId={userId}
-                                onAddSheetRef={setSheetRefs}
-                                onUpdateSheet={onSheetUpdate}
-                                onRemoveSheet={onRemoveSheet}
-                                isAdmin={isAdmin}
                                 className={
                                     sheetId === sheet.id
                                         ? "bg-gray-200"
                                         : "bg-gray-100"
                                 }
+                                selectSheet={sheetId}
+                                sheet={sheet}
+                                userId={userId}
+                                currentSheetColumns={currentSheetColumns}
+                                onAddSheetRef={setSheetRefs}
+                                onUpdateSheet={onSheetUpdate}
+                                onRemoveSheet={onRemoveSheet}
+                                onUpdatePrivateSettings={onUpdatePrivateSettings}
+                                isAdmin={isAdmin}
                             />
                         ))}
                     {!isAdmin && (

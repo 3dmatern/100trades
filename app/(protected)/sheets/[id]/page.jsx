@@ -28,7 +28,13 @@ export default function SheetPage({ params }) {
   const { id } = params;
   const router = useRouter();
   const user = useCurrentUser();
-  const { sheets, onSheetUpdate, onRemoveSheet } = useSheets(user.id);
+  const {
+    sheets,
+    currentSheetColumns,
+    onSheetUpdate,
+    onRemoveSheet,
+    onUpdatePrivateSettings
+  } = useSheets({ userId: user.id, sheetId: id});
   const { results } = useResults();
   const { longShorts } = useLongShort();
   const { risksRewards } = useRisksRewards();
@@ -97,14 +103,15 @@ export default function SheetPage({ params }) {
         userId={user.id}
         sheets={sheets}
         sheetId={id}
+        currentSheetColumns={currentSheetColumns}
         onSheetUpdate={onSheetUpdate}
         onRemoveSheet={onRemoveSheet}
+        onUpdatePrivateSettings={onUpdatePrivateSettings}
       />
 
       <Table
         userId={user.id}
         deals={deals}
-        dealsInfo={dealsInfo}
         dealsInfoStat={dealsInfoStat}
         sheetId={id}
         selectedDeals={selectedDeals}
@@ -125,6 +132,7 @@ export default function SheetPage({ params }) {
         takesData={takes}
         onClickDealImg={onClickDealImg}
         lossID={RESULT_LOSS_ID}
+        currentSheetColumns={currentSheetColumns}
       />
 
       <DealScreenshotModal
@@ -140,7 +148,6 @@ export default function SheetPage({ params }) {
           <Table
             userId={user.id}
             deals={deals}
-            dealsInfo={dealsInfo}
             sheetId={id}
             selectedDeals={selectedDeals}
             checkAll={checkAll}
@@ -161,6 +168,7 @@ export default function SheetPage({ params }) {
             onClickDealImg={onRemoveImg}
             isModal={true}
             deal={deals?.find((d) => d.id === currentDealOptions?.deal.id)}
+            currentSheetColumns={currentSheetColumns}
           />
         }
       />

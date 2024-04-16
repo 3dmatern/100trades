@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { getEntriesBySheetIdByFields } from "@/data/entrie";
-import { getSheetById, getSheetNameById } from "@/data/sheet";
+import { getSheetById, getSheetNameAndSettingsById } from "@/data/sheet";
 import { getSheetPublishedById } from "@/data/sheetPublished";
 import { getUserById, getUserNickById } from "@/data/user";
 import { getTagByUserId } from "@/data/tag";
@@ -61,14 +61,15 @@ export const getSheetPublished = async (sheetPublishedId) => {
     const userNick = await getUserNickById(userId);
     const tagsUser = await getTagByUserId(userId);
     const takesUser = await getTakeByUserId(userId);
-    const sheetName = await getSheetNameById(sheetId);
+    const { name, sheetPublished } = await getSheetNameAndSettingsById(sheetId);
     const entrieFields = await getEntriesBySheetIdByFields(sheetId, rest);
 
     return {
       userNick,
       tagsUser,
       takesUser,
-      sheetName,
+      sheetName: name,
+      sheetPublished,
       deals: entrieFields,
     };
   } catch (error) {

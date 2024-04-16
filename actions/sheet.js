@@ -40,6 +40,33 @@ export const createSheet = async (values) => {
         name,
       },
     });
+    console.log(newSheet);
+    await db.sheetPrivate.create({
+      data: {
+        sheetId: newSheet.id,
+        userId,
+        name: "name",
+        resultId: "resultId",
+        lsId: "lsId",
+        pose: "pose",
+        risk: "risk",
+        profit: "profit",
+        forecast: null,
+        entrieTake: "entrieTake",
+        rrId: null,
+        entryDate: "entryDate",
+        imageStart: "imageStart",
+        deposit: "deposit",
+        progress: "progress",
+        exitDate: "exitDate",
+        imageEnd: "imageEnd",
+        take: "take",
+        stress: "stress",
+        entrieTag: "entrieTag",
+        notes: "notes",
+        timeInTrade: "timeInTrade",
+      }
+    });
 
     revalidatePath("/sheets");
 
@@ -66,7 +93,7 @@ export const getSheets = async (userId) => {
   }
 
   try {
-    const sheets = getSheetsByUserId(existingUser.id);
+    const sheets = await getSheetsByUserId(existingUser.id);
 
     return sheets;
   } catch (error) {
@@ -176,6 +203,88 @@ export const updateSheet = async (values) => {
     console.error("Sheet update error: ", error);
     return {
       error: "Ошибка обновления листа!",
+    };
+  }
+};
+
+export const updateSheetPrivate = async ({ userId, sheetId, items }) => {
+  const existingUser = await getUserById(userId);
+  if (!existingUser) {
+    return {
+      error: "Несанкционированный доступ!",
+    };
+  }
+
+  const existingSheet = await getSheetById(sheetId);
+  if (!existingSheet || existingSheet.userId !== existingUser.id) {
+    return {
+      error: "Несанкционированный доступ!",
+    };
+  }
+
+  let {
+    name,
+    pose,
+    risk,
+    profit,
+    forecast,
+    entryDate,
+    imageStart,
+    deposit,
+    progress,
+    exitDate,
+    imageEnd,
+    take,
+    stress,
+    notes,
+    timeInTrade,
+    resultId,
+    lsId,
+    rrId,
+    entrieTag,
+    entrieTake,
+  } = items.reduce((acc, field) => {
+    acc[field] = field;
+    return acc;
+  }, {});
+
+  try {
+    const updSheetPrivate = await db.sheetPrivate.update({
+      where: { sheetId: existingSheet.id },
+      data: {
+        userId: existingUser.id,
+        sheetId: existingSheet.id,
+        name: name || null,
+        resultId: resultId || null,
+        lsId: lsId || null,
+        pose: pose || null,
+        risk: risk || null,
+        profit: profit || null,
+        forecast: forecast || null,
+        rrId: rrId || null,
+        entryDate: entryDate || null,
+        imageStart: imageStart || null,
+        deposit: deposit || null,
+        progress: progress || null,
+        exitDate: exitDate || null,
+        imageEnd: imageEnd || null,
+        take: take || null,
+        stress: stress || null,
+        entrieTag: entrieTag || null,
+        entrieTake: entrieTake || null,
+        notes: notes || null,
+        timeInTrade: timeInTrade || null,
+      },
+    });
+
+    return {
+      updSheetPrivate,
+      success: "Настройки успешно обновлены",
+    };
+  } catch (error) {
+    console.error("SheetPrivate update error: ", error);
+    return {
+      error: "Ошибка обновления приватного листа.",
     };
   }
 };

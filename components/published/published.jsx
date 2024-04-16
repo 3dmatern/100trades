@@ -9,7 +9,6 @@ import { useRisksRewards } from "@/hooks/use-risks-rewards";
 import { useDealModalCarousel } from "@/hooks/use-deal-modal-carousel";
 import { useSortedDeals } from "@/hooks/use-deals-sorted";
 
-import SheetWrapper from "@/components/sheet/sheetWrapper";
 import { Button } from "@/components/ui/button";
 import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/dealScreenshotModal";
@@ -29,6 +28,7 @@ export function Published({ sheetPublishedId }) {
     sheetPublished,
     dealsInfo,
     isSortingEnabled,
+    currentSheetColumns,
     onSortDeals,
     onResetSortDeals,
   } = useSheetPublished(sheetPublishedId, onSort, onResetSort);
@@ -43,7 +43,7 @@ export function Published({ sheetPublishedId }) {
   } = useDealModalCarousel({ deals: sheetPublished?.deals });
 
   return (
-    <>
+    <UiContainer className="px-4">
       <div
         className="
           absolute top-0 right-0 left-0
@@ -75,7 +75,6 @@ export function Published({ sheetPublishedId }) {
       <UiContainer className="pt-4" >
         <Table
           deals={sheetPublished?.deals}
-          dealsInfo={dealsInfo}
           isSortingEnabled={isSortingEnabled}
           onSort={onSortDeals}
           onResetSort={onResetSortDeals}
@@ -88,6 +87,7 @@ export function Published({ sheetPublishedId }) {
           isPublished={true}
           deal={sheetPublished?.deals?.[0]}
           dealsInfoStat={dealsInfoStat}
+          currentSheetColumns={currentSheetColumns}
         />
 
         <DealScreenshotModal
@@ -114,10 +114,11 @@ export function Published({ sheetPublishedId }) {
               isPublished={true}
               isModal={true}
               deal={currentDealOptions?.deal}
+              currentSheetColumns={currentSheetColumns}
             />
           }
         />
       </UiContainer>
-    </>
+    </UiContainer>
   );
 }

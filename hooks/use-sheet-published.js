@@ -5,55 +5,60 @@ import { getSheetPublished } from "@/actions/sheetPublished";
 import NotFound from "@/app/not-found";
 
 export function useSheetPublished(sheetId, onSort, onResetSort) {
-    const [sheetPublished, setSheetPublished] = useState(undefined);
-    const [dealsInfo, setDealsInfo] = useState([]);
-    const [isSortingEnabled, setIsSortingEnabled] = useState(false);
+  const [sheetPublished, setSheetPublished] = useState(undefined);
+  const [dealsInfo, setDealsInfo] = useState([]);
+  const [isSortingEnabled, setIsSortingEnabled] = useState(false);
+  const [currentSheetColumns, setCurrentSheetColumns] = useState([]);
 
-    useEffect(() => {
-        if (sheetId) {
-            const getData = async () => {
-                const sheetPublished = await getSheetPublished(sheetId);
+  useEffect(() => {
+    if (sheetId) {
+      const getData = async () => {
+        const sheetData = await getSheetPublished(sheetId);
 
-                if (!sheetPublished || sheetPublished.error) {
-                    return <NotFound />;
-                }
-
-                if (sheetPublished) {
-                    setSheetPublished((prev) => sheetPublished);
-                    setDealsInfo((prev) => sheetPublished.deals);
-                }
-            };
-            getData();
+        if (!sheetData || sheetData.error) {
+          return <NotFound />;
         }
-    }, [sheetId]);
 
-    const handleSort = (data) => {
-        setIsSortingEnabled(true);
-        setSheetPublished((prev) => {
-            const filteredDeals = onSort(prev.deals, data);
-            return {
-                ...prev,
-                deals: filteredDeals,
-            };
-        });
-    };
+        if (sheetData) {
+          const currentColumns = sheetData?.sheetPublished;
 
-    const handleResetSort = () => {
-        setIsSortingEnabled(false);
-        setSheetPublished((prev) => {
-            const resetDeals = onResetSort(prev.deals);
-            return {
-                ...prev,
-                deals: resetDeals,
-            };
-        });
-    };
+          setSheetPublished((prev) => sheetData);
+          setDealsInfo((prev) => sheetData.deals);
+          setCurrentSheetColumns((prev) => currentColumns);
+        }
+      };
+      getData();
+    }
+  }, [sheetId]);
 
-    return {
-        sheetPublished,
-        dealsInfo,
-        isSortingEnabled,
-        onSortDeals: handleSort,
-        onResetSortDeals: handleResetSort,
-    };
+  const handleSort = (data) => {
+    setIsSortingEnabled(true);
+    setSheetPublished((prev) => {
+      const filteredDeals = onSort(prev.deals, data);
+      return {
+        ...prev,
+        deals: filteredDeals,
+      };
+    });
+  };
+
+  const handleResetSort = () => {
+    setIsSortingEnabled(false);
+    setSheetPublished((prev) => {
+      const resetDeals = onResetSort(prev.deals);
+      return {
+        ...prev,
+        deals: resetDeals,
+      };
+    });
+  };
+
+  return {
+    sheetPublished,
+    dealsInfo,
+    isSortingEnabled,
+    currentSheetColumns,
+    onSortDeals: handleSort,
+    onResetSortDeals: handleResetSort,
+  };
 }

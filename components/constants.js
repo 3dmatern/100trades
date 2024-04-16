@@ -59,7 +59,7 @@ export const ITEMS = [
   { id: "deposit", label: "Депозит" },
   { id: "progress", label: "Прогресс" },
   { id: "exitDate", label: "Выход" },
-  { id: "imageEnd", label: "Скрин 2" },
+  { id: "imageEnd", label: "СКРИН 2" },
   { id: "take", label: "Пора?" },
   { id: "stress", label: "Стресс" },
   { id: "entrieTag", label: "Теги" },
