@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useCurrentUser } from "@/hooks/use-current-user";
@@ -27,6 +27,7 @@ const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
 export default function SheetPage({ params }) {
   const { id } = params;
   const router = useRouter();
+  const tableRef = useRef(null);
   const user = useCurrentUser();
   const {
     sheets,
@@ -81,12 +82,35 @@ export default function SheetPage({ params }) {
     onPrevDeal,
     onNextDeal,
   } = useDealModalCarousel({ deals, onUpdateDeal });
+  const [sheetWidth, setSheetWidth] = useState(0);
 
   useEffect(() => {
     if (sheets && sheets.length === 0) {
       router.push("/sheets");
     }
   }, [router, sheets]);
+
+  useEffect(()=>{
+    const getWidth = () => {
+      if (tableRef.current && currentSheetColumns) {
+        const tableWidth = tableRef.current.clientWidth;
+        const windowWidth = window.innerWidth;
+
+        if (windowWidth > tableWidth) {
+          setSheetWidth(tableWidth);
+        } else {
+          setSheetWidth(0);
+        }
+      }
+    };
+
+    getWidth();
+    
+    window.addEventListener("resize", getWidth);
+    return () => {
+      window.removeEventListener("resize", getWidth);
+    };
+  }, [currentSheetColumns]);
 
   return (
     <UiContainer
@@ -104,12 +128,14 @@ export default function SheetPage({ params }) {
         sheets={sheets}
         sheetId={id}
         currentSheetColumns={currentSheetColumns}
+        sheetWidth={sheetWidth}
         onSheetUpdate={onSheetUpdate}
         onRemoveSheet={onRemoveSheet}
         onUpdatePrivateSettings={onUpdatePrivateSettings}
       />
 
       <Table
+        tableRef={tableRef}
         userId={user.id}
         deals={deals}
         dealsInfoStat={dealsInfoStat}

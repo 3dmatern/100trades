@@ -13,6 +13,7 @@ import ActionTableRow from "@/components/deals/actionTableRow";
 import TableInfo from "@/components/deals/tableInfo";
 
 export default function Table({
+  tableRef,
   userId,
   deals,
   dealsInfoStat,
@@ -97,7 +98,7 @@ export default function Table({
 
   return (
     <TableLayout>
-      <TableContainer className="mx-auto">
+      <TableContainer className="mx-auto" tableRef={tableRef}>
         {!isModal && deals && (
           <TableInfo
             columnWidth={columnWidth}

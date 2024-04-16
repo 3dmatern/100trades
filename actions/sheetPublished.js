@@ -70,7 +70,10 @@ export const getSheetPublished = async (sheetPublishedId) => {
       takesUser,
       sheetName: name,
       sheetPublished,
-      deals: entrieFields,
+      deals: entrieFields.map((entrie) => ({
+        ...entrie,
+        name: entrie.name?.toUpperCase(),
+      })),
     };
   } catch (error) {
     console.error("Error receiving sheetPublished: ", error);

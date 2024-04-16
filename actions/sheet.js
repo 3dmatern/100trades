@@ -40,7 +40,6 @@ export const createSheet = async (values) => {
         name,
       },
     });
-    console.log(newSheet);
     await db.sheetPrivate.create({
       data: {
         sheetId: newSheet.id,

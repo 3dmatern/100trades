@@ -5,12 +5,14 @@ import { useEffect, useRef, useState } from "react";
 import Sheet from "@/components/sheet/sheet";
 import SheetAddButton from "@/components/sheet/sheetAddButton";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export default function Sheets({
     userId,
     sheets,
     sheetId,
     currentSheetColumns,
+    sheetWidth,
     onSheetUpdate,
     onRemoveSheet,
     isAdmin = false,
@@ -37,6 +39,7 @@ export default function Sheets({
     useEffect(() => {
         const container = containerRef.current;
         const content = contentRef.current;
+
         if (container && content && sheets?.length > 0) {
             const isScrollEnabled =
                 container.scrollWidth > container.clientWidth;
@@ -84,7 +87,9 @@ export default function Sheets({
     }, [sheetId, containerRef, sheetRefs]);
 
     return (
-        <div className="relative">
+        <div className="relative" style={
+            sheetWidth > 0 ? { width: sheetWidth + "px", margin: "0 auto"} : { width: "100%" }
+        }>
             <div
                 ref={containerRef}
                 style={{
