@@ -87,23 +87,6 @@ export default function ProfilePage() {
                   <DealsTagsStatistics tagsWLStat={tagsWLStat} />
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="item-5">
-                <AccordionTrigger className="px-5">
-                  Все теги
-                </AccordionTrigger>
-                <AccordionContent className="pt-4">
-                  <UserAllTags
-                    currentPage={currentPage}
-                    pageCount={pageCount}
-                    userTags={userTags}
-                    selecteduserTags={selecteduserTags}
-                    onChangePage={onChangePage}
-                    onClickPrevPage={onClickPrevPage}
-                    onClickNextPage={onClickNextPage}
-                    onRemoveUserTag={onRemoveUserTag}
-                  />
-                </AccordionContent>
-              </AccordionItem>
             </Accordion>
           </CardContent>
         </Card>
