@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Журанл сделок Fulstack App
 
-## Getting Started
+### Stack
 
-First, run the development server:
+- Next.js `v14+`;
+- Auth.js `v5+`;
+- ORM Prisma;
+- PostgreSQL;
+- Nodemailer;
+- Tailwind CSS;
+- UI Shadcn.
+
+Запуск проекта:
 
 ```bash
+# в режиме development
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# в режиме production
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Откройте [http://localhost:3000](http://localhost:3000) в браузере, чтобы увидеть результат.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Как работать в репозитории
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Основной веткой является `main`, в ней лежат все последние изменения, с нее запускается в `production`.
 
-## Learn More
+Новые фичи/исправления и тд делаем в новых ветках:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+feat/ - для новых фич
+fix/ - что-то фиксим
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Больше информации в оф. документации Next.js
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [Next.js Documentation](https://nextjs.org/docs) - узнать о функциях и API Next.js.
+- [Learn Next.js](https://nextjs.org/learn) - интерактивное руководство по Next.js.
