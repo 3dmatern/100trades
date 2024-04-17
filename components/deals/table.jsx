@@ -13,9 +13,9 @@ import ActionTableRow from "@/components/deals/actionTableRow";
 import TableInfo from "@/components/deals/tableInfo";
 
 export default function Table({
+  tableRef,
   userId,
   deals,
-  dealsInfo,
   dealsInfoStat,
   sheetId,
   selectedDeals,
@@ -40,6 +40,7 @@ export default function Table({
   deal,
   isPublished = false,
   lossID,
+  currentSheetColumns,
 }) {
   const [allTags, setAllTags] = useState([]);
   const [allTakes, setAllTakes] = useState([]);
@@ -63,18 +64,6 @@ export default function Table({
       ...prevWidths,
       [column]: newWidth,
     }));
-  };
-
-  const getClassNameContainer = () => {
-    if (isModal && !isPublished && !isAdmin) {
-      return "h-[80px]";
-    }
-
-    if (isPublished) {
-      return "mx-auto";
-    }
-
-    return "";
   };
 
   useEffect(() => {
@@ -109,18 +98,19 @@ export default function Table({
 
   return (
     <TableLayout>
-      <TableContainer className={getClassNameContainer()}>
+      <TableContainer className="mx-auto" tableRef={tableRef}>
         {!isModal && deals && (
           <TableInfo
             columnWidth={columnWidth}
-            dealsInfo={dealsInfo}
             dealsInfoStat={dealsInfoStat}
             isPublished={isPublished}
+            currentSheetColumns={currentSheetColumns}
           />
         )}
 
         {deals && (
           <TableHead
+            className={isModal ? "top-0" : null}
             checkAll={checkAll}
             columnWidth={columnWidth}
             onResize={handleResize}
@@ -130,7 +120,7 @@ export default function Table({
             isModal={isModal}
             deal={deal}
             isPublished={isPublished}
-            className={isModal ? "top-0" : null}
+            currentSheetColumns={currentSheetColumns}
           />
         )}
 
@@ -157,6 +147,7 @@ export default function Table({
           isModal={isModal}
           isPublished={isPublished}
           lossID={lossID}
+          currentSheetColumns={currentSheetColumns}
         />
 
         {!isAdmin && !isModal && deals && (

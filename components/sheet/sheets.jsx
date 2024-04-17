@@ -5,14 +5,18 @@ import { useEffect, useRef, useState } from "react";
 import Sheet from "@/components/sheet/sheet";
 import SheetAddButton from "@/components/sheet/sheetAddButton";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export default function Sheets({
     userId,
     sheets,
     sheetId,
+    currentSheetColumns,
+    sheetWidth,
     onSheetUpdate,
     onRemoveSheet,
     isAdmin = false,
+    onUpdatePrivateSettings,
 }) {
     const containerRef = useRef(null);
     const contentRef = useRef(null);
@@ -35,6 +39,7 @@ export default function Sheets({
     useEffect(() => {
         const container = containerRef.current;
         const content = contentRef.current;
+
         if (container && content && sheets?.length > 0) {
             const isScrollEnabled =
                 container.scrollWidth > container.clientWidth;
@@ -82,7 +87,9 @@ export default function Sheets({
     }, [sheetId, containerRef, sheetRefs]);
 
     return (
-        <div className="relative">
+        <div className="relative" style={
+            sheetWidth > 0 ? { width: sheetWidth + "px", margin: "0 auto"} : { width: "100%" }
+        }>
             <div
                 ref={containerRef}
                 style={{
@@ -99,18 +106,20 @@ export default function Sheets({
                         sheets?.map((sheet) => (
                             <Sheet
                                 key={sheet.id}
-                                selectSheet={sheetId}
-                                sheet={sheet}
-                                userId={userId}
-                                onAddSheetRef={setSheetRefs}
-                                onUpdateSheet={onSheetUpdate}
-                                onRemoveSheet={onRemoveSheet}
-                                isAdmin={isAdmin}
                                 className={
                                     sheetId === sheet.id
                                         ? "bg-gray-200"
                                         : "bg-gray-100"
                                 }
+                                selectSheet={sheetId}
+                                sheet={sheet}
+                                userId={userId}
+                                currentSheetColumns={currentSheetColumns}
+                                onAddSheetRef={setSheetRefs}
+                                onUpdateSheet={onSheetUpdate}
+                                onRemoveSheet={onRemoveSheet}
+                                onUpdatePrivateSettings={onUpdatePrivateSettings}
+                                isAdmin={isAdmin}
                             />
                         ))}
                     {!isAdmin && (

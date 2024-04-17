@@ -6,6 +6,10 @@ export const getSheetsByUserId = async (userId) => {
   try {
     const sheets = await db.sheet.findMany({
       where: { userId },
+      include: {
+        sheetPublished: true,
+        sheetPrivate: true,
+      },
       orderBy: {
         date: "asc",
       },
@@ -68,19 +72,23 @@ export const getSheetById = async (sheetId) => {
   }
 };
 
-export const getSheetNameById = async (sheetId) => {
+export const getSheetNameAndSettingsById = async (sheetId) => {
   noStore();
   try {
-    const sheetName = await db.sheet.findUnique({
+    const sheet = await db.sheet.findUnique({
       where: {
         id: sheetId,
       },
       select: {
         name: true,
+        sheetPublished: true,
       },
     });
 
-    return sheetName.name;
+    return {
+      name: sheet.name,
+      sheetPublished: sheet.sheetPublished,
+    };
   } catch (error) {
     return null;
   }

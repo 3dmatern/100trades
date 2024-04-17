@@ -13,8 +13,8 @@ export default function TableHead({
   className,
   isAdmin,
   isModal,
-  deal,
   isPublished,
+  currentSheetColumns
 }) {
   const filteredDBName = (dbName) => {
     switch (dbName) {
@@ -32,11 +32,11 @@ export default function TableHead({
     }
   };
 
-  const getContent = ({ isModal, isPublished, deal }) => {
+  const getContent = ({ isModal, isPublished, currentSheetColumns }) => {
     if (isModal && isPublished) {
       return HEADERS_COLUMN.slice(1).map(
         (item, index) =>
-          deal?.[item.dbName] !== undefined &&
+          currentSheetColumns[item.dbName] !== null &&
           item.dbName !== "imageStart" &&
           item.dbName !== "imageEnd" && (
             <SelectFilterButton
@@ -63,6 +63,7 @@ export default function TableHead({
     } else if (isModal) {
       return HEADERS_COLUMN.slice(1).map(
         (item, index) =>
+          currentSheetColumns[item.dbName] !== null &&
           item.dbName !== "imageStart" &&
           item.dbName !== "imageEnd" && (
             <SelectFilterButton
@@ -89,7 +90,7 @@ export default function TableHead({
     } else if (isPublished) {
       return HEADERS_COLUMN.slice(1).map(
         (item, index) =>
-          deal?.[item.dbName] !== undefined && (
+          currentSheetColumns?.[item.dbName] !== null && (
             <SelectFilterButton
               key={item.name}
               name={item.name}
@@ -113,7 +114,7 @@ export default function TableHead({
       );
     } else {
       return HEADERS_COLUMN.slice(1).map((item, index) => (
-        <SelectFilterButton
+        currentSheetColumns?.[item.dbName] && <SelectFilterButton
           key={item.name}
           name={item.name}
           dbName={item.dbName}
@@ -145,7 +146,7 @@ export default function TableHead({
       )}
     >
       {HEADERS_COLUMN.slice(0, 1).map((item) =>
-        isPublished && deal?.[item.dbName] === undefined ? null : (
+        isPublished && currentSheetColumns?.[item.dbName] === null ? null : (
           <SelectFilterButton
             key={item.name}
             name={item.name}
@@ -173,7 +174,7 @@ export default function TableHead({
         )
       )}
 
-      {getContent({ isModal, isPublished, deal })}
+      {getContent({ isModal, isPublished, currentSheetColumns })}
     </div>
   );
 }

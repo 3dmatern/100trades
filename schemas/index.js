@@ -164,7 +164,7 @@ export const SheetRemoveSchema = z
     return true;
   });
 
-export const SheetPublishedSchema = z.object({
+export const SheetSettingsSchema = z.object({
   userId: z.string().refine((value) => value.length > 0, {
     message: "Выберите пользователя.",
   }),

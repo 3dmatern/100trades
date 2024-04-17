@@ -4,9 +4,9 @@ import { formatPrice } from "@/utils/formattedNumber";
 
 export default function TableInfo({
   columnWidth,
-  dealsInfo,
   dealsInfoStat,
   isPublished,
+  currentSheetColumns
 }) {
   const {
     percentWin,
@@ -16,81 +16,80 @@ export default function TableInfo({
     portfolioProgress,
     portfolioAverageTime,
   } = dealsInfoStat;
-
   return (
     <div className="flex items-center h-8 sticky left-0 top-0 z-[4] bg-gray-200">
-      {dealsInfo?.[0]?.name !== undefined && (
+      {currentSheetColumns?.name !== null && (
         <Cell columnWidth={columnWidth["name"]}></Cell>
       )}
-      {dealsInfo?.[0]?.resultId !== undefined && (
+      {currentSheetColumns?.resultId !== null && (
         <Cell columnWidth={columnWidth["resultId"]}>
           <span className=" overflow-hidden whitespace-nowrap text-ellipsis">
             W:L(%) = {percentWin}:{percentLoss}
           </span>
         </Cell>
       )}
-      {dealsInfo?.[0]?.lsId !== undefined && (
+      {currentSheetColumns?.lsId !== null && (
         <Cell columnWidth={columnWidth["lsId"]}></Cell>
       )}
-      {dealsInfo?.[0]?.pose !== undefined && (
+      {currentSheetColumns?.pose !== null && (
         <Cell columnWidth={columnWidth["pose"]}></Cell>
       )}
-      {dealsInfo?.[0]?.risk !== undefined && (
+      {currentSheetColumns?.risk !== null && (
         <Cell columnWidth={columnWidth["risk"]}>
           <span className={portfolioRisk > 0 ? "text-red-600" : ""}>
             ₽ {formatPrice(portfolioRisk)}
           </span>
         </Cell>
       )}
-      {dealsInfo?.[0]?.profit !== undefined && (
+      {currentSheetColumns?.profit !== null && (
         <Cell columnWidth={columnWidth["profit"]}>
           <span className={portfolioProfit > 0 ? "text-teal-600" : ""}>
             ₽ {formatPrice(portfolioProfit)}
           </span>
         </Cell>
       )}
-      {/* {dealsInfo?.[0]?.rrId !== undefined && (
+      {/* {currentSheetColumns?.forecast !== null && (
         <Cell columnWidth={columnWidth["forecast"]}></Cell>
       )} */}
-      {isPublished && dealsInfo?.[0]?.entrieTake === undefined ? null : (
+      {currentSheetColumns?.entrieTake === null ? null : (
         <Cell columnWidth={columnWidth["entrieTake"]}></Cell>
       )}
-      {/* {dealsInfo?.[0]?.rrId !== undefined && (
-                <Cell columnWidth={columnWidth['rrId']}></Cell>
-            )} */}
-      {dealsInfo?.[0]?.entryDate !== undefined && (
+      {/* {currentSheetColumns?.rrId !== null && (
+        <Cell columnWidth={columnWidth['rrId']}></Cell>
+      )} */}
+      {currentSheetColumns?.entryDate !== null && (
         <Cell columnWidth={columnWidth["entryDate"]}></Cell>
       )}
-      {dealsInfo?.[0]?.imageStart !== undefined && (
+      {currentSheetColumns?.imageStart !== null && (
         <Cell columnWidth={columnWidth["imageStart"]}></Cell>
       )}
-      {dealsInfo?.[0]?.deposit !== undefined && (
+      {currentSheetColumns?.deposit !== null && (
         <Cell columnWidth={columnWidth["deposit"]}></Cell>
       )}
-      {dealsInfo?.[0]?.progress !== undefined && (
+      {currentSheetColumns?.progress !== null && (
         <Cell columnWidth={columnWidth["progress"]}>
           {portfolioProgress || "0.00"}%
         </Cell>
       )}
-      {dealsInfo?.[0]?.exitDate !== undefined && (
+      {currentSheetColumns?.exitDate !== null && (
         <Cell columnWidth={columnWidth["exitDate"]}></Cell>
       )}
-      {dealsInfo?.[0]?.imageEnd !== undefined && (
+      {currentSheetColumns?.imageEnd !== null && (
         <Cell columnWidth={columnWidth["imageEnd"]}></Cell>
       )}
-      {dealsInfo?.[0]?.take !== undefined && (
+      {currentSheetColumns?.take !== null && (
         <Cell columnWidth={columnWidth["take"]}></Cell>
       )}
-      {dealsInfo?.[0]?.stress !== undefined && (
+      {currentSheetColumns?.stress !== null && (
         <Cell columnWidth={columnWidth["stress"]}></Cell>
       )}
-      {isPublished && dealsInfo?.[0]?.entrieTag === undefined ? null : (
+      {isPublished && currentSheetColumns?.entrieTag === null ? null : (
         <Cell columnWidth={columnWidth["entrieTag"]}></Cell>
       )}
-      {dealsInfo?.[0]?.notes !== undefined && (
+      {currentSheetColumns?.notes !== null && (
         <Cell columnWidth={columnWidth["notes"]}></Cell>
       )}
-      {dealsInfo?.[0]?.timeInTrade !== undefined && (
+      {currentSheetColumns?.timeInTrade !== null && (
         <Cell columnWidth={columnWidth["timeInTrade"]}>
           ~ {portfolioAverageTime}
         </Cell>

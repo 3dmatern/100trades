@@ -1,18 +1,31 @@
+'use client';
+
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-import { getSheets, removeSheet } from "@/actions/sheet";
+import { getSheets, removeSheet, updateSheetPrivate } from "@/actions/sheet";
 
-export function useSheets(userId) {
+export function useSheets({ userId, sheetId}) {
   const router = useRouter();
   const [sheets, setSheets] = useState(null);
   const [selectSheetId, setSelectSheetId] = useState("");
+  const [currentSheetColumns, setCurrentSheetColumns] = useState([]);
+
+  const updSheetColumns = (currentColumns) => {
+        delete currentColumns.date;
+        delete currentColumns.id;
+        delete currentColumns.userId;
+        delete currentColumns.sheetId;
+
+        setCurrentSheetColumns((prev) => currentColumns);
+  };
 
   useEffect(() => {
     if (userId) {
       const getData = async () => {
         const sheetsData = await getSheets(userId);
+
         if (sheetsData && sheetsData.error) {
           toast.error(sheetsData.error);
         } else {
@@ -22,6 +35,18 @@ export function useSheets(userId) {
       getData();
     }
   }, [userId]);
+
+  useEffect(() => {
+    if (sheets && sheetId) {
+      const currentColumns = sheets.find((sheet) => sheet.id === sheetId)?.sheetPrivate;
+      
+      if (currentColumns) {
+        updSheetColumns(currentColumns);
+      } else {
+        setCurrentSheetColumns((prev) => []);
+      }
+    }
+  }, [sheets, sheetId]);
 
   const handleSelectSheet = (sheetId) => {
     setSelectSheetId(sheetId);
@@ -67,11 +92,29 @@ export function useSheets(userId) {
       });
   };
 
+  const handleUpdatePrivateSettings = async (values) => {    
+    try {
+      const data = await updateSheetPrivate(values);
+
+      if (data.error) {
+        toast.error(data.error);
+      } else if (data.success) {
+        toast.success(data.success);
+        updSheetColumns(data.updSheetPrivate);
+      }
+    } catch (error) {
+      console.error(error.message);
+      toast.error("Что-то пошло не так при обновлении параметров!");
+    }
+  }
+
   return {
     sheets,
     selectSheetId,
+    currentSheetColumns,
     onSelectSheet: handleSelectSheet,
     onSheetUpdate: handleSheetUpdate,
     onRemoveSheet: handleRemoveSheet,
+    onUpdatePrivateSettings: handleUpdatePrivateSettings,
   };
 }

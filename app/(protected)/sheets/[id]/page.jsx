@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useCurrentUser } from "@/hooks/use-current-user";
@@ -27,8 +27,15 @@ const RESULT_LOSS_ID = process.env.NEXT_PUBLIC_RESULT_LOSS_ID;
 export default function SheetPage({ params }) {
   const { id } = params;
   const router = useRouter();
+  const tableRef = useRef(null);
   const user = useCurrentUser();
-  const { sheets, onSheetUpdate, onRemoveSheet } = useSheets(user.id);
+  const {
+    sheets,
+    currentSheetColumns,
+    onSheetUpdate,
+    onRemoveSheet,
+    onUpdatePrivateSettings
+  } = useSheets({ userId: user.id, sheetId: id});
   const { results } = useResults();
   const { longShorts } = useLongShort();
   const { risksRewards } = useRisksRewards();
@@ -75,12 +82,35 @@ export default function SheetPage({ params }) {
     onPrevDeal,
     onNextDeal,
   } = useDealModalCarousel({ deals, onUpdateDeal });
+  const [sheetWidth, setSheetWidth] = useState(0);
 
   useEffect(() => {
     if (sheets && sheets.length === 0) {
       router.push("/sheets");
     }
   }, [router, sheets]);
+
+  useEffect(()=>{
+    const getWidth = () => {
+      if (tableRef.current && currentSheetColumns) {
+        const tableWidth = tableRef.current.clientWidth;
+        const windowWidth = window.innerWidth;
+
+        if (windowWidth > tableWidth) {
+          setSheetWidth(tableWidth);
+        } else {
+          setSheetWidth(0);
+        }
+      }
+    };
+
+    getWidth();
+    
+    window.addEventListener("resize", getWidth);
+    return () => {
+      window.removeEventListener("resize", getWidth);
+    };
+  }, [currentSheetColumns]);
 
   return (
     <UiContainer
@@ -97,14 +127,17 @@ export default function SheetPage({ params }) {
         userId={user.id}
         sheets={sheets}
         sheetId={id}
+        currentSheetColumns={currentSheetColumns}
+        sheetWidth={sheetWidth}
         onSheetUpdate={onSheetUpdate}
         onRemoveSheet={onRemoveSheet}
+        onUpdatePrivateSettings={onUpdatePrivateSettings}
       />
 
       <Table
+        tableRef={tableRef}
         userId={user.id}
         deals={deals}
-        dealsInfo={dealsInfo}
         dealsInfoStat={dealsInfoStat}
         sheetId={id}
         selectedDeals={selectedDeals}
@@ -125,6 +158,7 @@ export default function SheetPage({ params }) {
         takesData={takes}
         onClickDealImg={onClickDealImg}
         lossID={RESULT_LOSS_ID}
+        currentSheetColumns={currentSheetColumns}
       />
 
       <DealScreenshotModal
@@ -140,7 +174,6 @@ export default function SheetPage({ params }) {
           <Table
             userId={user.id}
             deals={deals}
-            dealsInfo={dealsInfo}
             sheetId={id}
             selectedDeals={selectedDeals}
             checkAll={checkAll}
@@ -161,6 +194,7 @@ export default function SheetPage({ params }) {
             onClickDealImg={onRemoveImg}
             isModal={true}
             deal={deals?.find((d) => d.id === currentDealOptions?.deal.id)}
+            currentSheetColumns={currentSheetColumns}
           />
         }
       />
