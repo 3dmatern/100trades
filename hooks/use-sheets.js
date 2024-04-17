@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { getSheets, removeSheet, updateSheetPrivate } from "@/actions/sheet";
 
-export function useSheets({ userId, sheetId}) {
+export function useSheets({ userId, sheetId }) {
   const router = useRouter();
   const [sheets, setSheets] = useState(null);
   const [selectSheetId, setSelectSheetId] = useState("");
@@ -37,8 +37,12 @@ export function useSheets({ userId, sheetId}) {
   }, [userId]);
 
   useEffect(() => {
-    if (sheets && sheetId) {
-      const currentColumns = sheets.find((sheet) => sheet.id === sheetId)?.sheetPrivate;
+    const currentSheetId = sheetId || selectSheetId;
+
+    if (sheets && currentSheetId) {
+      const currentColumns = sheets.find(
+        (sheet) => sheet.id === currentSheetId
+      )?.sheetPrivate;
       
       if (currentColumns) {
         updSheetColumns(currentColumns);
@@ -46,7 +50,7 @@ export function useSheets({ userId, sheetId}) {
         setCurrentSheetColumns((prev) => []);
       }
     }
-  }, [sheets, sheetId]);
+  }, [sheets, sheetId, selectSheetId]);
 
   const handleSelectSheet = (sheetId) => {
     setSelectSheetId(sheetId);

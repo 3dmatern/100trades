@@ -39,7 +39,12 @@ export default function AdminPage() {
   const { users, selectUserId, onSelectUser } = useAdminUsersState({
     user,
   });
-  const { sheets, selectSheetId, onSelectSheet } = useSheets({ userId: selectUserId });
+  const {
+    sheets,
+    selectSheetId,
+    currentSheetColumns,
+    onSelectSheet
+  } = useSheets({ userId: selectUserId });
   const { results } = useResults();
   const { longShorts } = useLongShort();
   const { risksRewards } = useRisksRewards();
@@ -140,6 +145,7 @@ export default function AdminPage() {
                   onClickDealImg={onClickDealImg}
                   isAdmin={true}
                   dealsInfoStat={dealsInfoStat}
+                  currentSheetColumns={currentSheetColumns}
                 />
 
                 <DealScreenshotModal
@@ -169,6 +175,7 @@ export default function AdminPage() {
                       isAdmin={true}
                       isModal={true}
                       deal={currentDealOptions?.deal}
+                      currentSheetColumns={currentSheetColumns}
                     />
                   }
                 />
