@@ -50,6 +50,7 @@ export default function BodyCardTakes({
     setOpen((prev) => false);
     setActive((prev) => false);
     setTake((prev) => "");
+
     let selectTake = take;
     let updTakes = allTakes;
     let newDealId = "";
@@ -109,6 +110,7 @@ export default function BodyCardTakes({
   const getEntrieTakesData = async (takes, dealId) => {
     if (dealId) {
       const entrieTakesData = await getEntrieTakes(dealId);
+
       if (entrieTakesData.error) {
         toast.error(entrieTakesData.error);
       } else {
