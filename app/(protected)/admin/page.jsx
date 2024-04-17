@@ -39,7 +39,7 @@ export default function AdminPage() {
   const { users, selectUserId, onSelectUser } = useAdminUsersState({
     user,
   });
-  const { sheets, selectSheetId, onSelectSheet } = useSheets(selectUserId);
+  const { sheets, selectSheetId, onSelectSheet } = useSheets({ userId: selectUserId });
   const { results } = useResults();
   const { longShorts } = useLongShort();
   const { risksRewards } = useRisksRewards();
