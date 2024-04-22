@@ -44,6 +44,8 @@ export default async function RootLayout({ children }) {
               © Школа Трейдинга Хомяка-Спекулянта, winloss.ru
             </a>
           </footer>
+
+          <script src="//code.jivo.ru/widget/tc14zDvdJw" async></script>
         </body>
       </html>
     </SessionProvider>
