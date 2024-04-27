@@ -92,7 +92,7 @@ export default function BodyCardPose({
                         : "border-r"
                 }`}
             >
-                <span>₽</span>
+                {/* <span>₽</span> */}
                 {open && !isAdmin && !isPublished ? (
                     <Form {...form}>
                         <form
@@ -110,7 +110,7 @@ export default function BodyCardPose({
                                             <Input
                                                 {...field}
                                                 type="number"
-                                                step={1}
+                                                step={0.01}
                                                 min={0}
                                                 disabled={
                                                     isPending &&

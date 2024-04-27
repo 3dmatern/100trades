@@ -100,9 +100,9 @@ export default function BodyCardRisk({
                                             <Input
                                                 {...field}
                                                 type="number"
-                                                step="0.10"
-                                                max={100.0}
-                                                min={0.0}
+                                                step={0.01}
+                                                max={100}
+                                                min={0}
                                                 disabled={
                                                     isPending &&
                                                     isPending["risk"] &&

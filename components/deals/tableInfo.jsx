@@ -37,14 +37,16 @@ export default function TableInfo({
       {currentSheetColumns?.risk !== null && (
         <Cell columnWidth={columnWidth["risk"]}>
           <span className={portfolioRisk > 0 ? "text-red-600" : ""}>
-            ₽ {formatPrice(portfolioRisk)}
+            {/* ₽ */}
+            {formatPrice(portfolioRisk)}
           </span>
         </Cell>
       )}
       {currentSheetColumns?.profit !== null && (
         <Cell columnWidth={columnWidth["profit"]}>
           <span className={portfolioProfit > 0 ? "text-teal-600" : ""}>
-            ₽ {formatPrice(portfolioProfit)}
+            {/* ₽ */}
+            {formatPrice(portfolioProfit)}
           </span>
         </Cell>
       )}
