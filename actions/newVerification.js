@@ -3,8 +3,11 @@
 import { db } from "@/lib/db";
 import { getUserByEmail } from "@/data/user";
 import { getVerificationTokenByToken } from "@/data/verificationToken";
+import { signIn } from "@/auth";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
-export const newVerification = async (token) => {
+export const newVerification = async (tokenWithPass) => {
+    const [token, password] = tokenWithPass.split(".");
     const existingToken = await getVerificationTokenByToken(token);
 
     if (!existingToken) {
@@ -41,7 +44,9 @@ export const newVerification = async (token) => {
         where: { id: existingToken.id },
     });
 
-    return {
-        success: "Email подтвержден!",
-    };
+    await signIn("credentials", {
+        email: existingUser.email,
+        password: password,
+        redirectTo: DEFAULT_LOGIN_REDIRECT
+    });
 };
