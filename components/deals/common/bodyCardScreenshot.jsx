@@ -93,8 +93,6 @@ export default function BodyCardScreenshot({
             return (
                 <InputUploadImg
                     name={inputName}
-                    width={width}
-                    height={height}
                     onImageChange={handleChange}
                 />
             );

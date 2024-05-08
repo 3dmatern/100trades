@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { UiContainer } from "@/components/uikit/uiContainer";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/logo";
 
 export default function Home() {
     return (
@@ -22,7 +23,7 @@ export default function Home() {
                 ></iframe>
             </div>
             <div className="lg:w-2/5 flex items-center justify-center flex-col gap-y-10">
-                <h1 className="text-4xl font-semibold">Журнал Cделок</h1>
+                <Logo />
                 <div className="flex items-center justify-center flex-col gap-y-4">
                     <Button size="lg" className="w-48" asChild>
                         <Link href="/auth/login">Войти</Link>
