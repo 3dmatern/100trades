@@ -5,7 +5,6 @@ import "./globals.css";
 import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
-import { UiContainer } from "@/components/uikit/uiContainer";
 
 const inter = Inter({ subsets: ["cyrillic", "latin"] });
 

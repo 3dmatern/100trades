@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-export default function InputUploadImg({ name, onImageChange, width, height }) {
+export default function InputUploadImg({ name, onImageChange }) {
     const handleImageUpload = (file) => {
         const formData = new FormData();
         formData.append("image", file);

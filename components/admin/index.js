@@ -1,1 +1,2 @@
-export { AdminSelect } from "@/components/admin/adminSelect";
+export { AdminSelect } from "./adminSelect";
+export { UploadLogoImage } from "./uploadLogoImage"

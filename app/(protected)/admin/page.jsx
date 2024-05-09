@@ -23,7 +23,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { AdminSelect } from "@/components/admin";
+import { AdminSelect, UploadLogoImage } from "@/components/admin";
 import { DealsTimeStatistics } from "@/components/statistics/dealsTimeStatistics";
 import SheetWrapper from "@/components/sheet/sheetWrapper";
 import Table from "@/components/deals/table";
@@ -105,6 +105,7 @@ export default function AdminPage() {
 
   return (
     <UiContainer className="pt-8 px-1">
+      <UploadLogoImage />
       <Accordion type="single" collapsible>
         <AccordionItem
           value="item-1"

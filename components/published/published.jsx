@@ -14,6 +14,7 @@ import Table from "@/components/deals/table";
 import { DealScreenshotModal } from "@/components/dealScreenshotModal";
 import { useDealsStatistics } from "@/hooks/use-deals-statistics";
 import { UiContainer } from "../uikit/uiContainer";
+import { Logo } from "../logo";
 
 export function Published({ sheetPublishedId }) {
   const { results } = useResults();
@@ -49,8 +50,8 @@ export function Published({ sheetPublishedId }) {
           absolute top-0 right-0 left-0
           flex items-center justify-between pt-5 px-5
         "
-      >
-        <h1 className="text-2xl font-bold">Журнал Cделок</h1>
+      >        
+        <Logo />
 
         <Button asChild>
           <Link href="/">На главную</Link>
