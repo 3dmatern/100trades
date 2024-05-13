@@ -45,12 +45,7 @@ export function Published({ sheetPublishedId }) {
 
   return (
     <UiContainer className="px-4">
-      <div
-        className="
-          absolute top-0 right-0 left-0
-          flex items-center justify-between pt-5 px-5
-        "
-      >        
+      <div className="flex items-center justify-between pt-5 px-5">        
         <Logo />
 
         <Button asChild>
