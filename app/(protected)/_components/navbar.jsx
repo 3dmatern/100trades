@@ -14,8 +14,8 @@ export default function Navbar() {
   return (
     <nav
       className="
-        min-w-96 absolute top-0 right-0 left-0
-        flex items-center justify-between w-full p-4 bg-secondary shadow-sm
+        min-w-96 w-full p-4 flex items-center justify-between
+        bg-secondary shadow-sm
       "
     >
       <Link href="/">        
