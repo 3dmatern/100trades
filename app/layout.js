@@ -25,7 +25,7 @@ export default async function RootLayout({ children }) {
       <html lang="ru">
         <body className={cn("", inter.className)}>
           <Toaster />
-          <div className="min-w-96 min-h-screen pt-[72px] pb-12">
+          <div className="min-w-96 min-h-screen pb-12">
             {children}
           </div>
           <div id="modals" />
